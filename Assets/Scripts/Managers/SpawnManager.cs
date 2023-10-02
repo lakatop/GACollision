@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SpawnManager : MonoBehaviour
 {
   static SpawnManager instance;
-  static List<GameObject> _agents = new List<GameObject>();
+  static List<Agent> _agents = new List<Agent>();
 
   void Awake()
   {
@@ -24,28 +24,20 @@ public class SpawnManager : MonoBehaviour
 
   void Start()
   {
-    Debug.Log("START CALLED");
   }
 
   void Update()
   {
-    //if (Input.GetKeyDown("1"))
-    //{
-    //  SceneManager.LoadScene("SampleScene");
-    //}
-    //else if (Input.GetKeyDown("2"))
-    //{
-    //  SceneManager.LoadScene("Scene2");
-    //}
     if (Input.GetMouseButtonDown(0))
     {
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
       if (Physics.Raycast(ray, out var hitInfo))
       {
-        _agents.Add(new GameObject());
+        _agents.Add(new Agent());
         var agent = _agents[_agents.Count - 1];
-        agent.AddComponent<Agent>();
-        agent.GetComponent<Agent>().SetPosition(hitInfo.point);
+        agent.id = _agents.Count;
+        agent.SetPosition(hitInfo.point);
+        agent.SetName();
       }
     }
   }
