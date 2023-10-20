@@ -1,35 +1,39 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragWindow : MonoBehaviour, IDragHandler
+public class DragWindow : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-  [SerializeField] private RectTransform _dragRectTransform;
-  [SerializeField] private Canvas _canvas;
+  private GameObject _frame = null;
+  private Canvas _canvas = null;
 
   public void Awake()
   {
-    if (!_dragRectTransform)
-    {
-      _dragRectTransform = transform.parent.GetComponent<RectTransform>();
-    }
+    _frame = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kFrame);
 
-    if (!_canvas)
+    Transform nextParent = transform.parent;
+    while (nextParent != null)
     {
-      Transform nextParent = transform.parent;
-      while (nextParent != null)
+      _canvas = nextParent.GetComponent<Canvas>();
+      if (_canvas != null)
       {
-        _canvas = nextParent.GetComponent<Canvas>();
-        if (_canvas != null)
-        {
-          break;
-        }
-        nextParent = nextParent.parent;
+        break;
       }
+      nextParent = nextParent.parent;
     }
+  }
+
+  public void OnBeginDrag(PointerEventData eventData)
+  {
+    _frame.GetComponent<CanvasGroup>().alpha = 0.5f;
   }
 
   public void OnDrag(PointerEventData eventData)
   {
-    _dragRectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+    _frame.GetComponent<RectTransform>().anchoredPosition += eventData.delta / _canvas.scaleFactor;
+  }
+
+  public void OnEndDrag(PointerEventData eventData)
+  {
+    _frame.GetComponent<CanvasGroup>().alpha = 1f;
   }
 }

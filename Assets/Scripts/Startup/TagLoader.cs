@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
-using Tags;
 
 namespace MyProject.Editor
 {
@@ -11,7 +10,7 @@ namespace MyProject.Editor
   {
     static TagLoader()
     {
-      Type type = typeof(UI);
+      Type type = typeof(GlobStrings.Tags.UI);
       foreach (var field in type.GetFields())
       {
         var tag = field.GetValue(null);

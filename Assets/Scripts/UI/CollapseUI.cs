@@ -1,4 +1,3 @@
-using Tags;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,11 +17,11 @@ public class CollapseUI : MonoBehaviour, IPointerClickHandler
 
   public void Awake()
   {
-    _frame = GameObject.FindGameObjectWithTag(UI.kFrame);
-    _body = GameObject.FindGameObjectWithTag(UI.kBody);
-    _footer = GameObject.FindGameObjectWithTag(UI.kFooter);
-    _header = GameObject.FindGameObjectWithTag(UI.kHeader);
-    _headerTabs = GameObject.FindGameObjectWithTag(UI.kHeaderTabs);
+    _frame = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kFrame);
+    _body = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kBody);
+    _footer = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kFooter);
+    _header = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kHeader);
+    _headerTabs = GameObject.FindGameObjectWithTag(GlobStrings.Tags.UI.kHeaderTabs);
   }
 
   private void ToggleCollapsibleElement()
