@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HeaderUITag
+  - BodyUITag
+  - FooterUITag
+  - HeaderTabsUITag
+  - HeaderTitleUITag
+  - FrameUITag
   layers:
   - Default
   - TransparentFX
