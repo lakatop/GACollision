@@ -13,25 +13,25 @@ public class PlayerController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (Input.GetMouseButtonDown(1))
-    {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      if (Physics.Raycast(ray, out var hitInfo))
-      {
-        gameObject.GetComponent<NavMeshAgent>().SetDestination(hitInfo.point);
-      }
-    }
-    var character = gameObject.GetComponent<ThirdPersonCharacter>();
-    if (character != null)
-    {
-      if (System.Math.Abs(gameObject.GetComponent<NavMeshAgent>().remainingDistance - gameObject.GetComponent<NavMeshAgent>().stoppingDistance) > 1f)
-      {
-        character.Move(gameObject.GetComponent<NavMeshAgent>().desiredVelocity, false, false);
-      }
-      else
-      {
-        character.Move(Vector3.zero, false, false);
-      }
-    }
+    //if (Input.GetMouseButtonDown(1))
+    //{
+    //  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //  if (Physics.Raycast(ray, out var hitInfo))
+    //  {
+    //    gameObject.GetComponent<NavMeshAgent>().SetDestination(hitInfo.point);
+    //  }
+    //}
+    //var character = gameObject.GetComponent<ThirdPersonCharacter>();
+    //if (character != null)
+    //{
+    //  if (System.Math.Abs(gameObject.GetComponent<NavMeshAgent>().remainingDistance - gameObject.GetComponent<NavMeshAgent>().stoppingDistance) > 1f)
+    //  {
+    //    character.Move(gameObject.GetComponent<NavMeshAgent>().desiredVelocity, false, false);
+    //  }
+    //  else
+    //  {
+    //    character.Move(Vector3.zero, false, false);
+    //  }
+    //}
   }
 }

@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class AgentManager : MonoBehaviour
 {
   static AgentManager instance;
-  static List<Agent> _agents = new List<Agent>();
+  static List<IBaseAgent> _agents = new List<IBaseAgent>();
 
   void Awake()
   {
@@ -32,6 +33,23 @@ public class AgentManager : MonoBehaviour
     {
       SpawnAgent();
     }
+    else if (Input.GetMouseButtonDown(1))
+    {
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      if (Physics.Raycast(ray, out var hitInfo))
+      {
+        foreach (var agent in _agents)
+        {
+          agent.SetDestination(hitInfo.point);
+        }
+      }
+    }
+
+    // Call update on agents
+    foreach (var agent in _agents)
+    {
+      agent.Update();
+    }
   }
 
   private void SpawnAgent()
@@ -43,7 +61,10 @@ public class AgentManager : MonoBehaviour
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
       agent.SetPosition(hitInfo.point);
-      agent.SetName();
+      if (agent is Agent)
+      {
+        ((Agent)agent).SetName();
+      }
     }
   }
 }

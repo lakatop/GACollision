@@ -10,6 +10,10 @@ using UnityEngine.AI;
 public interface IBaseAgent
 {
   /// <summary>
+  /// TODO
+  /// </summary>
+  void Update();
+  /// <summary>
   /// Use to update agents position
   /// </summary>
   void UpdatePosition();
@@ -19,9 +23,19 @@ public interface IBaseAgent
   /// <param name="pos">Position that will be set</param>
   void SetPosition(Vector3 pos);
   /// <summary>
+  /// TODO
+  /// </summary>
+  /// <param name="des"></param>
+  void SetDestination(Vector3 des);
+  /// <summary>
   /// Agents identifier
   /// </summary>
   int id { get; set; }
+  /// <summary>
+  /// Interval for how often should agent call Update on itself
+  /// Defaults to 0, meaning it will be updated every simulation step
+  /// </summary>
+  float updateInterval { get { return 0f; } set { this.updateInterval = value; } }
   /// <summary>
   /// Agents position
   /// </summary>
@@ -30,6 +44,10 @@ public interface IBaseAgent
   /// Agents desired destination
   /// </summary>
   Vector3 destination { get; }
+  /// <summary>
+  /// TODO
+  /// </summary>
+  IBaseCollision collisionAlg { get; set; }
 }
 
 /// <summary>
@@ -41,11 +59,21 @@ public class Agent : IBaseAgent
 
   // IBaseAgent implementation ----------------------------------------------------
 
+  /// <inheritdoc cref="IBaseAgent.Update"/>
+  public void Update()
+  {
+    if(Time.deltaTime < updateInterval)
+    {
+      return;
+    }
+
+    collisionAlg.CollisionUpdate();
+  }
   /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
   public void UpdatePosition()
-  {
-
+  { 
   }
+  /// TODO
   public void SetPosition(Vector3 pos)
   {
     position = pos;
@@ -54,13 +82,22 @@ public class Agent : IBaseAgent
       _object.transform.position = pos;
     }
   }
+  /// TODO
+  public void SetDestination(Vector3 des)
+  {
+    destination = des;
+    collisionAlg.OnDestinationChange();
+  }
   /// <inheritdoc cref="IBaseAgent.id"/>
   public int id { get; set; }
   /// <inheritdoc cref="IBaseAgent._position"/>
   public Vector3 position { get; private set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
   public Vector3 destination { get; private set; }
-
+  /// TODO
+  public float updateInterval { get; set; }
+  /// TODO
+  public IBaseCollision collisionAlg { get; set; }
   // ------------------------------------------------------------------------------
 
 
@@ -101,6 +138,9 @@ public class Agent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().speed = 1;
     _object.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(_animControllerPath);
     _object.GetComponent<Animator>().avatar = newModel.GetComponent<Animator>().avatar;
+
+    /// TODO: consider creating new class derived from Agent to assign specific collision algorithm
+    collisionAlg = new NavMeshCollision(this);
   }
 
   // Other methods ----------------------------------------------------------------
@@ -122,4 +162,8 @@ public class Agent : IBaseAgent
     }
   }
 
+  public Component GetComponent(string componentName)
+  {
+    return _object.GetComponent(componentName);
+  }
 }

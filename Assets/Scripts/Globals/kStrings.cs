@@ -15,4 +15,10 @@ namespace GlobStrings
       public const string kHeaderTitle = "HeaderTitleUITag";
     }
   }
+
+  public static class Components
+  {
+    public const string kNavMeshAgent = "NavMeshAgent";
+    public const string kThirdPersonCharacter = "ThirdPersonCharacter";
+  }
 }
