@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,41 +8,6 @@ using UnityEngine.AI;
 /// </summary>
 public abstract class BaseAgent : IBaseAgent
 {
-
-  // IBaseAgent interface ---------------------------------------------------------
-
-  /// <inheritdoc cref="IBaseAgent.Update"/>
-  public abstract void Update();
-  /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public abstract void UpdatePosition();
-  /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
-  public void SetPosition(Vector3 pos)
-  {
-    position = pos;
-    if (_object != null)
-    {
-      _object.transform.position = pos;
-    }
-  }
-  /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
-  public void SetDestination(Vector3 des)
-  {
-    destination = des;
-    pathPlanningAlg.OnDestinationChange();
-  }
-  /// <inheritdoc cref="IBaseAgent.id"/>
-  public int id { get; set; }
-  /// <inheritdoc cref="IBaseAgent._position"/>
-  public Vector3 position { get; private set; }
-  /// <inheritdoc cref="IBaseAgent._destination"/>
-  public Vector3 destination { get; private set; }
-  /// <inheritdoc cref="IBaseAgent.updateInterval"/>
-  public float updateInterval { get; set; }
-
-  public abstract IBaseCollisionAvoider collisionAlg { get; set; }
-  public abstract IBasePathPlanner pathPlanningAlg { get; set; }
-  // ------------------------------------------------------------------------------
-
 
   // Class initialization ---------------------------------------------------------
 
@@ -83,6 +45,36 @@ public abstract class BaseAgent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().speed = 1;
     _object.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(_animControllerPath);
     _object.GetComponent<Animator>().avatar = newModel.GetComponent<Animator>().avatar;
+  }
+
+  // IBaseAgent interface ---------------------------------------------------------
+
+  /// <inheritdoc cref="IBaseAgent.Update"/>
+  public abstract void Update();
+  /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
+  public abstract void UpdatePosition(Vector3 newPos);
+  /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
+  public abstract void SetDestination(Vector3 des);
+  /// <inheritdoc cref="IBaseAgent.id"/>
+  public int id { get; set; }
+  /// <inheritdoc cref="IBaseAgent._position"/>
+  public Vector3 position { get; protected set; }
+  /// <inheritdoc cref="IBaseAgent._destination"/>
+  public Vector3 destination { get; protected set; }
+  /// <inheritdoc cref="IBaseAgent.updateInterval"/>
+  public float updateInterval { get; set; }
+  /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
+  public abstract IBaseCollisionAvoider collisionAlg { get; set; }
+  /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
+  public abstract IBasePathPlanner pathPlanningAlg { get; set; }
+  /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
+  public void SetPosition(Vector3 pos)
+  {
+    position = pos;
+    if (_object != null)
+    {
+      _object.transform.position = pos;
+    }
   }
   
   // Other methods ----------------------------------------------------------------

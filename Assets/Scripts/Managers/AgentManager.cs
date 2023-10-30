@@ -5,9 +5,20 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Singleton
+/// Agent manager class
+/// Keeps track of all agents in the simulation and is responsible for updating them
+/// </summary>
 public class AgentManager : MonoBehaviour
 {
+  /// <summary>
+  /// Static instance of this class
+  /// </summary>
   static AgentManager instance;
+  /// <summary>
+  /// List of all agents present in the simulation
+  /// </summary>
   static List<IBaseAgent> _agents = new List<IBaseAgent>();
 
   void Awake()
@@ -23,16 +34,21 @@ public class AgentManager : MonoBehaviour
     }
   }
 
-  void Start()
-  {
-  }
-
+  /// <summary>
+  /// Called every simulation step
+  /// Check for user input and update agents
+  /// </summary>
   void Update()
   {
+    // TODO: will probably require refactor in the future:
+    //    more robust user input, setting destination to just some client(s) etc.
+
+    // On left mouse click - spawn agent
     if (Input.GetMouseButtonDown(0))
     {
       SpawnAgent();
     }
+    // On right mouse click - set new destination for all agents
     else if (Input.GetMouseButtonDown(1))
     {
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -55,6 +71,9 @@ public class AgentManager : MonoBehaviour
 
   }
 
+  /// <summary>
+  /// Create new agent according to current mouse position
+  /// </summary>
   private void SpawnAgent()
   {
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

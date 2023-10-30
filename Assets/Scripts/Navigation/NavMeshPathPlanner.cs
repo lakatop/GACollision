@@ -1,5 +1,9 @@
 ﻿using UnityEngine.AI;
 
+/// <summary>
+/// Concrete class for path planning
+/// Uses UnityEngine.AI.NavMeshAgent for all calculations
+/// </summary>
 public class NavMeshPathPlanner: IBasePathPlanner
 {
   private IBaseAgent _agent = null;
@@ -20,6 +24,7 @@ public class NavMeshPathPlanner: IBasePathPlanner
     RecalculatePath();
   }
 
+  /// <inheritdoc cref="IBasePathPlanner.Update"/>
   public void Update()
   {
     return;

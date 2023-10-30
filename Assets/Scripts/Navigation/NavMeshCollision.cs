@@ -1,15 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.TextCore.Text;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-
+/// <summary>
+/// Concrete class for collision avoidance
+/// Uses UnityEngine.AI.NavMeshAgent for all calculations
+/// </summary>
 public class NavMeshCollision : IBaseCollisionAvoider
 {
   private IBaseAgent _agent = null;
   private NavMeshAgent _navMeshAgent = null;
-  private ThirdPersonCharacter _thirdPersonCharacter = null;
 
   public NavMeshCollision(IBaseAgent agent)
   {
@@ -17,23 +18,22 @@ public class NavMeshCollision : IBaseCollisionAvoider
     if(_agent is MyNavMeshAgent)
     {
       _navMeshAgent = ((MyNavMeshAgent)_agent).GetComponent<NavMeshAgent>();
-      _thirdPersonCharacter = ((MyNavMeshAgent)_agent).GetComponent<ThirdPersonCharacter>();
     }
   }
 
-  /// <inheritdoc cref="IBaseCollision.CollisionUpdate"/>
+  /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
   public void Update()
   {
-    if (!_thirdPersonCharacter)
+    if (_agent == null || _navMeshAgent == null)
       return;
 
     if (Math.Abs(_navMeshAgent.remainingDistance - _navMeshAgent.stoppingDistance) > 1f)
     {
-      _thirdPersonCharacter.Move(_navMeshAgent.desiredVelocity, false, false);
+      _agent.UpdatePosition(_navMeshAgent.desiredVelocity);
     }
     else
     {
-      _thirdPersonCharacter.Move(Vector3.zero, false, false);
+      _agent.UpdatePosition(Vector3.zero);
     }
   }
 }

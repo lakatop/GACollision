@@ -13,7 +13,8 @@ public interface IBaseAgent
   /// <summary>
   /// Use to update agents position
   /// </summary>
-  void UpdatePosition();
+  /// <param name="newPos">New position</param>
+  void UpdatePosition(Vector3 newPos);
   /// <summary>
   /// Sets agents position
   /// </summary>
