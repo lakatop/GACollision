@@ -18,7 +18,7 @@ namespace GlobStrings
 
   public static class Components
   {
-    public const string kNavMeshAgent = "NavMeshAgent";
-    public const string kThirdPersonCharacter = "ThirdPersonCharacter";
+    public const string kNavMeshAgent = "UnityEngine.AI.NavMeshAgent";
+    public const string kThirdPersonCharacter = "UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter";
   }
 }
