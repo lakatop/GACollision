@@ -127,7 +127,6 @@ public class Agent : IBaseAgent
   {
     _object = GameObject.CreatePrimitive(PrimitiveType.Capsule);
     _object.AddComponent<NavMeshAgent>();
-    _object.AddComponent<PlayerController>();
     Object.Destroy(_object.GetComponent<MeshFilter>());
     GameObject newModel = Object.Instantiate(Resources.Load<GameObject>(_fbxPath), _object.transform.position, _object.transform.rotation);
     newModel.transform.parent = _object.transform;
