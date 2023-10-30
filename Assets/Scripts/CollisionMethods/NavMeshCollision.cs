@@ -14,7 +14,7 @@ public interface IBaseCollision
   /// </summary>
   void CollisionUpdate();
   /// <summary>
-  /// TODO
+  /// Designed to be called when destination has been changed
   /// </summary>
   void OnDestinationChange();
 }
@@ -36,6 +36,7 @@ public class NavMeshCollision : IBaseCollision
 
   }
 
+  /// <inheritdoc cref="IBaseCollision.CollisionUpdate"/>
   public void CollisionUpdate()
   {
     if (!_thirdPersonCharacter)
@@ -51,12 +52,16 @@ public class NavMeshCollision : IBaseCollision
     }
   }
 
+  /// <inheritdoc cref="IBaseCollision.OnDestinationChange"/>
   public void OnDestinationChange()
   {
-    SetDestination();
+    RecalculatePath();
   }
 
-  private void SetDestination()
+  /// <summary>
+  /// Recalculates path according to agents destination
+  /// </summary>
+  private void RecalculatePath()
   {
     if (!_navMeshAgent)
       return;

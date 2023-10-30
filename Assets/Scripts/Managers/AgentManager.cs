@@ -44,12 +44,15 @@ public class AgentManager : MonoBehaviour
         }
       }
     }
-
-    // Call update on agents
-    foreach (var agent in _agents)
+    else
     {
-      agent.Update();
+      // Call update on agents
+      foreach (var agent in _agents)
+      {
+        agent.Update();
+      }
     }
+
   }
 
   private void SpawnAgent()

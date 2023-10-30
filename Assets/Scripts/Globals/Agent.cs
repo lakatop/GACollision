@@ -10,7 +10,8 @@ using UnityEngine.AI;
 public interface IBaseAgent
 {
   /// <summary>
-  /// TODO
+  /// Update function for an agent
+  /// Called every simulation step
   /// </summary>
   void Update();
   /// <summary>
@@ -23,9 +24,10 @@ public interface IBaseAgent
   /// <param name="pos">Position that will be set</param>
   void SetPosition(Vector3 pos);
   /// <summary>
-  /// TODO
+  /// Sets destination for an agent.
+  /// Agent will navigate towards this point.
   /// </summary>
-  /// <param name="des"></param>
+  /// <param name="des">Destination to be set</param>
   void SetDestination(Vector3 des);
   /// <summary>
   /// Agents identifier
@@ -45,7 +47,7 @@ public interface IBaseAgent
   /// </summary>
   Vector3 destination { get; }
   /// <summary>
-  /// TODO
+  /// Collision algorithm that agent uses for collision avoidance.
   /// </summary>
   IBaseCollision collisionAlg { get; set; }
 }
@@ -73,7 +75,7 @@ public class Agent : IBaseAgent
   public void UpdatePosition()
   { 
   }
-  /// TODO
+  /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
   public void SetPosition(Vector3 pos)
   {
     position = pos;
@@ -82,7 +84,7 @@ public class Agent : IBaseAgent
       _object.transform.position = pos;
     }
   }
-  /// TODO
+  /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
   public void SetDestination(Vector3 des)
   {
     destination = des;
@@ -94,14 +96,14 @@ public class Agent : IBaseAgent
   public Vector3 position { get; private set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
   public Vector3 destination { get; private set; }
-  /// TODO
+  /// <inheritdoc cref="IBaseAgent.updateInterval"/>
   public float updateInterval { get; set; }
-  /// TODO
+  /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
   public IBaseCollision collisionAlg { get; set; }
   // ------------------------------------------------------------------------------
 
 
-  // Unity related stuff ----------------------------------------------------------
+  // Class initialization ---------------------------------------------------------
 
   // Agent body
   /// <summary>
@@ -162,6 +164,11 @@ public class Agent : IBaseAgent
     }
   }
 
+  /// <summary>
+  /// Return component attached to agent's GameObject
+  /// </summary>
+  /// <param name="componentName">Name of component to return</param>
+  /// <returns>Component defined by componentName that is attached to this agent</returns>
   public Component GetComponent(string componentName)
   {
     return _object.GetComponent(componentName);
