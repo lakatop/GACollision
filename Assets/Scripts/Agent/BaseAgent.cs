@@ -4,77 +4,20 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>
-/// Defines interface for base agent and properties related to its behaviour
-/// </summary>
-public interface IBaseAgent
-{
-  /// <summary>
-  /// Update function for an agent
-  /// Called every simulation step
-  /// </summary>
-  void Update();
-  /// <summary>
-  /// Use to update agents position
-  /// </summary>
-  void UpdatePosition();
-  /// <summary>
-  /// Sets agents position
-  /// </summary>
-  /// <param name="pos">Position that will be set</param>
-  void SetPosition(Vector3 pos);
-  /// <summary>
-  /// Sets destination for an agent.
-  /// Agent will navigate towards this point.
-  /// </summary>
-  /// <param name="des">Destination to be set</param>
-  void SetDestination(Vector3 des);
-  /// <summary>
-  /// Agents identifier
-  /// </summary>
-  int id { get; set; }
-  /// <summary>
-  /// Interval for how often should agent call Update on itself
-  /// Defaults to 0, meaning it will be updated every simulation step
-  /// </summary>
-  float updateInterval { get { return 0f; } set { this.updateInterval = value; } }
-  /// <summary>
-  /// Agents position
-  /// </summary>
-  Vector3 position { get; }
-  /// <summary>
-  /// Agents desired destination
-  /// </summary>
-  Vector3 destination { get; }
-  /// <summary>
-  /// Collision algorithm that agent uses for collision avoidance.
-  /// </summary>
-  IBaseCollision collisionAlg { get; set; }
-}
 
 /// <summary>
 /// Agent component represented in game
 /// Implements IBaseAgent interface
 /// </summary>
-public class Agent : IBaseAgent
+public abstract class BaseAgent : IBaseAgent
 {
 
-  // IBaseAgent implementation ----------------------------------------------------
+  // IBaseAgent interface ---------------------------------------------------------
 
   /// <inheritdoc cref="IBaseAgent.Update"/>
-  public void Update()
-  {
-    if(Time.deltaTime < updateInterval)
-    {
-      return;
-    }
-
-    collisionAlg.CollisionUpdate();
-  }
+  public abstract void Update();
   /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public void UpdatePosition()
-  { 
-  }
+  public abstract void UpdatePosition();
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
   public void SetPosition(Vector3 pos)
   {
@@ -88,7 +31,7 @@ public class Agent : IBaseAgent
   public void SetDestination(Vector3 des)
   {
     destination = des;
-    collisionAlg.OnDestinationChange();
+    pathPlanningAlg.OnDestinationChange();
   }
   /// <inheritdoc cref="IBaseAgent.id"/>
   public int id { get; set; }
@@ -98,8 +41,9 @@ public class Agent : IBaseAgent
   public Vector3 destination { get; private set; }
   /// <inheritdoc cref="IBaseAgent.updateInterval"/>
   public float updateInterval { get; set; }
-  /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
-  public IBaseCollision collisionAlg { get; set; }
+
+  public abstract IBaseCollisionAvoider collisionAlg { get; set; }
+  public abstract IBasePathPlanner pathPlanningAlg { get; set; }
   // ------------------------------------------------------------------------------
 
 
@@ -123,7 +67,7 @@ public class Agent : IBaseAgent
   /// </summary>
   private string _animControllerPath = "lowman/lowman/animation/humanoid";
 
-  public Agent()
+  public BaseAgent()
   {
     _object = GameObject.CreatePrimitive(PrimitiveType.Capsule);
     _object.AddComponent<NavMeshAgent>();
@@ -139,11 +83,8 @@ public class Agent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().speed = 1;
     _object.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(_animControllerPath);
     _object.GetComponent<Animator>().avatar = newModel.GetComponent<Animator>().avatar;
-
-    /// TODO: consider creating new class derived from Agent to assign specific collision algorithm
-    collisionAlg = new NavMeshCollision(this);
   }
-
+  
   // Other methods ----------------------------------------------------------------
 
   /// <summary>
@@ -164,12 +105,22 @@ public class Agent : IBaseAgent
   }
 
   /// <summary>
-  /// Return component attached to agent's GameObject
+  /// Get component attached to agent's GameObject
   /// </summary>
-  /// <param name="componentName">Name of component to return</param>
-  /// <returns>Component defined by componentName that is attached to this agent</returns>
-  public Component GetComponent(string componentName)
+  /// <typeparam name="T">Component type</typeparam>
+  /// <returns>Component of type T attached to agent</returns>
+  public T GetComponent<T>()
   {
-    return _object.GetComponent(componentName);
+    return _object.GetComponent<T>();
+  }
+
+  /// <summary>
+  /// Add component to agent's GameObject
+  /// </summary>
+  /// <typeparam name="T">Component type</typeparam>
+  /// <returns>Added component</returns>
+  public T AddComponent<T>() where T : MonoBehaviour
+  {
+    return _object.AddComponent<T>();
   }
 }

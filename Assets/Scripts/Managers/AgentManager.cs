@@ -60,13 +60,13 @@ public class AgentManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new Agent());
+      _agents.Add(new MyNavMeshAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
       agent.SetPosition(hitInfo.point);
-      if (agent is Agent)
+      if (agent is MyNavMeshAgent)
       {
-        ((Agent)agent).SetName();
+        ((MyNavMeshAgent)agent).SetName();
       }
     }
   }
