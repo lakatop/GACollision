@@ -56,7 +56,7 @@ public class AgentManager : MonoBehaviour
       {
         foreach (var agent in _agents)
         {
-          agent.SetDestination(hitInfo.point);
+          agent.SetDestination(new Vector2(hitInfo.point.x, hitInfo.point.z));
         }
       }
     }
@@ -82,7 +82,7 @@ public class AgentManager : MonoBehaviour
       _agents.Add(new MyNavMeshAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
-      agent.SetPosition(hitInfo.point);
+      agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
       if (agent is MyNavMeshAgent)
       {
         ((MyNavMeshAgent)agent).SetName();
