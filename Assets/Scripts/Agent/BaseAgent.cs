@@ -52,15 +52,15 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.Update"/>
   public abstract void Update();
   /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public abstract void UpdatePosition(Vector3 newPos);
+  public abstract void UpdatePosition(Vector2 newPos);
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
-  public abstract void SetDestination(Vector3 des);
+  public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
   public int id { get; set; }
   /// <inheritdoc cref="IBaseAgent._position"/>
-  public Vector3 position { get; protected set; }
+  public Vector2 position { get; protected set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
-  public Vector3 destination { get; protected set; }
+  public Vector2 destination { get; protected set; }
   /// <inheritdoc cref="IBaseAgent.updateInterval"/>
   public float updateInterval { get; set; }
   /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
@@ -68,12 +68,12 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
-  public void SetPosition(Vector3 pos)
+  public void SetPosition(Vector2 pos)
   {
     position = pos;
     if (_object != null)
     {
-      _object.transform.position = pos;
+      _object.transform.position = new Vector3(pos.x, 0, pos.y);
     }
   }
   

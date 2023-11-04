@@ -1,4 +1,5 @@
-﻿using UnityEngine.AI;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Concrete class for path planning
@@ -38,7 +39,7 @@ public class NavMeshPathPlanner: IBasePathPlanner
     if (!_navMeshAgent)
       return;
 
-    _navMeshAgent.SetDestination(_agent.destination);
+    _navMeshAgent.SetDestination(new Vector3(_agent.destination.x, 0, _agent.destination.y));
   }
 }
 

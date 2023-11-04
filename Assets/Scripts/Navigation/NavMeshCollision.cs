@@ -29,7 +29,7 @@ public class NavMeshCollision : IBaseCollisionAvoider
 
     if (Math.Abs(_navMeshAgent.remainingDistance - _navMeshAgent.stoppingDistance) > 1f)
     {
-      _agent.UpdatePosition(_navMeshAgent.desiredVelocity);
+      _agent.UpdatePosition(new Vector2(_navMeshAgent.desiredVelocity.x, _navMeshAgent.desiredVelocity.z));
     }
     else
     {

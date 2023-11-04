@@ -14,18 +14,18 @@ public interface IBaseAgent
   /// Use to update agents position
   /// </summary>
   /// <param name="newPos">New position</param>
-  void UpdatePosition(Vector3 newPos);
+  void UpdatePosition(Vector2 newPos);
   /// <summary>
   /// Sets agents position
   /// </summary>
   /// <param name="pos">Position that will be set</param>
-  void SetPosition(Vector3 pos);
+  void SetPosition(Vector2 pos);
   /// <summary>
   /// Sets destination for an agent.
   /// Agent will navigate towards this point.
   /// </summary>
   /// <param name="des">Destination to be set</param>
-  void SetDestination(Vector3 des);
+  void SetDestination(Vector2 des);
   /// <summary>
   /// Agents identifier
   /// </summary>
@@ -38,11 +38,11 @@ public interface IBaseAgent
   /// <summary>
   /// Agents position
   /// </summary>
-  Vector3 position { get; }
+  Vector2 position { get; }
   /// <summary>
   /// Agents desired destination
   /// </summary>
-  Vector3 destination { get; }
+  Vector2 destination { get; }
   /// <summary>
   /// Collision avoidance algorithm that agent uses
   /// </summary>

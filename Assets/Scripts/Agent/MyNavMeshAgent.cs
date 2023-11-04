@@ -30,18 +30,18 @@ public class MyNavMeshAgent : BaseAgent
   }
 
   /// <inheritdoc cref="BaseAgent.SetDestination(Vector3)"/>
-  public override void SetDestination(Vector3 des)
+  public override void SetDestination(Vector2 des)
   {
     destination = des;
     pathPlanningAlg.OnDestinationChange();
   }
 
   /// <inheritdoc cref="BaseAgent.UpdatePosition"/>
-  public override void UpdatePosition(Vector3 newPos)
+  public override void UpdatePosition(Vector2 newPos)
   {
     if (!_thirdPersonCharacter)
       return;
 
-    _thirdPersonCharacter.Move(newPos, false, false);
+    _thirdPersonCharacter.Move(new Vector3(newPos.x, 0, newPos.y), false, false);
   }
 }
