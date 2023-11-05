@@ -1,25 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
+using RVO;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton
 /// Agent manager class
 /// Keeps track of all agents in the simulation and is responsible for updating them
 /// </summary>
-public class AgentManager : MonoBehaviour
+public class SimulationManager : MonoBehaviour
 {
   /// <summary>
   /// Static instance of this class
   /// </summary>
-  static AgentManager instance;
+  static SimulationManager instance;
   /// <summary>
   /// List of all agents present in the simulation
   /// </summary>
-  static List<IBaseAgent> _agents = new List<IBaseAgent>();
+  public static List<IBaseAgent> agents = new List<IBaseAgent>();
+  /// <summary>
+  /// List of all obstaclees present in the simulation
+  /// </summary>
+  public static List<IBaseObstacle> obstacles = new List<IBaseObstacle>();
+  /// <summary>
+  /// K-d tree for agents and obstacles in simulation
+  /// </summary>
+  public KdTree kdTree = new KdTree();
+
+  public static SimulationManager GetInstance()
+  {
+    return instance;
+  }
 
   void Awake()
   {
@@ -54,16 +64,16 @@ public class AgentManager : MonoBehaviour
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
       if (Physics.Raycast(ray, out var hitInfo))
       {
-        foreach (var agent in _agents)
+        foreach (var agent in agents)
         {
-          agent.SetDestination(new Vector2(hitInfo.point.x, hitInfo.point.z));
+          agent.SetDestination(new RVO.Vector2(hitInfo.point.x, hitInfo.point.z));
         }
       }
     }
     else
     {
       // Call update on agents
-      foreach (var agent in _agents)
+      foreach (var agent in agents)
       {
         agent.Update();
       }
@@ -79,10 +89,10 @@ public class AgentManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new MyNavMeshAgent());
-      var agent = _agents[_agents.Count - 1];
-      agent.id = _agents.Count;
-      agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
+      agents.Add(new MyNavMeshAgent());
+      var agent = agents[agents.Count - 1];
+      agent.id = agents.Count;
+      agent.SetPosition(new RVO.Vector2(hitInfo.point.x, hitInfo.point.z));
       if (agent is MyNavMeshAgent)
       {
         ((MyNavMeshAgent)agent).SetName();

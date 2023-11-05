@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -45,6 +46,9 @@ public abstract class BaseAgent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().speed = 1;
     _object.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(_animControllerPath);
     _object.GetComponent<Animator>().avatar = newModel.GetComponent<Animator>().avatar;
+
+    neighbors = new List<KeyValuePair<float, IBaseAgent>>();
+    neighborObstacles = new List<KeyValuePair<float, IBaseObstacle>>();
   }
 
   // IBaseAgent interface ---------------------------------------------------------
@@ -52,31 +56,71 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.Update"/>
   public abstract void Update();
   /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public abstract void UpdatePosition(Vector2 newPos);
+  public abstract void UpdatePosition(RVO.Vector2 newPos);
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
-  public abstract void SetDestination(Vector2 des);
+  public abstract void SetDestination(RVO.Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
   public int id { get; set; }
   /// <inheritdoc cref="IBaseAgent._position"/>
-  public Vector2 position { get; protected set; }
+  public RVO.Vector2 position { get; protected set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
-  public Vector2 destination { get; protected set; }
+  public RVO.Vector2 destination { get; protected set; }
   /// <inheritdoc cref="IBaseAgent.updateInterval"/>
   public float updateInterval { get; set; }
   /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
   public abstract IBaseCollisionAvoider collisionAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
+  /// <inheritdoc cref="IBaseAgent.preferredVelocity"/>
+  public RVO.Vector2 preferredVelocity { get; set; }
+  /// <inheritdoc cref="IBaseAgent.velocity"/>
+  public RVO.Vector2 velocity { get; set; }
+  /// <inheritdoc cref="IBaseAgent.radius"/>
+  public float radius { get; set; }
+  /// <inheritdoc cref="IBaseAgent.timeHorizonObst"/>
+  public float timeHorizonObst { get; set; }
+  /// <inheritdoc cref="IBaseAgent.maxNeighbors"/>
+  public int maxNeighbors { get; set; }
+  /// <inheritdoc cref="IBaseAgent.maxSpeed"/> 
+  public float maxSpeed { get; set; }
+  /// <inheritdoc cref="IBaseAgent.neighbors"/>
+  public IList<KeyValuePair<float, IBaseAgent>> neighbors { get; set; }
+  /// <inheritdoc cref="IBaseAgent.neighborObstacles"/>
+  public IList<KeyValuePair<float, IBaseObstacle>> neighborObstacles { get; set; }
+
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
-  public void SetPosition(Vector2 pos)
+  public void SetPosition(RVO.Vector2 pos)
   {
     position = pos;
     if (_object != null)
     {
-      _object.transform.position = new Vector3(pos.x, 0, pos.y);
+      _object.transform.position = new Vector3(pos.x_, 0, pos.y_);
     }
   }
-  
+  /// <inheritdoc cref="IBaseAgent.ComputeNeighbors"/>
+  public virtual void ComputeNeighbors()
+  {
+    throw new System.NotImplementedException();
+  }
+
+  /// <inheritdoc cref="IBaseAgent.ComputeNewVelocity"/>
+  public virtual void ComputeNewVelocity()
+  {
+    throw new System.NotImplementedException();
+  }
+
+  /// <inheritdoc cref="IBaseAgent.AddAgentNeighbor(IBaseAgent, ref float)"/>
+  public virtual void AddAgentNeighbor(IBaseAgent agent, ref float rangeSq)
+  {
+    throw new System.NotImplementedException();
+  }
+
+  /// <inheritdoc cref="IBaseAgent.AddObstacleNeighbor(IBaseObstacle, float)"/>
+  public virtual void AddObstacleNeighbor(IBaseObstacle obstacle, float rangeSq)
+  {
+    throw new System.NotImplementedException();
+  }
+
   // Other methods ----------------------------------------------------------------
 
   /// <summary>
