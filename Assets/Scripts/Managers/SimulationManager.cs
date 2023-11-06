@@ -10,27 +10,38 @@ using UnityEngine.SceneManagement;
 /// Agent manager class
 /// Keeps track of all agents in the simulation and is responsible for updating them
 /// </summary>
-public class AgentManager : MonoBehaviour
+public class SimulationManager : MonoBehaviour
 {
   /// <summary>
   /// Static instance of this class
   /// </summary>
-  static AgentManager instance;
+  public static SimulationManager Instance { get; private set; }
   /// <summary>
   /// List of all agents present in the simulation
   /// </summary>
-  static List<IBaseAgent> _agents = new List<IBaseAgent>();
+  private List<IBaseAgent> _agents = new List<IBaseAgent>();
+  /// <summary>
+  /// List of all collision avoidance algorithms that registered themselves to SimulationManager
+  /// </summary>
+  private List<IBaseCollisionAvoider> _collisionListeners = new List<IBaseCollisionAvoider>();
 
   void Awake()
   {
-    if (instance != null)
+    if (Instance != null && Instance != this)
     {
-      Destroy(gameObject);
+      Destroy(this);
     }
     else
     {
-      instance = this;
-      DontDestroyOnLoad(gameObject);
+      Instance = this;
+    }
+  }
+
+  private void Start()
+  {
+    foreach (var collisionAvoider in _collisionListeners)
+    {
+      collisionAvoider.OnStart();
     }
   }
 
@@ -62,6 +73,10 @@ public class AgentManager : MonoBehaviour
     }
     else
     {
+      foreach (var collisionAvoider in _collisionListeners)
+      {
+        collisionAvoider.Update();
+      }
       // Call update on agents
       foreach (var agent in _agents)
       {
@@ -69,6 +84,21 @@ public class AgentManager : MonoBehaviour
       }
     }
 
+  }
+
+  /// <summary>
+  /// Add collision avoidance algorithm instance to list of listeners.
+  /// This listener will receive updating calls
+  /// </summary>
+  /// <param name="collisionAvoider">Instance to be added</param>
+  public void RegisterCollisionListener(IBaseCollisionAvoider collisionAvoider)
+  {
+    _collisionListeners.Add(collisionAvoider);
+  }
+
+  public List<IBaseAgent> GetAgents()
+  {
+    return _agents;
   }
 
   /// <summary>
@@ -86,6 +116,11 @@ public class AgentManager : MonoBehaviour
       if (agent is MyNavMeshAgent)
       {
         ((MyNavMeshAgent)agent).SetName();
+      }
+
+      foreach (var collisionAvoider in _collisionListeners)
+      {
+        collisionAvoider.OnAgentAdded(agent);
       }
     }
   }

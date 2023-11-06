@@ -9,32 +9,54 @@ using UnityStandardAssets.Characters.ThirdPerson;
 /// </summary>
 public class NavMeshCollision : IBaseCollisionAvoider
 {
-  private IBaseAgent _agent = null;
+  public IBaseAgent agent { get; private set; }
   private NavMeshAgent _navMeshAgent = null;
 
   public NavMeshCollision(IBaseAgent agent)
   {
-    _agent = agent;
-    if(_agent is MyNavMeshAgent)
+    this.agent = agent;
+    if(this.agent is MyNavMeshAgent)
     {
-      _navMeshAgent = ((MyNavMeshAgent)_agent).GetComponent<NavMeshAgent>();
+      _navMeshAgent = ((MyNavMeshAgent)this.agent).GetComponent<NavMeshAgent>();
     }
   }
 
   /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
   public void Update()
   {
-    if (_agent == null || _navMeshAgent == null)
+    if (agent == null || _navMeshAgent == null)
       return;
 
     if (Math.Abs(_navMeshAgent.remainingDistance - _navMeshAgent.stoppingDistance) > 1f)
     {
-      _agent.UpdatePosition(new Vector2(_navMeshAgent.desiredVelocity.x, _navMeshAgent.desiredVelocity.z));
+      agent.UpdatePosition(new Vector2(_navMeshAgent.desiredVelocity.x, _navMeshAgent.desiredVelocity.z));
     }
     else
     {
-      _agent.UpdatePosition(Vector3.zero);
+      agent.UpdatePosition(Vector3.zero);
     }
+  }
+
+  public void OnStart()
+  {
+  }
+
+  public void OnAgentAdded(IBaseAgent agent)
+  {
+  }
+
+  public Vector2 GetAgentPosition(int id)
+  {
+    return agent.position;
+  }
+
+  public void SetAgentPreferredVelocity(int id, Vector2 prefVelocity)
+  {
+  }
+
+  public Vector2 GetAgentPreferredVelocity(int id)
+  {
+    return _navMeshAgent.desiredVelocity;
   }
 }
 
