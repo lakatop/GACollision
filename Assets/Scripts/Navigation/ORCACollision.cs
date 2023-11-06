@@ -12,8 +12,10 @@ public class ORCACollision : IBaseCollisionAvoider
   private SimulationManager _simManager { get; set; }
   private Dictionary<int, int> _agentIdToOrcaIDMap { get; set; }
 
-  private readonly float _timeStep = 0.25f;
+  private readonly float _timeStep = 0.01f;
   private float _lastUpdate = 0.0f;
+
+  public ORCACollision() { }
 
   public ORCACollision(IBaseAgent agent)
   {
@@ -22,13 +24,13 @@ public class ORCACollision : IBaseCollisionAvoider
     _simManager = SimulationManager.Instance;
     _simManager.RegisterCollisionListener(this);
     _agentIdToOrcaIDMap = new Dictionary<int, int>();
+    OnStart();
   }
 
   public void OnStart()
   {
     _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 2.0f, new RVO.Vector2(0.0f, 0.0f));
-    _adapter.SetTimeStep(0.25f);
-    _adapter.AddAgents(_simManager.GetAgents());
+    _adapter.SetTimeStep(_timeStep);
   }
 
   public void Update()
@@ -37,9 +39,11 @@ public class ORCACollision : IBaseCollisionAvoider
     if (_lastUpdate < _timeStep)
       return;
 
+    _lastUpdate = 0.0f;
+
     // Get all agents from simManager and update position (in ORCA simulation) to those which are
     // not of type ORCAAgent - this will ensure correct collision in the next calculation
-    foreach(var agent in _simManager.GetAgents())
+    foreach (var agent in _simManager.GetAgents())
     {
       if (_agentIdToOrcaIDMap.TryGetValue(agent.id, out var orcaId))
       {

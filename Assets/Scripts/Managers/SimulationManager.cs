@@ -19,11 +19,16 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// List of all agents present in the simulation
   /// </summary>
-  private List<IBaseAgent> _agents = new List<IBaseAgent>();
+  public List<IBaseAgent> _agents { get; private set; }
   /// <summary>
   /// List of all collision avoidance algorithms that registered themselves to SimulationManager
   /// </summary>
-  private List<IBaseCollisionAvoider> _collisionListeners = new List<IBaseCollisionAvoider>();
+  private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
+  /// <summary>
+  /// Manager for collision avoidance algorithms
+  /// This should be the only instance in entire simulation
+  /// </summary>
+  public CollisionManager _collisionManager { get; private set; }
 
   void Awake()
   {
@@ -35,14 +40,10 @@ public class SimulationManager : MonoBehaviour
     {
       Instance = this;
     }
-  }
 
-  private void Start()
-  {
-    foreach (var collisionAvoider in _collisionListeners)
-    {
-      collisionAvoider.OnStart();
-    }
+    _agents = new List<IBaseAgent>();
+    _collisionListeners = new List<IBaseCollisionAvoider>();
+    _collisionManager = new CollisionManager();
   }
 
   /// <summary>
@@ -109,13 +110,13 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new MyNavMeshAgent());
+      _agents.Add(new ORCAAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
       agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
-      if (agent is MyNavMeshAgent)
+      if (agent is BaseAgent)
       {
-        ((MyNavMeshAgent)agent).SetName();
+        ((BaseAgent)agent).SetName();
       }
 
       foreach (var collisionAvoider in _collisionListeners)

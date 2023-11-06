@@ -338,6 +338,7 @@ namespace RVO
          */
         public float doStep()
         {
+            UnityEngine.Debug.Log("STEP IN ORCA");
             updateDeleteAgent();
 
             if (workers_ == null)

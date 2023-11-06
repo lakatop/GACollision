@@ -11,7 +11,7 @@ public class ORCAAgent : BaseAgent
 
   public ORCAAgent()
   {
-    collisionAlg = new ORCACollision(this);
+    collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
     _orcaId = -1;
     random = new System.Random();
   }
