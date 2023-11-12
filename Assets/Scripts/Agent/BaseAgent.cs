@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,7 +24,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <summary>
   /// Path to material of agent
   /// </summary>
-  private string _materialPath = "lowman/lowman/materials/lowbody";
+  private string _materialPath = "group1";
   /// <summary>
   /// Path to animation controller of agent
   /// </summary>
@@ -32,19 +33,12 @@ public abstract class BaseAgent : IBaseAgent
   public BaseAgent()
   {
     _object = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+    _object.GetComponent<CapsuleCollider>().radius = 0.5f;
     _object.AddComponent<NavMeshAgent>();
-    Object.Destroy(_object.GetComponent<MeshFilter>());
-    GameObject newModel = Object.Instantiate(Resources.Load<GameObject>(_fbxPath), _object.transform.position, _object.transform.rotation);
-    newModel.transform.parent = _object.transform;
-    _object.GetComponent<NavMeshAgent>().baseOffset = 0;
+    _object.GetComponent<NavMeshAgent>().baseOffset = 1f;
     _object.GetComponent<MeshRenderer>().material = Resources.Load<Material>(_materialPath);
-    _object.AddComponent<UnityStandardAssets.Characters.ThirdPerson.ThirdPersonCharacter>();
-    var center = _object.GetComponent<CapsuleCollider>().center;
-    center.y = 1f;
-    _object.GetComponent<CapsuleCollider>().center = center;
-    _object.GetComponent<NavMeshAgent>().speed = 1;
-    _object.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(_animControllerPath);
-    _object.GetComponent<Animator>().avatar = newModel.GetComponent<Animator>().avatar;
+
+    Create3DArrowIndicator(_object.transform);
   }
 
   // IBaseAgent interface ---------------------------------------------------------
@@ -67,14 +61,20 @@ public abstract class BaseAgent : IBaseAgent
   public abstract IBaseCollisionAvoider collisionAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
-  /// <inheritdoc cref="IBaseAgent.SetPosition(Vector3)"/>
+  /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
     position = pos;
     if (_object != null)
     {
-      _object.transform.position = new Vector3(pos.x, 0, pos.y);
+      _object.transform.position = new Vector3(pos.x, 1.5f, pos.y);
+      GetComponent<NavMeshAgent>().Warp(new Vector3(pos.x, 1.5f, pos.y));
     }
+  }
+  /// <inheritdoc cref="BaseAgent.SetForward(Vector2)"/>
+  public void SetForward(Vector2 forw)
+  {
+    _object.transform.forward = new Vector3(forw.x, 0, forw.y).normalized;
   }
   
   // Other methods ----------------------------------------------------------------
@@ -114,5 +114,49 @@ public abstract class BaseAgent : IBaseAgent
   public T AddComponent<T>() where T : MonoBehaviour
   {
     return _object.AddComponent<T>();
+  }
+
+  public Vector3 GetPos()
+  {
+    return _object.transform.position;
+  }
+
+  GameObject Create3DArrowIndicator(Transform parentTransform)
+  {
+    // Create a child GameObject for the 3D arrow indicator
+    GameObject arrow = new GameObject("3DArrowIndicator");
+    arrow.transform.parent = parentTransform;
+
+    // Create a MeshFilter component for the arrow mesh
+    MeshFilter meshFilter = arrow.AddComponent<MeshFilter>();
+    meshFilter.mesh = Create3DArrowMesh();
+
+    // Create a MeshRenderer component for the arrow material
+    MeshRenderer meshRenderer = arrow.AddComponent<MeshRenderer>();
+    meshRenderer.material.color = Color.red; // Set the arrow color
+
+    // Position and scale the arrow (modify these values as needed)
+    arrow.transform.localPosition = new Vector3(0f, 0f, 1f);
+    arrow.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+
+    return arrow;
+  }
+
+  Mesh Create3DArrowMesh()
+  {
+    // Create a 3D arrow mesh pointing in the positive z-direction
+    Mesh arrowMesh = new Mesh();
+    Vector3[] vertices = new Vector3[]
+    {
+            new Vector3(0f, 0f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(-0.05f, 0.8f, 0.2f),
+            new Vector3(0.05f, 0.8f, 0.2f),
+    };
+    int[] triangles = new int[] { 0, 1, 2, 0, 1, 3 };
+    arrowMesh.vertices = vertices;
+    arrowMesh.triangles = triangles;
+    arrowMesh.RecalculateNormals();
+    return arrowMesh;
   }
 }

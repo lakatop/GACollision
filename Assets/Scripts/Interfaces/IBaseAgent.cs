@@ -21,6 +21,11 @@ public interface IBaseAgent
   /// <param name="pos">Position that will be set</param>
   void SetPosition(Vector2 pos);
   /// <summary>
+  /// Sets agents forward vector
+  /// </summary>
+  /// <param name="forw">Forward vector</param>
+  void SetForward(Vector2 forw);
+  /// <summary>
   /// Sets destination for an agent.
   /// Agent will navigate towards this point.
   /// </summary>

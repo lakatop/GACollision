@@ -13,9 +13,9 @@ public class NavMeshPathPlanner: IBasePathPlanner
   public NavMeshPathPlanner(IBaseAgent agent)
   {
     _agent = agent;
-    if (_agent is MyNavMeshAgent)
+    if (_agent is BaseAgent)
     {
-      _navMeshAgent = ((MyNavMeshAgent)_agent).GetComponent<NavMeshAgent>();
+      _navMeshAgent = ((BaseAgent)_agent).GetComponent<NavMeshAgent>();
     }
   }
 

@@ -58,5 +58,10 @@ public class NavMeshCollision : IBaseCollisionAvoider
   {
     return _navMeshAgent.desiredVelocity;
   }
+
+  public Vector2 GetAgentVelocity(int id)
+  {
+    return _navMeshAgent.velocity;
+  }
 }
 

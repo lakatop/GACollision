@@ -34,6 +34,12 @@ public interface IBaseCollisionAvoider
   /// <returns></returns>
   Vector2 GetAgentPreferredVelocity(int id);
   /// <summary>
+  /// Gets agents velocity
+  /// </summary>
+  /// <param name="id">Id of agent</param>
+  /// <returns></returns>
+  Vector2 GetAgentVelocity(int id);
+  /// <summary>
   /// Agent that will be using this collision avoidance algorithm
   /// </summary>
   IBaseAgent agent { get; }

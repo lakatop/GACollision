@@ -62,6 +62,13 @@ public class RVOAdapter
     return new UnityEngine.Vector2(res.x(), res.y());
   }
 
+  /// <inheritdoc cref="Simulator.getAgentVelocity(int)"/>
+  public UnityEngine.Vector2 GetAgentVelocity(int id)
+  {
+    var res = _adaptee.getAgentVelocity(id);
+    return new UnityEngine.Vector2(res.x(), res.y());
+  }
+
   /// <inheritdoc cref="Simulator.setAgentPrefVelocity(int, Vector2)"/>
   public void SetAgentPrefVelocity(int id, UnityEngine.Vector2 velocity)
   {

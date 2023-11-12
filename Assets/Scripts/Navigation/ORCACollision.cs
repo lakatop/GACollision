@@ -29,7 +29,7 @@ public class ORCACollision : IBaseCollisionAvoider
 
   public void OnStart()
   {
-    _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 2.0f, new RVO.Vector2(0.0f, 0.0f));
+    _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 8.0f, new RVO.Vector2(0.0f, 0.0f));
     _adapter.SetTimeStep(_timeStep);
   }
 
@@ -48,6 +48,10 @@ public class ORCACollision : IBaseCollisionAvoider
       if (_agentIdToOrcaIDMap.TryGetValue(agent.id, out var orcaId))
       {
         _adapter.setAgentPosition(orcaId, agent.position);
+      }
+      else
+      {
+        _adapter.setAgentPosition(((ORCAAgent)agent)._orcaId, agent.position);
       }
     }
 
@@ -83,5 +87,10 @@ public class ORCACollision : IBaseCollisionAvoider
   public Vector2 GetAgentPreferredVelocity(int id)
   {
     return _adapter.GetAgentPreferredVelocity(id);
+  }
+
+  public Vector2 GetAgentVelocity(int id)
+  {
+    return _adapter.GetAgentVelocity(id);
   }
 }
