@@ -9,9 +9,7 @@ public class ORCAAgent : BaseAgent
   public override IBasePathPlanner pathPlanningAlg { get; set; }
   public Vector2 prevPos { get; set; }
   public int _orcaId { get; set; }
-  private ThirdPersonCharacter _thirdPersonCharacter = null;
   private NavMeshAgent _navMeshAgent { get; set; }
-  private float speed = 5.0f;
   private NavMeshPath _path { get; set; }
   private int _cornerIndex {get;set;}
 
@@ -20,19 +18,20 @@ public class ORCAAgent : BaseAgent
   public ORCAAgent()
   {
     collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
+    pathPlanningAlg = new NavMeshPathPlanner(this);
     _orcaId = -1;
     random = new System.Random();
-    _thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
     _navMeshAgent = GetComponent<NavMeshAgent>();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
+    speed = 5.0f;
   }
 
   public override void SetDestination(Vector2 des)
   {
-    //destination = des;
-    //pathPlanningAlg.OnDestinationChange();
-    _navMeshAgent.CalculatePath(new Vector3(des.x, 0, des.y), _path);
+    destination = des;
+    pathPlanningAlg.OnDestinationChange();
+    _path = _navMeshAgent.path;
     while (_navMeshAgent.pathPending)
     {
       continue;
@@ -71,13 +70,6 @@ public class ORCAAgent : BaseAgent
     }
     else if (desiredVelocity.magnitude < 1.0f)
       desiredVelocity = desiredVelocity.normalized;
-    //UpdatePosition(desiredVelocity);
-
-    //var velocity = collisionAlg.GetAgentVelocity(_orcaId);
-    //var prefVelocity = collisionAlg.GetAgentPreferredVelocity(_orcaId);
-    //var pos = collisionAlg.GetAgentPosition(_orcaId);
-    ////prevPos = prevPos + velocity;
-    //UpdatePosition(prefVelocity);
 
     collisionAlg.SetAgentPreferredVelocity(_orcaId, desiredVelocity);
     ///* Perturb a little to avoid deadlocks due to perfect symmetry. */
@@ -91,7 +83,6 @@ public class ORCAAgent : BaseAgent
   {
     var pos = collisionAlg.GetAgentPosition(_orcaId);
     var vel = collisionAlg.GetAgentPreferredVelocity(_orcaId);
-    Vector2 newPos = position + vel; //((desiredVelocity * Time.deltaTime) + position);
 
     SetPosition(pos);
     SetForward(vel);
@@ -101,27 +92,11 @@ public class ORCAAgent : BaseAgent
       _cornerIndex++;
       destination = new Vector2(_path.corners[_cornerIndex].x, _path.corners[_cornerIndex].z);
     }
-
-    //if (Math.Abs((newPos - destination).sqrMagnitude) > 1f)
-    //{
-    //  _thirdPersonCharacter.Move(new Vector3(vel.x, 0, vel.y), false, false);
-    //  SetPosition(newPos);
-    //}
-    //else if (_cornerIndex < (_path.corners.Length - 1))
-    //{
-    //  destination = _path.corners[_cornerIndex + 1];
-    //  _cornerIndex++;
-    //  _thirdPersonCharacter.Move(new Vector3(vel.x, 0, vel.y), false, false);
-    //  SetPosition(newPos);
-    //}
-    //else
-    //{
-    //  _thirdPersonCharacter.Move(Vector3.zero, false, false);
-    //}
   }
 
   private Vector2 CalculateNewDestination()
   {
+    // If there is no path, dont move really
     if(_path.status != NavMeshPathStatus.PathComplete)
     {
       return position;

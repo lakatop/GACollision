@@ -27,12 +27,14 @@ public class ORCACollision : IBaseCollisionAvoider
     OnStart();
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.OnStart"/>
   public void OnStart()
   {
     _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 8.0f, new RVO.Vector2(0.0f, 0.0f));
     _adapter.SetTimeStep(_timeStep);
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
   public void Update()
   {
     _lastUpdate += Time.deltaTime;
@@ -47,17 +49,18 @@ public class ORCACollision : IBaseCollisionAvoider
     {
       if (_agentIdToOrcaIDMap.TryGetValue(agent.id, out var orcaId))
       {
-        _adapter.setAgentPosition(orcaId, agent.position);
+        _adapter.SetAgentPosition(orcaId, agent.position);
       }
       else
       {
-        _adapter.setAgentPosition(((ORCAAgent)agent)._orcaId, agent.position);
+        _adapter.SetAgentPosition(((ORCAAgent)agent)._orcaId, agent.position);
       }
     }
 
     _adapter.DoStep();
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.OnAgentAdded(IBaseAgent)"/>
   public void OnAgentAdded(IBaseAgent agent)
   {
     int id = _adapter.AddAgent(agent);
@@ -74,21 +77,25 @@ public class ORCACollision : IBaseCollisionAvoider
     }
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentPosition(int)"/>
   public Vector2 GetAgentPosition(int id)
   {
     return _adapter.GetAgentPosition(id);
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.SetAgentPreferredVelocity(int, Vector2)"/>
   public void SetAgentPreferredVelocity(int id, Vector2 prefVelocity)
   {
     _adapter.SetAgentPrefVelocity(id, prefVelocity);
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentPreferredVelocity(int)"/>
   public Vector2 GetAgentPreferredVelocity(int id)
   {
     return _adapter.GetAgentPreferredVelocity(id);
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentVelocity(int)"/>
   public Vector2 GetAgentVelocity(int id)
   {
     return _adapter.GetAgentVelocity(id);

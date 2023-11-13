@@ -47,63 +47,6 @@ public class SimulationManager : MonoBehaviour
     _collisionManager = new CollisionManager();
   }
 
-  private void Start()
-  {
-    // Calculate the NavMesh triangulation
-    NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
-
-    // Get the vertices of the NavMesh
-    Vector3[] navMeshVertices = navMeshData.vertices;
-
-    // Iterate through the NavMeshModifier components to find holes
-    NavMeshModifier[] navMeshModifiers = FindObjectsOfType<NavMeshModifier>();
-
-    foreach (NavMeshModifier modifier in navMeshModifiers)
-    {
-      if (!modifier.overrideArea)
-      {
-        // Skip modifiers that don't override the area
-        continue;
-      }
-
-      int areaIndex = modifier.area;
-
-      // Get the modified vertices for the specified area
-      Vector3[] modifiedVertices = GetModifiedVertices(navMeshData, areaIndex);
-
-      // Do something with the modified vertices (e.g., visualize or process them)
-      foreach (Vector3 vertex in modifiedVertices)
-      {
-        Debug.DrawRay(vertex, Vector3.up * 2f, Color.red, 1f);
-      }
-    }
-   }
-
-  Vector3[] GetModifiedVertices(NavMeshTriangulation navMeshData, int areaIndex)
-  {
-    int[] triangles = navMeshData.indices;
-    int[] areas = navMeshData.areas;
-
-    // Filter triangles based on the specified area index
-    List<Vector3> modifiedVertices = new List<Vector3>();
-
-    for (int i = 0; i < triangles.Length; i += 3)
-    {
-      if (areas[triangles[i]] == areaIndex ||
-          areas[triangles[i + 1]] == areaIndex ||
-          areas[triangles[i + 2]] == areaIndex)
-      {
-        // At least one vertex of this triangle is in the specified area
-        // Add all three vertices to the modifiedVertices list
-        modifiedVertices.Add(navMeshData.vertices[triangles[i]]);
-        modifiedVertices.Add(navMeshData.vertices[triangles[i + 1]]);
-        modifiedVertices.Add(navMeshData.vertices[triangles[i + 2]]);
-      }
-    }
-
-    return modifiedVertices.ToArray();
-  }
-
   /// <summary>
   /// Called every simulation step
   /// Check for user input and update agents

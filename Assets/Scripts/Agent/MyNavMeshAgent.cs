@@ -9,13 +9,15 @@ public class MyNavMeshAgent : BaseAgent
 {
   public override IBaseCollisionAvoider collisionAlg { get; set; }
   public override IBasePathPlanner pathPlanningAlg { get; set; }
-  private ThirdPersonCharacter _thirdPersonCharacter = null;
+
+  private NavMeshAgent _navMeshAgent { get; set; }
+
 
   public MyNavMeshAgent()
   {
     collisionAlg = new NavMeshCollision(this);
     pathPlanningAlg = new NavMeshPathPlanner(this);
-    _thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
+    _navMeshAgent = GetComponent<NavMeshAgent>();
   }
 
   /// <inheritdoc cref="BaseAgent.Update"/>
@@ -34,16 +36,20 @@ public class MyNavMeshAgent : BaseAgent
   {
     destination = des;
     pathPlanningAlg.OnDestinationChange();
+    while (_navMeshAgent.pathPending)
+    {
+      continue;
+    }
+
+    if (_navMeshAgent.path.status == NavMeshPathStatus.PathComplete)
+    {
+      _navMeshAgent.SetDestination(new Vector3(destination.x, 0, destination.y));
+    }
   }
 
   /// <inheritdoc cref="BaseAgent.UpdatePosition"/>
   public override void UpdatePosition(Vector2 newPos)
   {
-    //SetPosition(newPos);
-    Debug.Log(GetPos());
-    if (!_thirdPersonCharacter)
-      return;
-
-    _thirdPersonCharacter.Move(new Vector3(newPos.x, 0, newPos.y), false, false);
+    SetPosition(newPos);
   }
 }

@@ -18,17 +18,9 @@ public abstract class BaseAgent : IBaseAgent
   /// </summary>
   private GameObject _object = null;
   /// <summary>
-  /// Path to fbx model of agent
-  /// </summary>
-  private string _fbxPath = "lowman/lowman/models/lowbody";
-  /// <summary>
   /// Path to material of agent
   /// </summary>
   private string _materialPath = "group1";
-  /// <summary>
-  /// Path to animation controller of agent
-  /// </summary>
-  private string _animControllerPath = "lowman/lowman/animation/humanoid";
 
   public BaseAgent()
   {
@@ -51,6 +43,8 @@ public abstract class BaseAgent : IBaseAgent
   public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
   public int id { get; set; }
+  /// <inheritdoc cref="IBaseAgent.speed"/>
+  public float speed { get; set; }
   /// <inheritdoc cref="IBaseAgent._position"/>
   public Vector2 position { get; protected set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>

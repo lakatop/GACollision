@@ -36,6 +36,10 @@ public interface IBaseAgent
   /// </summary>
   int id { get; set; }
   /// <summary>
+  /// Speed of the agent
+  /// </summary>
+  float speed { get; set; }
+  /// <summary>
   /// Interval for how often should agent call Update on itself
   /// Defaults to 0, meaning it will be updated every simulation step
   /// </summary>

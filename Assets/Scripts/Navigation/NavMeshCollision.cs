@@ -37,28 +37,34 @@ public class NavMeshCollision : IBaseCollisionAvoider
     }
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.OnStart"/>
   public void OnStart()
   {
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.OnAgentAdded(IBaseAgent)"/>
   public void OnAgentAdded(IBaseAgent agent)
   {
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentPosition(int)"/>
   public Vector2 GetAgentPosition(int id)
   {
     return agent.position;
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.SetAgentPreferredVelocity(int, Vector2)"/>
   public void SetAgentPreferredVelocity(int id, Vector2 prefVelocity)
   {
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentPreferredVelocity(int)"/>
   public Vector2 GetAgentPreferredVelocity(int id)
   {
     return _navMeshAgent.desiredVelocity;
   }
 
+  /// <inheritdoc cref="IBaseCollisionAvoider.GetAgentVelocity(int)"/>
   public Vector2 GetAgentVelocity(int id)
   {
     return _navMeshAgent.velocity;

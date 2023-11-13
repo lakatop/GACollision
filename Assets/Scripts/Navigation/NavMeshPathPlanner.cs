@@ -39,7 +39,10 @@ public class NavMeshPathPlanner: IBasePathPlanner
     if (!_navMeshAgent)
       return;
 
-    _navMeshAgent.SetDestination(new Vector3(_agent.destination.x, 0, _agent.destination.y));
+    NavMeshPath path = new NavMeshPath();
+
+    _navMeshAgent.CalculatePath(new Vector3(_agent.destination.x, 0, _agent.destination.y), path);
+    _navMeshAgent.path = path;
   }
 }
 
