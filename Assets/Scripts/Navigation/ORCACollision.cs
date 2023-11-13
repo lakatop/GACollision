@@ -32,6 +32,7 @@ public class ORCACollision : IBaseCollisionAvoider
   {
     _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 8.0f, new RVO.Vector2(0.0f, 0.0f));
     _adapter.SetTimeStep(_timeStep);
+    RegisterObstacles(_simManager._obstacles);
   }
 
   /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
@@ -99,5 +100,15 @@ public class ORCACollision : IBaseCollisionAvoider
   public Vector2 GetAgentVelocity(int id)
   {
     return _adapter.GetAgentVelocity(id);
+  }
+
+  public void RegisterObstacles(List<Obstacle> obstacles)
+  {
+    foreach (var obstacle in obstacles)
+    {
+      _adapter.AddObstacle(obstacle.vertices);
+    }
+
+    _adapter.ProcessObstacles();
   }
 }

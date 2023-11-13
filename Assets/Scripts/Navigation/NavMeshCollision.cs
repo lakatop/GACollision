@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
@@ -68,6 +69,10 @@ public class NavMeshCollision : IBaseCollisionAvoider
   public Vector2 GetAgentVelocity(int id)
   {
     return _navMeshAgent.velocity;
+  }
+
+  public void RegisterObstacles(List<Obstacle> obstacles)
+  {
   }
 }
 

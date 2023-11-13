@@ -22,6 +22,10 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   public List<IBaseAgent> _agents { get; private set; }
   /// <summary>
+  /// List of all obstacles present in the simulation
+  /// </summary>
+  public List<Obstacle> _obstacles { get; private set; }
+  /// <summary>
   /// List of all collision avoidance algorithms that registered themselves to SimulationManager
   /// </summary>
   private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
@@ -43,8 +47,14 @@ public class SimulationManager : MonoBehaviour
     }
 
     _agents = new List<IBaseAgent>();
+    _obstacles = new List<Obstacle>();
     _collisionListeners = new List<IBaseCollisionAvoider>();
     _collisionManager = new CollisionManager();
+  }
+
+  void Start()
+  {
+    RegisterObstacles();
   }
 
   /// <summary>
@@ -131,5 +141,62 @@ public class SimulationManager : MonoBehaviour
         collisionAvoider.OnAgentAdded(agent);
       }
     }
+  }
+
+  private void RegisterObstacles()
+  {
+    // Find all NavMeshModifier components in the scene
+    NavMeshModifier[] navMeshModifiers = GameObject.FindObjectsOfType<NavMeshModifier>();
+
+    // Iterate over each NavMeshModifier
+    foreach (NavMeshModifier modifier in navMeshModifiers)
+    {
+      if (!modifier.overrideArea)
+      {
+        // Skip modifiers that don't override the area
+        continue;
+      }
+
+      // Get the GameObject associated with the NavMeshModifier
+      GameObject obj = modifier.gameObject;
+
+      // Ensure the GameObject has a BoxCollider component
+      BoxCollider boxCollider = obj.GetComponent<BoxCollider>();
+      if (boxCollider == null)
+      {
+        Debug.LogError("BoxCollider component not found.");
+        return;
+      }
+
+      // Get the cube's collider bounds
+      Bounds bounds = boxCollider.bounds;
+
+      // Calculate cube corners based on collider bounds
+      List<Vector2> corners = CalculateCubeCorners(bounds);
+      _obstacles.Add(new Obstacle(corners));
+
+      // Do something with the cube corners (e.g., print or process them)
+      foreach (Vector2 corner in corners)
+      {
+        Debug.Log("Cube Corner: " + corner);
+      }
+    }
+  }
+
+  private List<Vector2> CalculateCubeCorners(Bounds bounds)
+  {
+    Vector2 center = new Vector2(bounds.center.x, bounds.center.z);
+    Vector2 extents = new Vector2(bounds.extents.x, bounds.extents.z);
+
+    // Calculate corners based on bounds
+    List<Vector2> corners = new List<Vector2>(4)
+    {
+    new Vector2(center.x - extents.x, center.y - extents.y),
+    new Vector2(center.x + extents.x, center.y - extents.y),
+    new Vector2(center.x + extents.x, center.y + extents.y),
+    new Vector2(center.x - extents.x, center.y + extents.y),
+    };
+
+    return corners;
   }
 }

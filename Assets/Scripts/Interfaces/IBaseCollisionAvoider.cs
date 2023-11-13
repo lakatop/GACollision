@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public interface IBaseCollisionAvoider
 {
@@ -43,4 +44,9 @@ public interface IBaseCollisionAvoider
   /// Agent that will be using this collision avoidance algorithm
   /// </summary>
   IBaseAgent agent { get; }
+  /// <summary>
+  /// Register obstacles present in the simulation
+  /// </summary>
+  /// <param name="obstacles">Obstacles to register</param>
+  void RegisterObstacles(List<Obstacle> obstacles);
 }

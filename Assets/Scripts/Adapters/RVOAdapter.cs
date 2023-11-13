@@ -86,4 +86,22 @@ public class RVOAdapter
   {
     _adaptee.setAgentPosition(id, new Vector2(pos.x, pos.y));
   }
+
+  /// <inheritdoc cref="Simulator.addObstacle(IList{Vector2})"/>
+  public int AddObstacle(List<UnityEngine.Vector2> vertices)
+  {
+    List<Vector2> rvoVertices = new List<Vector2>();
+    foreach (var vertex in vertices)
+    {
+      rvoVertices.Add(new Vector2(vertex.x, vertex.y));
+    }
+
+    return _adaptee.addObstacle(rvoVertices);
+  }
+
+  /// <inheritdoc cref="Simulator.processObstacles"/>
+  public void ProcessObstacles()
+  {
+    _adaptee.processObstacles();
+  }
 }
