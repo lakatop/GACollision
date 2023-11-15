@@ -12,6 +12,7 @@ public class ORCAAgent : BaseAgent
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex {get;set;}
+  private float elapsedTime = 0f;
 
   private System.Random random;
 
@@ -53,12 +54,13 @@ public class ORCAAgent : BaseAgent
 
   public override void Update()
   {
-    if (_orcaId == -1)
+    elapsedTime += Time.deltaTime;
+    if (_orcaId == -1 && elapsedTime < updateInterval)
       return;
 
     //Move agent
     Vector2 desiredDestination = CalculateNewDestination();
-    var orcaPos = collisionAlg.GetAgentPosition(_orcaId);
+    var orcaPos = position;//collisionAlg.GetAgentPosition(_orcaId);
     
     //Get next postiion
     Vector2 desiredVelocity = (desiredDestination - orcaPos) * speed;
@@ -81,6 +83,11 @@ public class ORCAAgent : BaseAgent
 
   public override void UpdatePosition(Vector2 desiredVelocity)
   {
+    if (elapsedTime < updateInterval)
+      return;
+
+    elapsedTime = 0f;
+
     var pos = collisionAlg.GetAgentPosition(_orcaId);
     var vel = collisionAlg.GetAgentPreferredVelocity(_orcaId);
 

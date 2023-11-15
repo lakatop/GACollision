@@ -20,6 +20,7 @@ public class ORCACollision : IBaseCollisionAvoider
   public ORCACollision(IBaseAgent agent)
   {
     this.agent = agent;
+    this.agent.updateInterval = _timeStep;
     _adapter = RVOAdapter.Instance;
     _simManager = SimulationManager.Instance;
     _simManager.RegisterCollisionListener(this);

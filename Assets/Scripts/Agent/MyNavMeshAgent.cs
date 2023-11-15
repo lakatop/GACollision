@@ -50,6 +50,6 @@ public class MyNavMeshAgent : BaseAgent
   /// <inheritdoc cref="BaseAgent.UpdatePosition"/>
   public override void UpdatePosition(Vector2 newPos)
   {
-    SetPosition(newPos);
+    //SetPosition(newPos);
   }
 }

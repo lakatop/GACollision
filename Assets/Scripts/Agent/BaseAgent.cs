@@ -29,8 +29,9 @@ public abstract class BaseAgent : IBaseAgent
     _object.AddComponent<NavMeshAgent>();
     _object.GetComponent<NavMeshAgent>().baseOffset = 1f;
     _object.GetComponent<MeshRenderer>().material = Resources.Load<Material>(_materialPath);
+    _object.AddComponent<DirectionArrowGizmo>();
 
-    Create3DArrowIndicator(_object.transform);
+    //Create3DArrowIndicator(_object.transform);
   }
 
   // IBaseAgent interface ---------------------------------------------------------
@@ -58,17 +59,25 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
-    position = pos;
+    if (_object.transform.position.y > 1.59f)
+    {
+      _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
+    }
+    var step = speed * Time.deltaTime;
+    position = Vector2.MoveTowards(position, pos, step);
     if (_object != null)
     {
-      _object.transform.position = new Vector3(pos.x, 1.5f, pos.y);
-      GetComponent<NavMeshAgent>().Warp(new Vector3(pos.x, 1.5f, pos.y));
+      _object.transform.position = new Vector3(position.x, 1.58f, position.y);
+      GetComponent<NavMeshAgent>().Warp(_object.transform.position);
     }
   }
-  /// <inheritdoc cref="BaseAgent.SetForward(Vector2)"/>
+  /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
   public void SetForward(Vector2 forw)
   {
-    _object.transform.forward = new Vector3(forw.x, 0, forw.y).normalized;
+    float singleStep = speed * Time.deltaTime;
+    var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
+    //_object.transform.forward = direction.normalized;
+    _object.transform.rotation = Quaternion.LookRotation(direction);
   }
   
   // Other methods ----------------------------------------------------------------

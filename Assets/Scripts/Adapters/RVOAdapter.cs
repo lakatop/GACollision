@@ -87,6 +87,12 @@ public class RVOAdapter
     _adaptee.setAgentPosition(id, new Vector2(pos.x, pos.y));
   }
 
+  /// <inheritdoc cref="Simulator.setAgentVelocity(int, Vector2)"/>
+  public void SetAgentVelocity(int id, UnityEngine.Vector2 vel)
+  {
+    _adaptee.setAgentVelocity(id, new Vector2(vel.x, vel.y));
+  }
+
   /// <inheritdoc cref="Simulator.addObstacle(IList{Vector2})"/>
   public int AddObstacle(List<UnityEngine.Vector2> vertices)
   {
