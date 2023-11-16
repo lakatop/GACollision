@@ -1,4 +1,5 @@
-﻿using UnityEngine.AI;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Concrete class for path planning
@@ -12,9 +13,9 @@ public class NavMeshPathPlanner: IBasePathPlanner
   public NavMeshPathPlanner(IBaseAgent agent)
   {
     _agent = agent;
-    if (_agent is MyNavMeshAgent)
+    if (_agent is BaseAgent)
     {
-      _navMeshAgent = ((MyNavMeshAgent)_agent).GetComponent<NavMeshAgent>();
+      _navMeshAgent = ((BaseAgent)_agent).GetComponent<NavMeshAgent>();
     }
   }
 
@@ -38,7 +39,10 @@ public class NavMeshPathPlanner: IBasePathPlanner
     if (!_navMeshAgent)
       return;
 
-    _navMeshAgent.SetDestination(_agent.destination);
+    NavMeshPath path = new NavMeshPath();
+
+    _navMeshAgent.CalculatePath(new Vector3(_agent.destination.x, 0, _agent.destination.y), path);
+    _navMeshAgent.path = path;
   }
 }
 
