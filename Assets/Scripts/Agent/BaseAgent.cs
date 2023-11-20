@@ -36,10 +36,10 @@ public abstract class BaseAgent : IBaseAgent
 
   // IBaseAgent interface ---------------------------------------------------------
 
-  /// <inheritdoc cref="IBaseAgent.Update"/>
-  public abstract void Update();
-  /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public abstract void UpdatePosition(Vector2 newPos);
+  /// <inheritdoc cref="IBaseAgent.OnBeforeUpdate"/>
+  public abstract void OnBeforeUpdate();
+  /// <inheritdoc cref="IBaseAgent.OnAfterUpdate"/>
+  public abstract void OnAfterUpdate(Vector2 newPos);
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
   public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
@@ -76,7 +76,6 @@ public abstract class BaseAgent : IBaseAgent
   {
     float singleStep = speed * Time.deltaTime;
     var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
-    //_object.transform.forward = direction.normalized;
     _object.transform.rotation = Quaternion.LookRotation(direction);
   }
   
@@ -122,44 +121,5 @@ public abstract class BaseAgent : IBaseAgent
   public Vector3 GetPos()
   {
     return _object.transform.position;
-  }
-
-  GameObject Create3DArrowIndicator(Transform parentTransform)
-  {
-    // Create a child GameObject for the 3D arrow indicator
-    GameObject arrow = new GameObject("3DArrowIndicator");
-    arrow.transform.parent = parentTransform;
-
-    // Create a MeshFilter component for the arrow mesh
-    MeshFilter meshFilter = arrow.AddComponent<MeshFilter>();
-    meshFilter.mesh = Create3DArrowMesh();
-
-    // Create a MeshRenderer component for the arrow material
-    MeshRenderer meshRenderer = arrow.AddComponent<MeshRenderer>();
-    meshRenderer.material.color = Color.red; // Set the arrow color
-
-    // Position and scale the arrow (modify these values as needed)
-    arrow.transform.localPosition = new Vector3(0f, 0f, 1f);
-    arrow.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
-
-    return arrow;
-  }
-
-  Mesh Create3DArrowMesh()
-  {
-    // Create a 3D arrow mesh pointing in the positive z-direction
-    Mesh arrowMesh = new Mesh();
-    Vector3[] vertices = new Vector3[]
-    {
-            new Vector3(0f, 0f, 0f),
-            new Vector3(0f, 1f, 0f),
-            new Vector3(-0.05f, 0.8f, 0.2f),
-            new Vector3(0.05f, 0.8f, 0.2f),
-    };
-    int[] triangles = new int[] { 0, 1, 2, 0, 1, 3 };
-    arrowMesh.vertices = vertices;
-    arrowMesh.triangles = triangles;
-    arrowMesh.RecalculateNormals();
-    return arrowMesh;
   }
 }

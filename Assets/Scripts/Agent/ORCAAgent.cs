@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine.AI;
 
 public class ORCAAgent : BaseAgent
@@ -52,19 +51,21 @@ public class ORCAAgent : BaseAgent
     }
   }
 
-  public override void Update()
+  public override void OnBeforeUpdate()
   {
     elapsedTime += Time.deltaTime;
     if (_orcaId == -1 && elapsedTime < updateInterval)
       return;
 
+    elapsedTime = 0f;
+
     //Move agent
     Vector2 desiredDestination = CalculateNewDestination();
-    var orcaPos = position;//collisionAlg.GetAgentPosition(_orcaId);
+    var orcaPos = position;
     
-    //Get next postiion
+    //Get next position
     Vector2 desiredVelocity = (desiredDestination - orcaPos) * speed;
-    if ((desiredDestination - orcaPos).magnitude < 0.01f)
+    if ((desiredDestination - orcaPos).magnitude < 0.1f)
     {
       desiredVelocity = Vector2.zero;
       collisionAlg.SetAgentPreferredVelocity(_orcaId, desiredVelocity);
@@ -81,13 +82,8 @@ public class ORCAAgent : BaseAgent
                     dist * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
   }
 
-  public override void UpdatePosition(Vector2 desiredVelocity)
+  public override void OnAfterUpdate(Vector2 desiredVelocity)
   {
-    if (elapsedTime < updateInterval)
-      return;
-
-    elapsedTime = 0f;
-
     var pos = collisionAlg.GetAgentPosition(_orcaId);
     var vel = collisionAlg.GetAgentPreferredVelocity(_orcaId);
 

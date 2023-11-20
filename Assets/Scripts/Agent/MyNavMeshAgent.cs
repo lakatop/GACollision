@@ -20,8 +20,8 @@ public class MyNavMeshAgent : BaseAgent
     _navMeshAgent = GetComponent<NavMeshAgent>();
   }
 
-  /// <inheritdoc cref="BaseAgent.Update"/>
-  public override void Update()
+  /// <inheritdoc cref="BaseAgent.OnBeforeUpdate"/>
+  public override void OnBeforeUpdate()
   {
     if (Time.deltaTime < updateInterval)
     {
@@ -47,9 +47,8 @@ public class MyNavMeshAgent : BaseAgent
     }
   }
 
-  /// <inheritdoc cref="BaseAgent.UpdatePosition"/>
-  public override void UpdatePosition(Vector2 newPos)
+  /// <inheritdoc cref="BaseAgent.OnAfterUpdate"/>
+  public override void OnAfterUpdate(Vector2 newPos)
   {
-    //SetPosition(newPos);
   }
 }

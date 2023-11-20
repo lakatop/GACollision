@@ -85,10 +85,10 @@ public class SimulationManager : MonoBehaviour
     }
     else
     {
-      // Call update on agents
+      // Update simulation
       foreach (var agent in _agents)
       {
-        agent.Update();
+        agent.OnBeforeUpdate();
       }
       foreach (var collisionAvoider in _collisionListeners)
       {
@@ -96,7 +96,7 @@ public class SimulationManager : MonoBehaviour
       }
       foreach (var agent in _agents)
       {
-        agent.UpdatePosition(Vector2.zero);
+        agent.OnAfterUpdate(Vector2.zero);
       }
     }
 

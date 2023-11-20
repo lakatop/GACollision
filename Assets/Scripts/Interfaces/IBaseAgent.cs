@@ -7,14 +7,15 @@ public interface IBaseAgent
 {
   /// <summary>
   /// Update function for an agent
-  /// Called every simulation step
+  /// Called every simulation step before other updates
   /// </summary>
-  void Update();
+  void OnBeforeUpdate();
   /// <summary>
-  /// Use to update agents position
+  /// Updatefunction for an agent
+  /// Called every simulation step after other updates
   /// </summary>
   /// <param name="newPos">New position</param>
-  void UpdatePosition(Vector2 newPos);
+  void OnAfterUpdate(Vector2 newPos);
   /// <summary>
   /// Sets agents position
   /// </summary>
