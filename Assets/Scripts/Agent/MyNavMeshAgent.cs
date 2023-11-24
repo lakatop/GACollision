@@ -23,12 +23,6 @@ public class MyNavMeshAgent : BaseAgent
   /// <inheritdoc cref="BaseAgent.OnBeforeUpdate"/>
   public override void OnBeforeUpdate()
   {
-    if (Time.deltaTime < updateInterval)
-    {
-      return;
-    }
-
-    collisionAlg.Update();
   }
 
   /// <inheritdoc cref="BaseAgent.SetDestination(Vector3)"/>

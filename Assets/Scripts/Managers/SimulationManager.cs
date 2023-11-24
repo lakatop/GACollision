@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 /// <summary>
 /// Singleton
@@ -20,7 +18,7 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// List of all agents present in the simulation
   /// </summary>
-  public List<IBaseAgent> _agents { get; private set; }
+  private List<IBaseAgent> _agents { get; set; }
   /// <summary>
   /// List of all obstacles present in the simulation
   /// </summary>
@@ -30,10 +28,15 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
   /// <summary>
+  /// List of all classes that require some special resource allocation/deallocation during simulation
+  /// e.g. GeneticAlgorithm for NativeArray(s)
+  /// </summary>
+  private List<IResourceManager> _resourceListeners { get; set; }
+  /// <summary>
   /// Manager for collision avoidance algorithms
   /// This should be the only instance in entire simulation
   /// </summary>
-  public CollisionManager _collisionManager { get; private set; }
+  public AlgorithmsManager _collisionManager { get; private set; }
 
   void Awake()
   {
@@ -49,7 +52,7 @@ public class SimulationManager : MonoBehaviour
     _agents = new List<IBaseAgent>();
     _obstacles = new List<Obstacle>();
     _collisionListeners = new List<IBaseCollisionAvoider>();
-    _collisionManager = new CollisionManager();
+    _collisionManager = new AlgorithmsManager();
   }
 
   void Start()
@@ -85,6 +88,12 @@ public class SimulationManager : MonoBehaviour
     }
     else
     {
+      // Allocate resources if needed
+      foreach (var resourceManager in _resourceListeners)
+      {
+        resourceManager.OnBeforeUpdate();
+      }
+
       // Update simulation
       foreach (var agent in _agents)
       {
@@ -97,6 +106,12 @@ public class SimulationManager : MonoBehaviour
       foreach (var agent in _agents)
       {
         agent.OnAfterUpdate(Vector2.zero);
+      }
+
+      // Deallocate resources if needed
+      foreach (var resourceManager in _resourceListeners)
+      {
+        resourceManager.OnAfterUpdate();
       }
     }
 
@@ -112,6 +127,20 @@ public class SimulationManager : MonoBehaviour
     _collisionListeners.Add(collisionAvoider);
   }
 
+  /// <summary>
+  /// Add resource handling class to listener list.
+  /// This listener will receive updating calls
+  /// </summary>
+  /// <param name="resourceManager">Intance to be added</param>
+  public void RegisterResourceListener(IResourceManager resourceManager)
+  {
+    _resourceListeners.Add(resourceManager);
+  }
+
+  /// <summary>
+  /// Getter for agents in simulation
+  /// </summary>
+  /// <returns>_agents list</returns>
   public List<IBaseAgent> GetAgents()
   {
     return _agents;
@@ -125,11 +154,11 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new ORCAAgent());
+      _agents.Add(new MyNavMeshAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
       agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
-      ((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
+      //((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
       agent.SetDestination(agent.position);
       if (agent is BaseAgent)
       {

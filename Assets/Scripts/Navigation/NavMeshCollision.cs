@@ -25,17 +25,6 @@ public class NavMeshCollision : IBaseCollisionAvoider
   /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
   public void Update()
   {
-    if (agent == null || _navMeshAgent == null)
-      return;
-
-    if (Math.Abs(_navMeshAgent.remainingDistance - _navMeshAgent.stoppingDistance) > 1f)
-    {
-      agent.OnAfterUpdate(new Vector2(_navMeshAgent.desiredVelocity.x, _navMeshAgent.desiredVelocity.z));
-    }
-    else
-    {
-      agent.OnAfterUpdate(Vector3.zero);
-    }
   }
 
   /// <inheritdoc cref="IBaseCollisionAvoider.OnStart"/>

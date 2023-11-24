@@ -2,11 +2,13 @@
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Burst;
 
+[BurstCompile]
 public struct GeneticAlgorithmJob : IJob
 { 
-  public bool stopExecution;
   [ReadOnly] public int index;
+  [ReadOnly] public int loopIterations;
   [ReadOnly] public float timeDelta;
   [ReadOnly] public NativeArray<Vector2> positions;
   [ReadOnly] public NativeArray<float> speeds;
@@ -14,17 +16,17 @@ public struct GeneticAlgorithmJob : IJob
 
   public void Execute()
   {
-    if (stopExecution)
-      return;
-
     InitializePopulation();
-    while (!stopExecution)
+
+    for (int i = 0; i < loopIterations; i++) 
     {
       CalculateFitness();
       ApplySelection();
       ApplyOperators();
       SelectNewPopulation();
     }
+
+    SetWinner();
   }
 
   private void InitializePopulation()
@@ -48,6 +50,14 @@ public struct GeneticAlgorithmJob : IJob
   }
 
   private void SelectNewPopulation()
+  {
+
+  }
+
+  /// <summary>
+  /// Set return velocity.
+  /// </summary>
+  private void SetWinner()
   {
 
   }
