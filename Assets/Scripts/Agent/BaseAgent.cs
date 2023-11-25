@@ -78,6 +78,11 @@ public abstract class BaseAgent : IBaseAgent
     var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
     _object.transform.rotation = Quaternion.LookRotation(direction);
   }
+
+  public Vector2 GetForward()
+  {
+    return _object.transform.forward;
+  }
   
   // Other methods ----------------------------------------------------------------
 

@@ -17,6 +17,7 @@ public class BasicGAAgent : BaseAgent
   private GeneticAlgorithmJob _gaJob { get; set; }
   private GeneticAlgorithm _geneticAlgorithm { get; set; }
   private float _elapsedTime { get; set; }
+  private Vector2 nextVel { get; set; }
 
   public BasicGAAgent()
   {
@@ -53,21 +54,31 @@ public class BasicGAAgent : BaseAgent
     }
   }
 
-  // Stop EA evaluation and set desired direction so that collision avoidance alg can process it
+  // Run GA and get results
   public override void OnBeforeUpdate()
   {
-    _elapsedTime += Time.deltaTime;
-    if (_elapsedTime < updateInterval)
-      return;
+    //_elapsedTime += Time.deltaTime;
+    //if (_elapsedTime < updateInterval)
+    //  return;
 
-    _elapsedTime = 0.0f;
-    _gaJob = _geneticAlgorithm.CreateGeneticAlgorithmJob(this);
-    _gaJobHandle = _geneticAlgorithm.ScheduleGeneticAlgorithmJob(_gaJob);
+    //_elapsedTime = 0.0f;
+
+    // Run GA
+    var quadTree = SimulationManager.Instance.GetQuadTree();
+    Vector2 winner = Vector2.zero;
+    var _ga = new BasicGA(quadTree, ref winner, Time.deltaTime, speed, id, 0.5f);
+    _ga.Execute(10);
+    nextVel = winner;
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
+    var vel = nextVel;
+    var pos = position + nextVel;
+
+    SetPosition(pos);
+    SetForward(vel);
   }
 
   private Vector2 CalculateNewDestination()

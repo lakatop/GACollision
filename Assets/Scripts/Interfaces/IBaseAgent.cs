@@ -33,6 +33,11 @@ public interface IBaseAgent
   /// <param name="des">Destination to be set</param>
   void SetDestination(Vector2 des);
   /// <summary>
+  /// Getter for agents forward vector
+  /// </summary>
+  /// <returns>Agents forward vector</returns>
+  Vector2 GetForward();
+  /// <summary>
   /// Agents identifier
   /// </summary>
   int id { get; set; }
