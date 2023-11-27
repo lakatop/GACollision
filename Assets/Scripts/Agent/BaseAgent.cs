@@ -21,6 +21,10 @@ public abstract class BaseAgent : IBaseAgent
   /// Path to material of agent
   /// </summary>
   private string _materialPath = "group1";
+  /// <summary>
+  /// Previous agents position
+  /// </summary>
+  private Vector3 _lastPosition { get; set; }
 
   public BaseAgent()
   {
@@ -59,6 +63,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
+    _lastPosition = _object.transform.position;
     if (_object.transform.position.y > 1.59f)
     {
       _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
@@ -68,7 +73,11 @@ public abstract class BaseAgent : IBaseAgent
     if (_object != null)
     {
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
-      GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+      // We cannot use Warp for MyNavMeshAgent because it would override its calculations and we wouldnt move after that
+      if (!(this is MyNavMeshAgent))
+      {
+        GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+      }
     }
   }
   /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
@@ -79,9 +88,23 @@ public abstract class BaseAgent : IBaseAgent
     _object.transform.rotation = Quaternion.LookRotation(direction);
   }
 
+  /// <inheritdoc cref="IBaseAgent.GetForward"/>
   public Vector2 GetForward()
   {
     return _object.transform.forward;
+  }
+
+  /// <inheritdoc cref="IBaseAgent.GetVelocity"/>
+  public Vector2 GetVelocity()
+  {
+    if (this is MyNavMeshAgent)
+    {
+      return GetComponent<NavMeshAgent>().velocity;
+    }
+    else
+    {
+      return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
+    }
   }
   
   // Other methods ----------------------------------------------------------------

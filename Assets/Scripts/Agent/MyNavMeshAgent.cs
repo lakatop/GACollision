@@ -18,6 +18,7 @@ public class MyNavMeshAgent : BaseAgent
     collisionAlg = new NavMeshCollision(this);
     pathPlanningAlg = new NavMeshPathPlanner(this);
     _navMeshAgent = GetComponent<NavMeshAgent>();
+    speed = 5;
   }
 
   /// <inheritdoc cref="BaseAgent.OnBeforeUpdate"/>
@@ -44,5 +45,8 @@ public class MyNavMeshAgent : BaseAgent
   /// <inheritdoc cref="BaseAgent.OnAfterUpdate"/>
   public override void OnAfterUpdate(Vector2 newPos)
   {
+    SetPosition(new Vector2(_navMeshAgent.transform.position.x, _navMeshAgent.transform.position.z));
+    SetForward(new Vector2(_navMeshAgent.transform.forward.x, _navMeshAgent.transform.forward.z));
+    Debug.Log(GetVelocity());
   }
 }

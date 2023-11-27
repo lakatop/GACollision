@@ -111,31 +111,31 @@ public class SimulationManager : MonoBehaviour
     {
 
 
-      //// Allocate resources if needed
-      //foreach (var resourceManager in _resourceListeners)
-      //{
-      //  resourceManager.OnBeforeUpdate();
-      //}
+      // Allocate resources if needed
+      foreach (var resourceManager in _resourceListeners)
+      {
+        resourceManager.OnBeforeUpdate();
+      }
 
-      //// Update simulation
-      //foreach (var agent in _agents)
-      //{
-      //  agent.OnBeforeUpdate();
-      //}
-      //foreach (var collisionAvoider in _collisionListeners)
-      //{
-      //  collisionAvoider.Update();
-      //}
-      //foreach (var agent in _agents)
-      //{
-      //  agent.OnAfterUpdate(Vector2.zero);
-      //}
+      // Update simulation
+      foreach (var agent in _agents)
+      {
+        agent.OnBeforeUpdate();
+      }
+      foreach (var collisionAvoider in _collisionListeners)
+      {
+        collisionAvoider.Update();
+      }
+      foreach (var agent in _agents)
+      {
+        agent.OnAfterUpdate(Vector2.zero);
+      }
 
-      //// Deallocate resources if needed
-      //foreach (var resourceManager in _resourceListeners)
-      //{
-      //  resourceManager.OnAfterUpdate();
-      //}
+      // Deallocate resources if needed
+      foreach (var resourceManager in _resourceListeners)
+      {
+        resourceManager.OnAfterUpdate();
+      }
     }
 
   }
@@ -350,7 +350,7 @@ public class SimulationManager : MonoBehaviour
     foreach (var agent in _agents)
     {
       var pos = agent.position;
-      var velocity = agent.GetForward() * agent.speed * Time.deltaTime;
+      var velocity = agent.GetVelocity();
       for (int i = 0; i < steps; i++)
       {
         _quadAgentsPositions.Add(new NativeQuadTree.QuadElement<TreeNode>()

@@ -66,8 +66,8 @@ public class BasicGAAgent : BaseAgent
     // Run GA
     var quadTree = SimulationManager.Instance.GetQuadTree();
     Vector2 winner = Vector2.zero;
-    var _ga = new BasicGA(quadTree, ref winner, Time.deltaTime, speed, id, 0.5f);
-    _ga.Execute(10);
+    var _ga = new BasicGA(quadTree, Time.deltaTime, speed, id, 0.5f, position);
+    _ga.Execute(10, out winner);
     nextVel = winner;
   }
 
@@ -78,7 +78,7 @@ public class BasicGAAgent : BaseAgent
     var pos = position + nextVel;
 
     SetPosition(pos);
-    SetForward(vel);
+    SetForward(vel.normalized);
   }
 
   private Vector2 CalculateNewDestination()

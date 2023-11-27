@@ -38,6 +38,11 @@ public interface IBaseAgent
   /// <returns>Agents forward vector</returns>
   Vector2 GetForward();
   /// <summary>
+  /// Getter for agents current velocity
+  /// </summary>
+  /// <returns>Current agents velocity</returns>
+  Vector2 GetVelocity();
+  /// <summary>
   /// Agents identifier
   /// </summary>
   int id { get; set; }

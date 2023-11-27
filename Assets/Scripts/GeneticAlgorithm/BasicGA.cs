@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
+using NativeQuadTree;
 
 public class BasicGA
 {
@@ -11,9 +12,8 @@ public class BasicGA
     public float fitness;
   };
   NativeQuadTree.NativeQuadTree<TreeNode> _quadTree { get; set; }
-  Vector2 positionVector2 { get; set; }
+  Vector2 startPosition { get; set; }
   Vector2 destination { get; set; }
-  Vector2 winner { get; set; }
   List<Individual> population { get; set; }
   float timeDelta { get; set; }
   float agentSpeed { get; set; }
@@ -22,23 +22,23 @@ public class BasicGA
   float agentRadius { get; set; }
 
   public BasicGA(NativeQuadTree.NativeQuadTree<TreeNode> quadTree,
-    ref Vector2 winner,
     float timeDelta,
     float agentSpeed,
     int agentIndex,
-    float agentRadius)
+    float agentRadius,
+    Vector2 startPos)
   {
     _quadTree = quadTree;
-    this.winner = winner;
     this.timeDelta = timeDelta;
     this.agentSpeed = agentSpeed;
     population = new List<Individual>();
     rand = new System.Random();
     this.agentIndex = agentIndex;
     this.agentRadius = agentRadius;
+    startPosition = startPos;
   }
 
-  public void Execute(int loopIterations)
+  public void Execute(int loopIterations, out Vector2 winner)
   {
     InitializePopulation();
 
@@ -49,7 +49,7 @@ public class BasicGA
       ApplyOperators();
     }
 
-    SetWinner();
+    SetWinner(winner);
   }
 
   private void InitializePopulation()
@@ -74,6 +74,43 @@ public class BasicGA
     // If collides, fitness must be 0 and continue to another individual (we certainly dont want to choose this individual)
     // If doesnt collide, continue on next step.
     // At the end, check how far are we from destination
+    for (int i = 0; i < population.Count; i++)
+    {
+      var initialVector = startPosition;
+      var newPos = initialVector;
+      var stepIndex = 1;
+      foreach(var pos in population[i].path)
+      {
+        newPos = CalculateRotatedVector(pos.x, initialVector);
+        newPos *= pos.y;
+
+        NativeQuadTree.AABB2D bounds = new NativeQuadTree.AABB2D(newPos, new Unity.Mathematics.float2(agentRadius * 1.5f, agentRadius * 1.5f));
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>();
+        _quadTree.RangeQuery(bounds, queryRes);
+
+        if (Collides(newPos, queryRes, stepIndex))
+        {
+          Individual temp = population[i];
+          temp.fitness = 0;
+          population[i] = temp;
+          break;
+        }
+
+        stepIndex++;
+        initialVector = newPos;
+      }
+
+      // We broke cycle before finishing - this individual is colliding
+      if(stepIndex - 1 < population[i].path.Count)
+      {
+        break;
+      }
+
+      float fitness = 1 / (destination - newPos).magnitude;
+      Individual temp2 = population[i];
+      temp2.fitness = fitness;
+      population[i] = temp2;
+    }
   }
 
   private void ApplySelection()
@@ -155,9 +192,20 @@ public class BasicGA
   /// <summary>
   /// Set return velocity.
   /// </summary>
-  private void SetWinner()
+  private void SetWinner(out Vector2 winner)
   {
-
+    winner = startPosition;
+    float maxFitness = 0.0f;
+    foreach (var individual in population)
+    {
+      if (maxFitness < individual.fitness)
+      {
+        var v = CalculateRotatedVector(individual.path[0].x, startPosition);
+        v *= individual.path[0].y;
+        winner = v;
+        maxFitness = individual.fitness;
+      }
+    }
   }
 
   /// <summary>
