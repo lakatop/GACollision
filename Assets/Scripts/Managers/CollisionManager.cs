@@ -9,12 +9,12 @@ using System;
 public class AlgorithmsManager
 {
   private List<IBaseCollisionAvoider> _collisionAlgorithms { get; set; }
-  private GeneticAlgorithm _geneticAlgorithm { get; set; }
+  //private GeneticAlgorithm _geneticAlgorithm { get; set; }
 
   public AlgorithmsManager()
   {
     _collisionAlgorithms = new List<IBaseCollisionAvoider>();
-    _geneticAlgorithm = null;
+    //_geneticAlgorithm = null;
   }
 
   public IBaseCollisionAvoider GetOrCreateCollisionAlg<T>(Func<T> ctor) where T: IBaseCollisionAvoider, new()
@@ -31,14 +31,14 @@ public class AlgorithmsManager
     return _collisionAlgorithms[_collisionAlgorithms.Count - 1];
   }
 
-  public GeneticAlgorithm GetOrCreateGeneticAlgorithm()
-  {
-    if (_geneticAlgorithm == null)
-    {
-      _geneticAlgorithm = new GeneticAlgorithm();
-    }
+  //public GeneticAlgorithm GetOrCreateGeneticAlgorithm()
+  //{
+  //  if (_geneticAlgorithm == null)
+  //  {
+  //    _geneticAlgorithm = new GeneticAlgorithm();
+  //  }
 
-    return _geneticAlgorithm;
-  }
+  //  return _geneticAlgorithm;
+  //}
 
  }

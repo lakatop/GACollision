@@ -15,14 +15,14 @@ public class BasicGAAgent : BaseAgent
   private int _cornerIndex { get; set; }
   private JobHandle _gaJobHandle { get; set; }
   private GeneticAlgorithmJob _gaJob { get; set; }
-  private GeneticAlgorithm _geneticAlgorithm { get; set; }
+  //private GeneticAlgorithm _geneticAlgorithm { get; set; }
   private float _elapsedTime { get; set; }
   private Vector2 nextVel { get; set; }
 
   public BasicGAAgent()
   {
     collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
-    _geneticAlgorithm = SimulationManager.Instance._collisionManager.GetOrCreateGeneticAlgorithm();
+    //_geneticAlgorithm = SimulationManager.Instance._collisionManager.GetOrCreateGeneticAlgorithm();
     pathPlanningAlg = new NavMeshPathPlanner(this);
     _navMeshAgent = GetComponent<NavMeshAgent>();
     _navMeshAgent.autoBraking = false;
