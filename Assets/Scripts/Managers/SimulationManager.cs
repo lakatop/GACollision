@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 /// <summary>
 /// Singleton
@@ -20,7 +18,7 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// List of all agents present in the simulation
   /// </summary>
-  public List<IBaseAgent> _agents { get; private set; }
+  private List<IBaseAgent> _agents { get; set; }
   /// <summary>
   /// List of all obstacles present in the simulation
   /// </summary>
@@ -30,10 +28,31 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
   /// <summary>
+  /// List of all classes that require some special resource allocation/deallocation during simulation
+  /// e.g. GeneticAlgorithm for NativeArray(s)
+  /// </summary>
+  private List<IResourceManager> _resourceListeners { get; set; }
+  /// <summary>
   /// Manager for collision avoidance algorithms
   /// This should be the only instance in entire simulation
   /// </summary>
-  public CollisionManager _collisionManager { get; private set; }
+  public AlgorithmsManager _collisionManager { get; private set; }
+  /// <summary>
+  /// Walking platform bound
+  /// </summary>
+  private NativeQuadTree.AABB2D _platfornm { get; set; }
+  /// <summary>
+  /// Represents QuadElements (points) for static obstacles
+  /// </summary>
+  private List<NativeQuadTree.QuadElement<TreeNode>> _quadtreeStaticElements { get; set; }
+  /// <summary>
+  /// Represents QuadElements (points) for agents positions
+  /// </summary>
+  private List<NativeQuadTree.QuadElement<TreeNode>> _quadAgentsPositions { get; set; }
+  /// <summary>
+  /// Quadtree for current simulation
+  /// </summary>
+  private NativeQuadTree.NativeQuadTree<TreeNode> _quadTree { get; set; }
 
   void Awake()
   {
@@ -49,12 +68,17 @@ public class SimulationManager : MonoBehaviour
     _agents = new List<IBaseAgent>();
     _obstacles = new List<Obstacle>();
     _collisionListeners = new List<IBaseCollisionAvoider>();
-    _collisionManager = new CollisionManager();
+    _collisionManager = new AlgorithmsManager();
+    _resourceListeners = new List<IResourceManager>();
+    _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
+    _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
   }
 
   void Start()
   {
     RegisterObstacles();
+    RegisterWalkingPlatform();
+    TransformObstaclesToQuadElements();
   }
 
   /// <summary>
@@ -85,10 +109,34 @@ public class SimulationManager : MonoBehaviour
     }
     else
     {
-      // Call update on agents
+      // Allocate resources if needed
+      //foreach (var resourceManager in _resourceListeners)
+      //{
+      //  resourceManager.OnBeforeUpdate();
+      //}
+
+      // Create quadtree
+      _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm);
+      CreateAgentsQuadPosition(10);
+      var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
+      NativeArray<NativeQuadTree.QuadElement<TreeNode>> arr = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Temp);
+      int index = 0;
+      foreach (var staticElement in _quadtreeStaticElements)
+      {
+        arr[index] = staticElement;
+        index++;
+      }
+      foreach (var agentPos in _quadAgentsPositions)
+      {
+        arr[index] = agentPos;
+        index++;
+      }
+      _quadTree.ClearAndBulkInsert(arr);
+
+      // Update simulation
       foreach (var agent in _agents)
       {
-        agent.Update();
+        agent.OnBeforeUpdate();
       }
       foreach (var collisionAvoider in _collisionListeners)
       {
@@ -96,8 +144,17 @@ public class SimulationManager : MonoBehaviour
       }
       foreach (var agent in _agents)
       {
-        agent.UpdatePosition(Vector2.zero);
+        agent.OnAfterUpdate(Vector2.zero);
       }
+
+      // Deallocate resources if needed
+      //foreach (var resourceManager in _resourceListeners)
+      //{
+      //  resourceManager.OnAfterUpdate();
+      //}
+
+      // Dispose quadtree
+      _quadTree.Dispose();
     }
 
   }
@@ -112,6 +169,20 @@ public class SimulationManager : MonoBehaviour
     _collisionListeners.Add(collisionAvoider);
   }
 
+  /// <summary>
+  /// Add resource handling class to listener list.
+  /// This listener will receive updating calls
+  /// </summary>
+  /// <param name="resourceManager">Intance to be added</param>
+  public void RegisterResourceListener(IResourceManager resourceManager)
+  {
+    _resourceListeners.Add(resourceManager);
+  }
+
+  /// <summary>
+  /// Getter for agents in simulation
+  /// </summary>
+  /// <returns>_agents list</returns>
   public List<IBaseAgent> GetAgents()
   {
     return _agents;
@@ -125,11 +196,11 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new ORCAAgent());
+      _agents.Add(new BasicGAAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
-      agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
-      ((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
+      ((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
+      //((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
       agent.SetDestination(agent.position);
       if (agent is BaseAgent)
       {
@@ -198,5 +269,132 @@ public class SimulationManager : MonoBehaviour
     };
 
     return corners;
+  }
+
+  private void RegisterWalkingPlatform()
+  {
+    // Find all NavMeshModifier components in the scene
+    NavMeshSurface[] navMeshSurfaces = GameObject.FindObjectsOfType<NavMeshSurface>();
+
+    // Iterate over each NavMeshModifier
+    foreach (NavMeshSurface surface in navMeshSurfaces)
+    {
+      // Get the GameObject associated with the NavMeshModifier
+      GameObject obj = surface.gameObject;
+
+      // Ensure the GameObject has a BoxCollider component
+      BoxCollider boxCollider = obj.GetComponent<BoxCollider>();
+      if (boxCollider == null)
+      {
+        Debug.LogError("BoxCollider component not found.");
+        return;
+      }
+
+      // Get the cube's collider bounds
+      Bounds bounds = boxCollider.bounds;
+      _platfornm = new NativeQuadTree.AABB2D(
+        new Unity.Mathematics.float2(bounds.center.x, bounds.center.z),
+        new Unity.Mathematics.float2(bounds.extents.x, bounds.extents.z)
+      );
+    }
+  }
+
+  private void TransformObstaclesToQuadElements()
+  {
+    var agentRadius = 0.4f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
+    foreach (var obstacle in _obstacles)
+    {
+      var start = obstacle.vertices[0];
+      var verticesCount = obstacle.vertices.Count;
+
+      for (int i = 1; i <= verticesCount; i++)
+      {
+        var v = new Vector2(obstacle.vertices[i % verticesCount].x - start.x, obstacle.vertices[i % verticesCount].y - start.y);
+
+        // Add node at the end
+        _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
+        {
+          pos = new Unity.Mathematics.float2(obstacle.vertices[i % verticesCount].x, obstacle.vertices[i % verticesCount].y),
+          element = new TreeNode()
+          {
+            staticObstacle = true,
+            agentIndex = -1,
+            stepIndex = 0
+
+          },
+        });
+
+        var vNormalized = v.normalized;
+        var vSize = v.magnitude;
+        int pointsCount = (int)(vSize / (3 * agentRadius));
+        var point = new Vector2(start.x + ((3 * agentRadius) * vNormalized.x), start.y + ((3 * agentRadius) * vNormalized.y));
+
+        // create nodes between star and end
+        for(int j = 0; j < pointsCount; j++)
+        {
+          //create new tree node on point
+          _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
+          {
+            pos = new Unity.Mathematics.float2(point.x, point.y),
+            element = new TreeNode()
+            {
+              staticObstacle = true,
+              agentIndex = -1,
+              stepIndex = 0
+
+            },
+          });
+
+          point = new Vector2(point.x + ((3 * agentRadius) * vNormalized.x), point.y + ((3 * agentRadius) * vNormalized.y));
+        }
+
+        start = obstacle.vertices[i % verticesCount];
+      }
+    }
+  }
+
+  private bool IsWithingBounds(NativeQuadTree.AABB2D bounds, Vector2 point)
+  {
+    return bounds.Contains(new Unity.Mathematics.float2(point.x, point.y));
+  }
+
+  /// <summary>
+  /// This method creates agents position in quadtree and also its pre-computed position during simulation
+  /// Pre-computing is done according to agents current velocity
+  /// This method DOESNT check for collision, which means that pre-compution will can be very faulty (e.g. agent can move through other agents and obstacles)
+  /// </summary>
+  /// <param name="steps">Number of steps to be pre-computed</param>
+  private void CreateAgentsQuadPosition(int steps)
+  {
+    _quadAgentsPositions.Clear();
+    foreach (var agent in _agents)
+    {
+      var pos = agent.position;
+      var velocity = agent.GetVelocity();
+      for (int i = 0; i < steps; i++)
+      {
+        _quadAgentsPositions.Add(new NativeQuadTree.QuadElement<TreeNode>()
+        {
+          pos = pos,
+          element = new TreeNode()
+          {
+            staticObstacle = false,
+            agentIndex = agent.id,
+            stepIndex = i
+          }
+        });
+
+        pos += velocity;
+        if (!IsWithingBounds(_platfornm, pos))
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  public NativeQuadTree.NativeQuadTree<TreeNode> GetQuadTree()
+  {
+    return _quadTree;
   }
 }

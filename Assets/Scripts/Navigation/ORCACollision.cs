@@ -12,7 +12,7 @@ public class ORCACollision : IBaseCollisionAvoider
   private SimulationManager _simManager { get; set; }
   private Dictionary<int, int> _agentIdToOrcaIDMap { get; set; }
 
-  private readonly float _timeStep = 0.01f;
+  private readonly float _timeStep = 0.1f;
   private float _lastUpdate = 0.0f;
 
   public ORCACollision() { }

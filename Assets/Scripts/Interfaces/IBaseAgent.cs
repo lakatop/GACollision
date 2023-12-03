@@ -7,14 +7,15 @@ public interface IBaseAgent
 {
   /// <summary>
   /// Update function for an agent
-  /// Called every simulation step
+  /// Called every simulation step before other updates
   /// </summary>
-  void Update();
+  void OnBeforeUpdate();
   /// <summary>
-  /// Use to update agents position
+  /// Updatefunction for an agent
+  /// Called every simulation step after other updates
   /// </summary>
   /// <param name="newPos">New position</param>
-  void UpdatePosition(Vector2 newPos);
+  void OnAfterUpdate(Vector2 newPos);
   /// <summary>
   /// Sets agents position
   /// </summary>
@@ -31,6 +32,16 @@ public interface IBaseAgent
   /// </summary>
   /// <param name="des">Destination to be set</param>
   void SetDestination(Vector2 des);
+  /// <summary>
+  /// Getter for agents forward vector
+  /// </summary>
+  /// <returns>Agents forward vector</returns>
+  Vector2 GetForward();
+  /// <summary>
+  /// Getter for agents current velocity
+  /// </summary>
+  /// <returns>Current agents velocity</returns>
+  Vector2 GetVelocity();
   /// <summary>
   /// Agents identifier
   /// </summary>

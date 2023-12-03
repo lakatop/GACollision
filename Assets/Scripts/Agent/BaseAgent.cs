@@ -21,6 +21,10 @@ public abstract class BaseAgent : IBaseAgent
   /// Path to material of agent
   /// </summary>
   private string _materialPath = "group1";
+  /// <summary>
+  /// Previous agents position
+  /// </summary>
+  private Vector3 _lastPosition { get; set; }
 
   public BaseAgent()
   {
@@ -30,16 +34,17 @@ public abstract class BaseAgent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().baseOffset = 1f;
     _object.GetComponent<MeshRenderer>().material = Resources.Load<Material>(_materialPath);
     _object.AddComponent<DirectionArrowGizmo>();
+    _object.AddComponent<LineRenderer>();
 
     //Create3DArrowIndicator(_object.transform);
   }
 
   // IBaseAgent interface ---------------------------------------------------------
 
-  /// <inheritdoc cref="IBaseAgent.Update"/>
-  public abstract void Update();
-  /// <inheritdoc cref="IBaseAgent.UpdatePosition"/>
-  public abstract void UpdatePosition(Vector2 newPos);
+  /// <inheritdoc cref="IBaseAgent.OnBeforeUpdate"/>
+  public abstract void OnBeforeUpdate();
+  /// <inheritdoc cref="IBaseAgent.OnAfterUpdate"/>
+  public abstract void OnAfterUpdate(Vector2 newPos);
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
   public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
@@ -59,6 +64,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
+    _lastPosition = _object.transform.position;
     if (_object.transform.position.y > 1.59f)
     {
       _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
@@ -68,7 +74,11 @@ public abstract class BaseAgent : IBaseAgent
     if (_object != null)
     {
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
-      GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+      // We cannot use Warp for MyNavMeshAgent because it would override its calculations and we wouldnt move after that
+      if (!(this is MyNavMeshAgent))
+      {
+        GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+      }
     }
   }
   /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
@@ -76,8 +86,26 @@ public abstract class BaseAgent : IBaseAgent
   {
     float singleStep = speed * Time.deltaTime;
     var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
-    //_object.transform.forward = direction.normalized;
     _object.transform.rotation = Quaternion.LookRotation(direction);
+  }
+
+  /// <inheritdoc cref="IBaseAgent.GetForward"/>
+  public Vector2 GetForward()
+  {
+    return _object.transform.forward;
+  }
+
+  /// <inheritdoc cref="IBaseAgent.GetVelocity"/>
+  public Vector2 GetVelocity()
+  {
+    if (this is MyNavMeshAgent)
+    {
+      return GetComponent<NavMeshAgent>().velocity;
+    }
+    else
+    {
+      return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
+    }
   }
   
   // Other methods ----------------------------------------------------------------
@@ -97,6 +125,19 @@ public abstract class BaseAgent : IBaseAgent
     {
       _object.name = name;
     }
+  }
+
+  public void SpawnPosition(Vector2 pos)
+  {
+    if (_object.transform.position.y > 1.59f)
+    {
+      _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
+    }
+
+    _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
+    GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+    position = pos;
+    _lastPosition = position;
   }
 
   /// <summary>
@@ -124,42 +165,8 @@ public abstract class BaseAgent : IBaseAgent
     return _object.transform.position;
   }
 
-  GameObject Create3DArrowIndicator(Transform parentTransform)
+  public GameObject GetGameObject()
   {
-    // Create a child GameObject for the 3D arrow indicator
-    GameObject arrow = new GameObject("3DArrowIndicator");
-    arrow.transform.parent = parentTransform;
-
-    // Create a MeshFilter component for the arrow mesh
-    MeshFilter meshFilter = arrow.AddComponent<MeshFilter>();
-    meshFilter.mesh = Create3DArrowMesh();
-
-    // Create a MeshRenderer component for the arrow material
-    MeshRenderer meshRenderer = arrow.AddComponent<MeshRenderer>();
-    meshRenderer.material.color = Color.red; // Set the arrow color
-
-    // Position and scale the arrow (modify these values as needed)
-    arrow.transform.localPosition = new Vector3(0f, 0f, 1f);
-    arrow.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
-
-    return arrow;
-  }
-
-  Mesh Create3DArrowMesh()
-  {
-    // Create a 3D arrow mesh pointing in the positive z-direction
-    Mesh arrowMesh = new Mesh();
-    Vector3[] vertices = new Vector3[]
-    {
-            new Vector3(0f, 0f, 0f),
-            new Vector3(0f, 1f, 0f),
-            new Vector3(-0.05f, 0.8f, 0.2f),
-            new Vector3(0.05f, 0.8f, 0.2f),
-    };
-    int[] triangles = new int[] { 0, 1, 2, 0, 1, 3 };
-    arrowMesh.vertices = vertices;
-    arrowMesh.triangles = triangles;
-    arrowMesh.RecalculateNormals();
-    return arrowMesh;
+    return _object;
   }
 }
