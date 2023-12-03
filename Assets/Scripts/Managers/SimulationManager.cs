@@ -109,13 +109,29 @@ public class SimulationManager : MonoBehaviour
     }
     else
     {
-
-
       // Allocate resources if needed
-      foreach (var resourceManager in _resourceListeners)
+      //foreach (var resourceManager in _resourceListeners)
+      //{
+      //  resourceManager.OnBeforeUpdate();
+      //}
+
+      // Create quadtree
+      _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm);
+      CreateAgentsQuadPosition(10);
+      var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
+      NativeArray<NativeQuadTree.QuadElement<TreeNode>> arr = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Temp);
+      int index = 0;
+      foreach (var staticElement in _quadtreeStaticElements)
       {
-        resourceManager.OnBeforeUpdate();
+        arr[index] = staticElement;
+        index++;
       }
+      foreach (var agentPos in _quadAgentsPositions)
+      {
+        arr[index] = agentPos;
+        index++;
+      }
+      _quadTree.ClearAndBulkInsert(arr);
 
       // Update simulation
       foreach (var agent in _agents)
@@ -132,10 +148,13 @@ public class SimulationManager : MonoBehaviour
       }
 
       // Deallocate resources if needed
-      foreach (var resourceManager in _resourceListeners)
-      {
-        resourceManager.OnAfterUpdate();
-      }
+      //foreach (var resourceManager in _resourceListeners)
+      //{
+      //  resourceManager.OnAfterUpdate();
+      //}
+
+      // Dispose quadtree
+      _quadTree.Dispose();
     }
 
   }
@@ -177,10 +196,10 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new MyNavMeshAgent());
+      _agents.Add(new BasicGAAgent());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
-      agent.SetPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
+      ((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
       //((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
       agent.SetDestination(agent.position);
       if (agent is BaseAgent)
@@ -347,6 +366,7 @@ public class SimulationManager : MonoBehaviour
   /// <param name="steps">Number of steps to be pre-computed</param>
   private void CreateAgentsQuadPosition(int steps)
   {
+    _quadAgentsPositions.Clear();
     foreach (var agent in _agents)
     {
       var pos = agent.position;

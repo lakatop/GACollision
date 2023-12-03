@@ -34,6 +34,7 @@ public abstract class BaseAgent : IBaseAgent
     _object.GetComponent<NavMeshAgent>().baseOffset = 1f;
     _object.GetComponent<MeshRenderer>().material = Resources.Load<Material>(_materialPath);
     _object.AddComponent<DirectionArrowGizmo>();
+    _object.AddComponent<LineRenderer>();
 
     //Create3DArrowIndicator(_object.transform);
   }
@@ -126,6 +127,19 @@ public abstract class BaseAgent : IBaseAgent
     }
   }
 
+  public void SpawnPosition(Vector2 pos)
+  {
+    if (_object.transform.position.y > 1.59f)
+    {
+      _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
+    }
+
+    _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
+    GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+    position = pos;
+    _lastPosition = position;
+  }
+
   /// <summary>
   /// Get component attached to agent's GameObject
   /// </summary>
@@ -149,5 +163,10 @@ public abstract class BaseAgent : IBaseAgent
   public Vector3 GetPos()
   {
     return _object.transform.position;
+  }
+
+  public GameObject GetGameObject()
+  {
+    return _object;
   }
 }

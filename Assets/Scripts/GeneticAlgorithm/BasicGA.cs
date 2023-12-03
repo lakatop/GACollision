@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define SHOW_DEBUG_LINES
+
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
@@ -6,8 +8,12 @@ using NativeQuadTree;
 
 public class BasicGA
 {
-  struct Individual
+  class Individual
   {
+    public Individual()
+    {
+      path = new List<Unity.Mathematics.float2>();
+    }
     public List<Unity.Mathematics.float2> path;
     public float fitness;
   };
@@ -20,13 +26,18 @@ public class BasicGA
   System.Random rand { get; set; }
   int agentIndex { get; set; }
   float agentRadius { get; set; }
+  BaseAgent agent { get; set; }
+  int populationSize { get; set; }
+  float rotationRange { get; set; }
 
   public BasicGA(NativeQuadTree.NativeQuadTree<TreeNode> quadTree,
     float timeDelta,
     float agentSpeed,
     int agentIndex,
     float agentRadius,
-    Vector2 startPos)
+    Vector2 startPos,
+    Vector2 destination,
+    BaseAgent agent)
   {
     _quadTree = quadTree;
     this.timeDelta = timeDelta;
@@ -36,6 +47,12 @@ public class BasicGA
     this.agentIndex = agentIndex;
     this.agentRadius = agentRadius;
     startPosition = startPos;
+    this.destination = destination;
+    this.agent = agent;
+
+    this.populationSize = 30;
+    this.rotationRange = 120f;
+
   }
 
   public void Execute(int loopIterations, out Vector2 winner)
@@ -49,21 +66,36 @@ public class BasicGA
       ApplyOperators();
     }
 
-    SetWinner(winner);
+    CalculateFitness();
+    SetWinner(out winner);
   }
 
   private void InitializePopulation()
   {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < populationSize; i++)
     {
       var individual = new Individual();
       for (int j = 0; j < 10; j++)
       {
-        var rotation = Random.Range(-30f, 30f);
+        var rotation = Random.Range(-rotationRange, rotationRange);
         var size = Random.Range(0f, agentSpeed) * timeDelta;
         individual.path.Add(new Unity.Mathematics.float2(rotation, size));
       }
       population.Add(individual);
+    }
+
+
+    for (int i = 0; i < population.Count; i++)
+    {
+      var initialVector = startPosition;
+      var path = population[i].path;
+      for (int j = 0; j < path.Count; j++)
+      {
+        var v = CalculateRotatedVector(path[j].x, initialVector);
+        v = v * path[j].y;
+        Debug.DrawRay(new Vector3(initialVector.x, 0, initialVector.y), new Vector3(v.x, 0, v.y));
+        initialVector = initialVector + v;
+      }
     }
   }
 
@@ -81,11 +113,13 @@ public class BasicGA
       var stepIndex = 1;
       foreach(var pos in population[i].path)
       {
-        newPos = CalculateRotatedVector(pos.x, initialVector);
-        newPos *= pos.y;
+        var rotatedVector = CalculateRotatedVector(pos.x, initialVector);
+        rotatedVector *= pos.y;
+
+        newPos = newPos + rotatedVector;
 
         NativeQuadTree.AABB2D bounds = new NativeQuadTree.AABB2D(newPos, new Unity.Mathematics.float2(agentRadius * 1.5f, agentRadius * 1.5f));
-        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>();
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
         _quadTree.RangeQuery(bounds, queryRes);
 
         if (Collides(newPos, queryRes, stepIndex))
@@ -103,10 +137,19 @@ public class BasicGA
       // We broke cycle before finishing - this individual is colliding
       if(stepIndex - 1 < population[i].path.Count)
       {
-        break;
+        continue;
       }
 
-      float fitness = 1 / (destination - newPos).magnitude;
+      var diff = (destination - newPos).magnitude;
+      float fitness;
+      if (diff < 0.001f)
+      {
+        fitness = 1;
+      }
+      else
+      {
+        fitness = 1 / (destination - newPos).magnitude;
+      }
       Individual temp2 = population[i];
       temp2.fitness = fitness;
       population[i] = temp2;
@@ -117,10 +160,17 @@ public class BasicGA
   {
     List<Individual> selectedPop = new List<Individual>();
 
-    // Apply roulette selection
-    double totalFitness = population.Sum(x => x.fitness);
+    int multiplier = 10000;
 
-    List<double> relativeFitnesses = population.Select(x => x.fitness / totalFitness).ToList();
+    // Apply roulette selection
+    double totalFitness = population.Sum(x => System.Math.Round(x.fitness * multiplier));
+
+    if (totalFitness == 0)
+    {
+      return;
+    }
+
+    List<double> relativeFitnesses = population.Select(x => Mathf.Round(x.fitness * multiplier)/ totalFitness).ToList();
 
     List<double> wheel = new List<double>();
     double prob = 0f;
@@ -130,7 +180,7 @@ public class BasicGA
       wheel.Add(prob);
     }
 
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < populationSize; i++)
     {
       double val = rand.NextDouble();
       int index = 0;
@@ -142,6 +192,13 @@ public class BasicGA
         }
         index++;
       }
+
+      Debug.Log("INDEX " + index.ToString());
+
+      // In case we are dealing with really small fitnesses ->
+      // their sum might not give 1.0 and then theres chance that index will be equal to population size ->
+      // clamp in to last one
+      index = Mathf.Clamp(index, 0, population.Count - 1);
 
       selectedPop.Add(population[index]);
     }
@@ -194,7 +251,7 @@ public class BasicGA
   /// </summary>
   private void SetWinner(out Vector2 winner)
   {
-    winner = startPosition;
+    winner = new Vector2(0,0);
     float maxFitness = 0.0f;
     foreach (var individual in population)
     {

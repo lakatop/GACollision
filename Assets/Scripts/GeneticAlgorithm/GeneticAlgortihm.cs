@@ -41,6 +41,8 @@ public class GeneticAlgorithm : IResourceManager
   {
     _gaLoopIterations = 10;
     _needsAllocation = true;
+    _gaJobHandles = new List<JobHandle>();
+    _gaJobs = new List<GeneticAlgorithmJob>();
     SimulationManager.Instance.RegisterResourceListener(this);
   }
 

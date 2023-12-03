@@ -28,6 +28,7 @@ public class BasicGAAgent : BaseAgent
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
     _elapsedTime = 0.0f;
+    speed = 5.0f;
   }
 
   public override void SetDestination(Vector2 des)
@@ -62,11 +63,18 @@ public class BasicGAAgent : BaseAgent
     //  return;
 
     //_elapsedTime = 0.0f;
+    destination = CalculateNewDestination();
+
+    if ((position - destination).magnitude <= 0.1f)
+    {
+      nextVel = Vector2.zero;
+      return;
+    }
 
     // Run GA
     var quadTree = SimulationManager.Instance.GetQuadTree();
     Vector2 winner = Vector2.zero;
-    var _ga = new BasicGA(quadTree, Time.deltaTime, speed, id, 0.5f, position);
+    var _ga = new BasicGA(quadTree, Time.deltaTime, speed, id, 0.5f, position, destination, this);
     _ga.Execute(10, out winner);
     nextVel = winner;
   }
@@ -79,6 +87,12 @@ public class BasicGAAgent : BaseAgent
 
     SetPosition(pos);
     SetForward(vel.normalized);
+
+    if ((pos - new Vector2(destination.x, destination.y)).sqrMagnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
+    {
+      _cornerIndex++;
+      destination = new Vector2(_path.corners[_cornerIndex].x, _path.corners[_cornerIndex].z);
+    }
   }
 
   private Vector2 CalculateNewDestination()
