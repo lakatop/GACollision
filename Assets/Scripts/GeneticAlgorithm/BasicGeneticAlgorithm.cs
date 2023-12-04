@@ -3,8 +3,8 @@ using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
 using Unity.Collections;
-using System.Reflection;
-using static Unity.VisualScripting.LudiqRootObjectEditor;
+using NativeQuadTree;
+using UtilsGA;
 
 public class BasicIndividual
 {
@@ -103,7 +103,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
       var path = pop[i].path;
       for (int j = 0; j < path.Count; j++)
       {
-        var v = CalculateRotatedVector(path[j].x, initialVector);
+        var v = UtilsGA.UtilsGA.CalculateRotatedVector(path[j].x, initialVector);
         v = v * path[j].y;
         Debug.DrawRay(new Vector3(initialVector.x, 0, initialVector.y), new Vector3(v.x, 0, v.y));
         initialVector = initialVector + v;
@@ -137,7 +137,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
     {
       if (maxFitness < individual.fitness)
       {
-        var v = CalculateRotatedVector(individual.path[0].x, _startPosition);
+        var v = UtilsGA.UtilsGA.CalculateRotatedVector(individual.path[0].x, _startPosition);
         v *= individual.path[0].y;
         _winner = v;
         maxFitness = individual.fitness;
@@ -145,58 +145,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
     }
   }
 
-  /// <summary>
-  /// Calculate normalized vector with degrees rotation compared to initialVector
-  /// </summary>
-  /// <param name="degrees">Rotation of new vector - counter clockwise</param>
-  /// <param name="initialVector">Vector to which we perform rotation. New vector ahs origin where initialVector ends</param>
-  /// <returns>Rotated vector</returns>
-  Vector2 CalculateRotatedVector(float degrees, Vector2 initialVector)
-  {
-    // Convert degrees to radians for Mathf functions
-    float radians = Mathf.Deg2Rad * degrees;
 
-
-    // Calculate the components of the new vector using trigonometry
-    float xComponent = Mathf.Cos(radians) * initialVector.x - Mathf.Sin(radians) * initialVector.y;
-    float yComponent = Mathf.Sin(radians) * initialVector.x + Mathf.Cos(radians) * initialVector.y;
-
-    // Create the new vector
-    Vector2 generatedVector = new Vector2(xComponent, yComponent).normalized;
-
-    return generatedVector;
-
-  }
-
-  /// <summary>
-  /// Check whether my position collides with results returned by quadtree
-  /// </summary>
-  /// <param name="pos">Agents current position</param>
-  /// <param name="queryRes">Result from query performed on quadtree</param>
-  /// <param name="stepIndex">Current step index in simulation</param>
-  /// <returns></returns>
-  bool Collides(Vector2 pos, NativeList<NativeQuadTree.QuadElement<TreeNode>> queryRes, int stepIndex)
-  {
-    bool collides = false;
-
-    foreach (var element in queryRes)
-    {
-      if ((element.element.agentIndex == _agentIndex)
-          || (!element.element.staticObstacle && element.element.stepIndex != stepIndex))
-      {
-        continue;
-      }
-
-      Vector2 v = new Vector2(element.pos.x - pos.x, element.pos.y - pos.y);
-      if (v.magnitude < (_agentRadius * 2))
-      {
-        collides = true;
-        break;
-      }
-    }
-
-    return collides;
-  }
 }
 
 public class BasicGeneticAlgorithmBuilder : IGeneticAlgorithmBuilder<BasicIndividual>
@@ -304,14 +253,78 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 
 public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 {
+  Vector2 _startPosition { get; set; }
+  Vector2 _destination { get; set; }
+  float _agentRadius { get; set; }
+  int _agentIndex { get; set; }
+  NativeQuadTree<TreeNode> _quadTree { get; set; }
+
   public IPopulation<BasicIndividual> ModifyPopulation(IPopulation<BasicIndividual> currentPopulation)
   {
-    return new BasicPopulation();
+    // Create bounds from current position (stretch should be agentRadius or agentRadius * 2)
+    // Call Collides
+    // If collides, fitness must be 0 and continue to another individual (we certainly dont want to choose this individual)
+    // If doesnt collide, continue on next step.
+    // At the end, check how far are we from destination
+    var population = currentPopulation.GetPopulation();
+    for (int i = 0; i < population.Length; i++)
+    {
+      var initialVector = _startPosition;
+      var newPos = initialVector;
+      var stepIndex = 1;
+      foreach (var pos in population[i].path)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.CalculateRotatedVector(pos.x, initialVector);
+        rotatedVector *= pos.y;
+
+        newPos = newPos + rotatedVector;
+
+        AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+        _quadTree.RangeQuery(bounds, queryRes);
+
+        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex,_agentRadius,_agentIndex))
+        {
+          population[i].fitness = 0;
+          break;
+        }
+
+        stepIndex++;
+        initialVector = newPos;
+      }
+
+      // We broke cycle before finishing - this individual is colliding
+      if (stepIndex - 1 < population[i].path.Count)
+      {
+        continue;
+      }
+
+      var diff = (_destination - newPos).magnitude;
+      float fitness;
+      if (diff < 0.001f)
+      {
+        fitness = 1;
+      }
+      else
+      {
+        fitness = 1 / (_destination - newPos).magnitude;
+      }
+      population[i].fitness = fitness;
+    }
+
+    currentPopulation.SetPopulation(population);
+    return currentPopulation;
   }
 
   public void SetResources(List<object> resources)
   {
-    throw new System.NotImplementedException();
+    Assert.IsTrue(resources.Count == 5);
+
+    _startPosition = (Vector2)resources[0];
+    _destination = (Vector2)resources[1];
+    _agentRadius = (float)resources[2];
+    _agentIndex = (int)resources[3];
+    _quadTree = (NativeQuadTree<TreeNode>)resources[4];
   }
 }
 
