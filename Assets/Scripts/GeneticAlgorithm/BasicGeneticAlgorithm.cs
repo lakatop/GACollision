@@ -58,8 +58,6 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
   private float _timeDelta { get; set; }
   private float _agentSpeed { get; set; }
   private Vector2 _startPosition { get; set; }
-  private int _agentIndex { get; set; }
-  private float _agentRadius { get; set; }
 
   public void Execute()
   {
@@ -106,7 +104,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
       {
         var v = UtilsGA.UtilsGA.CalculateRotatedVector(path[j].x, initialVector);
         v = v * path[j].y;
-        Debug.DrawRay(new Vector3(initialVector.x, 0, initialVector.y), new Vector3(v.x, 0, v.y));
+        Debug.DrawRay(new Vector3(initialVector.x, 0f, initialVector.y), new Vector3(v.x, 0f, v.y));
         initialVector = initialVector + v;
       }
     }
@@ -114,15 +112,11 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
 
   public void SetResources(List<object> resources)
   {
-    Assert.IsTrue(resources.Count == 5);
+    Assert.IsTrue(resources.Count == 3);
 
     _timeDelta = (float)resources[0];
     _agentSpeed = (float)resources[1];
     _startPosition = (Vector2)resources[2];
-    _agentIndex = (int)resources[3];
-    _agentRadius = (float)resources[4];
-
-    crossover.SetResources(new List<object> { _agentSpeed, _timeDelta });
   }
 
   public Vector2 GetResult()
@@ -151,6 +145,11 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
 
 public class BasicGeneticAlgorithmBuilder : IGeneticAlgorithmBuilder<BasicIndividual>
 {
+  public BasicGeneticAlgorithmBuilder()
+  {
+    _ga = new BasicGeneticAlgorithm();
+  }
+
   private BasicGeneticAlgorithm _ga { get; set; }
 
   public IGeneticAlgorithm<BasicIndividual> GetResult()

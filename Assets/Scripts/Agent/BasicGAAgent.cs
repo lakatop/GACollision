@@ -13,11 +13,10 @@ public class BasicGAAgent : BaseAgent
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
-  private JobHandle _gaJobHandle { get; set; }
-  private GeneticAlgorithmJob _gaJob { get; set; }
-  //private GeneticAlgorithm _geneticAlgorithm { get; set; }
   private float _elapsedTime { get; set; }
   private Vector2 nextVel { get; set; }
+  private GeneticAlgorithmDirector _gaDirector { get; set; }
+  private BasicGeneticAlgorithmBuilder _gaBuilder { get; set; }
 
   public BasicGAAgent()
   {
@@ -25,6 +24,8 @@ public class BasicGAAgent : BaseAgent
     //_geneticAlgorithm = SimulationManager.Instance._collisionManager.GetOrCreateGeneticAlgorithm();
     pathPlanningAlg = new NavMeshPathPlanner(this);
     _navMeshAgent = GetComponent<NavMeshAgent>();
+    _gaDirector = new GeneticAlgorithmDirector();
+    _gaBuilder = new BasicGeneticAlgorithmBuilder();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
     _elapsedTime = 0.0f;
@@ -72,11 +73,12 @@ public class BasicGAAgent : BaseAgent
     }
 
     // Run GA
-    var quadTree = SimulationManager.Instance.GetQuadTree();
-    Vector2 winner = Vector2.zero;
-    var _ga = new BasicGA(quadTree, Time.deltaTime, speed, id, 0.5f, position, destination, this);
-    _ga.Execute(10, out winner);
-    nextVel = winner;
+    _gaBuilder = new BasicGeneticAlgorithmBuilder();
+    _gaDirector.MakeBasicGA(_gaBuilder, this);
+    var _gaAlg = _gaBuilder.GetResult();
+    _gaAlg.Execute();
+
+    nextVel = _gaAlg.GetResult();
   }
 
   // Set agent position and start new EA cycle
