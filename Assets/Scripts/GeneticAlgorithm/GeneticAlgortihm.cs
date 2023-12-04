@@ -117,3 +117,16 @@
 //    return handle;
 //  }
 //}
+
+class GeneticAlgorithmDirector
+{
+  public GeneticAlgorithmDirector() { }
+
+  public void MakeBasicGA(BasicGeneticAlgorithmBuilder builder)
+  {
+    builder.SetCrossover(new BasicCrossOperator());
+    builder.SetFitness(new BasicFitnessFunction());
+    builder.SetMutation(new BasicMutationOperator());
+    builder.SetSelection(new BasicSelectionFunction());
+  }
+}

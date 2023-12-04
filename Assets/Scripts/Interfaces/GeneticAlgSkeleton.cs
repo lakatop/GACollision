@@ -90,6 +90,10 @@ public interface IGeneticAlgorithm<T> where T : class
   /// </summary>
   public int iterations { get; set; }
   /// <summary>
+  /// Number of individuals that 1 population should have
+  /// </summary>
+  public int populationSize { get; set; }
+  /// <summary>
   /// Function to initialize population
   /// </summary>
   public void InitializePopulation();
@@ -100,9 +104,15 @@ public interface IGeneticAlgorithm<T> where T : class
   /// <summary>
   /// Set any required resources for GA to function (e.g. assign quadtree)
   /// </summary>
-  public void SetResources();
+  /// <param name="resources">List of resources</param>
+  public void SetResources(System.Collections.Generic.List<object> resources);
   /// <summary>
   /// Perform GA
   /// </summary>
   public void Execute();
+  /// <summary>
+  /// Getter for last run result
+  /// </summary>
+  /// <returns>Vector that is ranked as best among results of last GA run</returns>
+  public UnityEngine.Vector2 GetResult();
 }
