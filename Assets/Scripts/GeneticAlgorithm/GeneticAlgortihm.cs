@@ -109,7 +109,7 @@ public class GeneticAlgorithm : IResourceManager
     return job;
   }
 
-  public JobHandle ScheduleGeneticAlgorithmJob (GeneticAlgorithmJob gaJob)
+  public JobHandle ScheduleGeneticAlgorithmJob(GeneticAlgorithmJob gaJob)
   {
     var handle = gaJob.Schedule();
     _gaJobHandles.Add(handle);
