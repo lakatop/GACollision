@@ -28,6 +28,11 @@ public interface IPopulationModifier<T> where T : class
   /// <param name="currentPopulation">Population to be modified</param>
   /// <returns>New modified population</returns>
   public IPopulation<T> ModifyPopulation(IPopulation<T> currentPopulation);
+  /// <summary>
+  /// Set any required resources for GA to function (e.g. assign quadtree)
+  /// </summary>
+  /// <param name="resources">List of resources</param>
+  public void SetResources(System.Collections.Generic.List<object> resources);
 }
 
 /// <summary>

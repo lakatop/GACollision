@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine.Assertions;
 using Unity.Collections;
 using System.Reflection;
+using static Unity.VisualScripting.LudiqRootObjectEditor;
 
 public class BasicIndividual
 {
@@ -119,6 +120,8 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
     _startPosition = (Vector2)resources[2];
     _agentIndex = (int)resources[3];
     _agentRadius = (float)resources[4];
+
+    crossover.SetResources(new List<object> { _agentSpeed, _timeDelta });
   }
 
   public Vector2 GetResult()
@@ -228,9 +231,59 @@ public class BasicGeneticAlgorithmBuilder : IGeneticAlgorithmBuilder<BasicIndivi
 
 public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 {
+  System.Random _rand = new System.Random();
+  float _agentSpeed { get; set; }
+  float _timeDelta { get; set; }
+
   public IPopulation<BasicIndividual> ModifyPopulation(IPopulation<BasicIndividual> currentPopulation)
   {
-    return new BasicPopulation();
+    List<BasicIndividual> offsprings = new List<BasicIndividual>();
+    var population = currentPopulation.GetPopulation();
+    for (int i = 0; i < population.Length - 1; i += 2)
+    {
+      BasicIndividual off1 = new BasicIndividual();
+      BasicIndividual off2 = new BasicIndividual();
+
+      BasicIndividual[] parents = { population[i], population[i + 1] };
+
+      for (int j = 0; j < parents[0].path.Count; j++)
+      {
+        int prob = (int)System.Math.Round(_rand.NextDouble(), System.MidpointRounding.AwayFromZero);
+        off1.path.Add(parents[prob].path[j]);
+        off2.path.Add(parents[1 - prob].path[j]);
+
+        // Mutation with probability 0.2
+        var mutProb = _rand.NextDouble();
+        if (mutProb > 0.8f)
+        {
+          var size = UnityEngine.Random.Range(0f, _agentSpeed) * _timeDelta;
+          var off1V = off1.path[off1.path.Count - 1];
+          var off2V = off2.path[off2.path.Count - 1];
+
+          off1V.y = size;
+          off2V.y = size;
+
+          off1.path[off1.path.Count - 1] = off1V;
+          off2.path[off2.path.Count - 1] = off2V;
+        }
+
+      }
+
+      offsprings.Add(off1);
+      offsprings.Add(off2);
+    }
+
+    currentPopulation.SetPopulation(offsprings.ToArray());
+
+    return currentPopulation;
+  }
+
+  public void SetResources(List<object> resources)
+  {
+    Assert.IsTrue(resources.Count == 2);
+
+    _agentSpeed = (float)resources[0];
+    _timeDelta = (float)resources[1];
   }
 }
 
@@ -240,6 +293,11 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
   {
     return new BasicPopulation();
   }
+
+  public void SetResources(List<object> resources)
+  {
+    throw new System.NotImplementedException();
+  }
 }
 
 public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
@@ -248,6 +306,11 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
   {
     return new BasicPopulation();
   }
+
+  public void SetResources(List<object> resources)
+  {
+    throw new System.NotImplementedException();
+  }
 }
 
 public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
@@ -255,5 +318,10 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
   public IPopulation<BasicIndividual> ModifyPopulation(IPopulation<BasicIndividual> currentPopulation)
   {
     return new BasicPopulation();
+  }
+
+  public void SetResources(List<object> resources)
+  {
+    throw new System.NotImplementedException();
   }
 }
