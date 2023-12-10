@@ -155,6 +155,7 @@ public class SimulationManager : MonoBehaviour
 
       // Dispose quadtree
       _quadTree.Dispose();
+      arr.Dispose();
     }
 
   }
@@ -196,7 +197,7 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new BasicGAAgent());
+      _agents.Add(new BasicGAAgentParallel());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
       ((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));

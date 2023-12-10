@@ -2,7 +2,7 @@
 /// Interface for population. Population consists of set of individuals
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
-public interface IPopulation<T> where T : class
+public interface IPopulation<T>
 {
   /// <summary>
   /// Getter for population individuals
@@ -20,7 +20,7 @@ public interface IPopulation<T> where T : class
 /// Population modifier classes - cross, mutation, selection and fitness
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
-public interface IPopulationModifier<T> where T : class
+public interface IPopulationModifier<T>
 {
   /// <summary>
   /// Modifies population passed as parameter and returns result.
@@ -39,7 +39,7 @@ public interface IPopulationModifier<T> where T : class
 /// Builder for genetic algorithm. Sets concrete population modifiers.
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
-public interface IGeneticAlgorithmBuilder<T> where T : class
+public interface IGeneticAlgorithmBuilder<T>
 {
   /// <summary>
   /// Setter for crossover operator
@@ -72,7 +72,7 @@ public interface IGeneticAlgorithmBuilder<T> where T : class
 /// Interface for genetic algorithm.
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
-public interface IGeneticAlgorithm<T> where T : class
+public interface IGeneticAlgorithm<T>
 {
   /// <summary>
   /// Crossover operator
@@ -81,7 +81,7 @@ public interface IGeneticAlgorithm<T> where T : class
   /// <summary>
   /// Mutation operator
   /// </summary>
-  public IPopulationModifier<T> mutation { get; set; }
+  //public IPopulationModifier<T> mutation { get; set; }
   /// <summary>
   /// Fitness function
   /// </summary>
@@ -114,7 +114,7 @@ public interface IGeneticAlgorithm<T> where T : class
   /// <summary>
   /// Perform GA
   /// </summary>
-  public void Execute();
+  public void RunGA();
   /// <summary>
   /// Getter for last run result
   /// </summary>

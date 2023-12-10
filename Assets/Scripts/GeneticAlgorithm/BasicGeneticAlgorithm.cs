@@ -6,8 +6,10 @@ using Unity.Collections;
 using NativeQuadTree;
 using UtilsGA;
 using System.Linq;
+using Unity.Burst;
+using Unity.Collections.LowLevel.Unsafe;
 
-public class BasicIndividual
+public class BasicIndividual 
 {
   public BasicIndividual()
   {
@@ -17,6 +19,24 @@ public class BasicIndividual
 
   public float fitness { get; set; }
   public List<float2> path { get; set; }
+}
+
+[BurstCompile]
+public struct BasicIndividualStruct
+{
+  public void Initialize(int length, Allocator allocator)
+  {
+    fitness = 0f;
+    path = new UnsafeList<float2>(length, allocator);
+  }
+
+  public void Dispose()
+  {
+    path.Dispose();
+  }
+
+  public float fitness;
+  public UnsafeList<float2> path;
 }
 
 public class BasicPopulation : IPopulation<BasicIndividual>
@@ -38,7 +58,22 @@ public class BasicPopulation : IPopulation<BasicIndividual>
 
   private List<BasicIndividual> _population { get; set; }
 }
- 
+
+public struct NativeBasicPopulation : IPopulation<BasicIndividualStruct>
+{
+  public BasicIndividualStruct[] GetPopulation()
+  {
+    return _population.ToArray();
+  }
+
+  public void SetPopulation(BasicIndividualStruct[] population)
+  {
+    _population = new NativeList<BasicIndividualStruct>(population.Length, Allocator.Persistent);
+  }
+
+  private NativeList<BasicIndividualStruct> _population;
+}
+
 
 public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
 {
@@ -59,7 +94,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
   private float _agentSpeed { get; set; }
   private Vector2 _startPosition { get; set; }
 
-  public void Execute()
+  public void RunGA()
   {
     InitializePopulation();
 
@@ -178,6 +213,50 @@ public class BasicGeneticAlgorithmBuilder : IGeneticAlgorithmBuilder<BasicIndivi
   }
 }
 
+//public class BasicGeneticAlgorithParallelBuilder : IGeneticAlgorithmBuilder<BasicIndividualStruct>
+//{
+//  public BasicGeneticAlgorithParallelBuilder()
+//  {
+//    _ga = new BasicGeneticAlgorithmParallel();
+//  }
+
+//  private BasicGeneticAlgorithmParallel _ga;
+
+//  public IGeneticAlgorithm<BasicIndividualStruct> GetResult()
+//  {
+//    return _ga;
+//  }
+
+//  public void SetCrossover(IPopulationModifier<BasicIndividualStruct> cross)
+//  { 
+//    var _gaCopy = _ga;
+//    _gaCopy.crossover = cross;
+//    _ga = _gaCopy;
+//  }
+
+//  public void SetFitness(IPopulationModifier<BasicIndividualStruct> fitness)
+//  {
+//    var _gaCopy = _ga;
+//    _gaCopy.fitness = fitness;
+//    _ga = _gaCopy;
+//  }
+
+//  public void SetMutation(IPopulationModifier<BasicIndividualStruct> mutation)
+//  {
+//    var _gaCopy = _ga;
+//    _gaCopy.mutation = mutation;
+//    _ga = _gaCopy;
+//  }
+
+//  public void SetSelection(IPopulationModifier<BasicIndividualStruct> selection)
+//  {
+//    var _gaCopy = _ga;
+//    _gaCopy.selection = selection;
+//    _ga = _gaCopy;
+//  }
+//}
+
+
 public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 {
   System.Random _rand = new System.Random();
@@ -213,6 +292,7 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
   {
   }
 }
+
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
