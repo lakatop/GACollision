@@ -44,7 +44,7 @@ public class BasicGAAgentParallel : BaseAgent
     _path = new NavMeshPath();
     _elapsedTime = 0.0f;
     speed = 5.0f;
-    populationSize = 10;
+    populationSize = 30;
     jobScheduled = false;
   }
 
@@ -114,7 +114,7 @@ public class BasicGAAgentParallel : BaseAgent
       _destination = destination,
       _agentRadius = 0.5f,
       _agentIndex = id,
-      //_quadTree = SimulationManager.Instance.GetQuadTree()
+      _quadTree = SimulationManager.Instance.GetQuadTree()
     };
 
     // Create selection
@@ -124,9 +124,9 @@ public class BasicGAAgentParallel : BaseAgent
     BasicSelectionFunctionParallel sel = new BasicSelectionFunctionParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      //selectedPop = selectedPop,
-      //relativeFitnesses = relativeFit,
-      //wheel = wheel
+      selectedPop = selectedPop,
+      relativeFitnesses = relativeFit,
+      wheel = wheel
     };
 
     // Create GA
@@ -145,12 +145,6 @@ public class BasicGAAgentParallel : BaseAgent
       _timeDelta = Time.deltaTime,
       _agentSpeed = speed,
       _startPosition = position,
-      //offsprings = offsprings,
-      //parents = parents,
-      _quadTree = SimulationManager.Instance.GetQuadTree(),
-      selectedPop = selectedPop,
-      relativeFitnesses = relativeFit,
-      wheel = wheel,
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
     };
 

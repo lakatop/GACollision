@@ -20,12 +20,6 @@ public struct BasicGeneticAlgorithmParallel : IJob
   public BasicSelectionFunctionParallel sel;
   public NativeArray<BasicIndividualStruct> pop;
 
-  [ReadOnly] public NativeQuadTree<TreeNode> _quadTree;
-
-  public NativeArray<BasicIndividualStruct> selectedPop;
-  public NativeArray<double> relativeFitnesses;
-  public NativeArray<double> wheel;
-
   public int iterations;
   public int populationSize;
 
@@ -47,13 +41,13 @@ public struct BasicGeneticAlgorithmParallel : IJob
 
     for (int i = 0; i < iterations; i++)
     {
-      pop = fit.ModifyPopulation(pop, _quadTree);
-      pop = sel.ModifyPopulation(pop, selectedPop, relativeFitnesses, wheel);
+      pop = fit.ModifyPopulation(pop);
+      pop = sel.ModifyPopulation(pop);
       pop = cross.ModifyPopulation(pop);
       pop = mut.ModifyPopulation(pop);
     }
 
-    pop = fit.ModifyPopulation(pop, _quadTree);
+    pop = fit.ModifyPopulation(pop);
     SetWinner();
 
     Dispose();
@@ -218,9 +212,9 @@ public struct BasicFitnessFunctionParallel
   public Vector2 _destination;
   public float _agentRadius;
   public int _agentIndex;
-  //[ReadOnly] public NativeQuadTree<TreeNode> _quadTree;
+  [ReadOnly] public NativeQuadTree<TreeNode> _quadTree;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation, NativeQuadTree<TreeNode> _quadTree)
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // Create bounds from current position (stretch should be agentRadius or agentRadius * 2)
     // Call Collides
@@ -293,12 +287,11 @@ public struct BasicFitnessFunctionParallel
 public struct BasicSelectionFunctionParallel
 {
   public Unity.Mathematics.Random _rand;
-  //public NativeArray<BasicIndividualStruct> selectedPop;
-  //public NativeArray<double> relativeFitnesses;
-  //public NativeArray<double> wheel;
+  public NativeArray<BasicIndividualStruct> selectedPop;
+  public NativeArray<double> relativeFitnesses;
+  public NativeArray<double> wheel;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation, NativeArray<BasicIndividualStruct> selectedPop,
-      NativeArray<double> relativeFitnesses, NativeArray<double> wheel)
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     var population = currentPopulation;
 
