@@ -30,7 +30,7 @@ public class BasicGAAgentParallel : BaseAgent
   NativeArray<BasicIndividualStruct> selectedPop;
   NativeArray<double> relativeFit;
   NativeArray<double> wheel;
-  NativeArray<BasicIndividualStruct> pop;
+  NativeBasicPopulation pop;
 
   public BasicGAAgentParallel()
   {
@@ -130,14 +130,17 @@ public class BasicGAAgentParallel : BaseAgent
     };
 
     // Create GA
-    pop = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
+    pop = new NativeBasicPopulation()
+    {
+      _population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)
+    };
     winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     gaJob = new BasicGeneticAlgorithmParallel()
     {
       cross = cross,
-      mut = mut,
-      fit = fit,
-      sel = sel,
+      mutation = mut,
+      fitness = fit,
+      selection = sel,
       pop = pop,
       iterations = 10,
       populationSize = populationSize,

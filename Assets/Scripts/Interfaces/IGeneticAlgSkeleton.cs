@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using Unity.Collections;
+
+/// <summary>
 /// Interface for population. Population consists of set of individuals
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
@@ -17,6 +19,34 @@ public interface IPopulation<T>
 }
 
 /// <summary>
+/// Interface for population used in parallel GA. Population consists of set of individuals
+/// </summary>
+/// <typeparam name="T">Concrete individual struct</typeparam>
+public interface IParallelPopulation<T> where T : struct
+{
+  /// <summary>
+  /// Getter for population individuals
+  /// </summary>
+  /// <returns>Individuals NativeArray</returns>
+  public NativeArray<T> GetPopulation();
+  /// <summary>
+  /// Setter for population individuals
+  /// </summary>
+  /// <param name="population">New population to be set</param>
+  public void SetPopulation(NativeArray<T> population);
+  /// <summary>
+  /// Setter for concrete individual
+  /// </summary>
+  /// <param name="individual">New individual that will be set</param>
+  /// <param name="index">Index at which new individual will be placed in population</param>
+  public void SetIndividual(T individual, int index);
+  /// <summary>
+  /// Used to dispose individuals in population
+  /// </summary>
+  public void Dispose();
+}
+
+/// <summary>
 /// Population modifier classes - cross, mutation, selection and fitness
 /// </summary>
 /// <typeparam name="T">Concrete individual class</typeparam>
@@ -28,6 +58,25 @@ public interface IPopulationModifier<T>
   /// <param name="currentPopulation">Population to be modified</param>
   /// <returns>New modified population</returns>
   public IPopulation<T> ModifyPopulation(IPopulation<T> currentPopulation);
+  /// <summary>
+  /// Set any required resources for GA to function (e.g. assign quadtree)
+  /// </summary>
+  /// <param name="resources">List of resources</param>
+  public void SetResources(System.Collections.Generic.List<object> resources);
+}
+
+/// <summary>
+/// Population modifier classes - cross, mutation, selection and fitness
+/// </summary>
+/// <typeparam name="T">Concrete individual class</typeparam>
+public interface IParallelPopulationModifier<T> where T : struct
+{
+  /// <summary>
+  /// Modifies population passed as parameter and returns result.
+  /// </summary>
+  /// <param name="currentPopulation">Population to be modified</param>
+  /// <returns>New modified population</returns>
+  public NativeArray<T> ModifyPopulation(NativeArray<T> currentPopulation);
   /// <summary>
   /// Set any required resources for GA to function (e.g. assign quadtree)
   /// </summary>
