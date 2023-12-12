@@ -11,7 +11,7 @@ using Unity.Collections;
 
 
 [BurstCompile]
-public struct BasicGeneticAlgorithmParallel : IJob
+public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
   public BasicCrossOperatorParallel cross;
   public BasicMutationOperatorParallel mutation;
@@ -20,8 +20,8 @@ public struct BasicGeneticAlgorithmParallel : IJob
   public NativeBasicPopulation pop;
 
 
-  public int iterations;
-  public int populationSize;
+  public int iterations { get; set; }
+  public int populationSize { get; set; }
 
   public NativeArray<Vector2> _winner;
   public float _timeDelta;
@@ -115,6 +115,10 @@ public struct BasicGeneticAlgorithmParallel : IJob
 
   public void Dispose()
   {
+    cross.Dispose();
+    mutation.Dispose();
+    fitness.Dispose();
+    selection.Dispose();
     foreach (var ind in pop.GetPopulation())
     {
       ind.Dispose();

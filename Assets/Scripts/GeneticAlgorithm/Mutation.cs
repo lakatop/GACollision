@@ -73,4 +73,8 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   public void SetResources(List<object> resources)
   {
   }
+
+  public void Dispose()
+  {
+  }
 }

@@ -82,6 +82,10 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// </summary>
   /// <param name="resources">List of resources</param>
   public void SetResources(System.Collections.Generic.List<object> resources);
+  /// <summary>
+  /// Dispose any allocated resources
+  /// </summary>
+  public void Dispose();
 }
 
 /// <summary>
@@ -115,6 +119,35 @@ public interface IGeneticAlgorithmBuilder<T>
   /// </summary>
   /// <returns>New GA created from specified operators and functions</returns>
   public IGeneticAlgorithm<T> GetResult();
+}
+
+public interface IGeneticAlgorithmParallelBuilder<T> where T : struct
+{
+  /// <summary>
+  /// Setter for crossover operator
+  /// </summary>
+  /// <param name="cross">Crossover operator</param>
+  public void SetCrossover(IParallelPopulationModifier<T> cross);
+  /// <summary>
+  /// Setter for mutation operator
+  /// </summary>
+  /// <param name="mutation">Mutation operator</param>
+  public void SetMutation(IParallelPopulationModifier<T> mutation);
+  /// <summary>
+  /// Setter for fitness function
+  /// </summary>
+  /// <param name="fitness">Fitness function</param>
+  public void SetFitness(IParallelPopulationModifier<T> fitness);
+  /// <summary>
+  /// Setter for selection function
+  /// </summary>
+  /// <param name="selection">Selection function</param>
+  public void SetSelection(IParallelPopulationModifier<T> selection);
+  /// <summary>
+  /// Getter for created GA
+  /// </summary>
+  /// <returns>New GA created from specified operators and functions</returns>
+  public IGeneticAlgorithmParallel<T> GetResult();
 }
 
 /// <summary>
@@ -155,6 +188,38 @@ public interface IGeneticAlgorithm<T>
   /// Population of this GA
   /// </summary>
   public IPopulation<T> population { get; set; }
+  /// <summary>
+  /// Set any required resources for GA to function (e.g. assign quadtree)
+  /// </summary>
+  /// <param name="resources">List of resources</param>
+  public void SetResources(System.Collections.Generic.List<object> resources);
+  /// <summary>
+  /// Perform GA
+  /// </summary>
+  public void RunGA();
+  /// <summary>
+  /// Getter for last run result
+  /// </summary>
+  /// <returns>Vector that is ranked as best among results of last GA run</returns>
+  public UnityEngine.Vector2 GetResult();
+}
+
+
+/// <summary>
+/// Interface for genetic algorithm that will run in parallel.
+/// </summary>
+/// <typeparam name="T">Concrete individual class</typeparam>
+public interface IGeneticAlgorithmParallel<T>
+{
+  public int iterations { get; set; }
+  /// <summary>
+  /// Number of individuals that 1 population should have
+  /// </summary>
+  public int populationSize { get; set; }
+  /// <summary>
+  /// Function to initialize population
+  /// </summary>
+  public void InitializePopulation();
   /// <summary>
   /// Set any required resources for GA to function (e.g. assign quadtree)
   /// </summary>

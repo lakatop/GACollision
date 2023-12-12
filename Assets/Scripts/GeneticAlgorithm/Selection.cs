@@ -129,4 +129,11 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   public void SetResources(List<object> resources)
   {
   }
+
+  public void Dispose()
+  {
+    selectedPop.Dispose();
+    relativeFitnesses.Dispose();
+    wheel.Dispose();
+  }
 }

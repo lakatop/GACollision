@@ -81,4 +81,10 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
   public void SetResources(List<object> resources)
   {
   }
+
+  public void Dispose()
+  {
+    offsprings.Dispose();
+    parents.Dispose();
+  }
 }

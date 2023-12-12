@@ -14,7 +14,6 @@ public class BasicGAAgentParallel : BaseAgent
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
-  private float _elapsedTime { get; set; }
   private Vector2 nextVel { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private int populationSize { get; set; }
@@ -42,7 +41,6 @@ public class BasicGAAgentParallel : BaseAgent
     //_gaBuilder = new BasicGeneticAlgorithParallelBuilder();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
-    _elapsedTime = 0.0f;
     speed = 5.0f;
     populationSize = 30;
     jobScheduled = false;
@@ -89,67 +87,7 @@ public class BasicGAAgentParallel : BaseAgent
     }
 
     // Run GA
-    // Create cross
-    offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    parents = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    BasicCrossOperatorParallel cross = new BasicCrossOperatorParallel()
-    {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      offsprings = offsprings,
-      parents = parents
-    };
-
-    // Create mutation
-    BasicMutationOperatorParallel mut = new BasicMutationOperatorParallel()
-    {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _agentSpeed = speed,
-      _timeDelta = Time.deltaTime
-    };
-
-    // Create fitness
-    BasicFitnessFunctionParallel fit = new BasicFitnessFunctionParallel()
-    {
-      _startPosition = position,
-      _destination = destination,
-      _agentRadius = 0.5f,
-      _agentIndex = id,
-      _quadTree = SimulationManager.Instance.GetQuadTree()
-    };
-
-    // Create selection
-    selectedPop = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    relativeFit = new NativeArray<double>(populationSize, Allocator.TempJob);
-    wheel = new NativeArray<double>(populationSize, Allocator.TempJob);
-    BasicSelectionFunctionParallel sel = new BasicSelectionFunctionParallel()
-    {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      selectedPop = selectedPop,
-      relativeFitnesses = relativeFit,
-      wheel = wheel
-    };
-
-    // Create GA
-    pop = new NativeBasicPopulation()
-    {
-      _population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)
-    };
-    winner = new NativeArray<Vector2>(1, Allocator.TempJob);
-    gaJob = new BasicGeneticAlgorithmParallel()
-    {
-      cross = cross,
-      mutation = mut,
-      fitness = fit,
-      selection = sel,
-      pop = pop,
-      iterations = 10,
-      populationSize = populationSize,
-      _winner = winner,
-      _timeDelta = Time.deltaTime,
-      _agentSpeed = speed,
-      _startPosition = position,
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
-    };
+    gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
 
     jobScheduled = true;
     _gaJobHandle = gaJob.Schedule();
@@ -164,15 +102,8 @@ public class BasicGAAgentParallel : BaseAgent
     if (jobScheduled)
     {
       _gaJobHandle.Complete();
-
-      offsprings.Dispose();
-      parents.Dispose();
-      selectedPop.Dispose();
-      relativeFit.Dispose();
-      wheel.Dispose();
-      pop.Dispose();
-
       nextVel = gaJob._winner[0];
+      gaJob.Dispose();
 
       jobScheduled = false;
     }

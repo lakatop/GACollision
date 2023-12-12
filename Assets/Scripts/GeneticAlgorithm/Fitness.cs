@@ -165,4 +165,6 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     _agentIndex = (int)resources[3];
     _quadTree = (NativeQuadTree<TreeNode>)resources[4];
   }
+
+  public void Dispose() { }
 }
