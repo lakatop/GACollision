@@ -76,7 +76,7 @@ public class BasicGAAgent : BaseAgent
     _gaBuilder = new BasicGeneticAlgorithmBuilder();
     _gaDirector.MakeBasicGA(_gaBuilder, this);
     var _gaAlg = _gaBuilder.GetResult();
-    _gaAlg.Execute();
+    _gaAlg.RunGA();
 
     nextVel = _gaAlg.GetResult();
   }
