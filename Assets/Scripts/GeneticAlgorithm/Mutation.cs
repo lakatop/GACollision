@@ -42,9 +42,9 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 
 public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Unity.Mathematics.Random _rand;
-  public float _agentSpeed;
-  public float _timeDelta;
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _timeDelta;
 
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
@@ -68,10 +68,6 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
     }
 
     return currentPopulation;
-  }
-
-  public void SetResources(List<object> resources)
-  {
   }
 
   public void Dispose()

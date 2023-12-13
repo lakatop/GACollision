@@ -40,7 +40,7 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 
 public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random _rand;
   public NativeArray<BasicIndividualStruct> offsprings;
   public NativeArray<BasicIndividualStruct> parents;
 
@@ -76,10 +76,6 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
     }
 
     return currentPopulation;
-  }
-
-  public void SetResources(List<object> resources)
-  {
   }
 
   public void Dispose()

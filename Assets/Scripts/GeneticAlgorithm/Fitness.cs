@@ -157,14 +157,5 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     return currentPopulation;
   }
 
-  public void SetResources(List<object> resources)
-  {
-    _startPosition = (Vector2)resources[0];
-    _destination = (Vector2)resources[1];
-    _agentRadius = (float)resources[2];
-    _agentIndex = (int)resources[3];
-    _quadTree = (NativeQuadTree<TreeNode>)resources[4];
-  }
-
   public void Dispose() { }
 }
