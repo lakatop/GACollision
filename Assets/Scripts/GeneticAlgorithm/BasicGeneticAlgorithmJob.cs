@@ -17,6 +17,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public BasicMutationOperatorParallel mutation;
   public BasicFitnessFunctionParallel fitness;
   public BasicSelectionFunctionParallel selection;
+  public BasicInitialization popInitialization;
   public NativeBasicPopulation pop;
 
 
@@ -37,7 +38,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public void RunGA()
   {
-    InitializePopulation();
+    pop.SetPopulation(popInitialization.ModifyPopulation(pop.GetPopulation()));
 
     for (int i = 0; i < iterations; i++)
     {
@@ -49,38 +50,6 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
     pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
     SetWinner();
-  }
-
-  public void InitializePopulation()
-  {
-    float rotationRange = 120f;
-
-    for (int i = 0; i < populationSize; i++)
-    {
-      var individual = new BasicIndividualStruct();
-      individual.Initialize(10, Allocator.TempJob);
-      for (int j = 0; j < 10; j++)
-      {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange + 0.001f);
-        var size = _rand.NextFloat(_agentSpeed + 0.001f) * _timeDelta;
-        individual.path.Add(new float2(rotation, size));
-      }
-      pop.SetIndividual(individual, i);
-    }
-
-
-    for (int i = 0; i < pop.GetPopulation().Length; i++)
-    {
-      var initialVector = _startPosition;
-      var path = pop.GetPopulation()[i].path;
-      for (int j = 0; j < path.Length; j++)
-      {
-        var v = UtilsGA.UtilsGA.CalculateRotatedVector(path[j].x, initialVector);
-        v = v * path[j].y;
-        Debug.DrawRay(new Vector3(initialVector.x, 0f, initialVector.y), new Vector3(v.x, 0f, v.y));
-        initialVector = initialVector + v;
-      }
-    }
   }
 
   public void SetResources(List<object> resources)

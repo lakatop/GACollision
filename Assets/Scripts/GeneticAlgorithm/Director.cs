@@ -86,6 +86,16 @@ public class GeneticAlgorithmDirector
       wheel = new NativeArray<double>(populationSize, Allocator.TempJob)
     };
 
+    ga.popInitialization = new BasicInitialization()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      populationSize = populationSize,
+      agentSpeed = agent.speed,
+      timeDelta = Time.deltaTime,
+      pathSize = 10,
+      startPosition = agent.position
+    };
+
     ga.populationSize = populationSize;
     ga.iterations = 10;
     ga.pop = new NativeBasicPopulation()

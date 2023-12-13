@@ -65,7 +65,7 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
 
 public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random _rand;
   public NativeArray<BasicIndividualStruct> selectedPop;
   public NativeArray<double> relativeFitnesses;
   public NativeArray<double> wheel;
@@ -124,10 +124,6 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
     }
 
     return selectedPop;
-  }
-
-  public void SetResources(List<object> resources)
-  {
   }
 
   public void Dispose()

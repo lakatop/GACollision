@@ -78,11 +78,6 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// <returns>New modified population</returns>
   public NativeArray<T> ModifyPopulation(NativeArray<T> currentPopulation);
   /// <summary>
-  /// Set any required resources for GA to function (e.g. assign quadtree)
-  /// </summary>
-  /// <param name="resources">List of resources</param>
-  public void SetResources(System.Collections.Generic.List<object> resources);
-  /// <summary>
   /// Dispose any allocated resources
   /// </summary>
   public void Dispose();
@@ -216,10 +211,6 @@ public interface IGeneticAlgorithmParallel<T>
   /// Number of individuals that 1 population should have
   /// </summary>
   public int populationSize { get; set; }
-  /// <summary>
-  /// Function to initialize population
-  /// </summary>
-  public void InitializePopulation();
   /// <summary>
   /// Set any required resources for GA to function (e.g. assign quadtree)
   /// </summary>
