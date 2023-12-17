@@ -24,15 +24,18 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
     var population = currentPopulation.GetPopulation();
     for (int i = 0; i < population.Length; i++)
     {
-      var initialVector = _startPosition;
-      var newPos = initialVector;
+      var newPos = _startPosition;
+      var rotationVector = newPos.normalized;
+
       var stepIndex = 1;
       foreach (var pos in population[i].path)
       {
-        var rotatedVector = UtilsGA.UtilsGA.CalculateRotatedVector(pos.x, initialVector);
-        rotatedVector *= pos.y;
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, newPos);
+        rotatedAndTranslatedVector = rotatedAndTranslatedVector * pos.y;
 
-        newPos = newPos + rotatedVector;
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
 
         AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
@@ -45,7 +48,6 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
         }
 
         stepIndex++;
-        initialVector = newPos;
       }
 
       // We broke cycle before finishing - this individual is colliding
@@ -91,6 +93,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
   [ReadOnly] public float _agentRadius;
   [ReadOnly] public int _agentIndex;
   [ReadOnly] public NativeQuadTree<TreeNode> _quadTree;
+  [ReadOnly] public Vector2 _forward;
 
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
@@ -102,15 +105,18 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     var population = currentPopulation;
     for (int i = 0; i < population.Length; i++)
     {
-      var initialVector = _startPosition;
-      var newPos = initialVector;
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
       var stepIndex = 1;
       foreach (var pos in population[i].path)
       {
-        var rotatedVector = UtilsGA.UtilsGA.CalculateRotatedVector(pos.x, initialVector);
-        rotatedVector *= pos.y;
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        newPos = newPos + rotatedVector;
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
 
         AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
@@ -125,7 +131,6 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
         }
 
         stepIndex++;
-        initialVector = newPos;
       }
 
       // We broke cycle before finishing - this individual is colliding

@@ -28,6 +28,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public float _timeDelta;
   public float _agentSpeed;
   public Vector2 _startPosition;
+  public Vector2 _forward;
 
   public Unity.Mathematics.Random _rand;
 
@@ -54,11 +55,12 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public void SetResources(List<object> resources)
   {
-    Assert.IsTrue(resources.Count == 3);
+    Assert.IsTrue(resources.Count == 4);
 
     _timeDelta = (float)resources[0];
     _agentSpeed = (float)resources[1];
     _startPosition = (Vector2)resources[2];
+    _forward = (Vector2)resources[3];
   }
 
   public Vector2 GetResult()
@@ -74,8 +76,9 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     {
       if (maxFitness < individual.fitness)
       {
-        var v = UtilsGA.UtilsGA.CalculateRotatedVector(individual.path[0].x, _startPosition);
+        var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
         v *= individual.path[0].y;
+        v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
         _winner[0] = new Vector2(v.x, v.y);
         maxFitness = individual.fitness;
       }
