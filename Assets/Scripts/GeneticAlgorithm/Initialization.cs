@@ -35,15 +35,14 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var placeOrigin = startPosition;
-      var rotationVector = forward.normalized;
+      var rotationVector = forward.normalized * 0.5f;
       var path = currentPopulation[i].path;
 
       for (int j = 0; j < path.Length; j++)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
-        rotatedVector = rotatedVector * path[j].y;
+        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedVector.x, 0f, rotatedVector.y));
         var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
-        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedAndTranslatedVector.x, 0f, rotatedAndTranslatedVector.y));
         placeOrigin = rotatedAndTranslatedVector;
         rotationVector = rotatedVector;
       }
@@ -92,21 +91,15 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
 
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var placeOrigin = startPosition;// new Vector2(1,0);
-      var rotationVector = forward.normalized;
-      var path = currentPopulation[i].path;// new UnsafeList<float2>(5, Allocator.Temp);
-      //path.Add(new float2(0, 1));
-      //path.Add(new float2(45, 1));
-      //path.Add(new float2(-90, 1));
-      //path.Add(new float2(90, 1));
-      //path.Add(new float2(-135, 1));
+      var placeOrigin = startPosition;
+      var rotationVector = forward.normalized * 0.2f;
+      var path = currentPopulation[i].path;
 
       for (int j = 0; j < path.Length; j++)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
+        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedVector.x, 0f, rotatedVector.y));
         var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
-        rotatedAndTranslatedVector = rotatedAndTranslatedVector * path[j].y;
-        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedAndTranslatedVector.x, 0f, rotatedAndTranslatedVector.y));
         placeOrigin = rotatedAndTranslatedVector;
         rotationVector = rotatedVector;
       }

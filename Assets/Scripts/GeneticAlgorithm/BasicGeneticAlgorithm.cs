@@ -110,7 +110,7 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
       {
         var v = UtilsGA.UtilsGA.RotateVector(_startPosition.normalized, individual.path[0].x);
         v *= individual.path[0].y;
-        v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
+        //v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
         _winner = new Vector2(v.x, v.y);
         maxFitness = individual.fitness;
       }

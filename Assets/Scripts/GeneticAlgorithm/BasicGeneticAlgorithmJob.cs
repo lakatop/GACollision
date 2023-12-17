@@ -17,7 +17,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public BasicMutationOperatorParallel mutation;
   public BasicFitnessFunctionParallel fitness;
   public BasicSelectionFunctionParallel selection;
-  public BasicInitialization popInitialization;
+  public GlobeInitialization popInitialization;
   public NativeBasicPopulation pop;
 
 
@@ -78,7 +78,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
       {
         var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
         v *= individual.path[0].y;
-        v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
+        //v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
         _winner[0] = new Vector2(v.x, v.y);
         maxFitness = individual.fitness;
       }
