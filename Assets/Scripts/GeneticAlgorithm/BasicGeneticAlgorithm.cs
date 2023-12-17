@@ -2,12 +2,6 @@
 using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
-using Unity.Collections;
-using NativeQuadTree;
-using UtilsGA;
-using System.Linq;
-using Unity.Burst;
-using Unity.Collections.LowLevel.Unsafe;
 
 
 

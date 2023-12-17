@@ -93,7 +93,7 @@ public class GeneticAlgorithmDirector
       populationSize = populationSize,
       agentSpeed = agent.speed,
       timeDelta = Time.deltaTime,
-      pathSize = 10,
+      pathSize = 50,
       startPosition = agent.position,
       forward = agent.GetForward()
     };

@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using Unity.Jobs;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Burst;
-using NativeQuadTree;
-using System.Linq;
 using Unity.Collections;
 
 
@@ -78,7 +75,6 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
       {
         var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
         v *= individual.path[0].y;
-        //v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
         _winner[0] = new Vector2(v.x, v.y);
         maxFitness = individual.fitness;
       }

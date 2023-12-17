@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
-using Unity.Collections.LowLevel.Unsafe;
 
 public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
