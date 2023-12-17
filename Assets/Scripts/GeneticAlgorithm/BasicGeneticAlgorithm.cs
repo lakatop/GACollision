@@ -2,12 +2,6 @@
 using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
-using Unity.Collections;
-using NativeQuadTree;
-using UtilsGA;
-using System.Linq;
-using Unity.Burst;
-using Unity.Collections.LowLevel.Unsafe;
 
 
 
@@ -70,14 +64,18 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
 
     for (int i = 0; i < pop.Count; i++)
     {
-      var initialVector = _startPosition;
+      var placeOrigin = _startPosition;
+      var rotationVector = placeOrigin.normalized;
       var path = pop[i].path;
+
       for (int j = 0; j < path.Count; j++)
       {
-        var v = UtilsGA.UtilsGA.CalculateRotatedVector(path[j].x, initialVector);
-        v = v * path[j].y;
-        Debug.DrawRay(new Vector3(initialVector.x, 0f, initialVector.y), new Vector3(v.x, 0f, v.y));
-        initialVector = initialVector + v;
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
+        var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
+        rotatedAndTranslatedVector = rotatedAndTranslatedVector * path[j].y;
+        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedAndTranslatedVector.x, 0f, rotatedAndTranslatedVector.y));
+        placeOrigin = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
       }
     }
   }
@@ -104,9 +102,10 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
     {
       if (maxFitness < individual.fitness)
       {
-        var v = UtilsGA.UtilsGA.CalculateRotatedVector(individual.path[0].x, _startPosition);
+        var v = UtilsGA.UtilsGA.RotateVector(_startPosition.normalized, individual.path[0].x);
         v *= individual.path[0].y;
-        _winner = v;
+        //v = UtilsGA.UtilsGA.MoveToOrigin(v, _startPosition);
+        _winner = new Vector2(v.x, v.y);
         maxFitness = individual.fitness;
       }
     }

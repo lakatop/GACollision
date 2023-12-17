@@ -9,23 +9,35 @@ namespace UtilsGA
     /// Calculate normalized vector with degrees rotation compared to initialVector
     /// </summary>
     /// <param name="degrees">Rotation of new vector - counter clockwise</param>
-    /// <param name="initialVector">Vector to which we perform rotation. New vector ahs origin where initialVector ends</param>
+    /// <param name="initialVector">Vector to which we perform rotation. New vector has origin where initialVector ends</param>
     /// <returns>Rotated vector</returns>
-    public static Vector2 CalculateRotatedVector(float degrees, Vector2 initialVector)
+    public static Vector2 CalculateRotatedAndTranslatedVector(float degrees, Vector2 initialVector)
     {
-      // Convert degrees to radians for Mathf functions
-      float radians = Mathf.Deg2Rad * degrees;
+      var placeOrigin = initialVector;
+      var rotationVector = placeOrigin.normalized;
 
+      var rotatedVector = RotateVector(rotationVector, degrees);
+      var rotatedAndTranslatedVector = MoveToOrigin(rotatedVector, placeOrigin);
 
-      // Calculate the components of the new vector using trigonometry
-      float xComponent = Mathf.Cos(radians) * initialVector.x - Mathf.Sin(radians) * initialVector.y;
-      float yComponent = Mathf.Sin(radians) * initialVector.x + Mathf.Cos(radians) * initialVector.y;
+      return rotatedAndTranslatedVector;
+    }
 
-      // Create the new vector
-      Vector2 generatedVector = new Vector2(xComponent, yComponent).normalized;
+    public static Vector2 RotateVector(Vector2 vector, float angleDegrees)
+    {
+      // Convert the vector to a Quaternion
+      Quaternion rotation = Quaternion.Euler(0, 0, angleDegrees);
 
-      return generatedVector;
+      // Rotate the vector using the Quaternion
+      return rotation * vector;
+    }
 
+    public static Vector2 MoveToOrigin(Vector2 vectorToMove, Vector2 referenceVector)
+    {
+      // Get the length of the reference vector
+      //float length = referenceVector.magnitude;
+
+      // Translate the vector by the length of the reference vector
+      return vectorToMove + referenceVector;
     }
 
     /// <summary>

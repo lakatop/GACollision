@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using Unity.Jobs;
-using Unity.Collections;
 
 /// <summary>
 /// Basic EA agent
@@ -16,20 +15,10 @@ public class BasicGAAgentParallel : BaseAgent
   private int _cornerIndex { get; set; }
   private Vector2 nextVel { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
-  private int populationSize { get; set; }
-  //private BasicGeneticAlgorithParallelBuilder _gaBuilder { get; set; }
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
-  private NativeArray<Vector2> winner { get; set; }
   private bool jobScheduled { get; set; }
 
-
-  NativeArray<BasicIndividualStruct> offsprings;
-  NativeArray<BasicIndividualStruct> parents;
-  NativeArray<BasicIndividualStruct> selectedPop;
-  NativeArray<double> relativeFit;
-  NativeArray<double> wheel;
-  NativeBasicPopulation pop;
 
   public BasicGAAgentParallel()
   {
@@ -42,7 +31,6 @@ public class BasicGAAgentParallel : BaseAgent
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
     speed = 5.0f;
-    populationSize = 30;
     jobScheduled = false;
   }
 
@@ -73,11 +61,6 @@ public class BasicGAAgentParallel : BaseAgent
   // Run GA and get results
   public override void OnBeforeUpdate()
   {
-    //_elapsedTime += Time.deltaTime;
-    //if (_elapsedTime < updateInterval)
-    //  return;
-
-    //_elapsedTime = 0.0f;
     destination = CalculateNewDestination();
 
     if ((position - destination).magnitude <= 0.1f)

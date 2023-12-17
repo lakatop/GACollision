@@ -74,7 +74,8 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       _agentRadius = 0.5f,
       _agentIndex = agent.id,
-      _quadTree = SimulationManager.Instance.GetQuadTree()
+      _quadTree = SimulationManager.Instance.GetQuadTree(),
+      _forward = agent.GetForward()
     };
 
     // Set selection
@@ -86,14 +87,15 @@ public class GeneticAlgorithmDirector
       wheel = new NativeArray<double>(populationSize, Allocator.TempJob)
     };
 
-    ga.popInitialization = new BasicInitialization()
+    ga.popInitialization = new GlobeInitialization()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       populationSize = populationSize,
       agentSpeed = agent.speed,
       timeDelta = Time.deltaTime,
-      pathSize = 10,
-      startPosition = agent.position
+      pathSize = 50,
+      startPosition = agent.position,
+      forward = agent.GetForward()
     };
 
     ga.populationSize = populationSize;
@@ -108,7 +110,8 @@ public class GeneticAlgorithmDirector
     {
       Time.deltaTime,
       agent.speed,
-      agent.position
+      agent.position,
+      agent.GetForward()
     });
 
     return ga;
