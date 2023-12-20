@@ -84,6 +84,7 @@ public class SimulationManager : MonoBehaviour
     _resourceListeners = new List<IResourceManager>();
     _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
+    _agentUpdateInterval = 0.5f;
   }
 
   void Start()
@@ -162,6 +163,8 @@ public class SimulationManager : MonoBehaviour
         // Dispose quadtree
         _quadTree.Dispose();
         _quadTreeData.Dispose();
+
+        _updateTimer = 0f;
       }
     }
 
@@ -378,7 +381,7 @@ public class SimulationManager : MonoBehaviour
     foreach (var agent in _agents)
     {
       var pos = agent.position;
-      var forward = agent.GetForward();
+      var forward = agent.GetForward().normalized;
       var velocity = forward * agent.speed * _agentUpdateInterval;
 
       for (int i = 0; i < steps; i++)

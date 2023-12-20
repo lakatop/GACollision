@@ -88,12 +88,12 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 
 public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Vector2 _startPosition;
-  [ReadOnly] public Vector2 _destination;
-  [ReadOnly] public float _agentRadius;
-  [ReadOnly] public int _agentIndex;
-  [ReadOnly] public NativeQuadTree<TreeNode> _quadTree;
-  [ReadOnly] public Vector2 _forward;
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public float _agentRadius;
+  public int _agentIndex;
+  public NativeQuadTree<TreeNode> _quadTree;
+  public Vector2 _forward;
 
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
