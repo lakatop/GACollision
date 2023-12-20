@@ -74,13 +74,11 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   {
     var population = currentPopulation;
 
-    int multiplier = 10000;
-
     // Apply roulette selection
     double totalFitness = 0;
     for (int i = 0; i < population.Length; i++)
     {
-      totalFitness += population[i].fitness * multiplier;
+      totalFitness += population[i].fitness;
     }
 
     if (totalFitness == 0)
@@ -90,7 +88,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 
     for (int i = 0; i < population.Length; i++)
     {
-      relativeFitnesses[i] = (population[i].fitness * multiplier) / totalFitness;
+      relativeFitnesses[i] = (population[i].fitness) / totalFitness;
     }
 
     double prob = 0f;

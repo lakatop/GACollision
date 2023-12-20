@@ -53,6 +53,18 @@ public class SimulationManager : MonoBehaviour
   /// Quadtree for current simulation
   /// </summary>
   private NativeQuadTree.NativeQuadTree<TreeNode> _quadTree { get; set; }
+  /// <summary>
+  /// Data to fill _quadTree with
+  /// </summary>
+  private NativeArray<NativeQuadTree.QuadElement<TreeNode>> _quadTreeData;
+  /// <summary>
+  /// Delta t - determines how often agent calculates new position
+  /// </summary>
+  public float _agentUpdateInterval { get; private set; }
+  /// <summary>
+  /// 
+  /// </summary>
+  private float _updateTimer { get; set; }
 
   void Awake()
   {
@@ -87,6 +99,7 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   void Update()
   {
+    _updateTimer += Time.deltaTime;
     // TODO: will probably require refactor in the future:
     //    more robust user input, setting destination to just some client(s) etc.
 
@@ -109,53 +122,47 @@ public class SimulationManager : MonoBehaviour
     }
     else
     {
-      // Allocate resources if needed
-      //foreach (var resourceManager in _resourceListeners)
-      //{
-      //  resourceManager.OnBeforeUpdate();
-      //}
-
-      // Create quadtree
-      _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm);
-      CreateAgentsQuadPosition(10);
-      var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
-      NativeArray<NativeQuadTree.QuadElement<TreeNode>> arr = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Temp);
-      int index = 0;
-      foreach (var staticElement in _quadtreeStaticElements)
+      if (_updateTimer > _agentUpdateInterval)
       {
-        arr[index] = staticElement;
-        index++;
+        // Create quadtree
+        _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm);
+        CreateAgentsQuadPosition(10);
+        var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
+        _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Temp);
+        int index = 0;
+        foreach (var staticElement in _quadtreeStaticElements)
+        {
+          _quadTreeData[index] = staticElement;
+          index++;
+        }
+        foreach (var agentPos in _quadAgentsPositions)
+        {
+          _quadTreeData[index] = agentPos;
+          index++;
+        }
+        _quadTree.ClearAndBulkInsert(_quadTreeData);
       }
-      foreach (var agentPos in _quadAgentsPositions)
-      {
-        arr[index] = agentPos;
-        index++;
-      }
-      _quadTree.ClearAndBulkInsert(arr);
 
       // Update simulation
       foreach (var agent in _agents)
       {
         agent.OnBeforeUpdate();
       }
-      foreach (var collisionAvoider in _collisionListeners)
-      {
-        collisionAvoider.Update();
-      }
+      //foreach (var collisionAvoider in _collisionListeners)
+      //{
+      //  collisionAvoider.Update();
+      //}
       foreach (var agent in _agents)
       {
         agent.OnAfterUpdate(Vector2.zero);
       }
 
-      // Deallocate resources if needed
-      //foreach (var resourceManager in _resourceListeners)
-      //{
-      //  resourceManager.OnAfterUpdate();
-      //}
-
-      // Dispose quadtree
-      _quadTree.Dispose();
-      arr.Dispose();
+      if (_updateTimer > _agentUpdateInterval)
+      {
+        // Dispose quadtree
+        _quadTree.Dispose();
+        _quadTreeData.Dispose();
+      }
     }
 
   }
@@ -371,7 +378,9 @@ public class SimulationManager : MonoBehaviour
     foreach (var agent in _agents)
     {
       var pos = agent.position;
-      var velocity = agent.GetVelocity();
+      var forward = agent.GetForward();
+      var velocity = forward * agent.speed * _agentUpdateInterval;
+
       for (int i = 0; i < steps; i++)
       {
         _quadAgentsPositions.Add(new NativeQuadTree.QuadElement<TreeNode>()

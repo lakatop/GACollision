@@ -64,7 +64,7 @@ public class GeneticAlgorithmDirector
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       _agentSpeed = agent.speed,
-      _timeDelta = Time.deltaTime
+      _timeDelta = SimulationManager.Instance._agentUpdateInterval
     };
 
     // Set fitness
@@ -92,7 +92,7 @@ public class GeneticAlgorithmDirector
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       populationSize = populationSize,
       agentSpeed = agent.speed,
-      timeDelta = Time.deltaTime,
+      timeDelta = SimulationManager.Instance._agentUpdateInterval,
       pathSize = 50,
       startPosition = agent.position,
       forward = agent.GetForward()

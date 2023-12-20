@@ -18,6 +18,7 @@ public class BasicGAAgentParallel : BaseAgent
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
   private bool jobScheduled { get; set; }
+  private float _updateTimer { get; set; }
 
 
   public BasicGAAgentParallel()
@@ -32,6 +33,8 @@ public class BasicGAAgentParallel : BaseAgent
     _path = new NavMeshPath();
     speed = 5.0f;
     jobScheduled = false;
+    _updateTimer = 0f;
+    nextVel = Vector2.zero;
   }
 
   public override void SetDestination(Vector2 des)
@@ -61,6 +64,14 @@ public class BasicGAAgentParallel : BaseAgent
   // Run GA and get results
   public override void OnBeforeUpdate()
   {
+    _updateTimer += Time.deltaTime;
+    if (SimulationManager.Instance._agentUpdateInterval > _updateTimer)
+    {
+      return;
+    }
+    _updateTimer = 0f;
+
+
     destination = CalculateNewDestination();
 
     if ((position - destination).magnitude <= 0.1f)
@@ -80,8 +91,6 @@ public class BasicGAAgentParallel : BaseAgent
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    nextVel = Vector2.zero;
-
     if (jobScheduled)
     {
       _gaJobHandle.Complete();
@@ -91,7 +100,7 @@ public class BasicGAAgentParallel : BaseAgent
       jobScheduled = false;
     }
 
-    var vel = nextVel;
+    var vel = nextVel * Time.deltaTime;
     var pos = position + nextVel;
 
     SetPosition(pos);
