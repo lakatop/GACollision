@@ -19,7 +19,7 @@ public class BasicGAAgentParallel : BaseAgent
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
   private bool jobScheduled { get; set; }
   private float _updateTimer { get; set; }
-
+  private bool _runGa { get; set; }
 
   public BasicGAAgentParallel()
   {
@@ -35,6 +35,7 @@ public class BasicGAAgentParallel : BaseAgent
     jobScheduled = false;
     _updateTimer = 0f;
     nextVel = Vector2.zero;
+    _runGa = true;
   }
 
   public override void SetDestination(Vector2 des)
@@ -64,12 +65,12 @@ public class BasicGAAgentParallel : BaseAgent
   // Run GA and get results
   public override void OnBeforeUpdate()
   {
-    _updateTimer += Time.deltaTime;
-    if (SimulationManager.Instance._agentUpdateInterval > _updateTimer)
-    {
-      return;
-    }
-    _updateTimer = 0f;
+    //_updateTimer += Time.deltaTime;
+    //if (SimulationManager.Instance._agentUpdateInterval > _updateTimer)
+    //{
+    //  return;
+    //}
+    
 
 
     destination = CalculateNewDestination();
@@ -80,24 +81,33 @@ public class BasicGAAgentParallel : BaseAgent
       return;
     }
 
-    // Run GA
-    gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
+    if (_runGa)
+    {
+      // Run GA
+      gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
 
-    jobScheduled = true;
-    _gaJobHandle = gaJob.Schedule();
+      jobScheduled = true;
+      _gaJobHandle = gaJob.Schedule();
+
+      _runGa = false;
+    }
 
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    if (jobScheduled)
+    _updateTimer += Time.deltaTime;
+    if (jobScheduled && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       _gaJobHandle.Complete();
       nextVel = gaJob._winner[0];
       gaJob.Dispose();
 
       jobScheduled = false;
+
+      _updateTimer = 0f;
+      _runGa = true;
     }
 
     var vel = nextVel * Time.deltaTime;

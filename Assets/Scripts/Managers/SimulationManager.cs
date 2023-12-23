@@ -53,6 +53,7 @@ public class SimulationManager : MonoBehaviour
   /// Quadtree for current simulation
   /// </summary>
   private NativeQuadTree.NativeQuadTree<TreeNode> _quadTree { get; set; }
+  private bool _quadTreeCreated { get; set; }
   /// <summary>
   /// Data to fill _quadTree with
   /// </summary>
@@ -85,6 +86,7 @@ public class SimulationManager : MonoBehaviour
     _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _agentUpdateInterval = 0.5f;
+    _quadTreeCreated = false;
   }
 
   void Start()
@@ -125,11 +127,25 @@ public class SimulationManager : MonoBehaviour
     {
       if (_updateTimer > _agentUpdateInterval)
       {
-        // Create quadtree
-        _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm);
+        foreach(var agent in _agents)
+        {
+          agent.OnAfterUpdate(Vector2.zero);
+        }
+
+        _updateTimer = 0f;
+
+        // Dispose previous quadtree and its data
+        if (_quadTreeCreated)
+        {
+          _quadTree.Dispose();
+          //_quadTreeData.Dispose();
+        }
+
+        // Create a new quadtree and data
+        _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
         CreateAgentsQuadPosition(10);
         var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
-        _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Temp);
+        _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Persistent);
         int index = 0;
         foreach (var staticElement in _quadtreeStaticElements)
         {
@@ -142,6 +158,7 @@ public class SimulationManager : MonoBehaviour
           index++;
         }
         _quadTree.ClearAndBulkInsert(_quadTreeData);
+        _quadTreeCreated = true;
       }
 
       // Update simulation
@@ -156,15 +173,6 @@ public class SimulationManager : MonoBehaviour
       foreach (var agent in _agents)
       {
         agent.OnAfterUpdate(Vector2.zero);
-      }
-
-      if (_updateTimer > _agentUpdateInterval)
-      {
-        // Dispose quadtree
-        _quadTree.Dispose();
-        _quadTreeData.Dispose();
-
-        _updateTimer = 0f;
       }
     }
 
