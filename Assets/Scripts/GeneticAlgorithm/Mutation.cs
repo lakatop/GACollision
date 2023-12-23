@@ -56,7 +56,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
         var mutProb = _rand.NextFloat();
         if (mutProb > 0.8f)
         {
-          var size = _rand.NextFloat(_agentSpeed + 0.001f) * _timeDelta;
+          var size = _rand.NextFloat(_agentSpeed) * _timeDelta;
           float2 newVal = currentPopulation[i].path[j];
           newVal.y = size;
           var tempPop = currentPopulation;

@@ -22,8 +22,8 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
       individual.Initialize(pathSize, Allocator.TempJob);
       for (int j = 0; j < pathSize; j++)
       {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange + 0.001f);
-        var size = _rand.NextFloat(agentSpeed + 0.001f) * timeDelta;
+        var rotation = _rand.NextFloat(-rotationRange, rotationRange);
+        var size = _rand.NextFloat(agentSpeed) * timeDelta;
         individual.path.Add(new float2(rotation, size));
       }
       currentPopulation[i] = individual;
@@ -79,8 +79,8 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
 
       for (int j = 0; j < pathSize - 1; j++)
       {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange + 0.001f);
-        var size = _rand.NextFloat(agentSpeed + 0.001f) * timeDelta;
+        var rotation = _rand.NextFloat(-rotationRange, rotationRange);
+        var size = _rand.NextFloat(agentSpeed) * timeDelta;
         individual.path.Add(new float2(rotation, size));
       }
       currentPopulation[i] = individual;

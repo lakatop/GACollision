@@ -18,20 +18,21 @@ public class BasicGAAgentParallel : BaseAgent
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
   private bool jobScheduled { get; set; }
-
+  private float _updateTimer { get; set; }
+  private bool _runGa { get; set; }
 
   public BasicGAAgentParallel()
   {
-    collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
-    //_geneticAlgorithm = SimulationManager.Instance._collisionManager.GetOrCreateGeneticAlgorithm();
     pathPlanningAlg = new NavMeshPathPlanner(this);
     _navMeshAgent = GetComponent<NavMeshAgent>();
     _gaDirector = new GeneticAlgorithmDirector();
-    //_gaBuilder = new BasicGeneticAlgorithParallelBuilder();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
     speed = 5.0f;
     jobScheduled = false;
+    _updateTimer = 0f;
+    nextVel = Vector2.zero;
+    _runGa = true;
   }
 
   public override void SetDestination(Vector2 des)
@@ -69,29 +70,36 @@ public class BasicGAAgentParallel : BaseAgent
       return;
     }
 
-    // Run GA
-    gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
+    if (_runGa)
+    {
+      // Run GA
+      gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
 
-    jobScheduled = true;
-    _gaJobHandle = gaJob.Schedule();
+      jobScheduled = true;
+      _gaJobHandle = gaJob.Schedule();
+
+      _runGa = false;
+    }
 
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    nextVel = Vector2.zero;
-
-    if (jobScheduled)
+    _updateTimer += Time.deltaTime;
+    if (jobScheduled && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       _gaJobHandle.Complete();
       nextVel = gaJob._winner[0];
       gaJob.Dispose();
 
       jobScheduled = false;
+
+      _updateTimer = 0f;
+      _runGa = true;
     }
 
-    var vel = nextVel;
+    var vel = nextVel * Time.deltaTime;
     var pos = position + nextVel;
 
     SetPosition(pos);
