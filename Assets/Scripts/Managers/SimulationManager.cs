@@ -119,7 +119,7 @@ public class SimulationManager : MonoBehaviour
       {
         foreach (var agent in _agents)
         {
-          agent.SetDestination(new Vector2(hitInfo.point.x, hitInfo.point.z));
+          agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 5));
         }
       }
     }

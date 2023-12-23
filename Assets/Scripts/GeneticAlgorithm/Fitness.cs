@@ -73,6 +73,11 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
     return currentPopulation;
   }
 
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
   public void SetResources(List<object> resources)
   {
     Assert.IsTrue(resources.Count == 5);
@@ -160,6 +165,11 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     }
 
     return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose() { }

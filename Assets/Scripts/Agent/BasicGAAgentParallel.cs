@@ -91,6 +91,7 @@ public class BasicGAAgentParallel : BaseAgent
     {
       _gaJobHandle.Complete();
       nextVel = gaJob._winner[0];
+      gaJob.logger.WriteRes(gaJob.GetConfiguration());
       gaJob.Dispose();
 
       jobScheduled = false;

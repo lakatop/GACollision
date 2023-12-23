@@ -49,6 +49,11 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
     return currentPopulation;
   }
 
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
   public void Dispose()
   {
   }
@@ -104,6 +109,11 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
     }
 
     return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose()

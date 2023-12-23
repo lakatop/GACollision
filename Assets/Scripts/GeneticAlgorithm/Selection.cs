@@ -57,6 +57,11 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
     return currentPopulation;
   }
 
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
   public void SetResources(List<object> resources)
   {
   }
@@ -122,6 +127,11 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
     }
 
     return selectedPop;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose()

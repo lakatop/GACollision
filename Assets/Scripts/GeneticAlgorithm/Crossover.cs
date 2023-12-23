@@ -35,6 +35,11 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
   public void SetResources(List<object> resources)
   {
   }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
 }
 
 
@@ -76,6 +81,11 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
     }
 
     return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose()
