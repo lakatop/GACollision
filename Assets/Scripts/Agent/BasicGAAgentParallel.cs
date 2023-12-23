@@ -23,12 +23,9 @@ public class BasicGAAgentParallel : BaseAgent
 
   public BasicGAAgentParallel()
   {
-    collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
-    //_geneticAlgorithm = SimulationManager.Instance._collisionManager.GetOrCreateGeneticAlgorithm();
     pathPlanningAlg = new NavMeshPathPlanner(this);
     _navMeshAgent = GetComponent<NavMeshAgent>();
     _gaDirector = new GeneticAlgorithmDirector();
-    //_gaBuilder = new BasicGeneticAlgorithParallelBuilder();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
     speed = 5.0f;
@@ -65,14 +62,6 @@ public class BasicGAAgentParallel : BaseAgent
   // Run GA and get results
   public override void OnBeforeUpdate()
   {
-    //_updateTimer += Time.deltaTime;
-    //if (SimulationManager.Instance._agentUpdateInterval > _updateTimer)
-    //{
-    //  return;
-    //}
-    
-
-
     destination = CalculateNewDestination();
 
     if ((position - destination).magnitude <= 0.1f)

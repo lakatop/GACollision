@@ -138,7 +138,7 @@ public class SimulationManager : MonoBehaviour
         if (_quadTreeCreated)
         {
           _quadTree.Dispose();
-          //_quadTreeData.Dispose();
+          _quadTreeData.Dispose();
         }
 
         // Create a new quadtree and data
