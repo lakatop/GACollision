@@ -148,7 +148,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
       float fitness;
       if (diff < 0.001f)
       {
-        fitness = 1;
+        fitness = 1000;
       }
       else
       {

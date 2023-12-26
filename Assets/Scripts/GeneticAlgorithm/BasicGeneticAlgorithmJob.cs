@@ -42,14 +42,14 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     for (int i = 0; i < iterations; i++)
     {
       pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-      logger.LogPopulationState(pop.GetPopulation(), _startPosition);
+      logger.LogPopulationState(pop.GetPopulation());
       pop.SetPopulation(selection.ModifyPopulation(pop.GetPopulation()));
       pop.SetPopulation(cross.ModifyPopulation(pop.GetPopulation()));
       pop.SetPopulation(mutation.ModifyPopulation(pop.GetPopulation()));
     }
 
     pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-    logger.LogPopulationState(pop.GetPopulation(), _startPosition);
+    logger.LogPopulationState(pop.GetPopulation());
     SetWinner();
   }
 

@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using Unity.Collections;
 using System.Text;
+using System.IO;
 
 public struct StraightLineEvaluationLogger
 {
   public NativeArray<BasicIndividualStruct> _topIndividuals;
-  public NativeArray<Vector2> _agentPositions;
+  public Vector2 _agentPosition;
+  public Vector2 _agentForward;
   public int iteration;
   public float _agentSpeed;
 
-  public void LogPopulationState(NativeArray<BasicIndividualStruct> pop, Vector2 agentPosition)
-  {
-    _agentPositions[iteration] = agentPosition;
 
+  public void LogPopulationState(NativeArray<BasicIndividualStruct> pop)
+  {
     var bestIndividual = pop[0];
 
     foreach (var individual in pop)
@@ -27,7 +28,7 @@ public struct StraightLineEvaluationLogger
     iteration++;
   }
 
-  public void WriteRes(string configuration)
+  public void WriteRes(string configuration, int iteration)
   {
     var builder = new StringBuilder();
     builder.AppendLine(configuration);
@@ -37,7 +38,7 @@ public struct StraightLineEvaluationLogger
     for (int i = 0; i < _topIndividuals.Length; i++)
     {
       var individual = _topIndividuals[i];
-      var position = _agentPositions[i];
+      var position = _agentPosition;
       var fit = individual.fitness.ToString();
 
       var objective = new Vector2(1, 0);
@@ -45,7 +46,18 @@ public struct StraightLineEvaluationLogger
       objective = objective + position;
 
       // calculate how far are we from objective
+      var rotationVector = _agentForward.normalized;
+      if (rotationVector.x == 0 && rotationVector.y == 0)
+        rotationVector = new Vector2(1, 0);
+      var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, individual.path[0].x);
+      var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, position);
+      rotatedAndTranslatedVector = rotatedAndTranslatedVector * individual.path[0].y;
+
+      var distance = Mathf.Sqrt(new Vector2(objective.x - rotatedAndTranslatedVector.x, objective.y - rotatedAndTranslatedVector.y).magnitude);
+      builder.AppendLine(string.Format("{0},{1}", fit, distance));
     }
+
+    File.WriteAllText(string.Format("straightLine/out{0}.csv", iteration), builder.ToString());
   }
 
   public void Dispose()

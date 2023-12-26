@@ -218,7 +218,8 @@ public class SimulationManager : MonoBehaviour
       _agents.Add(new BasicGAAgentParallel());
       var agent = _agents[_agents.Count - 1];
       agent.id = _agents.Count;
-      ((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
+      //((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
+      ((BaseAgent)agent).SpawnPosition(new Vector2(0, 1));
       //((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
       agent.SetDestination(agent.position);
       if (agent is BaseAgent)

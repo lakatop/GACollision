@@ -103,8 +103,9 @@ public class GeneticAlgorithmDirector
     // Set logger
     ga.logger = new StraightLineEvaluationLogger()
     {
-      _agentPositions = new NativeArray<Vector2>(iterations + 1, Allocator.TempJob),
+      _agentPosition = agent.position,
       _topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob),
+      _agentForward = agent.GetForward(),
       iteration = 0,
       _agentSpeed = agent.speed
     };
