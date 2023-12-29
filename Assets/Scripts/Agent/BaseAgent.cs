@@ -92,7 +92,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.GetForward"/>
   public Vector2 GetForward()
   {
-    return _object.transform.forward;
+    return new Vector2(_object.transform.forward.x, _object.transform.forward.z);
   }
 
   /// <inheritdoc cref="IBaseAgent.GetVelocity"/>

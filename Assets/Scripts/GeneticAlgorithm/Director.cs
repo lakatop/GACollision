@@ -49,8 +49,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BasicIndividualStruct> MakeBasicGAParallel (BaseAgent agent)
   {
     var ga = new BasicGeneticAlgorithmParallel();
-    int populationSize = 30;
-    int iterations = 10;
+    int populationSize = 50;
+    int iterations = 100;
 
     // Set crossover
     ga.cross = new BasicCrossOperatorParallel()
@@ -89,13 +89,13 @@ public class GeneticAlgorithmDirector
     };
 
     // Set initialization
-    ga.popInitialization = new GlobeInitialization()
+    ga.popInitialization = new KineticFriendlyInitialization()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       populationSize = populationSize,
       agentSpeed = agent.speed,
       timeDelta = SimulationManager.Instance._agentUpdateInterval,
-      pathSize = 50,
+      pathSize = 10,
       startPosition = agent.position,
       forward = agent.GetForward()
     };
