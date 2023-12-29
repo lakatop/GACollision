@@ -42,7 +42,7 @@ csv_files = sorted(
 
 # Create subplots
 fig, axes = plt.subplots(
-    nrows=len(csv_files), ncols=1, figsize=(10, 6 * len(csv_files))
+    nrows=len(csv_files) * 2, ncols=1, figsize=(10, 6 * len(csv_files))
 )
 
 result = ""
@@ -74,18 +74,27 @@ for idx, csv_file in enumerate(csv_files):
         label = ""
         if it % 2 == 0:
             label = "Fitness Values"
+            axes[idx * 2].plot(
+                df["iteration"], df[column], marker="o", label=label, color="tab:blue"
+            )
         elif it % 2 == 1:
             label = "Objective Values"
-        # Line plot for the current DataFrame and column
-        axes[idx].plot(df["iteration"], df[column], marker="o", label=label)
+            axes[idx * 2 + 1].plot(
+                df["iteration"], df[column], marker="o", label=label, color="tab:red"
+            )
 
         it += 1
 
     # Add labels and legend to the subplot
-    axes[idx].set_title(f"{csv_file} - Data over Iterations")
-    axes[idx].set_xlabel("Iteration")
-    axes[idx].set_ylabel("Values")
-    axes[idx].legend()
+    axes[idx * 2].set_title(f"{csv_file} - Data over Iterations")
+    axes[idx * 2].set_xlabel("Iteration")
+    axes[idx * 2].set_ylabel("Values")
+    axes[idx * 2].legend()
+
+    axes[idx * 2 + 1].set_title(f"{csv_file} - Data over Iterations")
+    axes[idx * 2 + 1].set_xlabel("Iteration")
+    axes[idx * 2 + 1].set_ylabel("Values")
+    axes[idx * 2 + 1].legend()
 
 
 # Adjust layout and save the figure
