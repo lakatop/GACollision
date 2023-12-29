@@ -81,5 +81,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Plotting files
-Plotting/*.png
-Plotting/*.csv
+Plotting/**/*.png
+Plotting/**/*.csv
