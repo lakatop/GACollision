@@ -31,6 +31,11 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
     return currentPopulation;
   }
 
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
   public void SetResources(List<object> resources)
   {
     Assert.IsTrue(resources.Count == 2);
@@ -68,6 +73,11 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
     }
 
     return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose()

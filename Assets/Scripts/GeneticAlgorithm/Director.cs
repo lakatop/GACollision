@@ -50,6 +50,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BasicGeneticAlgorithmParallel();
     int populationSize = 30;
+    int iterations = 10;
 
     // Set crossover
     ga.cross = new BasicCrossOperatorParallel()
@@ -68,7 +69,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set fitness
-    ga.fitness = new BasicFitnessFunctionParallel()
+    ga.fitness = new FitnessContinuousDistanceParallel()
     {
       _startPosition = agent.position,
       _destination = agent.destination,
@@ -79,7 +80,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set selection
-    ga.selection = new BasicSelectionFunctionParallel()
+    ga.selection = new NegativeSelectionParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       selectedPop = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
@@ -87,6 +88,7 @@ public class GeneticAlgorithmDirector
       wheel = new NativeArray<double>(populationSize, Allocator.TempJob)
     };
 
+    // Set initialization
     ga.popInitialization = new GlobeInitialization()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
@@ -98,8 +100,18 @@ public class GeneticAlgorithmDirector
       forward = agent.GetForward()
     };
 
+    // Set logger
+    ga.logger = new StraightLineEvaluationLogger()
+    {
+      _agentPosition = agent.position,
+      _topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob),
+      _agentForward = agent.GetForward(),
+      iteration = 0,
+      _agentSpeed = agent.speed
+    };
+
     ga.populationSize = populationSize;
-    ga.iterations = 10;
+    ga.iterations = iterations;
     ga.pop = new NativeBasicPopulation()
     {
       _population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)

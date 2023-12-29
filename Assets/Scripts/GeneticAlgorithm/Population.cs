@@ -79,3 +79,21 @@ public struct NativeBasicPopulation : IParallelPopulation<BasicIndividualStruct>
 
   public NativeArray<BasicIndividualStruct> _population;
 }
+
+public struct BasicIndividualSortDescending : IComparer<BasicIndividualStruct>
+{
+  public int Compare(BasicIndividualStruct x, BasicIndividualStruct y)
+  {
+    if (x.fitness < y.fitness)
+    {
+      return 1;
+    }
+
+    if(x.fitness > y.fitness)
+    {
+      return -1;
+    }
+
+    return 0;
+  }
+}

@@ -63,6 +63,11 @@ public interface IPopulationModifier<T>
   /// </summary>
   /// <param name="resources">List of resources</param>
   public void SetResources(System.Collections.Generic.List<object> resources);
+  /// <summary>
+  /// Get name of this component - used for logging purposes in various experiments
+  /// </summary>
+  /// <returns>Struct declaration name of this component</returns>
+  public string GetComponentName();
 }
 
 /// <summary>
@@ -81,6 +86,11 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// Dispose any allocated resources
   /// </summary>
   public void Dispose();
+  /// <summary>
+  /// Get name of this component - used for logging purposes in various experiments
+  /// </summary>
+  /// <returns>Struct declaration name of this component</returns>
+  public string GetComponentName();
 }
 
 /// <summary>

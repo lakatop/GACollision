@@ -57,6 +57,11 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
     return currentPopulation;
   }
 
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
   public void SetResources(List<object> resources)
   {
   }
@@ -122,6 +127,52 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
     }
 
     return selectedPop;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    selectedPop.Dispose();
+    relativeFitnesses.Dispose();
+    wheel.Dispose();
+  }
+}
+
+
+/// <summary>
+/// Takes in consideration that fitness might be negative
+/// Only takes first n best individuals
+/// </summary>
+public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  public NativeArray<BasicIndividualStruct> selectedPop;
+  public NativeArray<double> relativeFitnesses;
+  public NativeArray<double> wheel;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    var population = currentPopulation;
+
+    population.Sort(new BasicIndividualSortDescending());
+
+    int n = 5;
+
+    for (int i = 0; i < selectedPop.Length; i++)
+    {
+      selectedPop[i] = population[i % n];
+    }
+
+    return selectedPop;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
   }
 
   public void Dispose()

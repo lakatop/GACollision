@@ -20,6 +20,7 @@ public class BasicGAAgentParallel : BaseAgent
   private bool jobScheduled { get; set; }
   private float _updateTimer { get; set; }
   private bool _runGa { get; set; }
+  private int iteration { get; set; }
 
   public BasicGAAgentParallel()
   {
@@ -33,6 +34,7 @@ public class BasicGAAgentParallel : BaseAgent
     _updateTimer = 0f;
     nextVel = Vector2.zero;
     _runGa = true;
+    iteration = 0;
   }
 
   public override void SetDestination(Vector2 des)
@@ -91,6 +93,8 @@ public class BasicGAAgentParallel : BaseAgent
     {
       _gaJobHandle.Complete();
       nextVel = gaJob._winner[0];
+      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
+      iteration++;
       gaJob.Dispose();
 
       jobScheduled = false;
