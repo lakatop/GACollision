@@ -32,11 +32,11 @@ Load each file into dataframe and plot the fitness and objective values
 All plots are then saved into a file
 """
 
-path = "../straightLine/*.csv"
+path = "straightLine/*.csv"
 
 # Get a list of all CSV files in the current directory
 csv_files = sorted(
-    glob.glob(path), key=lambda x: int(x.lstrip("../straightLine/out").rstrip(".csv"))
+    glob.glob(path), key=lambda x: int(x.lstrip("straightLine/out").rstrip(".csv"))
 )
 
 
@@ -46,7 +46,7 @@ fig, axes = plt.subplots(
 )
 
 result = ""
-with open("../straightLine/out0.csv", "r") as input_file:
+with open("straightLine/out0.csv", "r") as input_file:
     # files are iterable, you can have a for-loop over a file.
     for line_number, line in enumerate(input_file):
         if line_number > 5:  # line_number starts at 0.

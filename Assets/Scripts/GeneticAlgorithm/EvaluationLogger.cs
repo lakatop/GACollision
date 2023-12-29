@@ -58,7 +58,7 @@ public struct StraightLineEvaluationLogger
       builder.AppendLine(string.Format("{0},{1}", fit, distance));
     }
 
-    File.WriteAllText(string.Format("straightLine/out{0}.csv", iteration), builder.ToString());
+    File.WriteAllText(string.Format("Plotting/straightLine/out{0}.csv", iteration), builder.ToString());
   }
 
   public void Dispose()
