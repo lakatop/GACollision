@@ -12,8 +12,8 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 {
   public BasicCrossOperatorParallel cross;
   public BasicMutationOperatorParallel mutation;
-  public BasicFitnessFunctionParallel fitness;
-  public BasicSelectionFunctionParallel selection;
+  public FitnessContinuousDistanceParallel fitness;
+  public NegativeSelectionParallel selection;
   public GlobeInitialization popInitialization;
   public NativeBasicPopulation pop;
   public StraightLineEvaluationLogger logger;
@@ -73,7 +73,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   private void SetWinner()
   {
     _winner[0] = new Vector2(0, 0);
-    float maxFitness = 0.0f;
+    float maxFitness = float.MinValue;
     foreach (var individual in pop.GetPopulation())
     {
       if (maxFitness < individual.fitness)

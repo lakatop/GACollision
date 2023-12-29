@@ -7,6 +7,7 @@ public struct StraightLineEvaluationLogger
 {
   public NativeArray<BasicIndividualStruct> _topIndividuals;
   public Vector2 _agentPosition;
+  public Vector2 _agentDestination;
   public Vector2 _agentForward;
   public int iteration;
   public float _agentSpeed;
@@ -41,7 +42,7 @@ public struct StraightLineEvaluationLogger
       var position = _agentPosition;
       var fit = individual.fitness.ToString();
 
-      var objective = new Vector2(1, 0);
+      var objective = (_agentDestination - position).normalized;
       objective = objective * _agentSpeed * SimulationManager.Instance._agentUpdateInterval;
       objective = objective + position;
 
@@ -53,7 +54,7 @@ public struct StraightLineEvaluationLogger
       var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, position);
       rotatedAndTranslatedVector = rotatedAndTranslatedVector * individual.path[0].y;
 
-      var distance = Mathf.Sqrt(new Vector2(objective.x - rotatedAndTranslatedVector.x, objective.y - rotatedAndTranslatedVector.y).magnitude);
+      var distance = new Vector2(objective.x - rotatedAndTranslatedVector.x, objective.y - rotatedAndTranslatedVector.y).magnitude;
       builder.AppendLine(string.Format("{0},{1}", fit, distance));
     }
 

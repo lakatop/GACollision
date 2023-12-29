@@ -69,7 +69,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set fitness
-    ga.fitness = new BasicFitnessFunctionParallel()
+    ga.fitness = new FitnessContinuousDistanceParallel()
     {
       _startPosition = agent.position,
       _destination = agent.destination,
@@ -80,7 +80,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set selection
-    ga.selection = new BasicSelectionFunctionParallel()
+    ga.selection = new NegativeSelectionParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       selectedPop = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
+using static UnityEditor.PlayerSettings;
 
 
 public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
@@ -162,6 +163,77 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     for (int i = 0; i < population.Length; i++)
     {
       currentPopulation[i] = population[i];
+    }
+
+    return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose() { }
+}
+
+
+public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public float _agentRadius;
+  public int _agentIndex;
+  public NativeQuadTree<TreeNode> _quadTree;
+  public Vector2 _forward;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    NativeArray<float> fitnesses = new NativeArray<float>(currentPopulation.Length, Allocator.Temp);
+
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      var fitness = Mathf.Pow((_destination - _startPosition).magnitude, 2);
+
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
+      var stepIndex = 1;
+
+      foreach (var pos in individual.path)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
+        AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+        _quadTree.RangeQuery(bounds, queryRes);
+
+        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
+        {
+          fitness = fitness - (Mathf.Pow((_destination - newPos).magnitude, 2) * 2);
+        }
+        else
+        {
+          fitness -= Mathf.Pow((_destination - newPos).magnitude, 2);
+        }
+
+        stepIndex++;
+      }
+
+      fitnesses[index] = fitness;
+      index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
     }
 
     return currentPopulation;
