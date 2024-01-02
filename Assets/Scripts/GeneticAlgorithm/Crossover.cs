@@ -46,8 +46,62 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public int pathSize;
   public NativeArray<BasicIndividualStruct> offsprings;
   public NativeArray<BasicIndividualStruct> parents;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    var population = currentPopulation;
+    int index = 0;
+    for (int i = 0; i < population.Length - 1; i += 2)
+    {
+      BasicIndividualStruct off1 = new BasicIndividualStruct();
+      off1.Initialize(pathSize, Allocator.TempJob);
+      BasicIndividualStruct off2 = new BasicIndividualStruct();
+      off2.Initialize(pathSize, Allocator.TempJob);
+
+      parents[0] = population[i];
+      parents[1] = population[i + 1];
+
+      for (int j = 0; j < parents[0].path.Length; j++)
+      {
+        int prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+        off1.path.Add(parents[prob].path[j]);
+        off2.path.Add(parents[1 - prob].path[j]);
+      }
+
+      offsprings[index] = off1;
+      offsprings[index + 1] = off2;
+      index += 2;
+    }
+
+    for (int i = 0; i < offsprings.Length; i++)
+    {
+      currentPopulation[i] = offsprings[i];
+    }
+
+    return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    offsprings.Dispose();
+    parents.Dispose();
+  }
+}
+
+
+public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public NativeArray<BasicIndividualStruct> offsprings;
+  public NativeArray<BasicIndividualStruct> parents;
+  public int pathSize;
 
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
@@ -65,7 +119,6 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
 
       for (int j = 0; j < parents[0].path.Length; j++)
       {
-        int prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
         off1.path.Add(parents[prob].path[j]);
         off2.path.Add(parents[1 - prob].path[j]);
       }
