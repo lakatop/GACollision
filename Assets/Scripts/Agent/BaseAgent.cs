@@ -69,8 +69,11 @@ public abstract class BaseAgent : IBaseAgent
     {
       _object.transform.position = new Vector3(pos.x, 1.58f, pos.y);
     }
-    var step = speed * Time.deltaTime;
-    position = Vector2.MoveTowards(position, pos, step);
+
+    // Set current position
+    position = pos;
+
+    // Also transform gameobject
     if (_object != null)
     {
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
@@ -84,9 +87,10 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
   public void SetForward(Vector2 forw)
   {
-    float singleStep = speed * Time.deltaTime;
-    var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
-    _object.transform.rotation = Quaternion.LookRotation(direction);
+    _object.transform.forward = new Vector3(forw.x, _object.transform.forward.y, forw.y);
+    //float singleStep = speed * Time.deltaTime;
+    //var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
+    //_object.transform.rotation = Quaternion.LookRotation(direction);
   }
 
   /// <inheritdoc cref="IBaseAgent.GetForward"/>

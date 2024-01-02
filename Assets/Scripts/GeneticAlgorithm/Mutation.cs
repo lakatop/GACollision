@@ -49,7 +49,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _timeDelta;
+  [ReadOnly] public float _updateInterval;
 
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
@@ -61,7 +61,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
         var mutProb = _rand.NextFloat();
         if (mutProb > 0.8f)
         {
-          var size = _rand.NextFloat(_agentSpeed) * _timeDelta;
+          var size = _rand.NextFloat(_agentSpeed) * _updateInterval;
           float2 newVal = currentPopulation[i].path[j];
           newVal.y = size;
           var tempPop = currentPopulation;

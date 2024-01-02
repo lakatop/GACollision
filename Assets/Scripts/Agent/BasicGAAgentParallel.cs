@@ -96,6 +96,7 @@ public class BasicGAAgentParallel : BaseAgent
       _gaJobHandle.Complete();
       PathDrawer.DrawPath(previousLocation, position, nextVel);
       nextVel = gaJob._winner[0];
+      Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
       gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
       iteration++;
@@ -111,7 +112,7 @@ public class BasicGAAgentParallel : BaseAgent
     PathDrawer.DrawDestination(destination);
 
     var vel = nextVel * Time.deltaTime;
-    var pos = position + nextVel;
+    var pos = position + vel;
 
     SetPosition(pos);
     SetForward(vel.normalized);

@@ -51,8 +51,8 @@ public struct StraightLineEvaluationLogger
       if (rotationVector.x == 0 && rotationVector.y == 0)
         rotationVector = new Vector2(1, 0);
       var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, individual.path[0].x);
+      rotatedVector = rotatedVector * individual.path[0].y;
       var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, position);
-      rotatedAndTranslatedVector = rotatedAndTranslatedVector * individual.path[0].y;
 
       var distance = new Vector2(objective.x - rotatedAndTranslatedVector.x, objective.y - rotatedAndTranslatedVector.y).magnitude;
       builder.AppendLine(string.Format("{0},{1}", fit, distance));

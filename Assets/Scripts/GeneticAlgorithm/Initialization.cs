@@ -64,7 +64,7 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public int populationSize;
   [ReadOnly] public float agentSpeed;
-  [ReadOnly] public float timeDelta;
+  [ReadOnly] public float updateInterval;
   [ReadOnly] public int pathSize;
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
@@ -79,13 +79,13 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
     {
       var individual = new BasicIndividualStruct();
       individual.Initialize(pathSize, Allocator.TempJob);
-      individual.path.Add(new float2(initRotation, agentSpeed * timeDelta));
+      individual.path.Add(new float2(initRotation, agentSpeed * updateInterval));
       initRotation += initRotationRange;
 
       for (int j = 0; j < pathSize - 1; j++)
       {
         var rotation = _rand.NextFloat(-rotationRange, rotationRange);
-        var size = _rand.NextFloat(agentSpeed) * timeDelta;
+        var size = _rand.NextFloat(agentSpeed) * updateInterval;
         individual.path.Add(new float2(rotation, size));
       }
       currentPopulation[i] = individual;
@@ -130,7 +130,7 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public int populationSize;
   [ReadOnly] public float agentSpeed;
-  [ReadOnly] public float timeDelta;
+  [ReadOnly] public float updateInterval;
   [ReadOnly] public int pathSize;
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
@@ -145,13 +145,13 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
     {
       var individual = new BasicIndividualStruct();
       individual.Initialize(pathSize, Allocator.TempJob);
-      individual.path.Add(new float2(initRotation, agentSpeed * timeDelta));
+      individual.path.Add(new float2(initRotation, agentSpeed * updateInterval));
       initRotation += initRotationRange;
 
       for (int j = 0; j < pathSize - 1; j++)
       {
         var rotation = _rand.NextFloat(-rotationRange, rotationRange);
-        var size = _rand.NextFloat(agentSpeed) * timeDelta;
+        var size = _rand.NextFloat(agentSpeed) * updateInterval;
         individual.path.Add(new float2(rotation, size));
       }
       currentPopulation[i] = individual;
