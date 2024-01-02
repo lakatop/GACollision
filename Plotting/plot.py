@@ -99,6 +99,6 @@ for idx, csv_file in enumerate(csv_files):
 
 # Adjust layout and save the figure
 plt.tight_layout()
-fig.subplots_adjust(top=0.95)
+fig.subplots_adjust(top=0.85)
 plt.savefig("output_graphs.png")
 plt.show()

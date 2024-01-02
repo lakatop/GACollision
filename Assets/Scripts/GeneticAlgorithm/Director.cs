@@ -51,13 +51,15 @@ public class GeneticAlgorithmDirector
     var ga = new BasicGeneticAlgorithmParallel();
     int populationSize = 50;
     int iterations = 100;
+    int pathSize = 10;
 
     // Set crossover
-    ga.cross = new BasicCrossOperatorParallel()
+    ga.cross = new MeanCrossOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
-      parents = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)
+      parents = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
+      pathSize = pathSize
     };
 
     // Set mutation
@@ -95,7 +97,7 @@ public class GeneticAlgorithmDirector
       populationSize = populationSize,
       agentSpeed = agent.speed,
       updateInterval = SimulationManager.Instance._agentUpdateInterval,
-      pathSize = 10,
+      pathSize = pathSize,
       startPosition = agent.position,
       forward = agent.GetForward()
     };
