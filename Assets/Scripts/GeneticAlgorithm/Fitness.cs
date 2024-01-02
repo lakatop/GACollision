@@ -177,6 +177,13 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 }
 
 
+/// <summary>
+/// "Along-the-way" fitness
+/// Takes (position - destination).magnitude as initial fitness
+/// For each position in individuals path calculates (pos - detination).magnitude and substracts this value ^2 from current fitness
+/// Penalization -> if pos collides, it substracts value^3 (instead of value^2)
+/// Warning: resulting fitness may be negative
+/// </summary>
 public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   public Vector2 _startPosition;
@@ -215,7 +222,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
 
         if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
         {
-          fitness = fitness - (Mathf.Pow((_destination - newPos).magnitude, 2) * 2);
+          fitness -= (Mathf.Pow((_destination - newPos).magnitude, 2) * 2);
         }
         else
         {

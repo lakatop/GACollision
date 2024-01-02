@@ -14,7 +14,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public BasicMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
   public NegativeSelectionParallel selection;
-  public GlobeInitialization popInitialization;
+  public KineticFriendlyInitialization popInitialization;
   public NativeBasicPopulation pop;
   public StraightLineEvaluationLogger logger;
 

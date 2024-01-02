@@ -14,6 +14,7 @@ public class BasicGAAgentParallel : BaseAgent
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
   private Vector2 nextVel { get; set; }
+  private Vector2 previousLocation { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
@@ -35,6 +36,7 @@ public class BasicGAAgentParallel : BaseAgent
     nextVel = Vector2.zero;
     _runGa = true;
     iteration = 0;
+    previousLocation = position;
   }
 
   public override void SetDestination(Vector2 des)
@@ -92,7 +94,10 @@ public class BasicGAAgentParallel : BaseAgent
     if (jobScheduled && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       _gaJobHandle.Complete();
+      PathDrawer.DrawPath(previousLocation, position, nextVel);
       nextVel = gaJob._winner[0];
+      Debug.Log(string.Format("Next winner {0}", nextVel));
+      previousLocation = position;
       gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
       iteration++;
       gaJob.Dispose();
@@ -103,8 +108,11 @@ public class BasicGAAgentParallel : BaseAgent
       _runGa = true;
     }
 
+    Debug.Log(GetForward());
+    PathDrawer.DrawDestination(destination);
+
     var vel = nextVel * Time.deltaTime;
-    var pos = position + nextVel;
+    var pos = position + vel;
 
     SetPosition(pos);
     SetForward(vel.normalized);
