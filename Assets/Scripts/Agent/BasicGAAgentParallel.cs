@@ -108,7 +108,8 @@ public class BasicGAAgentParallel : BaseAgent
       _runGa = true;
     }
 
-    Debug.Log(GetForward());
+    Debug.Log(string.Format("Forward {0}", GetForward()));
+    Debug.Log(string.Format("Position {0}", position));
     PathDrawer.DrawDestination(destination);
 
     var vel = nextVel * Time.deltaTime;
