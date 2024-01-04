@@ -10,7 +10,7 @@ using Unity.Collections;
 [BurstCompile]
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
-  public BasicCrossOperatorParallel cross;
+  public MeanCrossOperatorParallel cross;
   public BasicMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
   public NegativeSelectionParallel selection;
