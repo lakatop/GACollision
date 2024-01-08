@@ -59,6 +59,66 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
   }
 }
 
+/// <summary>
+/// Initial rotation range is 60 degree cone (-30 - 30)
+/// After that, only 5 degree rotations are allowed
+/// </summary>
+public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 forward;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    var pathSize = 10;
+
+    var individual = new BasicIndividualStruct();
+    individual.Initialize(pathSize, Allocator.TempJob);
+    individual.path.Add(new float2(45, 1));
+
+    var individual2 = new BasicIndividualStruct();
+    individual2.Initialize(pathSize, Allocator.TempJob);
+    individual2.path.Add(new float2(-45, 1));
+
+    for (int j = 0; j < pathSize - 1; j++)
+    {
+      individual.path.Add(new float2(0, 1));
+      individual2.path.Add(new float2(0, 1));
+    }
+    currentPopulation[0] = individual;
+    currentPopulation[1] = individual2;
+
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var placeOrigin = startPosition;
+      var rotationVector = forward.normalized;
+      var path = currentPopulation[i].path;
+
+      for (int j = 0; j < path.Length; j++)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
+        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedVector.x, 0f, rotatedVector.y), new Color(0, 1, 0), 50, false);
+        var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
+        placeOrigin = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+      }
+    }
+
+    return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+
 public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;

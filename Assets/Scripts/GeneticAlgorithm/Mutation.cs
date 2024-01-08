@@ -3,7 +3,6 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -144,13 +143,13 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       for (int j = 0; j < individual.path.Length; j++)
       {
         float segmentAngle = startAngle - j * angleIncrement;
-        totalLength += Mathf.Cos(segmentAngle);
+        totalLength += Mathf.Cos(segmentAngle * Mathf.Deg2Rad);
       }
 
       var uniformSegmentSize = straightVectorToDestination.magnitude / totalLength;
 
       // If true, we would need agent to move faster and wont be able to make it to the destination in this smooth movement
-      if (totalLength > _agentSpeed * _updateInterval)
+      if (totalLength > _agentSpeed * _updateInterval * individual.path.Length)
         continue;
 
       // Create a new path
