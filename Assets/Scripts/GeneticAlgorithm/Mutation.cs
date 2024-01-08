@@ -176,7 +176,6 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         {
           individual.path[j] = new float2 { x = stepAngleDegrees, y = _agentSpeed * _updateInterval };
         }
-        continue;
       }
 
       // Create a new path
