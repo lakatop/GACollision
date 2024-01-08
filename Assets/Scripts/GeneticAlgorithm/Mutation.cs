@@ -2,6 +2,8 @@
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
+using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -69,6 +71,93 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
           tempPath[j] = newVal;
           currentPopulation = tempPop;
         }
+      }
+    }
+
+    return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+/// <summary>
+/// Rotate towards destination in even circular movement
+/// Only if there is special case when we can go straight to destination by single vector, use that instead
+/// </summary>
+public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 _destination;
+  [ReadOnly] public Vector2 _agentPosition;
+  [ReadOnly] public Vector2 _forward;
+  [ReadOnly] public float _rotationAngle;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _updateInterval;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    // How often we want mutation to happen
+    var mutationRate = 0.2f;
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb < 1 - mutationRate)
+        continue;
+
+      var individual = currentPopulation[i];
+
+      var rotationVector = _forward.normalized;
+      var seg1 = individual.path[0];
+      var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
+
+      var straightVectorToDestination = (_destination - _agentPosition);
+      var startAngle = Vector2.SignedAngle(straightVectorToDestination, rotatedVector);
+
+      // Special case when we can go straight to the destination with single vector
+      if (Mathf.Abs(startAngle) < _rotationAngle
+        && straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      {
+        individual.path[0] = new float2 { x = startAngle, y = straightVectorToDestination.magnitude };
+        for (int j = 1; j < individual.path.Length; j++)
+        {
+          individual.path[j] = new float2 { x = 0, y = 0 };
+        }
+        continue;
+      }
+
+      // Check if we can achieve turning towards the destination in smooth circle motion
+      var maxAngleChange = (individual.path.Length - 1) * _rotationAngle;
+      if (maxAngleChange < startAngle * 2) // * 2 because first half of circle will take angle, second is symmetrical
+        continue;
+
+      // An arc with n segments has n-1 turning joints
+      float angleIncrement = 2 * startAngle / (individual.path.Length - 1);
+
+      float totalLength = 0;
+      for (int j = 0; j < individual.path.Length; j++)
+      {
+        float segmentAngle = startAngle - j * angleIncrement;
+        totalLength += Mathf.Cos(segmentAngle);
+      }
+
+      var uniformSegmentSize = straightVectorToDestination.magnitude / totalLength;
+
+      // If true, we would need agent to move faster and wont be able to make it to the destination in this smooth movement
+      if (totalLength > _agentSpeed * _updateInterval)
+        continue;
+
+      // Create a new path
+      individual.path[0] = new float2 { x = individual.path[0].x, y = uniformSegmentSize };
+      for (int j = 1; j < individual.path.Length; j++)
+      {
+        individual.path[j] = new float2 { x = angleIncrement, y = uniformSegmentSize };
       }
     }
 

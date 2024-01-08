@@ -31,6 +31,31 @@ namespace UtilsGA
       return rotation * vector;
     }
 
+    /// <summary>
+    /// Rotates vector around given axis.
+    /// </summary>
+    /// <param name="vectorToRotate">Vector that will be rotated</param>
+    /// <param name="referenceVector">Axis around which vector rotates</param>
+    /// <param name="angle">Rotation angle</param>
+    /// <returns>Rotated vector</returns>
+    public static Vector2 RotateVectorAroundAxes(Vector2 vectorToRotate, Vector2 referenceVector, float angle)
+    {
+      // Calculate the angle between the two vectors
+      float currentAngle = Vector2.SignedAngle(referenceVector, vectorToRotate);
+
+      // Adjust the rotation direction based on the specified angle
+      float newAngle = currentAngle + angle;
+
+      // Convert the angle back to radians
+      float newAngleRad = newAngle * Mathf.Deg2Rad;
+
+      // Calculate the rotated vector
+      float rotatedX = Mathf.Cos(newAngleRad) * vectorToRotate.x - Mathf.Sin(newAngleRad) * vectorToRotate.y;
+      float rotatedY = Mathf.Sin(newAngleRad) * vectorToRotate.x + Mathf.Cos(newAngleRad) * vectorToRotate.y;
+
+      return new Vector2(rotatedX, rotatedY);
+    }
+
     public static Vector2 MoveToOrigin(Vector2 vectorToMove, Vector2 referenceVector)
     {
       // Get the length of the reference vector
