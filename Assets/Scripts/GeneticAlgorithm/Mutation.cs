@@ -103,7 +103,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 1f;
+    var mutationRate = 0.2f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
