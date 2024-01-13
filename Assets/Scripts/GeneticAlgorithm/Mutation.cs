@@ -87,7 +87,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
 }
 
 /// <summary>
-/// Rotate towards destination in even circular movement
+/// Rotate towards destination in even circular movement if we can make it in single path
 /// Only if there is special case when we can go straight to destination by single vector, use that instead
 /// </summary>
 public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
@@ -103,7 +103,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 0.2f;
+    var mutationRate = 0.8f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -187,6 +187,83 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
     }
 
     return currentPopulation;
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+
+/// <summary>
+/// Rotate towards destination in "greedy" circular movement
+///   - start with max velocity and max angle turn till you can, then slow down
+/// Only if there is special case when we can go straight to destination by single vector, use that instead
+/// </summary>
+public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 _destination;
+  [ReadOnly] public Vector2 _agentPosition;
+  [ReadOnly] public Vector2 _forward;
+  [ReadOnly] public float _rotationAngle;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _updateInterval;
+
+  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    // How often we want mutation to happen
+    var mutationRate = 0.8f;
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb < 1 - mutationRate)
+        continue;
+
+      var individual = currentPopulation[i];
+
+      var straightVectorToDestination = (_destination - _agentPosition);
+      var startAngle = Vector2.SignedAngle(straightVectorToDestination, _forward);
+
+      // Special case when we can go straight to the destination with single vector
+      if (Mathf.Abs(startAngle) < _rotationAngle
+        && straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      {
+        individual.path[0] = new float2 { x = startAngle, y = straightVectorToDestination.magnitude };
+        for (int j = 1; j < individual.path.Length; j++)
+        {
+          individual.path[j] = new float2 { x = 0, y = 0 };
+        }
+        continue;
+      }
+
+
+      CreateCircle(startAngle, straightVectorToDestination, individual.path[0].x);
+    }
+
+    return currentPopulation;
+  }
+
+  public void CreateCircle(float startAngle, Vector2 straightVectorToDestination, float firstAngle)
+  {
+    // Get radius of circle from tangent at starting point
+    float beta = 90 - startAngle;
+    var radius = straightVectorToDestination.magnitude /
+      (2 * Mathf.Cos(beta * Mathf.Deg2Rad));
+
+    // gamma is angle of pie chart between starting and destination points
+    // located on circle arc
+    float gamma = 180 - 2 * beta;
+    // we shift whole circle so that it has origin at point [0,0]
+    // and calculate where our new startPoint is
+    var startPointShifted = UtilsGA.UtilsGA.RotateVector(new Vector2(1, 0), -gamma / 2);
+    startPointShifted *= radius;
+
   }
 
   public string GetComponentName()
