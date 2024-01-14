@@ -202,7 +202,8 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 
 /// <summary>
 /// Rotate towards destination in "greedy" circular movement
-///   - start with max velocity and max angle turn till you can, then slow down
+///   - start with max velocity till you can, then slow down
+///   - may break _rotationAngle restriction
 /// Only if there is special case when we can go straight to destination by single vector, use that instead
 /// </summary>
 public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
@@ -218,7 +219,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 0.8f;
+    var mutationRate = 1f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -231,8 +232,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       var startAngle = Vector2.SignedAngle(straightVectorToDestination, _forward);
 
       // Special case when we can go straight to the destination with single vector
-      if (Mathf.Abs(startAngle) < _rotationAngle
-        && straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      if (straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
       {
         individual.path[0] = new float2 { x = startAngle, y = straightVectorToDestination.magnitude };
         for (int j = 1; j < individual.path.Length; j++)
@@ -242,28 +242,90 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
         continue;
       }
 
+      var remainingLength = straightVectorToDestination.magnitude;
+      var index = 0;
+      var maxMove = _agentSpeed * _updateInterval;
 
-      CreateCircle(startAngle, straightVectorToDestination, individual.path[0].x);
+      // Straight line to destination
+      //if(-_rotationAngle < startAngle && startAngle < _rotationAngle)
+      //{
+      //  var turnAngle = startAngle;
+      //  while(remainingLength > 0 && index < individual.path.Length)
+      //  {
+      //    // First path will turn towards the direction, rest will be straight line
+      //    individual.path[index] = new float2 { x = turnAngle, y = maxMove };
+      //    turnAngle = 0;
+      //    remainingLength -= maxMove;
+      //    index++;
+
+      //    // We went too far, replace last segment with line straight to destination
+      //    if(remainingLength < 0)
+      //    {
+      //      individual.path[index - 1] = new float2 { x = 0, y = remainingLength + maxMove };
+      //    }
+      //  }
+
+      //  for (int j = index; j < individual.path.Length; j++)
+      //  {
+      //    individual.path[index] = new float2 { x = 0, y = 0 };
+      //  }
+
+      //  continue;
+      //}
+
+      // Create greedy circle rotation towards the destination
+      var rotationVector = _forward.normalized;
+      var seg1 = individual.path[0];
+      var rotationSign = seg1.x > 0 ? -1 : 1;
+      var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
+      rotatedVector = rotatedVector * maxMove;
+
+      var pos = _agentPosition;
+      var rotatedAndTranslated = pos + rotatedVector;
+      var radius = UtilsGA.UtilsGA.GetCircleRadius(
+        new System.Numerics.Complex(_agentPosition.x, _agentPosition.y),
+        new System.Numerics.Complex(_destination.x, _destination.y),
+        new System.Numerics.Complex(rotatedAndTranslated.x, rotatedAndTranslated.y));
+
+      if (radius < 0)
+        continue;
+
+      individual.path[0] = new float2 { x = seg1.x, y = maxMove };
+      index++;
+
+      do
+      {
+        // We can go straight to destination by 1 move
+        if((rotatedAndTranslated - _destination).magnitude < maxMove)
+        {
+          individual.path[index] = new float2 { x = Vector2.SignedAngle(rotatedVector, (_destination - rotatedAndTranslated)), y = (rotatedAndTranslated - _destination).magnitude };
+          index++;
+          break;
+        }
+
+        var baseHalf = maxMove / 2;
+        var stepAngle = 2 * Mathf.Asin((float)(baseHalf / radius));
+
+        var stepAngleDegrees = stepAngle * Mathf.Rad2Deg;
+        individual.path[index] = new float2 { x = stepAngleDegrees * rotationSign, y = maxMove };
+        index++;
+
+        rotationVector = rotatedVector.normalized;
+        rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, stepAngleDegrees * rotationSign);
+        rotatedVector = rotatedVector * maxMove;
+        rotatedAndTranslated = rotatedAndTranslated + rotatedVector;
+
+      } while (index < individual.path.Length);
+
+      // We cut loop too early => we arrived in destination
+      // Fill the rest of the path with zeros
+      for(int j = index; j < individual.path.Length; j++)
+      {
+        individual.path[j] = new float2 { x = 0, y = 0 };
+      }
     }
 
     return currentPopulation;
-  }
-
-  public void CreateCircle(float startAngle, Vector2 straightVectorToDestination, float firstAngle)
-  {
-    // Get radius of circle from tangent at starting point
-    float beta = 90 - startAngle;
-    var radius = straightVectorToDestination.magnitude /
-      (2 * Mathf.Cos(beta * Mathf.Deg2Rad));
-
-    // gamma is angle of pie chart between starting and destination points
-    // located on circle arc
-    float gamma = 180 - 2 * beta;
-    // we shift whole circle so that it has origin at point [0,0]
-    // and calculate where our new startPoint is
-    var startPointShifted = UtilsGA.UtilsGA.RotateVector(new Vector2(1, 0), -gamma / 2);
-    startPointShifted *= radius;
-
   }
 
   public string GetComponentName()
