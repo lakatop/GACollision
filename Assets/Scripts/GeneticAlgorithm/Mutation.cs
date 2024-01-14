@@ -170,8 +170,6 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 
         var stepAngleDegrees = stepAngle * Mathf.Rad2Deg;
 
-
-
         // Create a new path
         individual.path[0] = new float2 { x = individual.path[0].x, y = _agentSpeed * _updateInterval };
         for (int j = 1; j < individual.path.Length; j++)
