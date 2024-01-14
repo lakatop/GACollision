@@ -133,7 +133,9 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 
       // Check if we can achieve turning towards the destination in smooth circle motion
       var maxAngleChange = (individual.path.Length - 1) * _rotationAngle;
-      if (maxAngleChange < startAngle * 2) // * 2 because first half of circle will take angle, second is symmetrical
+      // * 2 because first half of circle will take angle, second is symmetrical
+      // only acute angles
+      if (maxAngleChange < startAngle * 2 && (startAngle > 90 || startAngle < -90))
         continue;
 
       // An arc with n segments has n-1 turning joints

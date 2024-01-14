@@ -94,5 +94,33 @@ namespace UtilsGA
 
       return collides;
     }
+
+    /// <summary>
+    /// Gets radius of circle based on 3 points that are on the arc
+    /// https://math.stackexchange.com/a/3503338/1278830
+    /// </summary>
+    /// <param name="z1">Point 1</param>
+    /// <param name="z2">Point 2</param>
+    /// <param name="z3">Point 3</param>
+    /// <returns>Radius of circle</returns>
+    public static double GetCircleRadius(System.Numerics.Complex z1, System.Numerics.Complex z2, System.Numerics.Complex z3)
+    {
+      if ((z1 == z2) || (z2 == z3) || (z3 == z1))
+      {
+        return -1;
+      }
+
+      var w = (z3 - z1) / (z2 - z1);
+      if(System.Numerics.Complex.Abs(w.Imaginary) <= 0)
+      {
+        return -1;
+      }
+
+      var c = ((z2 - z1) * ((w - System.Math.Pow(System.Numerics.Complex.Abs(w), 2)) / (new System.Numerics.Complex(0, 2) * w.Imaginary))) + z1;
+
+      var r = System.Numerics.Complex.Abs(z1 - c);
+
+      return r;
+    }
   }
 }
