@@ -11,7 +11,7 @@ using Unity.Collections;
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
   public MeanCrossOperatorParallel cross;
-  public BasicMutationOperatorParallel mutation;
+  public EvenCircleMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;

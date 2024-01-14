@@ -31,6 +31,31 @@ namespace UtilsGA
       return rotation * vector;
     }
 
+    /// <summary>
+    /// Rotates vector around given axis.
+    /// </summary>
+    /// <param name="vectorToRotate">Vector that will be rotated</param>
+    /// <param name="referenceVector">Axis around which vector rotates</param>
+    /// <param name="angle">Rotation angle</param>
+    /// <returns>Rotated vector</returns>
+    public static Vector2 RotateVectorAroundAxes(Vector2 vectorToRotate, Vector2 referenceVector, float angle)
+    {
+      // Calculate the angle between the two vectors
+      float currentAngle = Vector2.SignedAngle(referenceVector, vectorToRotate);
+
+      // Adjust the rotation direction based on the specified angle
+      float newAngle = currentAngle + angle;
+
+      // Convert the angle back to radians
+      float newAngleRad = newAngle * Mathf.Deg2Rad;
+
+      // Calculate the rotated vector
+      float rotatedX = Mathf.Cos(newAngleRad) * vectorToRotate.x - Mathf.Sin(newAngleRad) * vectorToRotate.y;
+      float rotatedY = Mathf.Sin(newAngleRad) * vectorToRotate.x + Mathf.Cos(newAngleRad) * vectorToRotate.y;
+
+      return new Vector2(rotatedX, rotatedY);
+    }
+
     public static Vector2 MoveToOrigin(Vector2 vectorToMove, Vector2 referenceVector)
     {
       // Get the length of the reference vector
@@ -68,6 +93,34 @@ namespace UtilsGA
       }
 
       return collides;
+    }
+
+    /// <summary>
+    /// Gets radius of circle based on 3 points that are on the arc
+    /// https://math.stackexchange.com/a/3503338/1278830
+    /// </summary>
+    /// <param name="z1">Point 1</param>
+    /// <param name="z2">Point 2</param>
+    /// <param name="z3">Point 3</param>
+    /// <returns>Radius of circle</returns>
+    public static double GetCircleRadius(System.Numerics.Complex z1, System.Numerics.Complex z2, System.Numerics.Complex z3)
+    {
+      if ((z1 == z2) || (z2 == z3) || (z3 == z1))
+      {
+        return -1;
+      }
+
+      var w = (z3 - z1) / (z2 - z1);
+      if(System.Numerics.Complex.Abs(w.Imaginary) <= 0)
+      {
+        return -1;
+      }
+
+      var c = ((z2 - z1) * ((w - System.Math.Pow(System.Numerics.Complex.Abs(w), 2)) / (new System.Numerics.Complex(0, 2) * w.Imaginary))) + z1;
+
+      var r = System.Numerics.Complex.Abs(z1 - c);
+
+      return r;
     }
   }
 }

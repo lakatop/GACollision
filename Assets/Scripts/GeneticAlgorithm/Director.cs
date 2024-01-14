@@ -63,9 +63,13 @@ public class GeneticAlgorithmDirector
     };
 
     // Set mutation
-    ga.mutation = new BasicMutationOperatorParallel()
+    ga.mutation = new EvenCircleMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      _destination = agent.destination,
+      _agentPosition = agent.position,
+      _forward = agent.GetForward(),
+      _rotationAngle = 15,
       _agentSpeed = agent.speed,
       _updateInterval = SimulationManager.Instance._agentUpdateInterval
     };
@@ -101,6 +105,12 @@ public class GeneticAlgorithmDirector
       startPosition = agent.position,
       forward = agent.GetForward()
     };
+
+    //ga.popInitialization = new DebugInitialization()
+    //{
+    //  startPosition = agent.position,
+    //  forward = new Vector2(0, 1),
+    //};
 
     // Set logger
     ga.logger = new StraightLineEvaluationLogger()
