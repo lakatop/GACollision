@@ -103,7 +103,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 0.2f;
+    var mutationRate = 1f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -135,7 +135,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       var maxAngleChange = (individual.path.Length - 1) * _rotationAngle;
       // * 2 because first half of circle will take angle, second is symmetrical
       // only acute angles
-      if (maxAngleChange < startAngle * 2 && (startAngle > 90 || startAngle < -90))
+      if (maxAngleChange < startAngle * 2 && (startAngle >= 90 || startAngle <= -90))
         continue;
 
       // An arc with n segments has n-1 turning joints
@@ -150,9 +150,36 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 
       var uniformSegmentSize = straightVectorToDestination.magnitude / totalLength;
 
-      // If true, we would need agent to move faster and wont be able to make it to the destination in this smooth movement
-      if (totalLength > _agentSpeed * _updateInterval * individual.path.Length)
+      // We wont be able to make it in single path
+      // Go as further as we can
+      if (uniformSegmentSize > _agentSpeed * _updateInterval)
+      {
+        rotatedVector = rotatedVector * _agentSpeed * _updateInterval;
+        var rotatedAndTranslated = _agentPosition + rotatedVector;
+
+        var radius = UtilsGA.UtilsGA.GetCircleRadius(
+          new System.Numerics.Complex(_agentPosition.x, _agentPosition.y),
+          new System.Numerics.Complex(_destination.x, _destination.y),
+          new System.Numerics.Complex(rotatedAndTranslated.x, rotatedAndTranslated.y));
+
+        if (radius < 0)
+          continue;
+
+        var baseHalf = (_agentSpeed * _updateInterval) / 2;
+        var stepAngle = 2 * Mathf.Asin((float)(baseHalf / radius));
+
+        var stepAngleDegrees = stepAngle * Mathf.Rad2Deg;
+
+
+
+        // Create a new path
+        individual.path[0] = new float2 { x = individual.path[0].x, y = _agentSpeed * _updateInterval };
+        for (int j = 1; j < individual.path.Length; j++)
+        {
+          individual.path[j] = new float2 { x = stepAngleDegrees, y = _agentSpeed * _updateInterval };
+        }
         continue;
+      }
 
       // Create a new path
       individual.path[0] = new float2 { x = individual.path[0].x, y = uniformSegmentSize };
