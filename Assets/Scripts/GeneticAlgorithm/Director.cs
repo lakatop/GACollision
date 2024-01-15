@@ -63,7 +63,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set mutation
-    ga.mutation = new EvenCircleMutationOperatorParallel()
+    ga.mutation = new GreedyCircleMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       _destination = agent.destination,
@@ -128,7 +128,7 @@ public class GeneticAlgorithmDirector
     {
       _population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)
     };
-    ga._winner = new NativeArray<Vector2>(populationSize, Allocator.TempJob);
+    ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
     ga.SetResources(new System.Collections.Generic.List<object>
     {

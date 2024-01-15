@@ -48,6 +48,8 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
           break;
         }
 
+        queryRes.Dispose();
+
         stepIndex++;
       }
 
@@ -136,6 +138,8 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
           break;
         }
 
+        queryRes.Dispose();
+
         stepIndex++;
       }
 
@@ -217,7 +221,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         rotationVector = rotatedVector;
 
         AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
-        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.TempJob);
         _quadTree.RangeQuery(bounds, queryRes);
 
         if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
@@ -229,6 +233,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
           fitness -= Mathf.Pow((_destination - newPos).magnitude, 2);
         }
 
+        queryRes.Dispose();
         stepIndex++;
       }
 
@@ -242,6 +247,8 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
       temp.fitness = fitnesses[i];
       currentPopulation[i] = temp;
     }
+
+    fitnesses.Dispose();
 
     return currentPopulation;
   }

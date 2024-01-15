@@ -64,6 +64,9 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
+    Debug.Log("POSITION NAVMESHAGENT" + GetComponent<NavMeshAgent>().transform.position);
+    Debug.Log("POSITION OBJECT" + _object.transform.position);
+    Debug.Log("CAPSULE POSITION" + GetComponent<CapsuleCollider>().transform.position);
     _lastPosition = _object.transform.position;
     if (_object.transform.position.y > 1.59f)
     {

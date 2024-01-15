@@ -75,6 +75,7 @@ public struct NativeBasicPopulation : IParallelPopulation<BasicIndividualStruct>
     {
       individual.Dispose();
     }
+    _population.Dispose();
   }
 
   public NativeArray<BasicIndividualStruct> _population;

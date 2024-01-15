@@ -32,7 +32,7 @@ public class BasicGAAgentParallel : BaseAgent
     _path = new NavMeshPath();
     speed = 5.0f;
     jobScheduled = false;
-    _updateTimer = 0f;
+    _updateTimer = SimulationManager.Instance._agentUpdateInterval;
     nextVel = Vector2.zero;
     _runGa = true;
     iteration = 0;
@@ -67,6 +67,7 @@ public class BasicGAAgentParallel : BaseAgent
   public override void OnBeforeUpdate()
   {
     destination = CalculateNewDestination();
+    _updateTimer += Time.deltaTime;
 
     if ((position - destination).magnitude <= 0.1f)
     {
@@ -74,7 +75,7 @@ public class BasicGAAgentParallel : BaseAgent
       return;
     }
 
-    if (_runGa)
+    if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       // Run GA
       gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
@@ -84,21 +85,20 @@ public class BasicGAAgentParallel : BaseAgent
 
       _runGa = false;
     }
-
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    _updateTimer += Time.deltaTime;
-    if (jobScheduled && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
+    if (jobScheduled)
     {
       _gaJobHandle.Complete();
+      jobScheduled = false;
       PathDrawer.DrawPath(previousLocation, position, nextVel);
       nextVel = gaJob._winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
-      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
+      //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
       iteration++;
       gaJob.Dispose();
 
@@ -123,6 +123,12 @@ public class BasicGAAgentParallel : BaseAgent
       _cornerIndex++;
       destination = new Vector2(_path.corners[_cornerIndex].x, _path.corners[_cornerIndex].z);
     }
+  }
+
+  void OnDestroy()
+  {
+    _gaJobHandle.Complete();
+    gaJob.Dispose();
   }
 
   private Vector2 CalculateNewDestination()

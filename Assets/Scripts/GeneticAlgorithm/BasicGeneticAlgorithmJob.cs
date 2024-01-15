@@ -11,7 +11,7 @@ using Unity.Collections;
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
   public MeanCrossOperatorParallel cross;
-  public EvenCircleMutationOperatorParallel mutation;
+  public GreedyCircleMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
@@ -42,14 +42,14 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     for (int i = 0; i < iterations; i++)
     {
       pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-      logger.LogPopulationState(pop.GetPopulation());
+      //logger.LogPopulationState(pop.GetPopulation());
       pop.SetPopulation(selection.ModifyPopulation(pop.GetPopulation()));
       pop.SetPopulation(cross.ModifyPopulation(pop.GetPopulation()));
       pop.SetPopulation(mutation.ModifyPopulation(pop.GetPopulation()));
     }
 
     pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-    logger.LogPopulationState(pop.GetPopulation());
+    //logger.LogPopulationState(pop.GetPopulation());
     SetWinner();
   }
 
@@ -105,6 +105,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     fitness.Dispose();
     selection.Dispose();
     logger.Dispose();
+    _winner.Dispose();
     foreach (var ind in pop.GetPopulation())
     {
       ind.Dispose();

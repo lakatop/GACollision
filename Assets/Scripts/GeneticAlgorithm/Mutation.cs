@@ -103,7 +103,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 0.8f;
+    var mutationRate = 0.3f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -219,7 +219,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
-    var mutationRate = 1f;
+    var mutationRate = 0.3f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -247,31 +247,31 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       var maxMove = _agentSpeed * _updateInterval;
 
       // Straight line to destination
-      //if(-_rotationAngle < startAngle && startAngle < _rotationAngle)
-      //{
-      //  var turnAngle = startAngle;
-      //  while(remainingLength > 0 && index < individual.path.Length)
-      //  {
-      //    // First path will turn towards the direction, rest will be straight line
-      //    individual.path[index] = new float2 { x = turnAngle, y = maxMove };
-      //    turnAngle = 0;
-      //    remainingLength -= maxMove;
-      //    index++;
+      if (-_rotationAngle < startAngle && startAngle < _rotationAngle)
+      {
+        var turnAngle = startAngle;
+        while (remainingLength > 0 && index < individual.path.Length)
+        {
+          // First path will turn towards the direction, rest will be straight line
+          individual.path[index] = new float2 { x = turnAngle, y = maxMove };
+          turnAngle = 0;
+          remainingLength -= maxMove;
+          index++;
 
-      //    // We went too far, replace last segment with line straight to destination
-      //    if(remainingLength < 0)
-      //    {
-      //      individual.path[index - 1] = new float2 { x = 0, y = remainingLength + maxMove };
-      //    }
-      //  }
+          // We went too far, replace last segment with line straight to destination
+          if (remainingLength < 0)
+          {
+            individual.path[index - 1] = new float2 { x = 0, y = remainingLength + maxMove };
+          }
+        }
 
-      //  for (int j = index; j < individual.path.Length; j++)
-      //  {
-      //    individual.path[index] = new float2 { x = 0, y = 0 };
-      //  }
+        for (int j = index; j < individual.path.Length; j++)
+        {
+          individual.path[index] = new float2 { x = 0, y = 0 };
+        }
 
-      //  continue;
-      //}
+        continue;
+      }
 
       // Create greedy circle rotation towards the destination
       var rotationVector = _forward.normalized;
