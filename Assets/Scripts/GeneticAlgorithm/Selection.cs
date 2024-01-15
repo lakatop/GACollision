@@ -71,13 +71,14 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
 public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
-  public NativeArray<BasicIndividualStruct> selectedPop;
   public NativeArray<double> relativeFitnesses;
   public NativeArray<double> wheel;
+  public NativeArray<BasicIndividualStruct> population;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  //TODO: check for dispose when replacing elements in population array as in the NegativeSelectionParallel
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
-    var population = currentPopulation;
+    population = currentPopulation;
 
     // Apply roulette selection
     double totalFitness = 0;
@@ -88,7 +89,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 
     if (totalFitness == 0)
     {
-      return currentPopulation;
+      return;
     }
 
     for (int i = 0; i < population.Length; i++)
@@ -123,10 +124,9 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       // clamp in to last one
       index = Mathf.Clamp(index, 0, population.Length - 1);
 
-      selectedPop[i] = population[index];
+      currentPopulation[i] = population[index];
     }
 
-    return selectedPop;
   }
 
   public string GetComponentName()
@@ -136,9 +136,9 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 
   public void Dispose()
   {
-    selectedPop.Dispose();
     relativeFitnesses.Dispose();
     wheel.Dispose();
+    population.Dispose();
   }
 }
 
@@ -150,24 +150,24 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
-  public NativeArray<BasicIndividualStruct> selectedPop;
-  public NativeArray<double> relativeFitnesses;
-  public NativeArray<double> wheel;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
-    var population = currentPopulation;
 
-    population.Sort(new BasicIndividualSortDescending());
+    currentPopulation.Sort(new BasicIndividualSortDescending());
 
     int n = 5;
 
-    for (int i = 0; i < selectedPop.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
-      selectedPop[i] = population[i % n];
-    }
+      // This element will be replaced, we need to dispose it first
+      if (i >= n)
+      {
+        currentPopulation[i].Dispose();
+      }
 
-    return selectedPop;
+      currentPopulation[i] = currentPopulation[i % n];
+    }
   }
 
   public string GetComponentName()
@@ -177,8 +177,5 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
 
   public void Dispose()
   {
-    selectedPop.Dispose();
-    relativeFitnesses.Dispose();
-    wheel.Dispose();
   }
 }

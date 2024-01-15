@@ -82,16 +82,14 @@ public class GeneticAlgorithmDirector
       _agentRadius = 0.5f,
       _agentIndex = agent.id,
       _quadTree = SimulationManager.Instance.GetQuadTree(),
-      _forward = agent.GetForward()
-    };
+      _forward = agent.GetForward(),
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
+  };
 
     // Set selection
     ga.selection = new NegativeSelectionParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      selectedPop = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
-      relativeFitnesses = new NativeArray<double>(populationSize, Allocator.TempJob),
-      wheel = new NativeArray<double>(populationSize, Allocator.TempJob)
     };
 
     // Set initialization
@@ -129,13 +127,17 @@ public class GeneticAlgorithmDirector
     var population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
     for (int i = 0; i < populationSize; i++)
     {
-      population[i] = new BasicIndividualStruct();
-      population[i].Initialize(pathSize, Allocator.TempJob);
+      var element = population[i];
+      element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
+      element.path.Resize(pathSize);
+      element.fitness = 0;
+      population[i] = element;
     } 
     ga.pop = new NativeBasicPopulation()
     {
       _population = population
     };
+
     ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
     ga.SetResources(new System.Collections.Generic.List<object>

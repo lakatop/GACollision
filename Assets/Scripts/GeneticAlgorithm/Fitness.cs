@@ -103,21 +103,20 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // Create bounds from current position (stretch should be agentRadius or agentRadius * 2)
     // Call Collides
     // If collides, fitness must be 0 and continue to another individual (we certainly dont want to choose this individual)
     // If doesnt collide, continue on next step.
     // At the end, check how far are we from destination
-    var population = currentPopulation;
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
       var newPos = _startPosition;
       var rotationVector = _forward.normalized;
 
       var stepIndex = 1;
-      foreach (var pos in population[i].path)
+      foreach (var pos in currentPopulation[i].path)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
@@ -132,9 +131,9 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 
         if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
         {
-          var temp = population[i];
+          var temp = currentPopulation[i];
           temp.fitness = 0;
-          population[i] = temp;
+          currentPopulation[i] = temp;
           break;
         }
 
@@ -144,7 +143,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
       }
 
       // We broke cycle before finishing - this individual is colliding
-      if (stepIndex - 1 < population[i].path.Length)
+      if (stepIndex - 1 < currentPopulation[i].path.Length)
       {
         continue;
       }
@@ -159,17 +158,10 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
       {
         fitness = 1 / (_destination - newPos).magnitude;
       }
-      var temp2 = population[i];
+      var temp2 = currentPopulation[i];
       temp2.fitness = fitness;
-      population[i] = temp2;
+      currentPopulation[i] = temp2;
     }
-
-    for (int i = 0; i < population.Length; i++)
-    {
-      currentPopulation[i] = population[i];
-    }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -196,11 +188,10 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
   public int _agentIndex;
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
+  public NativeArray<float> fitnesses;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
-    NativeArray<float> fitnesses = new NativeArray<float>(currentPopulation.Length, Allocator.Temp);
-
     var index = 0;
     foreach (var individual in currentPopulation)
     {
@@ -247,10 +238,6 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
       temp.fitness = fitnesses[i];
       currentPopulation[i] = temp;
     }
-
-    fitnesses.Dispose();
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -258,5 +245,8 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
     return GetType().Name;
   }
 
-  public void Dispose() { }
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
 }

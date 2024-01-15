@@ -50,19 +50,18 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
   public NativeArray<BasicIndividualStruct> offsprings;
   public NativeArray<BasicIndividualStruct> parents;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
-    var population = currentPopulation;
     int index = 0;
-    for (int i = 0; i < population.Length - 1; i += 2)
+    for (int i = 0; i < currentPopulation.Length - 1; i += 2)
     {
       BasicIndividualStruct off1 = new BasicIndividualStruct();
       off1.Initialize(pathSize, Allocator.TempJob);
       BasicIndividualStruct off2 = new BasicIndividualStruct();
       off2.Initialize(pathSize, Allocator.TempJob);
 
-      parents[0] = population[i];
-      parents[1] = population[i + 1];
+      parents[0] = currentPopulation[i];
+      parents[1] = currentPopulation[i + 1];
 
       for (int j = 0; j < parents[0].path.Length; j++)
       {
@@ -80,8 +79,6 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
     {
       currentPopulation[i] = offsprings[i];
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -104,19 +101,18 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
   public NativeArray<BasicIndividualStruct> parents;
   public int pathSize;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
-    var population = currentPopulation;
     int index = 0;
-    for (int i = 0; i < population.Length - 1; i += 2)
+    for (int i = 0; i < currentPopulation.Length - 1; i += 2)
     {
       BasicIndividualStruct off1 = new BasicIndividualStruct();
       off1.Initialize(pathSize, Allocator.TempJob);
       BasicIndividualStruct off2 = new BasicIndividualStruct();
       off2.Initialize(pathSize, Allocator.TempJob);
 
-      parents[0] = population[i];
-      parents[1] = population[i + 1];
+      parents[0] = currentPopulation[i];
+      parents[1] = currentPopulation[i + 1];
 
       // Calculate mean offspring from 2 parents
       for (int j = 0; j < parents[0].path.Length; j++)
@@ -131,10 +127,10 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
 
       // Randomly select 1 parent from pair and 1 random parent from parents population and do the same
       var parentIndex = _rand.NextInt(2);
-      var secondParentIndex = _rand.NextInt(population.Length);
+      var secondParentIndex = _rand.NextInt(currentPopulation.Length);
 
-      parents[0] = population[parentIndex];
-      parents[1] = population[secondParentIndex];
+      parents[0] = currentPopulation[parentIndex];
+      parents[1] = currentPopulation[secondParentIndex];
 
       for (int j = 0; j < parents[0].path.Length; j++)
       {
@@ -155,8 +151,6 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
     {
       currentPopulation[i] = offsprings[i];
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()

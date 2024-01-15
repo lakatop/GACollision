@@ -81,7 +81,7 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// </summary>
   /// <param name="currentPopulation">Population to be modified</param>
   /// <returns>New modified population</returns>
-  public NativeArray<T> ModifyPopulation(NativeArray<T> currentPopulation);
+  public void ModifyPopulation(ref NativeArray<T> currentPopulation);
   /// <summary>
   /// Dispose any allocated resources
   /// </summary>
@@ -226,10 +226,6 @@ public interface IGeneticAlgorithmParallel<T>
   /// </summary>
   /// <param name="resources">List of resources</param>
   public void SetResources(System.Collections.Generic.List<object> resources);
-  /// <summary>
-  /// Perform GA
-  /// </summary>
-  public void RunGA();
   /// <summary>
   /// Getter for last run result
   /// </summary>

@@ -52,7 +52,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
@@ -72,8 +72,6 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
         }
       }
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -100,7 +98,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
     var mutationRate = 0.3f;
@@ -185,8 +183,6 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         individual.path[j] = new float2 { x = angleIncrement, y = uniformSegmentSize };
       }
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -216,7 +212,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
   {
     // How often we want mutation to happen
     var mutationRate = 0.3f;
@@ -324,8 +320,6 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
         individual.path[j] = new float2 { x = 0, y = 0 };
       }
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()

@@ -32,23 +32,18 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public void Execute()
   {
-    RunGA();
-  }
-
-  public void RunGA()
-  {
-    pop.SetPopulation(popInitialization.ModifyPopulation(pop.GetPopulation()));
+    popInitialization.ModifyPopulation(ref pop._population);
 
     for (int i = 0; i < iterations; i++)
     {
-      pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
+      fitness.ModifyPopulation(ref pop._population);
       //logger.LogPopulationState(pop.GetPopulation());
-      pop.SetPopulation(selection.ModifyPopulation(pop.GetPopulation()));
-      pop.SetPopulation(cross.ModifyPopulation(pop.GetPopulation()));
-      pop.SetPopulation(mutation.ModifyPopulation(pop.GetPopulation()));
+      selection.ModifyPopulation(ref pop._population);
+      cross.ModifyPopulation(ref pop._population);
+      mutation.ModifyPopulation(ref pop._population);
     }
 
-    pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
+    fitness.ModifyPopulation(ref pop._population);
     //logger.LogPopulationState(pop.GetPopulation());
     SetWinner();
   }
@@ -106,10 +101,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     selection.Dispose();
     logger.Dispose();
     _winner.Dispose();
-    foreach (var ind in pop.GetPopulation())
-    {
-      ind.Dispose();
-    }
+    pop.Dispose();
   }
 }
 

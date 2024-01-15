@@ -18,6 +18,7 @@ public class BasicGAAgentParallel : BaseAgent
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
+  Unity.Collections.NativeArray<Vector2> _winner { get; set; }
   private bool jobScheduled { get; set; }
   private float _updateTimer { get; set; }
   private bool _runGa { get; set; }
@@ -80,6 +81,8 @@ public class BasicGAAgentParallel : BaseAgent
       // Run GA
       gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
 
+      _winner = gaJob._winner;
+
       jobScheduled = true;
       _gaJobHandle = gaJob.Schedule();
 
@@ -95,7 +98,7 @@ public class BasicGAAgentParallel : BaseAgent
       _gaJobHandle.Complete();
       jobScheduled = false;
       PathDrawer.DrawPath(previousLocation, position, nextVel);
-      nextVel = gaJob._winner[0];
+      nextVel = _winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
       //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
