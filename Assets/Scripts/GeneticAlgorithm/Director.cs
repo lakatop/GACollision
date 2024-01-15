@@ -124,9 +124,17 @@ public class GeneticAlgorithmDirector
 
     ga.populationSize = populationSize;
     ga.iterations = iterations;
+
+    // Initialize population
+    var population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
+    for (int i = 0; i < populationSize; i++)
+    {
+      population[i] = new BasicIndividualStruct();
+      population[i].Initialize(pathSize, Allocator.TempJob);
+    } 
     ga.pop = new NativeBasicPopulation()
     {
-      _population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob)
+      _population = population
     };
     ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
