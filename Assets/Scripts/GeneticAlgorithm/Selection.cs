@@ -138,6 +138,10 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   {
     relativeFitnesses.Dispose();
     wheel.Dispose();
+    for(int i = 0; i < population.Length; i++)
+    {
+      population[i].Dispose();
+    }
     population.Dispose();
   }
 }

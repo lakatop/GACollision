@@ -160,7 +160,15 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
 
   public void Dispose()
   {
+    //for (int i = 0; i < offsprings.Length; i++)
+    //{
+    //  offsprings[i].Dispose();
+    //}
     offsprings.Dispose();
+    for(int i = 0; i < parents.Length; i++)
+    {
+      parents[i].Dispose();
+    }
     parents.Dispose();
   }
 }

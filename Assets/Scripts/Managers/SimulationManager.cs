@@ -180,8 +180,11 @@ public class SimulationManager : MonoBehaviour
 
   private void OnDestroy()
   {
-    _quadTree.Dispose();
-    _quadTreeData.Dispose();
+    if (_quadTreeCreated)
+    {
+      _quadTree.Dispose();
+      _quadTreeData.Dispose();
+    }
   }
 
   /// <summary>

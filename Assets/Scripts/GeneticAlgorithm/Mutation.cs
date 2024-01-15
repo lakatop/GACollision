@@ -230,7 +230,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       // Special case when we can go straight to the destination with single vector
       if (straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
       {
-        individual.path[0] = new float2 { x = startAngle, y = straightVectorToDestination.magnitude };
+        individual.path[0] = new float2 { x = -startAngle, y = straightVectorToDestination.magnitude };
         for (int j = 1; j < individual.path.Length; j++)
         {
           individual.path[j] = new float2 { x = 0, y = 0 };

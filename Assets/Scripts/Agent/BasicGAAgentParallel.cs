@@ -121,7 +121,7 @@ public class BasicGAAgentParallel : BaseAgent
     SetPosition(pos);
     SetForward(vel.normalized);
 
-    if ((pos - new Vector2(destination.x, destination.y)).sqrMagnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
+    if ((pos - new Vector2(destination.x, destination.y)).magnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
     {
       _cornerIndex++;
       destination = new Vector2(_path.corners[_cornerIndex].x, _path.corners[_cornerIndex].z);
@@ -130,8 +130,11 @@ public class BasicGAAgentParallel : BaseAgent
 
   void OnDestroy()
   {
-    _gaJobHandle.Complete();
-    gaJob.Dispose();
+    if (jobScheduled)
+    {
+      _gaJobHandle.Complete();
+      gaJob.Dispose();
+    }
   }
 
   private Vector2 CalculateNewDestination()
