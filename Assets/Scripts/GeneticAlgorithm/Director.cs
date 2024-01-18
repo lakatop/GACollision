@@ -95,11 +95,11 @@ public class GeneticAlgorithmDirector
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
   };
 
-    //// Set selection
-    //ga.selection = new NegativeSelectionParallel()
-    //{
-    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //};
+    // Set selection
+    ga.selection = new NegativeSelectionParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+    };
 
     // Set initialization
     ga.popInitialization = new KineticFriendlyInitialization()

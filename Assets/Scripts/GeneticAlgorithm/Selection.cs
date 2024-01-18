@@ -73,18 +73,14 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   [ReadOnly] public Unity.Mathematics.Random _rand;
   public NativeArray<double> relativeFitnesses;
   public NativeArray<double> wheel;
-  public NativeArray<BasicIndividualStruct> population;
 
-  //TODO: check for dispose when replacing elements in population array as in the NegativeSelectionParallel
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
-    population = currentPopulation;
-
     // Apply roulette selection
     double totalFitness = 0;
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
-      totalFitness += population[i].fitness;
+      totalFitness += currentPopulation[i].fitness;
     }
 
     if (totalFitness == 0)
@@ -92,9 +88,9 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       return;
     }
 
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
-      relativeFitnesses[i] = (population[i].fitness) / totalFitness;
+      relativeFitnesses[i] = (currentPopulation[i].fitness) / totalFitness;
     }
 
     double prob = 0f;
@@ -106,7 +102,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       index++;
     }
 
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
       double val = _rand.NextFloat();
       index = 0;
@@ -122,9 +118,16 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       // In case we are dealing with really small fitnesses ->
       // their sum might not give 1.0 and then theres chance that index will be equal to population size ->
       // clamp in to last one
-      index = Mathf.Clamp(index, 0, population.Length - 1);
+      index = Mathf.Clamp(index, 0, currentPopulation.Length - 1);
 
-      currentPopulation[i] = population[index];
+      var newIndividual = currentPopulation[index];
+      var outdatedIndividual = currentPopulation[i];
+      outdatedIndividual.fitness = newIndividual.fitness;
+      for (int j = 0; j < outdatedIndividual.path.Length; j++)
+      {
+        outdatedIndividual.path[j] = newIndividual.path[j];
+      }
+      currentPopulation[i] = outdatedIndividual;
     }
 
   }
@@ -138,11 +141,6 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   {
     relativeFitnesses.Dispose();
     wheel.Dispose();
-    for(int i = 0; i < population.Length; i++)
-    {
-      population[i].Dispose();
-    }
-    population.Dispose();
   }
 }
 
@@ -162,15 +160,16 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
 
     int n = 5;
 
-    for (int i = 0; i < currentPopulation.Length; i++)
+    for (int i = n; i < currentPopulation.Length; i++)
     {
-      // This element will be replaced, we need to dispose it first
-      if (i >= n)
+      var newIndividual = currentPopulation[i % n];
+      var outdatedIndividual = currentPopulation[i];
+      outdatedIndividual.fitness = newIndividual.fitness;
+      for (int j = 0; j < outdatedIndividual.path.Length; j++)
       {
-        currentPopulation[i].Dispose();
+        outdatedIndividual.path[j] = newIndividual.path[j];
       }
-
-      currentPopulation[i] = currentPopulation[i % n];
+      currentPopulation[i] = outdatedIndividual;
     }
   }
 

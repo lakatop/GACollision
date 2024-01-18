@@ -13,7 +13,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public MeanCrossOperatorParallel cross;
   public GreedyCircleMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
-  //public NegativeSelectionParallel selection;
+  public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
   public NativeBasicPopulation pop;
   //public StraightLineEvaluationLogger logger;
@@ -38,7 +38,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     {
       fitness.ModifyPopulation(ref pop._population, i);
       //logger.LogPopulationState(pop.GetPopulation());
-      //selection.ModifyPopulation(ref pop._population);
+      selection.ModifyPopulation(ref pop._population, i);
       cross.ModifyPopulation(ref pop._population, i);
       mutation.ModifyPopulation(ref pop._population, i);
     }
