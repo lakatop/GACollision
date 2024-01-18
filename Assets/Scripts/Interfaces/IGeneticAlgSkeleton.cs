@@ -81,7 +81,7 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// </summary>
   /// <param name="currentPopulation">Population to be modified</param>
   /// <returns>New modified population</returns>
-  public void ModifyPopulation(ref NativeArray<T> currentPopulation);
+  public void ModifyPopulation(ref NativeArray<T> currentPopulation, int iteration);
   /// <summary>
   /// Dispose any allocated resources
   /// </summary>

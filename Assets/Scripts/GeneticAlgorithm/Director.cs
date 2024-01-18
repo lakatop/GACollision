@@ -54,12 +54,21 @@ public class GeneticAlgorithmDirector
     int pathSize = 10;
 
     // Set crossover
+    var offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
+    for (int i = 0; i < populationSize; i++)
+    {
+      var element = offsprings[i];
+      element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
+      element.path.Resize(pathSize);
+      element.fitness = 0;
+      offsprings[i] = element;
+    }
     ga.cross = new MeanCrossOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
-      parents = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob),
-      pathSize = pathSize
+      offsprings = offsprings,
+      pathSize = pathSize,
+      iterations = iterations,
     };
 
     // Set mutation
@@ -86,11 +95,11 @@ public class GeneticAlgorithmDirector
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
   };
 
-    // Set selection
-    ga.selection = new NegativeSelectionParallel()
-    {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    };
+    //// Set selection
+    //ga.selection = new NegativeSelectionParallel()
+    //{
+    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+    //};
 
     // Set initialization
     ga.popInitialization = new KineticFriendlyInitialization()
@@ -111,14 +120,14 @@ public class GeneticAlgorithmDirector
     //};
 
     // Set logger
-    ga.logger = new StraightLineEvaluationLogger()
-    {
-      _agentPosition = agent.position,
-      _topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob),
-      _agentForward = agent.GetForward(),
-      iteration = 0,
-      _agentSpeed = agent.speed
-    };
+    //ga.logger = new StraightLineEvaluationLogger()
+    //{
+    //  _agentPosition = agent.position,
+    //  _topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob),
+    //  _agentForward = agent.GetForward(),
+    //  iteration = 0,
+    //  _agentSpeed = agent.speed
+    //};
 
     ga.populationSize = populationSize;
     ga.iterations = iterations;

@@ -52,7 +52,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
@@ -98,7 +98,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // How often we want mutation to happen
     var mutationRate = 0.3f;
@@ -126,6 +126,8 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         {
           individual.path[j] = new float2 { x = 0, y = 0 };
         }
+
+        currentPopulation[i] = individual;
         continue;
       }
 
@@ -174,6 +176,9 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         {
           individual.path[j] = new float2 { x = stepAngleDegrees, y = _agentSpeed * _updateInterval };
         }
+
+        currentPopulation[i] = individual;
+        continue;
       }
 
       // Create a new path
@@ -182,6 +187,8 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       {
         individual.path[j] = new float2 { x = angleIncrement, y = uniformSegmentSize };
       }
+
+      currentPopulation[i] = individual;
     }
   }
 
@@ -212,7 +219,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // How often we want mutation to happen
     var mutationRate = 0.3f;
@@ -235,6 +242,8 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
         {
           individual.path[j] = new float2 { x = 0, y = 0 };
         }
+
+        currentPopulation[i] = individual;
         continue;
       }
 
@@ -266,6 +275,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
           individual.path[index] = new float2 { x = 0, y = 0 };
         }
 
+        currentPopulation[i] = individual;
         continue;
       }
 
@@ -319,6 +329,8 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       {
         individual.path[j] = new float2 { x = 0, y = 0 };
       }
+
+      currentPopulation[i] = individual;
     }
   }
 

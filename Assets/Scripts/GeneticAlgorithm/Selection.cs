@@ -76,7 +76,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
   public NativeArray<BasicIndividualStruct> population;
 
   //TODO: check for dispose when replacing elements in population array as in the NegativeSelectionParallel
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     population = currentPopulation;
 
@@ -155,7 +155,7 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
 
     currentPopulation.Sort(new BasicIndividualSortDescending());

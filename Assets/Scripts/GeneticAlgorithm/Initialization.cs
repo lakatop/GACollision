@@ -12,7 +12,7 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     float rotationRange = 120f;
 
@@ -65,7 +65,7 @@ public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualS
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     var pathSize = 10;
 
@@ -124,7 +124,7 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     float initRotationRange = 360 / populationSize;
     float rotationRange = 30;
@@ -187,7 +187,7 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 forward;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     float initRotationRange = 120 / populationSize;
     float rotationRange = 15;

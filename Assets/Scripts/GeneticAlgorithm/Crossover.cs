@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Unity.Collections;
+using Unity.Burst;
 
 public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 {
@@ -49,16 +50,15 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
   [ReadOnly] public int pathSize;
   public NativeArray<BasicIndividualStruct> offsprings;
   public NativeArray<BasicIndividualStruct> parents;
+  public int iterations;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     int index = 0;
     for (int i = 0; i < currentPopulation.Length - 1; i += 2)
     {
-      BasicIndividualStruct off1 = new BasicIndividualStruct();
-      off1.Initialize(pathSize, Allocator.TempJob);
-      BasicIndividualStruct off2 = new BasicIndividualStruct();
-      off2.Initialize(pathSize, Allocator.TempJob);
+      BasicIndividualStruct off1 = offsprings[index];
+      BasicIndividualStruct off2 = offsprings[index + 1];
 
       parents[0] = currentPopulation[i];
       parents[1] = currentPopulation[i + 1];
@@ -66,8 +66,8 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
       for (int j = 0; j < parents[0].path.Length; j++)
       {
         int prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
-        off1.path.Add(parents[prob].path[j]);
-        off2.path.Add(parents[1 - prob].path[j]);
+        off1.path[j] = parents[prob].path[j];
+        off2.path[j] = parents[1 - prob].path[j];
       }
 
       offsprings[index] = off1;
@@ -77,6 +77,10 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
 
     for (int i = 0; i < offsprings.Length; i++)
     {
+      if (iteration < iterations)
+      {
+        currentPopulation[i].Dispose();
+      }
       currentPopulation[i] = offsprings[i];
     }
   }
@@ -94,81 +98,80 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
 }
 
 
+[BurstCompile]
 public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
   public NativeArray<BasicIndividualStruct> offsprings;
-  public NativeArray<BasicIndividualStruct> parents;
   public int pathSize;
+  public int iterations;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  [BurstCompile]
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     int index = 0;
     for (int i = 0; i < currentPopulation.Length - 1; i += 2)
     {
-      BasicIndividualStruct off1 = new BasicIndividualStruct();
-      off1.Initialize(pathSize, Allocator.TempJob);
-      BasicIndividualStruct off2 = new BasicIndividualStruct();
-      off2.Initialize(pathSize, Allocator.TempJob);
+      BasicIndividualStruct off1 = offsprings[index];
+      BasicIndividualStruct off2 = offsprings[index + 1];
 
-      parents[0] = currentPopulation[i];
-      parents[1] = currentPopulation[i + 1];
+      var parent1 = currentPopulation[i];
+      var parent2 = currentPopulation[i + 1];
 
       // Calculate mean offspring from 2 parents
-      for (int j = 0; j < parents[0].path.Length; j++)
+      for (int j = 0; j < parent1.path.Length; j++)
       {
-        var tempSegment = parents[0].path[j];
-        tempSegment.x += parents[1].path[j].x;
+        var tempSegment = parent1.path[j];
+        tempSegment.x += parent2.path[j].x;
         tempSegment.x /= 2;
-        tempSegment.y += parents[1].path[j].y;
+        tempSegment.y += parent2.path[j].y;
         tempSegment.y /= 2;
-        off1.path.Add(tempSegment);
+        off1.path[j] = tempSegment;
       }
 
       // Randomly select 1 parent from pair and 1 random parent from parents population and do the same
       var parentIndex = _rand.NextInt(2);
       var secondParentIndex = _rand.NextInt(currentPopulation.Length);
 
-      parents[0] = currentPopulation[parentIndex];
-      parents[1] = currentPopulation[secondParentIndex];
+      parent1 = currentPopulation[parentIndex];
+      parent2 = currentPopulation[secondParentIndex];
 
-      for (int j = 0; j < parents[0].path.Length; j++)
+      for (int j = 0; j < parent1.path.Length; j++)
       {
-        var tempSegment = parents[0].path[j];
-        tempSegment.x += parents[1].path[j].x;
+        var tempSegment = parent1.path[j];
+        tempSegment.x += parent2.path[j].x;
         tempSegment.x /= 2;
-        tempSegment.y += parents[1].path[j].y;
+        tempSegment.y += parent2.path[j].y;
         tempSegment.y /= 2;
-        off2.path.Add(tempSegment);
+        off2.path[j] = tempSegment;
       }
 
       offsprings[index] = off1;
       offsprings[index + 1] = off2;
+
       index += 2;
     }
 
     for (int i = 0; i < offsprings.Length; i++)
     {
+      // We are replacing elements in population array to point to elements in offsprings array
+      // We need to dealocate individuals from currentPopulation
+      if (iteration == 0)
+        currentPopulation[i].Dispose();
+
       currentPopulation[i] = offsprings[i];
     }
   }
 
+  [BurstCompile]
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  [BurstCompile]
   public void Dispose()
   {
-    //for (int i = 0; i < offsprings.Length; i++)
-    //{
-    //  offsprings[i].Dispose();
-    //}
     offsprings.Dispose();
-    for(int i = 0; i < parents.Length; i++)
-    {
-      parents[i].Dispose();
-    }
-    parents.Dispose();
   }
 }

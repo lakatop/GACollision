@@ -103,7 +103,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // Create bounds from current position (stretch should be agentRadius or agentRadius * 2)
     // Call Collides
@@ -190,7 +190,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
 
-  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
