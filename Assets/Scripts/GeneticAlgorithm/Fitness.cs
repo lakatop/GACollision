@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
-using static UnityEditor.PlayerSettings;
-
+using Unity.Burst;
 
 public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 {
@@ -47,6 +46,8 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
           population[i].fitness = 0;
           break;
         }
+
+        queryRes.Dispose();
 
         stepIndex++;
       }
@@ -92,6 +93,7 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 }
 
 
+[BurstCompile]
 public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   public Vector2 _startPosition;
@@ -101,21 +103,20 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // Create bounds from current position (stretch should be agentRadius or agentRadius * 2)
     // Call Collides
     // If collides, fitness must be 0 and continue to another individual (we certainly dont want to choose this individual)
     // If doesnt collide, continue on next step.
     // At the end, check how far are we from destination
-    var population = currentPopulation;
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
       var newPos = _startPosition;
       var rotationVector = _forward.normalized;
 
       var stepIndex = 1;
-      foreach (var pos in population[i].path)
+      foreach (var pos in currentPopulation[i].path)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
@@ -130,17 +131,19 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 
         if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
         {
-          var temp = population[i];
+          var temp = currentPopulation[i];
           temp.fitness = 0;
-          population[i] = temp;
+          currentPopulation[i] = temp;
           break;
         }
+
+        queryRes.Dispose();
 
         stepIndex++;
       }
 
       // We broke cycle before finishing - this individual is colliding
-      if (stepIndex - 1 < population[i].path.Length)
+      if (stepIndex - 1 < currentPopulation[i].path.Length)
       {
         continue;
       }
@@ -155,17 +158,10 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
       {
         fitness = 1 / (_destination - newPos).magnitude;
       }
-      var temp2 = population[i];
+      var temp2 = currentPopulation[i];
       temp2.fitness = fitness;
-      population[i] = temp2;
+      currentPopulation[i] = temp2;
     }
-
-    for (int i = 0; i < population.Length; i++)
-    {
-      currentPopulation[i] = population[i];
-    }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -184,6 +180,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 /// Penalization -> if pos collides, it substracts value^3 (instead of value^2)
 /// Warning: resulting fitness may be negative
 /// </summary>
+[BurstCompile]
 public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   public Vector2 _startPosition;
@@ -192,11 +189,10 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
   public int _agentIndex;
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
+  public NativeArray<float> fitnesses;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
-    NativeArray<float> fitnesses = new NativeArray<float>(currentPopulation.Length, Allocator.Temp);
-
     var index = 0;
     foreach (var individual in currentPopulation)
     {
@@ -217,7 +213,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         rotationVector = rotatedVector;
 
         AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
-        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.TempJob);
         _quadTree.RangeQuery(bounds, queryRes);
 
         if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
@@ -229,6 +225,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
           fitness -= Mathf.Pow((_destination - newPos).magnitude, 2);
         }
 
+        queryRes.Dispose();
         stepIndex++;
       }
 
@@ -242,8 +239,6 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
       temp.fitness = fitnesses[i];
       currentPopulation[i] = temp;
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -251,5 +246,8 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
     return GetType().Name;
   }
 
-  public void Dispose() { }
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
 }

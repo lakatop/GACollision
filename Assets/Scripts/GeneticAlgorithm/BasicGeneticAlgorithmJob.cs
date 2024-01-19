@@ -11,7 +11,7 @@ using Unity.Collections;
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
   public MeanCrossOperatorParallel cross;
-  public EvenCircleMutationOperatorParallel mutation;
+  public GreedyCircleMutationOperatorParallel mutation;
   public FitnessContinuousDistanceParallel fitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
@@ -32,24 +32,19 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public void Execute()
   {
-    RunGA();
-  }
-
-  public void RunGA()
-  {
-    pop.SetPopulation(popInitialization.ModifyPopulation(pop.GetPopulation()));
+    popInitialization.ModifyPopulation(ref pop._population, 0);
 
     for (int i = 0; i < iterations; i++)
     {
-      pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-      logger.LogPopulationState(pop.GetPopulation());
-      pop.SetPopulation(selection.ModifyPopulation(pop.GetPopulation()));
-      pop.SetPopulation(cross.ModifyPopulation(pop.GetPopulation()));
-      pop.SetPopulation(mutation.ModifyPopulation(pop.GetPopulation()));
+      fitness.ModifyPopulation(ref pop._population, i);
+      logger.LogPopulationState(ref pop._population, i);
+      selection.ModifyPopulation(ref pop._population, i);
+      cross.ModifyPopulation(ref pop._population, i);
+      mutation.ModifyPopulation(ref pop._population, i);
     }
 
-    pop.SetPopulation(fitness.ModifyPopulation(pop.GetPopulation()));
-    logger.LogPopulationState(pop.GetPopulation());
+    fitness.ModifyPopulation(ref pop._population, iterations);
+    logger.LogPopulationState(ref pop._population, iterations);
     SetWinner();
   }
 
@@ -74,7 +69,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   {
     _winner[0] = new Vector2(0, 0);
     float maxFitness = float.MinValue;
-    foreach (var individual in pop.GetPopulation())
+    foreach (var individual in pop._population)
     {
       if (maxFitness < individual.fitness)
       {
@@ -105,10 +100,8 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     fitness.Dispose();
     selection.Dispose();
     logger.Dispose();
-    foreach (var ind in pop.GetPopulation())
-    {
-      ind.Dispose();
-    }
+    _winner.Dispose();
+    pop.Dispose();
   }
 }
 

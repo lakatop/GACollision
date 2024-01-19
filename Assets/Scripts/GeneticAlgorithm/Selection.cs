@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst;
 using Unity.Collections;
 using UnityEngine;
 
@@ -68,32 +69,30 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
 }
 
 
+[BurstCompile]
 public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
-  public NativeArray<BasicIndividualStruct> selectedPop;
   public NativeArray<double> relativeFitnesses;
   public NativeArray<double> wheel;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
-    var population = currentPopulation;
-
     // Apply roulette selection
     double totalFitness = 0;
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
-      totalFitness += population[i].fitness;
+      totalFitness += currentPopulation[i].fitness;
     }
 
     if (totalFitness == 0)
     {
-      return currentPopulation;
+      return;
     }
 
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
-      relativeFitnesses[i] = (population[i].fitness) / totalFitness;
+      relativeFitnesses[i] = (currentPopulation[i].fitness) / totalFitness;
     }
 
     double prob = 0f;
@@ -105,7 +104,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       index++;
     }
 
-    for (int i = 0; i < population.Length; i++)
+    for (int i = 0; i < currentPopulation.Length; i++)
     {
       double val = _rand.NextFloat();
       index = 0;
@@ -121,12 +120,18 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
       // In case we are dealing with really small fitnesses ->
       // their sum might not give 1.0 and then theres chance that index will be equal to population size ->
       // clamp in to last one
-      index = Mathf.Clamp(index, 0, population.Length - 1);
+      index = Mathf.Clamp(index, 0, currentPopulation.Length - 1);
 
-      selectedPop[i] = population[index];
+      var newIndividual = currentPopulation[index];
+      var outdatedIndividual = currentPopulation[i];
+      outdatedIndividual.fitness = newIndividual.fitness;
+      for (int j = 0; j < outdatedIndividual.path.Length; j++)
+      {
+        outdatedIndividual.path[j] = newIndividual.path[j];
+      }
+      currentPopulation[i] = outdatedIndividual;
     }
 
-    return selectedPop;
   }
 
   public string GetComponentName()
@@ -136,7 +141,6 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 
   public void Dispose()
   {
-    selectedPop.Dispose();
     relativeFitnesses.Dispose();
     wheel.Dispose();
   }
@@ -147,27 +151,29 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 /// Takes in consideration that fitness might be negative
 /// Only takes first n best individuals
 /// </summary>
+[BurstCompile]
 public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
-  public NativeArray<BasicIndividualStruct> selectedPop;
-  public NativeArray<double> relativeFitnesses;
-  public NativeArray<double> wheel;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
-    var population = currentPopulation;
 
-    population.Sort(new BasicIndividualSortDescending());
+    currentPopulation.Sort(new BasicIndividualSortDescending());
 
     int n = 5;
 
-    for (int i = 0; i < selectedPop.Length; i++)
+    for (int i = n; i < currentPopulation.Length; i++)
     {
-      selectedPop[i] = population[i % n];
+      var newIndividual = currentPopulation[i % n];
+      var outdatedIndividual = currentPopulation[i];
+      outdatedIndividual.fitness = newIndividual.fitness;
+      for (int j = 0; j < outdatedIndividual.path.Length; j++)
+      {
+        outdatedIndividual.path[j] = newIndividual.path[j];
+      }
+      currentPopulation[i] = outdatedIndividual;
     }
-
-    return selectedPop;
   }
 
   public string GetComponentName()
@@ -177,8 +183,5 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
 
   public void Dispose()
   {
-    selectedPop.Dispose();
-    relativeFitnesses.Dispose();
-    wheel.Dispose();
   }
 }

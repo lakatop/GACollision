@@ -119,7 +119,7 @@ public class SimulationManager : MonoBehaviour
       {
         foreach (var agent in _agents)
         {
-          agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 5));
+          agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 30));
         }
       }
     }
@@ -176,6 +176,15 @@ public class SimulationManager : MonoBehaviour
       }
     }
 
+  }
+
+  private void OnDestroy()
+  {
+    if (_quadTreeCreated)
+    {
+      _quadTree.Dispose();
+      _quadTreeData.Dispose();
+    }
   }
 
   /// <summary>

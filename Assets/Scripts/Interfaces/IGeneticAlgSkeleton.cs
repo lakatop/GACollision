@@ -25,22 +25,6 @@ public interface IPopulation<T>
 public interface IParallelPopulation<T> where T : struct
 {
   /// <summary>
-  /// Getter for population individuals
-  /// </summary>
-  /// <returns>Individuals NativeArray</returns>
-  public NativeArray<T> GetPopulation();
-  /// <summary>
-  /// Setter for population individuals
-  /// </summary>
-  /// <param name="population">New population to be set</param>
-  public void SetPopulation(NativeArray<T> population);
-  /// <summary>
-  /// Setter for concrete individual
-  /// </summary>
-  /// <param name="individual">New individual that will be set</param>
-  /// <param name="index">Index at which new individual will be placed in population</param>
-  public void SetIndividual(T individual, int index);
-  /// <summary>
   /// Used to dispose individuals in population
   /// </summary>
   public void Dispose();
@@ -81,7 +65,7 @@ public interface IParallelPopulationModifier<T> where T : struct
   /// </summary>
   /// <param name="currentPopulation">Population to be modified</param>
   /// <returns>New modified population</returns>
-  public NativeArray<T> ModifyPopulation(NativeArray<T> currentPopulation);
+  public void ModifyPopulation(ref NativeArray<T> currentPopulation, int iteration);
   /// <summary>
   /// Dispose any allocated resources
   /// </summary>
@@ -226,10 +210,6 @@ public interface IGeneticAlgorithmParallel<T>
   /// </summary>
   /// <param name="resources">List of resources</param>
   public void SetResources(System.Collections.Generic.List<object> resources);
-  /// <summary>
-  /// Perform GA
-  /// </summary>
-  public void RunGA();
   /// <summary>
   /// Getter for last run result
   /// </summary>

@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
 using UnityEngine;
+using Unity.Burst;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -46,13 +47,14 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
   }
 }
 
+[BurstCompile]
 public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
@@ -72,8 +74,6 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
         }
       }
     }
-
-    return currentPopulation;
   }
 
   public string GetComponentName()
@@ -87,9 +87,10 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
 }
 
 /// <summary>
-/// Rotate towards destination in even circular movement
+/// Rotate towards destination in even circular movement if we can make it in single path
 /// Only if there is special case when we can go straight to destination by single vector, use that instead
 /// </summary>
+[BurstCompile]
 public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -100,10 +101,10 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
 
-  public NativeArray<BasicIndividualStruct> ModifyPopulation(NativeArray<BasicIndividualStruct> currentPopulation)
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // How often we want mutation to happen
-    var mutationRate = 1f;
+    var mutationRate = 0.3f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -128,6 +129,8 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         {
           individual.path[j] = new float2 { x = 0, y = 0 };
         }
+
+        currentPopulation[i] = individual;
         continue;
       }
 
@@ -176,6 +179,8 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
         {
           individual.path[j] = new float2 { x = stepAngleDegrees, y = _agentSpeed * _updateInterval };
         }
+
+        currentPopulation[i] = individual;
         continue;
       }
 
@@ -185,9 +190,152 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       {
         individual.path[j] = new float2 { x = angleIncrement, y = uniformSegmentSize };
       }
-    }
 
-    return currentPopulation;
+      currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+
+/// <summary>
+/// Rotate towards destination in "greedy" circular movement
+///   - start with max velocity till you can, then slow down
+///   - may break _rotationAngle restriction
+/// Only if there is special case when we can go straight to destination by single vector, use that instead
+/// </summary>
+[BurstCompile]
+public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 _destination;
+  [ReadOnly] public Vector2 _agentPosition;
+  [ReadOnly] public Vector2 _forward;
+  [ReadOnly] public float _rotationAngle;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _updateInterval;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    // How often we want mutation to happen
+    var mutationRate = 0.3f;
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb < 1 - mutationRate)
+        continue;
+
+      var individual = currentPopulation[i];
+
+      var straightVectorToDestination = (_destination - _agentPosition);
+      var startAngle = Vector2.SignedAngle(straightVectorToDestination, _forward);
+
+      // Special case when we can go straight to the destination with single vector
+      if (straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      {
+        individual.path[0] = new float2 { x = -startAngle, y = straightVectorToDestination.magnitude };
+        for (int j = 1; j < individual.path.Length; j++)
+        {
+          individual.path[j] = new float2 { x = 0, y = 0 };
+        }
+
+        currentPopulation[i] = individual;
+        continue;
+      }
+
+      var remainingLength = straightVectorToDestination.magnitude;
+      var index = 0;
+      var maxMove = _agentSpeed * _updateInterval;
+
+      // Straight line to destination
+      if (-_rotationAngle < startAngle && startAngle < _rotationAngle)
+      {
+        var turnAngle = startAngle;
+        while (remainingLength > 0 && index < individual.path.Length)
+        {
+          // First path will turn towards the direction, rest will be straight line
+          individual.path[index] = new float2 { x = turnAngle, y = maxMove };
+          turnAngle = 0;
+          remainingLength -= maxMove;
+          index++;
+
+          // We went too far, replace last segment with line straight to destination
+          if (remainingLength < 0)
+          {
+            individual.path[index - 1] = new float2 { x = 0, y = remainingLength + maxMove };
+          }
+        }
+
+        for (int j = index; j < individual.path.Length; j++)
+        {
+          individual.path[index] = new float2 { x = 0, y = 0 };
+        }
+
+        currentPopulation[i] = individual;
+        continue;
+      }
+
+      // Create greedy circle rotation towards the destination
+      var rotationVector = _forward.normalized;
+      var seg1 = individual.path[0];
+      var rotationSign = seg1.x > 0 ? -1 : 1;
+      var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
+      rotatedVector = rotatedVector * maxMove;
+
+      var pos = _agentPosition;
+      var rotatedAndTranslated = pos + rotatedVector;
+      var radius = UtilsGA.UtilsGA.GetCircleRadius(
+        new System.Numerics.Complex(_agentPosition.x, _agentPosition.y),
+        new System.Numerics.Complex(_destination.x, _destination.y),
+        new System.Numerics.Complex(rotatedAndTranslated.x, rotatedAndTranslated.y));
+
+      if (radius < 0)
+        continue;
+
+      individual.path[0] = new float2 { x = seg1.x, y = maxMove };
+      index++;
+
+      do
+      {
+        // We can go straight to destination by 1 move
+        if((rotatedAndTranslated - _destination).magnitude < maxMove)
+        {
+          individual.path[index] = new float2 { x = Vector2.SignedAngle(rotatedVector, (_destination - rotatedAndTranslated)), y = (rotatedAndTranslated - _destination).magnitude };
+          index++;
+          break;
+        }
+
+        var baseHalf = maxMove / 2;
+        var stepAngle = 2 * Mathf.Asin((float)(baseHalf / radius));
+
+        var stepAngleDegrees = stepAngle * Mathf.Rad2Deg;
+        individual.path[index] = new float2 { x = stepAngleDegrees * rotationSign, y = maxMove };
+        index++;
+
+        rotationVector = rotatedVector.normalized;
+        rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, stepAngleDegrees * rotationSign);
+        rotatedVector = rotatedVector * maxMove;
+        rotatedAndTranslated = rotatedAndTranslated + rotatedVector;
+
+      } while (index < individual.path.Length);
+
+      // We cut loop too early => we arrived in destination
+      // Fill the rest of the path with zeros
+      for(int j = index; j < individual.path.Length; j++)
+      {
+        individual.path[j] = new float2 { x = 0, y = 0 };
+      }
+
+      currentPopulation[i] = individual;
+    }
   }
 
   public string GetComponentName()

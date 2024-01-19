@@ -18,6 +18,7 @@ public class BasicGAAgentParallel : BaseAgent
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private JobHandle _gaJobHandle { get; set; }
   private BasicGeneticAlgorithmParallel gaJob { get; set; }
+  Unity.Collections.NativeArray<Vector2> _winner { get; set; }
   private bool jobScheduled { get; set; }
   private float _updateTimer { get; set; }
   private bool _runGa { get; set; }
@@ -32,7 +33,7 @@ public class BasicGAAgentParallel : BaseAgent
     _path = new NavMeshPath();
     speed = 5.0f;
     jobScheduled = false;
-    _updateTimer = 0f;
+    _updateTimer = SimulationManager.Instance._agentUpdateInterval;
     nextVel = Vector2.zero;
     _runGa = true;
     iteration = 0;
@@ -67,6 +68,7 @@ public class BasicGAAgentParallel : BaseAgent
   public override void OnBeforeUpdate()
   {
     destination = CalculateNewDestination();
+    _updateTimer += Time.deltaTime;
 
     if ((position - destination).magnitude <= 0.1f)
     {
@@ -74,28 +76,29 @@ public class BasicGAAgentParallel : BaseAgent
       return;
     }
 
-    if (_runGa)
+    if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       // Run GA
       gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
+
+      _winner = gaJob._winner;
 
       jobScheduled = true;
       _gaJobHandle = gaJob.Schedule();
 
       _runGa = false;
     }
-
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    _updateTimer += Time.deltaTime;
-    if (jobScheduled && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
+    if (jobScheduled)
     {
       _gaJobHandle.Complete();
+      jobScheduled = false;
       PathDrawer.DrawPath(previousLocation, position, nextVel);
-      nextVel = gaJob._winner[0];
+      nextVel = _winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
       gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
@@ -118,10 +121,19 @@ public class BasicGAAgentParallel : BaseAgent
     SetPosition(pos);
     SetForward(vel.normalized);
 
-    if ((pos - new Vector2(destination.x, destination.y)).sqrMagnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
+    if ((pos - new Vector2(destination.x, destination.y)).magnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
     {
       _cornerIndex++;
       destination = new Vector2(_path.corners[_cornerIndex].x, _path.corners[_cornerIndex].z);
+    }
+  }
+
+  void OnDestroy()
+  {
+    if (jobScheduled)
+    {
+      _gaJobHandle.Complete();
+      gaJob.Dispose();
     }
   }
 

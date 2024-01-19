@@ -72,10 +72,12 @@ public abstract class BaseAgent : IBaseAgent
 
     // Set current position
     position = pos;
+    //var step = speed * Time.deltaTime;
 
     // Also transform gameobject
     if (_object != null)
     {
+      //_object.transform.position = Vector3.MoveTowards(new Vector3(position.x, 1.58f, position.y), new Vector3(pos.x, 1.58f, pos.y), step);
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
       // We cannot use Warp for MyNavMeshAgent because it would override its calculations and we wouldnt move after that
       if (!(this is MyNavMeshAgent))
