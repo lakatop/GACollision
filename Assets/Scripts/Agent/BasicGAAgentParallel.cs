@@ -101,7 +101,7 @@ public class BasicGAAgentParallel : BaseAgent
       nextVel = _winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
-      //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
+      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration);
       iteration++;
       gaJob.Dispose();
 

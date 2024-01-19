@@ -44,6 +44,7 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 }
 
 
+[BurstCompile]
 public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -106,7 +107,6 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
   public int pathSize;
   public int iterations;
 
-  [BurstCompile]
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     int index = 0;
@@ -163,13 +163,11 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
     }
   }
 
-  [BurstCompile]
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
-  [BurstCompile]
   public void Dispose()
   {
     offsprings.Dispose();

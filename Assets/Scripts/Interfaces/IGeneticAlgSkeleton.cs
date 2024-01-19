@@ -25,22 +25,6 @@ public interface IPopulation<T>
 public interface IParallelPopulation<T> where T : struct
 {
   /// <summary>
-  /// Getter for population individuals
-  /// </summary>
-  /// <returns>Individuals NativeArray</returns>
-  public NativeArray<T> GetPopulation();
-  /// <summary>
-  /// Setter for population individuals
-  /// </summary>
-  /// <param name="population">New population to be set</param>
-  public void SetPopulation(NativeArray<T> population);
-  /// <summary>
-  /// Setter for concrete individual
-  /// </summary>
-  /// <param name="individual">New individual that will be set</param>
-  /// <param name="index">Index at which new individual will be placed in population</param>
-  public void SetIndividual(T individual, int index);
-  /// <summary>
   /// Used to dispose individuals in population
   /// </summary>
   public void Dispose();

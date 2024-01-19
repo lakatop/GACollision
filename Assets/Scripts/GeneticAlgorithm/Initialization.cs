@@ -1,7 +1,9 @@
-﻿using Unity.Collections;
+﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+[BurstCompile]
 public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -60,6 +62,7 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
 /// Initial rotation range is 60 degree cone (-30 - 30)
 /// After that, only 5 degree rotations are allowed
 /// </summary>
+[BurstCompile]
 public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Vector2 startPosition;
@@ -114,6 +117,7 @@ public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualS
 }
 
 
+[BurstCompile]
 public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -177,6 +181,7 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
 /// Initial rotation range is 60 degree cone (-30 - 30)
 /// After that, only 5 degree rotations are allowed
 /// </summary>
+[BurstCompile]
 public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
@@ -52,23 +53,10 @@ public class BasicPopulation : IPopulation<BasicIndividual>
   private List<BasicIndividual> _population { get; set; }
 }
 
+[BurstCompile]
 public struct NativeBasicPopulation : IParallelPopulation<BasicIndividualStruct>
 {
-  public NativeArray<BasicIndividualStruct> GetPopulation()
-  {
-    return _population;
-  }
-
-  public void SetPopulation(NativeArray<BasicIndividualStruct> population)
-  {
-    _population = population;
-  }
-
-  public void SetIndividual(BasicIndividualStruct individual, int index)
-  {
-    _population[index] = individual;
-  }
-
+  [BurstCompile]
   public void Dispose()
   {
     foreach(var individual in _population)
@@ -81,8 +69,10 @@ public struct NativeBasicPopulation : IParallelPopulation<BasicIndividualStruct>
   public NativeArray<BasicIndividualStruct> _population;
 }
 
+[BurstCompile]
 public struct BasicIndividualSortDescending : IComparer<BasicIndividualStruct>
 {
+  [BurstCompile]
   public int Compare(BasicIndividualStruct x, BasicIndividualStruct y)
   {
     if (x.fitness < y.fitness)

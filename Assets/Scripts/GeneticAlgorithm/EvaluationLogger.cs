@@ -2,31 +2,37 @@
 using Unity.Collections;
 using System.Text;
 using System.IO;
+using Unity.Burst;
 
+[BurstCompile]
 public struct StraightLineEvaluationLogger
 {
   public NativeArray<BasicIndividualStruct> _topIndividuals;
   public Vector2 _agentPosition;
   public Vector2 _agentDestination;
   public Vector2 _agentForward;
-  public int iteration;
   public float _agentSpeed;
 
 
-  public void LogPopulationState(NativeArray<BasicIndividualStruct> pop)
+  public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
   {
     var bestIndividual = pop[0];
 
-    foreach (var individual in pop)
+    for (int i = 0; i < pop.Length; i++)
     {
-      if(individual.fitness > bestIndividual.fitness)
+      if (pop[i].fitness > bestIndividual.fitness)
       {
-        bestIndividual = individual;
+        bestIndividual = pop[i];
       }
     }
 
-    _topIndividuals[iteration] = bestIndividual;
-    iteration++;
+    var outdatedIndividual = _topIndividuals[iteration];
+    outdatedIndividual.fitness = bestIndividual.fitness;
+    for (int j = 0; j < outdatedIndividual.path.Length; j++)
+    {
+      outdatedIndividual.path[j] = bestIndividual.path[j];
+    }
+    _topIndividuals[iteration] = outdatedIndividual;
   }
 
   public void WriteRes(string configuration, int iteration)
@@ -63,6 +69,10 @@ public struct StraightLineEvaluationLogger
 
   public void Dispose()
   {
+    for (int i = 0; i < _topIndividuals.Length; i++)
+    {
+      _topIndividuals[i].Dispose();
+    }
     _topIndividuals.Dispose();
   }
 }

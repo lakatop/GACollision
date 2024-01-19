@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
-using static UnityEditor.PlayerSettings;
-
+using Unity.Burst;
 
 public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 {
@@ -94,6 +93,7 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 }
 
 
+[BurstCompile]
 public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   public Vector2 _startPosition;
@@ -180,6 +180,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 /// Penalization -> if pos collides, it substracts value^3 (instead of value^2)
 /// Warning: resulting fitness may be negative
 /// </summary>
+[BurstCompile]
 public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   public Vector2 _startPosition;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst;
 using Unity.Collections;
 using UnityEngine;
 
@@ -68,6 +69,7 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
 }
 
 
+[BurstCompile]
 public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -149,6 +151,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 /// Takes in consideration that fitness might be negative
 /// Only takes first n best individuals
 /// </summary>
+[BurstCompile]
 public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;

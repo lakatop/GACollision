@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine.Assertions;
 using UnityEngine;
+using Unity.Burst;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -46,6 +47,7 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
   }
 }
 
+[BurstCompile]
 public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -88,6 +90,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
 /// Rotate towards destination in even circular movement if we can make it in single path
 /// Only if there is special case when we can go straight to destination by single vector, use that instead
 /// </summary>
+[BurstCompile]
 public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -209,6 +212,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 ///   - may break _rotationAngle restriction
 /// Only if there is special case when we can go straight to destination by single vector, use that instead
 /// </summary>
+[BurstCompile]
 public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;

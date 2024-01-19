@@ -120,14 +120,22 @@ public class GeneticAlgorithmDirector
     //};
 
     // Set logger
-    //ga.logger = new StraightLineEvaluationLogger()
-    //{
-    //  _agentPosition = agent.position,
-    //  _topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob),
-    //  _agentForward = agent.GetForward(),
-    //  iteration = 0,
-    //  _agentSpeed = agent.speed
-    //};
+    var topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob);
+    for (int i = 0; i < topIndividuals.Length; i++)
+    {
+      var element = topIndividuals[i];
+      element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
+      element.path.Resize(pathSize);
+      element.fitness = 0;
+      topIndividuals[i] = element;
+    }
+    ga.logger = new StraightLineEvaluationLogger()
+    {
+      _agentPosition = agent.position,
+      _topIndividuals = topIndividuals,
+      _agentForward = agent.GetForward(),
+      _agentSpeed = agent.speed
+    };
 
     ga.populationSize = populationSize;
     ga.iterations = iterations;
