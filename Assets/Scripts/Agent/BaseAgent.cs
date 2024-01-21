@@ -117,6 +117,8 @@ public abstract class BaseAgent : IBaseAgent
   
   // Other methods ----------------------------------------------------------------
 
+  public string scenarioName { get; set; }
+
   /// <summary>
   /// Set Agents name
   /// </summary>
@@ -134,6 +136,10 @@ public abstract class BaseAgent : IBaseAgent
     }
   }
 
+  /// <summary>
+  /// Setter for spawn position.
+  /// </summary>
+  /// <param name="pos">Position where to put agent</param>
   public void SpawnPosition(Vector2 pos)
   {
     if (_object.transform.position.y > 1.59f)

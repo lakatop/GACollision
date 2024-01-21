@@ -129,12 +129,9 @@ public class GeneticAlgorithmDirector
       element.fitness = 0;
       topIndividuals[i] = element;
     }
-    ga.logger = new StraightLineEvaluationLogger()
+    ga.logger = new FitnessEvaluationLogger()
     {
-      _agentPosition = agent.position,
       _topIndividuals = topIndividuals,
-      _agentForward = agent.GetForward(),
-      _agentSpeed = agent.speed
     };
 
     ga.populationSize = populationSize;
