@@ -76,3 +76,56 @@ public struct StraightLineEvaluationLogger
     _topIndividuals.Dispose();
   }
 }
+
+[BurstCompile]
+public struct FitnessEvaluationLogger
+{
+  public NativeArray<BasicIndividualStruct> _topIndividuals;
+
+
+  public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
+  {
+    var bestIndividual = pop[0];
+
+    for (int i = 0; i < pop.Length; i++)
+    {
+      if (pop[i].fitness > bestIndividual.fitness)
+      {
+        bestIndividual = pop[i];
+      }
+    }
+
+    var outdatedIndividual = _topIndividuals[iteration];
+    outdatedIndividual.fitness = bestIndividual.fitness;
+    for (int j = 0; j < outdatedIndividual.path.Length; j++)
+    {
+      outdatedIndividual.path[j] = bestIndividual.path[j];
+    }
+    _topIndividuals[iteration] = outdatedIndividual;
+  }
+
+  public void WriteRes(string configuration, int iteration, string scenarioName, string agentId)
+  {
+    var builder = new StringBuilder();
+    builder.AppendLine(configuration);
+
+    builder.AppendLine("Fitness");
+
+    for (int i = 0; i < _topIndividuals.Length; i++)
+    {
+      var fit = _topIndividuals[i].fitness.ToString();
+      builder.AppendLine(string.Format("{0}", fit));
+    }
+
+    File.WriteAllText(string.Format("Plotting/{0}/out-{1}-{2}.csv", scenarioName, agentId, iteration), builder.ToString());
+  }
+
+  public void Dispose()
+  {
+    for (int i = 0; i < _topIndividuals.Length; i++)
+    {
+      _topIndividuals[i].Dispose();
+    }
+    _topIndividuals.Dispose();
+  }
+}
