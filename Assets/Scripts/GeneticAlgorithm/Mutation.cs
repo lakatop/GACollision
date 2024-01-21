@@ -118,7 +118,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
 
       var straightVectorToDestination = (_destination - _agentPosition);
-      var startAngle = Vector2.SignedAngle(straightVectorToDestination, rotatedVector);
+      var startAngle = -Vector2.SignedAngle(straightVectorToDestination, rotatedVector);
 
       // Special case when we can go straight to the destination with single vector
       if (Mathf.Abs(startAngle) < _rotationAngle
@@ -226,7 +226,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // How often we want mutation to happen
-    var mutationRate = 0.3f;
+    var mutationRate = 1f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
@@ -262,7 +262,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
         while (remainingLength > 0 && index < individual.path.Length)
         {
           // First path will turn towards the direction, rest will be straight line
-          individual.path[index] = new float2 { x = turnAngle, y = maxMove };
+          individual.path[index] = new float2 { x = -turnAngle, y = maxMove };
           turnAngle = 0;
           remainingLength -= maxMove;
           index++;
