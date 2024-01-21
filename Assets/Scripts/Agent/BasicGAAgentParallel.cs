@@ -119,7 +119,7 @@ public class BasicGAAgentParallel : BaseAgent
     var pos = position + vel;
 
     SetPosition(pos);
-    SetForward(vel.normalized);
+    SetForward((vel.normalized).magnitude == 0 ? GetForward() : vel.normalized);
 
     if ((pos - new Vector2(destination.x, destination.y)).magnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
     {

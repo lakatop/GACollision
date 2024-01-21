@@ -66,6 +66,10 @@ public class SimulationManager : MonoBehaviour
   /// 
   /// </summary>
   private float _updateTimer { get; set; }
+  /// <summary>
+  /// Agents destinations in different scenarios that they should swithc to after trigger
+  /// </summary>
+  private List<Vector2> _agentsScenarioDestinations { get; set; }
 
   void Awake()
   {
@@ -87,6 +91,7 @@ public class SimulationManager : MonoBehaviour
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _agentUpdateInterval = 0.5f;
     _quadTreeCreated = false;
+    _agentsScenarioDestinations = new List<Vector2>();
   }
 
   void Start()
@@ -117,10 +122,14 @@ public class SimulationManager : MonoBehaviour
       Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
       if (Physics.Raycast(ray, out var hitInfo))
       {
-        foreach (var agent in _agents)
+        for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
         {
-          agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 30));
+          _agents[i].SetDestination(_agentsScenarioDestinations[i]);
         }
+        //foreach (var agent in _agents)
+        //{
+        //  agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 30));
+        //}
       }
     }
     else
@@ -224,22 +233,7 @@ public class SimulationManager : MonoBehaviour
     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     if (Physics.Raycast(ray, out var hitInfo))
     {
-      _agents.Add(new BasicGAAgentParallel());
-      var agent = _agents[_agents.Count - 1];
-      agent.id = _agents.Count;
-      //((BaseAgent)agent).SpawnPosition(new Vector2(hitInfo.point.x, hitInfo.point.z));
-      ((BaseAgent)agent).SpawnPosition(new Vector2(0, 1));
-      //((ORCAAgent)agent).prevPos = new Vector2(hitInfo.point.x, hitInfo.point.z);
-      agent.SetDestination(agent.position);
-      if (agent is BaseAgent)
-      {
-        ((BaseAgent)agent).SetName();
-      }
-
-      foreach (var collisionAvoider in _collisionListeners)
-      {
-        collisionAvoider.OnAgentAdded(agent);
-      }
+      CreateScenarios();
     }
   }
 
@@ -390,11 +384,12 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// This method creates agents position in quadtree and also its pre-computed position during simulation
   /// Pre-computing is done according to agents current velocity
-  /// This method DOESNT check for collision, which means that pre-compution will can be very faulty (e.g. agent can move through other agents and obstacles)
+  /// This method DOESNT check for collision, which means that pre-compution can be very faulty (e.g. agent can move through other agents and obstacles)
   /// </summary>
   /// <param name="steps">Number of steps to be pre-computed</param>
   private void CreateAgentsQuadPosition(int steps)
   {
+    var agentRadius = 0.5f;
     _quadAgentsPositions.Clear();
     foreach (var agent in _agents)
     {
@@ -415,6 +410,28 @@ public class SimulationManager : MonoBehaviour
           }
         });
 
+        // Create intersteps of agent between updates
+        var interSteps = Mathf.Ceil((velocity.magnitude - (2 * agentRadius))/ (agentRadius * 2));
+        var interPos = pos;
+        for (int j = 0; j < (int)interSteps; j++)
+        {
+          interPos += (velocity.normalized * 2 * agentRadius);
+          if (!IsWithingBounds(_platfornm, interPos))
+          {
+            break;
+          }
+          _quadAgentsPositions.Add(new NativeQuadTree.QuadElement<TreeNode>()
+          {
+            pos = interPos,
+            element = new TreeNode()
+            {
+              staticObstacle = false,
+              agentIndex = agent.id,
+              stepIndex = i
+            }
+          });
+        }
+
         pos += velocity;
         if (!IsWithingBounds(_platfornm, pos))
         {
@@ -427,5 +444,56 @@ public class SimulationManager : MonoBehaviour
   public NativeQuadTree.NativeQuadTree<TreeNode> GetQuadTree()
   {
     return _quadTree;
+  }
+
+  private void CreateScenarios()
+  {
+    // Create agents
+    for(int i = 0; i < 1; i++)
+    {
+      _agents.Add(new BasicGAAgentParallel());
+      var agent = _agents[_agents.Count - 1];
+      agent.id = _agents.Count;
+      if (agent is BaseAgent)
+      {
+        ((BaseAgent)agent).SetName();
+      }
+    }
+
+    //// Straight line scenario
+    //var agent1 = _agents[0];
+    //((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
+    //_agentsScenarioDestinations.Add(new Vector2(-25, 40));
+
+    // Small obstacle scenario
+    var agent2 = _agents[0];
+    ((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
+    _agentsScenarioDestinations.Add(new Vector2(25, 40));
+
+    //// Corner scenario
+    //var agent3 = _agents[2];
+    //((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
+    //_agentsScenarioDestinations.Add(new Vector2(-40, -15));
+
+    //// 2 opposite agents scenario
+    //var agent4 = _agents[0];
+    //((BaseAgent)agent4).SpawnPosition(new Vector2(25, -35));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -5));
+    //var agent5 = _agents[1];
+    //((BaseAgent)agent5).SpawnPosition(new Vector2(25, -10));
+    //agent5.SetForward(new Vector2(0, -1));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -40));
+
+    foreach (var agent in _agents)
+    {
+      // Set agents destination to their current position so they stay in place until trigger
+      agent.SetDestination(agent.position);
+
+      // Register agents to other collision avoiders
+      foreach (var collisionAvoider in _collisionListeners)
+      {
+        collisionAvoider.OnAgentAdded(agent);
+      }
+    }
   }
 }

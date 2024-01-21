@@ -122,14 +122,8 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        newPos = rotatedAndTranslatedVector;
-        rotationVector = rotatedVector;
 
-        AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
-        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
-        _quadTree.RangeQuery(bounds, queryRes);
-
-        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
         {
           var temp = currentPopulation[i];
           temp.fitness = 0;
@@ -137,7 +131,8 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
           break;
         }
 
-        queryRes.Dispose();
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
 
         stepIndex++;
       }
@@ -209,14 +204,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        newPos = rotatedAndTranslatedVector;
-        rotationVector = rotatedVector;
-
-        AABB2D bounds = new AABB2D(newPos, new float2(_agentRadius * 1.5f, _agentRadius * 1.5f));
-        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.TempJob);
-        _quadTree.RangeQuery(bounds, queryRes);
-
-        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
         {
           fitness -= (Mathf.Pow((_destination - newPos).magnitude, 2) * 2);
         }
@@ -225,7 +213,9 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
           fitness -= Mathf.Pow((_destination - newPos).magnitude, 2);
         }
 
-        queryRes.Dispose();
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
         stepIndex++;
       }
 
