@@ -1,4 +1,6 @@
-﻿using Unity.Collections;
+﻿using NativeQuadTree;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace UtilsGA
@@ -91,6 +93,44 @@ namespace UtilsGA
           break;
         }
       }
+
+      return collides;
+    }
+
+    /// <summary>
+    /// Check whether there is collision between agents startPos and endPos path
+    /// </summary>
+    /// <param name="quadtree">Quadtree with all objects present in simulation</param>
+    /// <param name="startPos">Starting position of agent</param>
+    /// <param name="endPos">Ending position of agent</param>
+    /// <param name="agentRadius">Agents radius</param>
+    /// <param name="agentIndex">Agents index</param>
+    /// <returns></returns>
+    public static bool Collides(NativeQuadTree<TreeNode> quadTree, Vector2 startPos, Vector2 endPos, float agentRadius, int agentIndex, int stepIndex)
+    {
+      bool collides = false;
+
+      var stepsCount = Mathf.Ceil(((endPos - startPos).magnitude + 2 * agentRadius) / (2 * agentRadius));
+
+      var newPos = startPos;
+      var stepVelocity = (endPos - startPos).normalized * 2 * agentRadius;
+      for (int i = 0; i < (int)stepsCount; i++)
+      {
+        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius * 2f, agentRadius * 2f));
+        NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+        quadTree.RangeQuery(bounds, queryRes);
+
+        if (Collides(newPos, queryRes, stepIndex, agentRadius, agentIndex))
+        {
+          collides = true;
+          break;
+        }
+
+        queryRes.Dispose();
+
+        newPos += stepVelocity;
+      }
+
 
       return collides;
     }

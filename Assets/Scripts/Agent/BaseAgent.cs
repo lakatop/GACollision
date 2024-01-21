@@ -90,6 +90,7 @@ public abstract class BaseAgent : IBaseAgent
   public void SetForward(Vector2 forw)
   {
     _object.transform.forward = new Vector3(forw.x, _object.transform.forward.y, forw.y);
+    _object.transform.rotation = Quaternion.LookRotation(_object.transform.forward);
     //float singleStep = speed * Time.deltaTime;
     //var direction = Vector3.RotateTowards(_object.transform.forward, new Vector3(forw.x, 0, forw.y), singleStep, 0.0f);
     //_object.transform.rotation = Quaternion.LookRotation(direction);
