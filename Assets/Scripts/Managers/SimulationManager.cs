@@ -114,7 +114,30 @@ public class SimulationManager : MonoBehaviour
     // On left mouse click - spawn agent
     if (Input.GetMouseButtonDown(0))
     {
-      SpawnAgent();
+      if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+      {
+        foreach (var obj in _agents)
+        {
+          if(obj != null && ((BaseAgent)obj)._object != null)
+          {
+            Destroy(((BaseAgent)obj)._object);
+          }
+        }
+
+        _agents.Clear();
+        _agentsScenarioDestinations.Clear();
+        if (_quadTreeCreated)
+        {
+          _quadTree.Dispose();
+          _quadTreeData.Dispose();
+          _quadTreeCreated = false;
+        }
+      }
+      else
+      {
+        SpawnAgent();
+      }
+
     }
     // On right mouse click - set new destination for all agents
     else if (Input.GetMouseButtonDown(1))
@@ -449,7 +472,7 @@ public class SimulationManager : MonoBehaviour
   private void CreateScenarios()
   {
     // Create agents
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 1; i++)
     {
       _agents.Add(new BasicGAAgentParallel());
       var agent = _agents[_agents.Count - 1];
@@ -464,31 +487,32 @@ public class SimulationManager : MonoBehaviour
     var agent1 = _agents[0];
     ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
     _agentsScenarioDestinations.Add(new Vector2(-25, 40));
+    agent1.SetForward(new Vector2(-26, 1));
     ((BaseAgent)agent1).scenarioName = "straightLine";
 
-    // Small obstacle scenario
-    var agent2 = _agents[1];
-    ((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
-    _agentsScenarioDestinations.Add(new Vector2(25, 40));
-    ((BaseAgent)agent2).scenarioName = "smallObstacle";
+    //// Small obstacle scenario
+    //var agent2 = _agents[1];
+    //((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
+    //_agentsScenarioDestinations.Add(new Vector2(25, 40));
+    //((BaseAgent)agent2).scenarioName = "smallObstacle";
 
-    // Corner scenario
-    var agent3 = _agents[2];
-    ((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
-    _agentsScenarioDestinations.Add(new Vector2(-40, -15));
-    ((BaseAgent)agent3).scenarioName = "cornerProblem";
+    //// Corner scenario
+    //var agent3 = _agents[2];
+    //((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
+    //_agentsScenarioDestinations.Add(new Vector2(-40, -15));
+    //((BaseAgent)agent3).scenarioName = "cornerProblem";
 
-    // 2 opposite agents scenario
-    var agent4 = _agents[3];
-    ((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
-    _agentsScenarioDestinations.Add(new Vector2(25, -5));
-    ((BaseAgent)agent4).scenarioName = "oppositeAgents";
+    //// 2 opposite agents scenario
+    //var agent4 = _agents[3];
+    //((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -5));
+    //((BaseAgent)agent4).scenarioName = "oppositeAgents";
 
-    var agent5 = _agents[4];
-    ((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
-    agent5.SetForward(new Vector2(0, -1));
-    _agentsScenarioDestinations.Add(new Vector2(25, -95));
-    ((BaseAgent)agent5).scenarioName = "oppositeAgents";
+    //var agent5 = _agents[4];
+    //((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
+    //agent5.SetForward(new Vector2(0, -1));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -95));
+    //((BaseAgent)agent5).scenarioName = "oppositeAgents";
 
     foreach (var agent in _agents)
     {

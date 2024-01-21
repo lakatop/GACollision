@@ -16,7 +16,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <summary>
   /// GameObject representing Agent
   /// </summary>
-  private GameObject _object = null;
+  public GameObject _object = null;
   /// <summary>
   /// Path to material of agent
   /// </summary>

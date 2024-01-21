@@ -49,8 +49,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BasicIndividualStruct> MakeBasicGAParallel (BaseAgent agent)
   {
     var ga = new BasicGeneticAlgorithmParallel();
-    int populationSize = 50;
-    int iterations = 100;
+    int populationSize = 10;
+    int iterations = 1;
     int pathSize = 10;
 
     // Set crossover
@@ -84,7 +84,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set fitness
-    ga.fitness = new FitnessContinuousDistanceParallel()
+    ga.fitness = new FitnessRelativeVectorParallel()
     {
       _startPosition = agent.position,
       _destination = agent.destination,

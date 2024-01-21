@@ -12,7 +12,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 {
   public MeanCrossOperatorParallel cross;
   public GreedyCircleMutationOperatorParallel mutation;
-  public FitnessContinuousDistanceParallel fitness;
+  public FitnessRelativeVectorParallel fitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
   public NativeBasicPopulation pop;
