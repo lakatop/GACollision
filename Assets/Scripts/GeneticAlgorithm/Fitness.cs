@@ -41,7 +41,7 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
         _quadTree.RangeQuery(bounds, queryRes);
 
-        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex))
+        if (UtilsGA.UtilsGA.Collides(newPos, queryRes, stepIndex, _agentRadius, _agentIndex) is var col && col > 0)
         {
           population[i].fitness = 0;
           break;
@@ -123,7 +123,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
 
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
         {
           var temp = currentPopulation[i];
           temp.fitness = 0;
@@ -204,7 +204,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
         {
           fitness = (Mathf.Pow((_destination - newPos).magnitude, 5));
         }
@@ -289,7 +289,7 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
         }
 
         // Also check for collisions
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
         {
           // Take closer collisions more seriously
           fitness -= Mathf.Pow((individual.path.Length + 1 - stepIndex), 7);
@@ -443,6 +443,69 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
       velocities.Dispose();
       accelerations.Dispose();
       jerks.Dispose();
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
+[BurstCompile]
+public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public float _agentRadius;
+  public int _agentIndex;
+  public NativeQuadTree<TreeNode> _quadTree;
+  public Vector2 _forward;
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      float fitness = 0f;
+
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
+      var stepIndex = 1;
+
+      foreach (var pos in individual.path)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+        {
+          fitness--;
+        }
+
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
+        stepIndex++;
+      }
+
+      fitnesses[index] = fitness;
+      index++;
     }
 
     for (int i = 0; i < currentPopulation.Length; i++)
