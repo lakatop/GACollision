@@ -50,7 +50,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BasicGeneticAlgorithmParallel();
     int populationSize = 50;
-    int iterations = 100;
+    int iterations = 50;
     int pathSize = 10;
 
     // Set crossover

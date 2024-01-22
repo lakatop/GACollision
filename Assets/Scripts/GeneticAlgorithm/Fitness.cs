@@ -206,7 +206,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
 
         if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
         {
-          fitness -= (Mathf.Pow((_destination - newPos).magnitude, 2) * 5);
+          fitness = (Mathf.Pow((_destination - newPos).magnitude, 5));
         }
         else
         {
@@ -217,6 +217,95 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         rotationVector = rotatedVector;
 
         stepIndex++;
+      }
+
+      fitnesses[index] = fitness;
+      index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
+
+[BurstCompile]
+public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public float _agentRadius;
+  public int _agentIndex;
+  public NativeQuadTree<TreeNode> _quadTree;
+  public Vector2 _forward;
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      var fitness = Mathf.Pow((_destination - _startPosition).magnitude, 2);
+
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
+      var stepIndex = 1;
+
+      foreach (var pos in individual.path)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+
+        var firstPosMagnintude = (_destination - newPos).magnitude;
+        var secondPosMagnitude = (_destination - rotatedAndTranslatedVector).magnitude;
+        var diff = firstPosMagnintude - secondPosMagnitude;
+
+        // we are getting away from destination
+        if(diff < 0)
+        {
+          fitness -= Mathf.Abs(diff) * 5; // penalization
+        }
+        else
+        {
+          fitness -= Mathf.Abs(diff);
+        }
+
+        // Also check for collisions
+        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
+        {
+          // Take closer collisions more seriously
+          fitness -= Mathf.Pow((individual.path.Length + 1 - stepIndex), 7);
+
+          //fitness -= (Mathf.Pow((rotatedAndTranslatedVector - newPos).magnitude, individual.path.Length - stepIndex));
+        }
+
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
+        stepIndex++;
+
+        // Last segment, also subtract that from fitness
+        // Segments that end closer to the destination should be preferred
+        if(stepIndex == individual.path.Length + 1)
+        {
+          fitness -= Mathf.Pow((_destination - rotatedAndTranslatedVector).magnitude, 2);
+        }
       }
 
       fitnesses[index] = fitness;

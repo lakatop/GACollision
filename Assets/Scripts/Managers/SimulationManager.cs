@@ -114,7 +114,30 @@ public class SimulationManager : MonoBehaviour
     // On left mouse click - spawn agent
     if (Input.GetMouseButtonDown(0))
     {
-      SpawnAgent();
+      if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+      {
+        foreach (var obj in _agents)
+        {
+          if(obj != null && ((BaseAgent)obj)._object != null)
+          {
+            Destroy(((BaseAgent)obj)._object);
+          }
+        }
+
+        _agents.Clear();
+        _agentsScenarioDestinations.Clear();
+        if (_quadTreeCreated)
+        {
+          _quadTree.Dispose();
+          _quadTreeData.Dispose();
+          _quadTreeCreated = false;
+        }
+      }
+      else
+      {
+        SpawnAgent();
+      }
+
     }
     // On right mouse click - set new destination for all agents
     else if (Input.GetMouseButtonDown(1))
@@ -464,6 +487,7 @@ public class SimulationManager : MonoBehaviour
     var agent1 = _agents[0];
     ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
     _agentsScenarioDestinations.Add(new Vector2(-25, 40));
+    agent1.SetForward(new Vector2(-26, 1));
     ((BaseAgent)agent1).scenarioName = "straightLine";
 
     // Small obstacle scenario
