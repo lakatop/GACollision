@@ -526,3 +526,55 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
     fitnesses.Dispose();
   }
 }
+
+[BurstCompile]
+public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public Vector2 _forward;
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
+      var stepIndex = 1;
+
+      foreach (var pos in individual.path)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
+        stepIndex++;
+      }
+
+      fitnesses[index] = (_destination - newPos).magnitude;
+      index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
