@@ -242,7 +242,9 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
   }
 }
 
-
+/// <summary>
+/// Fitness that reacts relatively to segments along the path. Also checks for collisions.
+/// </summary>
 [BurstCompile]
 public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
@@ -309,6 +311,52 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
       }
 
       fitnesses[index] = fitness;
+      index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
+/// <summary>
+/// Fitness for smooth path regarding the segments turning.
+/// </summary>
+[BurstCompile]
+public struct FitnessAngleSumSmoothnessParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+
+      float angleSum = 0;
+
+      for (int i = 0; i < individual.path.Length; i++)
+      {
+        angleSum += individual.path[i].x;
+      }
+
+      // Check for straight paths, we cant divide by 0
+      angleSum = (angleSum < 0.001f) ? 0.001f : angleSum;
+      fitnesses[index] = 1 / angleSum;
       index++;
     }
 
