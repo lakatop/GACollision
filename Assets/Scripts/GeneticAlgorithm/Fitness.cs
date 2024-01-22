@@ -242,7 +242,9 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
   }
 }
 
-
+/// <summary>
+/// Fitness that reacts relatively to segments along the path. Also checks for collisions.
+/// </summary>
 [BurstCompile]
 public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
@@ -310,6 +312,137 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
 
       fitnesses[index] = fitness;
       index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
+/// <summary>
+/// Fitness for smooth path regarding the segments turning.
+/// </summary>
+[BurstCompile]
+public struct FitnessAngleSumSmoothnessParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+
+      float angleSum = 0;
+
+      for (int i = 0; i < individual.path.Length; i++)
+      {
+        angleSum += individual.path[i].x;
+      }
+
+      // Check for straight paths, we cant divide by 0
+      angleSum = (angleSum < 0.001f) ? 0.001f : angleSum;
+      fitnesses[index] = 1 / angleSum;
+      index++;
+    }
+
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var temp = currentPopulation[i];
+      temp.fitness = fitnesses[i];
+      currentPopulation[i] = temp;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
+/// <summary>
+/// Fitness calcualted using jerk cost
+/// </summary>
+[BurstCompile]
+public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _forward;
+  public NativeArray<float> fitnesses;
+
+  public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      var newPos = _startPosition;
+      var rotationVector = _forward.normalized;
+
+      var stepIndex = 1;
+
+      NativeArray<Vector2> velocities = new NativeArray<Vector2>(individual.path.Length, Allocator.Temp);
+      NativeArray<Vector2> accelerations = new NativeArray<Vector2>(velocities.Length - 1, Allocator.Temp);
+      NativeArray<Vector2> jerks = new NativeArray<Vector2>(accelerations.Length - 1, Allocator.Temp);
+
+      for (int i = 0; i < individual.path.Length; i++)
+      {
+        var pos = individual.path[i];
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
+        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+
+        velocities[i] = rotatedAndTranslatedVector - newPos;
+
+        newPos = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector;
+
+        stepIndex++;
+      }
+
+      for (int i = 1; i < velocities.Length; i++)
+      {
+        accelerations[i - 1] = velocities[i] - velocities[i - 1]; 
+      }
+
+      for (int i = 1; i < accelerations.Length; i++)
+      {
+        jerks[i - 1] = accelerations[i] - accelerations[i - 1];
+      }
+
+      float sumSquaredMagnitude = 0f;
+      foreach (var v in jerks)
+      {
+        sumSquaredMagnitude += v.sqrMagnitude;
+      }
+
+      float averageSqrMagnirude = sumSquaredMagnitude / jerks.Length;
+      float averageMagnitude = Mathf.Sqrt(averageSqrMagnirude);
+
+      fitnesses[index] = -averageMagnitude;
+      index++;
+
+      velocities.Dispose();
+      accelerations.Dispose();
+      jerks.Dispose();
     }
 
     for (int i = 0; i < currentPopulation.Length; i++)
