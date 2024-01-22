@@ -74,19 +74,13 @@ public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualS
 
     var individual = new BasicIndividualStruct();
     individual.Initialize(pathSize, Allocator.TempJob);
-    individual.path.Add(new float2(45, 1));
-
-    var individual2 = new BasicIndividualStruct();
-    individual2.Initialize(pathSize, Allocator.TempJob);
-    individual2.path.Add(new float2(-45, 1));
+    individual.path.Add(new float2(0, 1));
 
     for (int j = 0; j < pathSize - 1; j++)
     {
       individual.path.Add(new float2(0, 1));
-      individual2.path.Add(new float2(0, 1));
     }
     currentPopulation[0] = individual;
-    currentPopulation[1] = individual2;
 
 
     for (int i = 0; i < currentPopulation.Length; i++)

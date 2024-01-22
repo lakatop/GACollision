@@ -464,6 +464,9 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
   }
 }
 
+/// <summary>
+/// Fitness calculating number of collision each individual will make along its path
+/// </summary>
 [BurstCompile]
 public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
@@ -495,7 +498,10 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
 
         if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
         {
-          fitness--;
+          PathDrawer.DrawCollisionPoint(newPos);
+          PathDrawer.DrawCollisionPoint(rotatedAndTranslatedVector);
+          PathDrawer.DrawConnectionLine(newPos, rotatedAndTranslatedVector);
+          fitness -= col;
         }
 
         newPos = rotatedAndTranslatedVector;
@@ -527,6 +533,9 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
   }
 }
 
+/// <summary>
+/// Fitness calculating distance between end of individuals path and destination
+/// </summary>
 [BurstCompile]
 public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {

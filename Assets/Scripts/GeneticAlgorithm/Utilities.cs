@@ -98,12 +98,14 @@ namespace UtilsGA
 
     /// <summary>
     /// Check nubmer of collisions between agents startPos and endPos path
+    /// If stepIndex is greated than 1, dont count startPos collisions - because they were counted in previous call
     /// </summary>
     /// <param name="quadTree">Quadtree with all objects present in simulation</param>
     /// <param name="startPos">Starting position of agent</param>
     /// <param name="endPos">Ending position of agent</param>
     /// <param name="agentRadius">Agents radius</param>
     /// <param name="agentIndex">Agents index</param>
+    /// <param name="stepIndex">Step index - index of which path segment this is</param>
     /// <returns>Number of collisions</returns>
     public static int Collides(NativeQuadTree<TreeNode> quadTree, Vector2 startPos, Vector2 endPos, float agentRadius, int agentIndex, int stepIndex)
     {
@@ -114,7 +116,14 @@ namespace UtilsGA
       var collisionCount = 0;
       for (int i = 0; i < (int)stepsCount; i++)
       {
-        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius * 2f, agentRadius * 2f));
+        // We want to skip startPos because it was counted in the previous call
+        if(stepIndex != 1 && i == 0)
+        {
+          newPos += stepVelocity;
+          continue;
+        }
+
+        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius + 0.1f, agentRadius + 0.1f));
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
         quadTree.RangeQuery(bounds, queryRes);
 

@@ -49,8 +49,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BasicIndividualStruct> MakeBasicGAParallel (BaseAgent agent)
   {
     var ga = new BasicGeneticAlgorithmParallel();
-    int populationSize = 50;
-    int iterations = 50;
+    int populationSize = 10;
+    int iterations = 10;
     int pathSize = 10;
 
     // Set crossover
@@ -83,8 +83,8 @@ public class GeneticAlgorithmDirector
       _updateInterval = SimulationManager.Instance._agentUpdateInterval
     };
 
-    // Set fitness
-    ga.fitness = new FitnessContinuousDistanceParallel()
+    // Set fitnesses
+    ga.collisionFitness = new FitnessCollisionParallel()
     {
       _startPosition = agent.position,
       _destination = agent.destination,
@@ -93,7 +93,21 @@ public class GeneticAlgorithmDirector
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
-  };
+    };
+    ga.endDistanceFitness = new FitnessEndDistanceParallel()
+    {
+      _startPosition = agent.position,
+      _destination = agent.destination,
+      _forward = agent.GetForward(),
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
+    };
+    ga.jerkFitness = new FitnessJerkCostParallel()
+    {
+      _startPosition = agent.position,
+      _forward = agent.GetForward(),
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
+    };
+
 
     // Set selection
     ga.selection = new NegativeSelectionParallel()
@@ -116,7 +130,7 @@ public class GeneticAlgorithmDirector
     //ga.popInitialization = new DebugInitialization()
     //{
     //  startPosition = agent.position,
-    //  forward = new Vector2(0, 1),
+    //  forward = new Vector2(0, -1),
     //};
 
     // Set logger
