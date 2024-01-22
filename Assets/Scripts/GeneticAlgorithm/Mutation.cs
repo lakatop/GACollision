@@ -226,7 +226,7 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     // How often we want mutation to happen
-    var mutationRate = 1f;
+    var mutationRate = 0.5f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();

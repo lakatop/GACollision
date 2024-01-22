@@ -206,7 +206,7 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
 
         if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex))
         {
-          fitness -= (Mathf.Pow((_destination - newPos).magnitude, 2) * 5);
+          fitness = (Mathf.Pow((_destination - newPos).magnitude, 5));
         }
         else
         {
