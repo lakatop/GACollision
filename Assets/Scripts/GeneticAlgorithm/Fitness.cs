@@ -423,7 +423,7 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
         accelerations[i - 1] = velocities[i] - velocities[i - 1]; 
       }
 
-      for (int i = 0; i < accelerations.Length; i++)
+      for (int i = 1; i < accelerations.Length; i++)
       {
         jerks[i - 1] = accelerations[i] - accelerations[i - 1];
       }
