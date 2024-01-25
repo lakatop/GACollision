@@ -114,6 +114,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     endDistanceFitness.Dispose();
     selection.Dispose();
     logger.Dispose();
+    ranking.Dispose();
     _winner.Dispose();
     pop.Dispose();
   }

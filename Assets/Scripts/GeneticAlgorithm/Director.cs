@@ -93,7 +93,7 @@ public class GeneticAlgorithmDirector
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 5
+      weight = 0.5f
     };
     ga.endDistanceFitness = new FitnessEndDistanceParallel()
     {
@@ -101,16 +101,21 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 2
+      weight = 0.35f
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
     {
       _startPosition = agent.position,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 1
+      weight = 0.15f
     };
 
+    // Set ranking
+    ga.ranking = new WeightedSumRanking()
+    {
+      resultingFitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
+    };
 
     // Set selection
     ga.selection = new NegativeSelectionParallel()
