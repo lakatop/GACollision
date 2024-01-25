@@ -17,6 +17,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public FitnessEndDistanceParallel endDistanceFitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
+  public WeightedSumRanking ranking;
   public NativeBasicPopulation pop;
   public FitnessEvaluationLogger logger;
 
@@ -38,9 +39,13 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
     for (int i = 0; i < iterations; i++)
     {
-      //jerkFitness.ModifyPopulation(ref pop._population, i);
+      jerkFitness.ModifyPopulation(ref pop._population, i);
       collisionFitness.ModifyPopulation(ref pop._population, i);
-      //endDistanceFitness.ModifyPopulation(ref pop._population, i);
+      endDistanceFitness.ModifyPopulation(ref pop._population, i);
+
+      ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
+        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+      ranking.ModifyPopulation(ref pop._population, i);
 
       logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
@@ -48,9 +53,9 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
       mutation.ModifyPopulation(ref pop._population, i);
     }
 
-    //jerkFitness.ModifyPopulation(ref pop._population, iterations);
+    jerkFitness.ModifyPopulation(ref pop._population, iterations);
     collisionFitness.ModifyPopulation(ref pop._population, iterations);
-    //endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
+    endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
     logger.LogPopulationState(ref pop._population, iterations);
     SetWinner();
   }

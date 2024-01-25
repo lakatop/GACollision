@@ -388,6 +388,7 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
   public Vector2 _startPosition;
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
+  public float weight;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -444,13 +445,6 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
       accelerations.Dispose();
       jerks.Dispose();
     }
-
-    for (int i = 0; i < currentPopulation.Length; i++)
-    {
-      var temp = currentPopulation[i];
-      temp.fitness = fitnesses[i];
-      currentPopulation[i] = temp;
-    }
   }
 
   public string GetComponentName()
@@ -477,6 +471,7 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
   public NativeQuadTree<TreeNode> _quadTree;
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
+  public float weight;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -513,13 +508,6 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
       fitnesses[index] = fitness;
       index++;
     }
-
-    for (int i = 0; i < currentPopulation.Length; i++)
-    {
-      var temp = currentPopulation[i];
-      temp.fitness = fitnesses[i];
-      currentPopulation[i] = temp;
-    }
   }
 
   public string GetComponentName()
@@ -543,6 +531,7 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
   public Vector2 _destination;
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
+  public float weight;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -567,13 +556,6 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
 
       fitnesses[index] = (_destination - newPos).magnitude;
       index++;
-    }
-
-    for (int i = 0; i < currentPopulation.Length; i++)
-    {
-      var temp = currentPopulation[i];
-      temp.fitness = fitnesses[i];
-      currentPopulation[i] = temp;
     }
   }
 
