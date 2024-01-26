@@ -159,7 +159,7 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
 
-    currentPopulation.Sort(new BasicIndividualSortDescending());
+    currentPopulation.Sort(new BasicIndividualSortAscending());
 
     int n = 10;
 

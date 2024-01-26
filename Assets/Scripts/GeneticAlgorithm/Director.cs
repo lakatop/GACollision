@@ -49,7 +49,7 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BasicIndividualStruct> MakeBasicGAParallel (BaseAgent agent)
   {
     var ga = new BasicGeneticAlgorithmParallel();
-    int populationSize = 10;
+    int populationSize = 50;
     int iterations = 10;
     int pathSize = 10;
 
@@ -93,7 +93,7 @@ public class GeneticAlgorithmDirector
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.5f
+      weight = 0.6f
     };
     ga.endDistanceFitness = new FitnessEndDistanceParallel()
     {
@@ -101,14 +101,14 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.35f
+      weight = 0.3f
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
     {
       _startPosition = agent.position,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.15f
+      weight = 0.1f
     };
 
     // Set ranking

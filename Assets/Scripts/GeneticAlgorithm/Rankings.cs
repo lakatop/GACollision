@@ -45,9 +45,19 @@ public struct WeightedSumRanking : IParallelPopulationModifier<BasicIndividualSt
 
     var variance = squaredSum / fitnessValues1.Length;
     var stdDev = Mathf.Sqrt(variance);
-    for (int i = 0; i < fitnessValues1.Length; i++)
+    if(stdDev == 0)
     {
-      normF1[i] = (fitnessValues1[i] - mean) / stdDev;
+      for (int i = 0; i < fitnessValues1.Length; i++)
+      {
+        normF1[i] = 0;
+      }
+    }
+    else
+    {
+      for (int i = 0; i < fitnessValues1.Length; i++)
+      {
+        normF1[i] = (fitnessValues1[i] - mean) / stdDev;
+      }
     }
 
     // Z-score normalization of second fitnesses
@@ -67,9 +77,19 @@ public struct WeightedSumRanking : IParallelPopulationModifier<BasicIndividualSt
 
     variance = squaredSum / fitnessValues2.Length;
     stdDev = Mathf.Sqrt(variance);
-    for (int i = 0; i < fitnessValues2.Length; i++)
+    if(stdDev == 0)
     {
-      normF2[i] = (fitnessValues2[i] - mean) / stdDev;
+      for (int i = 0; i < fitnessValues2.Length; i++)
+      {
+        normF2[i] = 0;
+      }
+    }
+    else
+    {
+      for (int i = 0; i < fitnessValues2.Length; i++)
+      {
+        normF2[i] = (fitnessValues2[i] - mean) / stdDev;
+      }
     }
 
     // Z-score normalization of third fitnesses
@@ -89,9 +109,19 @@ public struct WeightedSumRanking : IParallelPopulationModifier<BasicIndividualSt
 
     variance = squaredSum / fitnessValues3.Length;
     stdDev = Mathf.Sqrt(variance);
-    for (int i = 0; i < fitnessValues3.Length; i++)
+    if(stdDev == 0)
     {
-      normF3[i] = (fitnessValues3[i] - mean) / stdDev;
+      for (int i = 0; i < fitnessValues3.Length; i++)
+      {
+        normF3[i] = 0;
+      }
+    }
+    else
+    {
+      for (int i = 0; i < fitnessValues3.Length; i++)
+      {
+        normF3[i] = (fitnessValues3[i] - mean) / stdDev;
+      }
     }
 
     for (int i = 0; i < resultingFitnesses.Length; i++)

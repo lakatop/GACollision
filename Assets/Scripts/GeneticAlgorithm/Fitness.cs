@@ -438,7 +438,7 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
       float averageSqrMagnirude = sumSquaredMagnitude / jerks.Length;
       float averageMagnitude = Mathf.Sqrt(averageSqrMagnirude);
 
-      fitnesses[index] = -averageMagnitude;
+      fitnesses[index] = averageMagnitude;
       index++;
 
       velocities.Dispose();
@@ -496,7 +496,7 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
           PathDrawer.DrawCollisionPoint(newPos);
           PathDrawer.DrawCollisionPoint(rotatedAndTranslatedVector);
           PathDrawer.DrawConnectionLine(newPos, rotatedAndTranslatedVector);
-          fitness -= col;
+          fitness += col;
         }
 
         newPos = rotatedAndTranslatedVector;
