@@ -62,7 +62,7 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
       {
         // Mutation with probability 0.2
         var mutProb = _rand.NextFloat();
-        if (mutProb > 0.8f)
+        if (mutProb > 0.7f)
         {
           var size = _rand.NextFloat(_agentSpeed) * _updateInterval;
           float2 newVal = currentPopulation[i].path[j];

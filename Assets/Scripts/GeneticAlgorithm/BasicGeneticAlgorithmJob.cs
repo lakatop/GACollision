@@ -12,9 +12,12 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 {
   public MeanCrossOperatorParallel cross;
   public GreedyCircleMutationOperatorParallel mutation;
-  public FitnessContinuousDistanceParallel fitness;
+  public FitnessJerkCostParallel jerkFitness;
+  public FitnessCollisionParallel collisionFitness;
+  public FitnessEndDistanceParallel endDistanceFitness;
   public NegativeSelectionParallel selection;
   public KineticFriendlyInitialization popInitialization;
+  public WeightedSumRanking ranking;
   public NativeBasicPopulation pop;
   public FitnessEvaluationLogger logger;
 
@@ -36,14 +39,23 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
     for (int i = 0; i < iterations; i++)
     {
-      fitness.ModifyPopulation(ref pop._population, i);
+      jerkFitness.ModifyPopulation(ref pop._population, i);
+      collisionFitness.ModifyPopulation(ref pop._population, i);
+      endDistanceFitness.ModifyPopulation(ref pop._population, i);
+
+      ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
+        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+      ranking.ModifyPopulation(ref pop._population, i);
+
       logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
       cross.ModifyPopulation(ref pop._population, i);
       mutation.ModifyPopulation(ref pop._population, i);
     }
 
-    fitness.ModifyPopulation(ref pop._population, iterations);
+    jerkFitness.ModifyPopulation(ref pop._population, iterations);
+    collisionFitness.ModifyPopulation(ref pop._population, iterations);
+    endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
     logger.LogPopulationState(ref pop._population, iterations);
     SetWinner();
   }
@@ -86,7 +98,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     var builder = new System.Text.StringBuilder();
     builder.AppendLine(string.Format("CROSS,{0}", cross.GetComponentName()));
     builder.AppendLine(string.Format("MUTATION,{0}", mutation.GetComponentName()));
-    builder.AppendLine(string.Format("FITNESS,{0}", fitness.GetComponentName()));
+    builder.AppendLine(string.Format("FITNESSES,{0}, {1}, {2}", jerkFitness.GetComponentName(), endDistanceFitness.GetComponentName(), collisionFitness.GetComponentName()));
     builder.AppendLine(string.Format("SELECTION,{0}", selection.GetComponentName()));
     builder.AppendLine(string.Format("INITIALIZATION,{0}", popInitialization.GetComponentName()));
 
@@ -97,9 +109,12 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   {
     cross.Dispose();
     mutation.Dispose();
-    fitness.Dispose();
+    jerkFitness.Dispose();
+    collisionFitness.Dispose();
+    endDistanceFitness.Dispose();
     selection.Dispose();
     logger.Dispose();
+    ranking.Dispose();
     _winner.Dispose();
     pop.Dispose();
   }

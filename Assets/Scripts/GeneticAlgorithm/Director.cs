@@ -50,7 +50,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BasicGeneticAlgorithmParallel();
     int populationSize = 50;
-    int iterations = 50;
+    int iterations = 10;
     int pathSize = 10;
 
     // Set crossover
@@ -83,8 +83,8 @@ public class GeneticAlgorithmDirector
       _updateInterval = SimulationManager.Instance._agentUpdateInterval
     };
 
-    // Set fitness
-    ga.fitness = new FitnessContinuousDistanceParallel()
+    // Set fitnesses
+    ga.collisionFitness = new FitnessCollisionParallel()
     {
       _startPosition = agent.position,
       _destination = agent.destination,
@@ -92,8 +92,30 @@ public class GeneticAlgorithmDirector
       _agentIndex = agent.id,
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       _forward = agent.GetForward(),
-      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
-  };
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
+      weight = 0.6f
+    };
+    ga.endDistanceFitness = new FitnessEndDistanceParallel()
+    {
+      _startPosition = agent.position,
+      _destination = agent.destination,
+      _forward = agent.GetForward(),
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
+      weight = 0.3f
+    };
+    ga.jerkFitness = new FitnessJerkCostParallel()
+    {
+      _startPosition = agent.position,
+      _forward = agent.GetForward(),
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
+      weight = 0.1f
+    };
+
+    // Set ranking
+    ga.ranking = new WeightedSumRanking()
+    {
+      resultingFitnesses = new NativeArray<float>(populationSize, Allocator.TempJob)
+    };
 
     // Set selection
     ga.selection = new NegativeSelectionParallel()
@@ -116,7 +138,7 @@ public class GeneticAlgorithmDirector
     //ga.popInitialization = new DebugInitialization()
     //{
     //  startPosition = agent.position,
-    //  forward = new Vector2(0, 1),
+    //  forward = new Vector2(0, -1),
     //};
 
     // Set logger

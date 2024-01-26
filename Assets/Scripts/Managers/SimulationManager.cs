@@ -357,6 +357,7 @@ public class SimulationManager : MonoBehaviour
       {
         var v = new Vector2(obstacle.vertices[i % verticesCount].x - start.x, obstacle.vertices[i % verticesCount].y - start.y);
 
+        PathDrawer.DrawCircle(new Vector2(obstacle.vertices[i % verticesCount].x, obstacle.vertices[i % verticesCount].y), 0.4f);
         // Add node at the end
         _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
         {
@@ -378,6 +379,7 @@ public class SimulationManager : MonoBehaviour
         // create nodes between star and end
         for(int j = 0; j < pointsCount; j++)
         {
+          PathDrawer.DrawCircle(new Vector2(point.x, point.y), 0.4f);
           //create new tree node on point
           _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
           {
@@ -487,7 +489,6 @@ public class SimulationManager : MonoBehaviour
     var agent1 = _agents[0];
     ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
     _agentsScenarioDestinations.Add(new Vector2(-25, 40));
-    agent1.SetForward(new Vector2(-26, 1));
     ((BaseAgent)agent1).scenarioName = "straightLine";
 
     // Small obstacle scenario

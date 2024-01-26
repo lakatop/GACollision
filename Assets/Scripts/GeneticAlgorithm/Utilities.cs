@@ -68,15 +68,15 @@ namespace UtilsGA
     }
 
     /// <summary>
-    /// Check whether my position collides with results returned by quadtree
+    /// Check number of collision on my position with results returned by quadtree
     /// </summary>
     /// <param name="pos">Agents current position</param>
     /// <param name="queryRes">Result from query performed on quadtree</param>
     /// <param name="stepIndex">Current step index in simulation</param>
-    /// <returns></returns>
-    public static bool Collides(Vector2 pos, NativeList<NativeQuadTree.QuadElement<TreeNode>> queryRes, int stepIndex, float _agentRadius, int _agentIndex)
+    /// <returns>Number of collisions</returns>
+    public static int Collides(Vector2 pos, NativeList<NativeQuadTree.QuadElement<TreeNode>> queryRes, int stepIndex, float _agentRadius, int _agentIndex)
     {
-      bool collides = false;
+      int collisionCount = 0;
 
       foreach (var element in queryRes)
       {
@@ -89,50 +89,52 @@ namespace UtilsGA
         Vector2 v = new Vector2(element.pos.x - pos.x, element.pos.y - pos.y);
         if (v.magnitude < (_agentRadius * 2))
         {
-          collides = true;
-          break;
+          collisionCount++;
         }
       }
 
-      return collides;
+      return collisionCount;
     }
 
     /// <summary>
-    /// Check whether there is collision between agents startPos and endPos path
+    /// Check nubmer of collisions between agents startPos and endPos path
+    /// If stepIndex is greated than 1, dont count startPos collisions - because they were counted in previous call
     /// </summary>
-    /// <param name="quadtree">Quadtree with all objects present in simulation</param>
+    /// <param name="quadTree">Quadtree with all objects present in simulation</param>
     /// <param name="startPos">Starting position of agent</param>
     /// <param name="endPos">Ending position of agent</param>
     /// <param name="agentRadius">Agents radius</param>
     /// <param name="agentIndex">Agents index</param>
-    /// <returns></returns>
-    public static bool Collides(NativeQuadTree<TreeNode> quadTree, Vector2 startPos, Vector2 endPos, float agentRadius, int agentIndex, int stepIndex)
+    /// <param name="stepIndex">Step index - index of which path segment this is</param>
+    /// <returns>Number of collisions</returns>
+    public static int Collides(NativeQuadTree<TreeNode> quadTree, Vector2 startPos, Vector2 endPos, float agentRadius, int agentIndex, int stepIndex)
     {
-      bool collides = false;
-
       var stepsCount = Mathf.Ceil(((endPos - startPos).magnitude + 2 * agentRadius) / (2 * agentRadius));
 
       var newPos = startPos;
       var stepVelocity = (endPos - startPos).normalized * 2 * agentRadius;
+      var collisionCount = 0;
       for (int i = 0; i < (int)stepsCount; i++)
       {
-        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius * 2f, agentRadius * 2f));
+        // We want to skip startPos because it was counted in the previous call
+        if(stepIndex != 1 && i == 0)
+        {
+          newPos += stepVelocity;
+          continue;
+        }
+
+        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius + 0.1f, agentRadius + 0.1f));
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
         quadTree.RangeQuery(bounds, queryRes);
 
-        if (Collides(newPos, queryRes, stepIndex, agentRadius, agentIndex))
-        {
-          collides = true;
-          break;
-        }
-
+        collisionCount += Collides(newPos, queryRes, stepIndex, agentRadius, agentIndex);
         queryRes.Dispose();
 
         newPos += stepVelocity;
       }
 
 
-      return collides;
+      return collisionCount;
     }
 
     /// <summary>

@@ -88,3 +88,23 @@ public struct BasicIndividualSortDescending : IComparer<BasicIndividualStruct>
     return 0;
   }
 }
+
+[BurstCompile]
+public struct BasicIndividualSortAscending : IComparer<BasicIndividualStruct>
+{
+  [BurstCompile]
+  public int Compare(BasicIndividualStruct x, BasicIndividualStruct y)
+  {
+    if (x.fitness > y.fitness)
+    {
+      return 1;
+    }
+
+    if (x.fitness < y.fitness)
+    {
+      return -1;
+    }
+
+    return 0;
+  }
+}
