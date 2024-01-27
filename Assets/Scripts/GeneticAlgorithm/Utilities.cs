@@ -109,12 +109,12 @@ namespace UtilsGA
     /// <returns>Number of collisions</returns>
     public static int Collides(NativeQuadTree<TreeNode> quadTree, Vector2 startPos, Vector2 endPos, float agentRadius, int agentIndex, int stepIndex)
     {
-      var stepsCount = Mathf.Ceil(((endPos - startPos).magnitude + 2 * agentRadius) / (2 * agentRadius));
-
+      int stepsCount = (int)(((endPos - startPos).magnitude - (2 * agentRadius)) / (2 * agentRadius));
+      stepsCount++; // for startPos
       var newPos = startPos;
       var stepVelocity = (endPos - startPos).normalized * 2 * agentRadius;
       var collisionCount = 0;
-      for (int i = 0; i < (int)stepsCount; i++)
+      for (int i = 0; i < stepsCount; i++)
       {
         // We want to skip startPos because it was counted in the previous call
         if(stepIndex != 1 && i == 0)
@@ -123,7 +123,7 @@ namespace UtilsGA
           continue;
         }
 
-        AABB2D bounds = new AABB2D(newPos, new float2(agentRadius + 0.1f, agentRadius + 0.1f));
+        AABB2D bounds = new AABB2D(newPos, new float2(5, 5));
         NativeList<QuadElement<TreeNode>> queryRes = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
         quadTree.RangeQuery(bounds, queryRes);
 
@@ -133,6 +133,12 @@ namespace UtilsGA
         newPos += stepVelocity;
       }
 
+      AABB2D boundsEnd = new AABB2D(endPos, new float2(5, 5));
+      NativeList<QuadElement<TreeNode>> queryResEnd = new NativeList<QuadElement<TreeNode>>(100, Allocator.Temp);
+      quadTree.RangeQuery(boundsEnd, queryResEnd);
+
+      collisionCount += Collides(newPos, queryResEnd, stepIndex, agentRadius, agentIndex);
+      queryResEnd.Dispose();
 
       return collisionCount;
     }

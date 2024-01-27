@@ -74,13 +74,24 @@ public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualS
 
     var individual = new BasicIndividualStruct();
     individual.Initialize(pathSize, Allocator.TempJob);
-    individual.path.Add(new float2(0, 1));
+    individual.path.Add(new float2(0, 2.5f));
 
     for (int j = 0; j < pathSize - 1; j++)
     {
-      individual.path.Add(new float2(0, 1));
+      individual.path.Add(new float2(0, 2.5f));
     }
     currentPopulation[0] = individual;
+
+    var individual2 = new BasicIndividualStruct();
+    individual2.Initialize(pathSize, Allocator.TempJob);
+    individual2.path.Add(new float2(0, 2.5f));
+
+    for (int j = 0; j < pathSize - 2; j++)
+    {
+      individual2.path.Add(new float2(0, 2.5f));
+    }
+    individual2.path.Add(new float2(0, 0));
+    currentPopulation[1] = individual2;
 
 
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -208,21 +219,21 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
     }
 
 
-    for (int i = 0; i < currentPopulation.Length; i++)
-    {
-      var placeOrigin = startPosition;
-      var rotationVector = forward.normalized * 0.2f;
-      var path = currentPopulation[i].path;
+    //for (int i = 0; i < currentPopulation.Length; i++)
+    //{
+    //  var placeOrigin = startPosition;
+    //  var rotationVector = forward.normalized * 0.2f;
+    //  var path = currentPopulation[i].path;
 
-      for (int j = 0; j < path.Length; j++)
-      {
-        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
-        Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedVector.x, 0f, rotatedVector.y), new Color(0,1,0), 50, false);
-        var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
-        placeOrigin = rotatedAndTranslatedVector;
-        rotationVector = rotatedVector;
-      }
-    }
+    //  for (int j = 0; j < path.Length; j++)
+    //  {
+    //    var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
+    //    Debug.DrawRay(new Vector3(placeOrigin.x, 0f, placeOrigin.y), new Vector3(rotatedVector.x, 0f, rotatedVector.y), new Color(0,1,0), 50, false);
+    //    var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
+    //    placeOrigin = rotatedAndTranslatedVector;
+    //    rotationVector = rotatedVector;
+    //  }
+    //}
   }
 
   public string GetComponentName()

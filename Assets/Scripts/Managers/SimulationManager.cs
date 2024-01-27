@@ -345,23 +345,26 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Transforms obstacles to quadtree elements that are later tested for collision.
+  /// Currently suports only rectangular shapes
+  /// </summary>
   private void TransformObstaclesToQuadElements()
   {
-    var agentRadius = 0.4f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
+    var agentRadius = 0.5f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
     foreach (var obstacle in _obstacles)
     {
       var start = obstacle.vertices[0];
-      var verticesCount = obstacle.vertices.Count;
+      var end = obstacle.vertices[1];
+      var thirdCorner = obstacle.vertices[3];
+      var distance = Mathf.Abs(start.y - thirdCorner.y);
+      var point = new Vector2(start.x + agentRadius, start.y + agentRadius);
 
-      for (int i = 1; i <= verticesCount; i++)
+      for(int i = 0; i < distance; i++)
       {
-        var v = new Vector2(obstacle.vertices[i % verticesCount].x - start.x, obstacle.vertices[i % verticesCount].y - start.y);
-
-        PathDrawer.DrawCircle(new Vector2(obstacle.vertices[i % verticesCount].x, obstacle.vertices[i % verticesCount].y), 0.4f);
-        // Add node at the end
         _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
         {
-          pos = new Unity.Mathematics.float2(obstacle.vertices[i % verticesCount].x, obstacle.vertices[i % verticesCount].y),
+          pos = new Unity.Mathematics.float2(point.x, point.y),
           element = new TreeNode()
           {
             staticObstacle = true,
@@ -370,17 +373,11 @@ public class SimulationManager : MonoBehaviour
 
           },
         });
+        PathDrawer.DrawCircle(point, agentRadius);
 
-        var vNormalized = v.normalized;
-        var vSize = v.magnitude;
-        int pointsCount = (int)(vSize / (3 * agentRadius));
-        var point = new Vector2(start.x + ((3 * agentRadius) * vNormalized.x), start.y + ((3 * agentRadius) * vNormalized.y));
-
-        // create nodes between star and end
-        for(int j = 0; j < pointsCount; j++)
+        point.x += 2 * agentRadius;
+        while(point.x <= (end.x - agentRadius))
         {
-          PathDrawer.DrawCircle(new Vector2(point.x, point.y), 0.4f);
-          //create new tree node on point
           _quadtreeStaticElements.Add(new NativeQuadTree.QuadElement<TreeNode>()
           {
             pos = new Unity.Mathematics.float2(point.x, point.y),
@@ -392,11 +389,12 @@ public class SimulationManager : MonoBehaviour
 
             },
           });
-
-          point = new Vector2(point.x + ((3 * agentRadius) * vNormalized.x), point.y + ((3 * agentRadius) * vNormalized.y));
+          PathDrawer.DrawCircle(point, agentRadius);
+          point.x += 2 * agentRadius;
         }
 
-        start = obstacle.vertices[i % verticesCount];
+        point.x = start.x + agentRadius;
+        point.y += 2 * agentRadius;
       }
     }
   }
