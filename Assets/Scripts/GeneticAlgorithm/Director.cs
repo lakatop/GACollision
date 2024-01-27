@@ -101,14 +101,14 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.3f
+      weight = 0.35f
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
     {
       _startPosition = agent.position,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.1f
+      weight = 0.05f
     };
 
     // Set ranking
@@ -173,6 +173,14 @@ public class GeneticAlgorithmDirector
     {
       _population = population
     };
+
+    // Set population drawer
+    ga.popDrawer = new NativeBasicPopulationDrawer()
+    {
+      forward = agent.GetForward(),
+      startPosition = agent.position,
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
+  };
 
     ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));

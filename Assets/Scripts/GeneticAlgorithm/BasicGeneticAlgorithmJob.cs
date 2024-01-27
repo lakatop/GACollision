@@ -20,6 +20,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public WeightedSumRanking ranking;
   public NativeBasicPopulation pop;
   public FitnessEvaluationLogger logger;
+  public NativeBasicPopulationDrawer popDrawer;
 
 
   public int iterations { get; set; }
@@ -49,14 +50,20 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
       logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
-      cross.ModifyPopulation(ref pop._population, i);
-      mutation.ModifyPopulation(ref pop._population, i);
+      //cross.ModifyPopulation(ref pop._population, i);
+      //mutation.ModifyPopulation(ref pop._population, i);
     }
 
     jerkFitness.ModifyPopulation(ref pop._population, iterations);
     collisionFitness.ModifyPopulation(ref pop._population, iterations);
     endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
+
+    ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
+        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+    ranking.ModifyPopulation(ref pop._population, iterations);
+
     logger.LogPopulationState(ref pop._population, iterations);
+    popDrawer.DrawPopulation(ref pop._population);
     SetWinner();
   }
 
@@ -80,15 +87,15 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   private void SetWinner()
   {
     _winner[0] = new Vector2(0, 0);
-    float maxFitness = float.MinValue;
+    float minFitness = float.MaxValue;
     foreach (var individual in pop._population)
     {
-      if (maxFitness < individual.fitness)
+      if (minFitness > individual.fitness)
       {
         var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
         v *= individual.path[0].y;
         _winner[0] = new Vector2(v.x, v.y);
-        maxFitness = individual.fitness;
+        minFitness = individual.fitness;
       }
     }
   }

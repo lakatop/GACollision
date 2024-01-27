@@ -108,3 +108,34 @@ public struct BasicIndividualSortAscending : IComparer<BasicIndividualStruct>
     return 0;
   }
 }
+
+[BurstCompile]
+public struct NativeBasicPopulationDrawer
+{
+  public UnityEngine.Vector2 startPosition;
+  public UnityEngine.Vector2 forward;
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+
+  public void DrawPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var placeOrigin = startPosition;
+      var rotationVector = forward.normalized;
+      var path = currentPopulation[i].path;
+
+      for (int j = 0; j < path.Length; j++)
+      {
+        var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, path[j].x);
+        rotatedVector = rotatedVector * path[j].y;
+
+        UnityEngine.Debug.DrawRay(new UnityEngine.Vector3(placeOrigin.x, 0f, placeOrigin.y),
+          new UnityEngine.Vector3(rotatedVector.x, 0f, rotatedVector.y), new UnityEngine.Color(0, 1, 0), 0.5f, false);
+
+        var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, placeOrigin);
+        placeOrigin = rotatedAndTranslatedVector;
+        rotationVector = rotatedVector.normalized;
+      }
+    }
+  }
+}

@@ -26,13 +26,13 @@ public static class PathDrawer
 
   public static void DrawCollisionPoint(Vector2 position)
   {
-    Debug.DrawLine(new Vector3(position.x - 1, 0, position.y), new Vector3(position.x + 1, 0, position.y), new Color(0, 0, 0), 0, false);
-    Debug.DrawLine(new Vector3(position.x, 0, position.y - 1), new Vector3(position.x, 0, position.y + 1), new Color(0, 0, 0), 0, false);
+    Debug.DrawLine(new Vector3(position.x - 1, 0, position.y), new Vector3(position.x + 1, 0, position.y), new Color(0, 0, 1), 100, false);
+    Debug.DrawLine(new Vector3(position.x, 0, position.y - 1), new Vector3(position.x, 0, position.y + 1), new Color(0, 0, 1), 100, false);
   }
 
   public static void DrawConnectionLine(Vector2 start, Vector2 end)
   {
-    Debug.DrawLine(new Vector3(start.x, 0f, start.y), new Vector3(end.x, 0f, end.y), new Color(0, 0, 0), 100, false);
+    Debug.DrawLine(new Vector3(start.x, 0f, start.y), new Vector3(end.x, 0f, end.y), new Color(0, 0, 1), 1, false);
   }
 
   public static void DrawCircle(Vector2 center2, float radius)

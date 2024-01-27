@@ -493,8 +493,8 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
 
         if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
         {
-          PathDrawer.DrawCollisionPoint(newPos);
-          PathDrawer.DrawCollisionPoint(rotatedAndTranslatedVector);
+          //PathDrawer.DrawCollisionPoint(newPos);
+          //PathDrawer.DrawCollisionPoint(rotatedAndTranslatedVector);
           PathDrawer.DrawConnectionLine(newPos, rotatedAndTranslatedVector);
           fitness += col;
         }
