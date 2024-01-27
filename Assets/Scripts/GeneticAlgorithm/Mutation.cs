@@ -53,24 +53,24 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public float _agentSpeed;
   [ReadOnly] public float _updateInterval;
+  [ReadOnly] public float _rotationRange;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      for (int j = 0; j < currentPopulation[i].path.Length; j++)
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.5)
       {
-        // Mutation with probability 0.2
-        var mutProb = _rand.NextFloat();
-        if (mutProb > 0.7f)
+        var individual = currentPopulation[i];
+        for (int j = 0; j < individual.path.Length; j++)
         {
-          var size = _rand.NextFloat(_agentSpeed) * _updateInterval;
-          float2 newVal = currentPopulation[i].path[j];
-          newVal.y = size;
-          var tempPop = currentPopulation;
-          var tempPath = tempPop[i].path;
-          tempPath[j] = newVal;
-          currentPopulation = tempPop;
+          var acc = (_rand.NextFloat() * 2) - 1;
+          var angle = _rand.NextFloat(-_rotationRange, _rotationRange);
+          var temp = individual.path[j];
+          temp.x = angle;
+          temp.y = acc;
+          individual.path[j] = temp;
         }
       }
     }
@@ -85,6 +85,8 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   {
   }
 }
+
+/// -------------------- Invalidated because of different individual representation --------------------
 
 /// <summary>
 /// Rotate towards destination in even circular movement if we can make it in single path

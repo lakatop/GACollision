@@ -389,6 +389,10 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
   public float weight;
+  public float startVelocity;
+  public float maxAcc;
+  public float updateInteraval;
+  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -397,6 +401,7 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
     {
       var newPos = _startPosition;
       var rotationVector = _forward.normalized;
+      var prevVelocity = startVelocity;
 
       var stepIndex = 1;
 
@@ -408,11 +413,15 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
       {
         var pos = individual.path[i];
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
-        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        var acc = maxAcc * pos.y; 
+        var velocity = prevVelocity + acc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
+        var rotatedAndTranslatedVector = rotatedVector * velocity;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
         velocities[i] = rotatedAndTranslatedVector - newPos;
 
+        prevVelocity = velocity;
         newPos = rotatedAndTranslatedVector;
         rotationVector = rotatedVector;
 
@@ -472,6 +481,10 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
   public float weight;
+  public float maxAcc;
+  public float startVelocity;
+  public float updateInteraval;
+  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -484,11 +497,15 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
       var rotationVector = _forward.normalized;
 
       var stepIndex = 1;
+      var prevVelocity = startVelocity;
 
       foreach (var pos in individual.path)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
-        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        var acc = maxAcc * pos.y;
+        var velocity = prevVelocity + acc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
+        var rotatedAndTranslatedVector = rotatedVector * velocity;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
         if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
@@ -499,6 +516,7 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
           fitness += col;
         }
 
+        prevVelocity = velocity;
         newPos = rotatedAndTranslatedVector;
         rotationVector = rotatedVector;
 
@@ -532,6 +550,10 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
   public Vector2 _forward;
   public NativeArray<float> fitnesses;
   public float weight;
+  public float maxAcc;
+  public float startVelocity;
+  public float updateInteraval;
+  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -543,11 +565,17 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
 
       var stepIndex = 1;
 
+      var prevVelocity = startVelocity;
       foreach (var pos in individual.path)
       {
         var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, pos.x);
-        var rotatedAndTranslatedVector = rotatedVector * pos.y;
+        var acc = maxAcc * pos.y;
+        var velocity = prevVelocity + acc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
+        var rotatedAndTranslatedVector = rotatedVector * velocity;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
+
+        prevVelocity = velocity;
         newPos = rotatedAndTranslatedVector;
         rotationVector = rotatedVector;
 

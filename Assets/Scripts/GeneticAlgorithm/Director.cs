@@ -49,9 +49,10 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BasicIndividualStruct> MakeBasicGAParallel (BaseAgent agent)
   {
     var ga = new BasicGeneticAlgorithmParallel();
-    int populationSize = 50;
-    int iterations = 10;
+    int populationSize = 10;
+    int iterations = 50;
     int pathSize = 10;
+    float maxAcc = 1f;
 
     // Set crossover
     var offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
@@ -72,15 +73,12 @@ public class GeneticAlgorithmDirector
     };
 
     // Set mutation
-    ga.mutation = new GreedyCircleMutationOperatorParallel()
+    ga.mutation = new BasicMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _destination = agent.destination,
-      _agentPosition = agent.position,
-      _forward = agent.GetForward(),
-      _rotationAngle = 15,
       _agentSpeed = agent.speed,
-      _updateInterval = SimulationManager.Instance._agentUpdateInterval
+      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      _rotationRange = 15, 
     };
 
     // Set fitnesses
@@ -93,7 +91,11 @@ public class GeneticAlgorithmDirector
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.6f
+      weight = 0.6f,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      maxAcc = maxAcc,
+      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      maxAgentSpeed = agent.speed
     };
     ga.endDistanceFitness = new FitnessEndDistanceParallel()
     {
@@ -101,14 +103,22 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.35f
+      weight = 0.35f,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      maxAcc = maxAcc,
+      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      maxAgentSpeed = agent.speed
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
     {
       _startPosition = agent.position,
       _forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.05f
+      weight = 0.05f,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      maxAcc = maxAcc,
+      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      maxAgentSpeed = agent.speed
     };
 
     // Set ranking
@@ -132,13 +142,14 @@ public class GeneticAlgorithmDirector
       updateInterval = SimulationManager.Instance._agentUpdateInterval,
       pathSize = pathSize,
       startPosition = agent.position,
-      forward = agent.GetForward()
+      forward = agent.GetForward(),
     };
 
     //ga.popInitialization = new DebugInitialization()
     //{
     //  startPosition = agent.position,
-    //  forward = new Vector2(0, -1),
+    //  forward = agent.GetForward(),
+    //  previousVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude
     //};
 
     // Set logger
@@ -189,8 +200,11 @@ public class GeneticAlgorithmDirector
       Time.deltaTime,
       agent.speed,
       agent.position,
-      agent.GetForward()
-    });
+      agent.GetForward(),
+      ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      maxAcc,
+      SimulationManager.Instance._agentUpdateInterval,
+});
 
     return ga;
   }

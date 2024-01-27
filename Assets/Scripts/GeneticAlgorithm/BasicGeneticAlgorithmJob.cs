@@ -11,7 +11,7 @@ using Unity.Collections;
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
   public MeanCrossOperatorParallel cross;
-  public GreedyCircleMutationOperatorParallel mutation;
+  public BasicMutationOperatorParallel mutation;
   public FitnessJerkCostParallel jerkFitness;
   public FitnessCollisionParallel collisionFitness;
   public FitnessEndDistanceParallel endDistanceFitness;
@@ -32,6 +32,10 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public Vector2 _startPosition;
   public Vector2 _forward;
 
+  public float startVelocity;
+  public float maxAcc;
+  public float updateInteraval;
+
   public Unity.Mathematics.Random _rand;
 
   public void Execute()
@@ -50,8 +54,8 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
       logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
-      cross.ModifyPopulation(ref pop._population, i);
-      mutation.ModifyPopulation(ref pop._population, i);
+      //cross.ModifyPopulation(ref pop._population, i);
+      //mutation.ModifyPopulation(ref pop._population, i);
     }
 
     jerkFitness.ModifyPopulation(ref pop._population, iterations);
@@ -69,7 +73,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public void SetResources(List<object> resources)
   {
-    Assert.IsTrue(resources.Count == 4);
+    Assert.IsTrue(resources.Count == 7);
 
     _timeDelta = (float)resources[0];
     _agentSpeed = (float)resources[1];
@@ -77,6 +81,9 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     _forward = (Vector2)resources[3];
     if (_forward.x == 0 && _forward.y == 0)
       _forward = new Vector2(1, 0);
+    startVelocity = (float)resources[4];
+    maxAcc = (float)resources[5];
+    updateInteraval = (float)resources[6];
   }
 
   public Vector2 GetResult()
@@ -93,7 +100,10 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
       if (minFitness > individual.fitness)
       {
         var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
-        v *= individual.path[0].y;
+        var acc = maxAcc * individual.path[0].y;
+        var velocity = startVelocity + acc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * _agentSpeed);
+        v *= velocity;
         _winner[0] = new Vector2(v.x, v.y);
         minFitness = individual.fitness;
       }

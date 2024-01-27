@@ -493,6 +493,7 @@ public class SimulationManager : MonoBehaviour
     var agent2 = _agents[1];
     ((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
     _agentsScenarioDestinations.Add(new Vector2(25, 40));
+    agent2.SetForward(new Vector2(0, 1));
     ((BaseAgent)agent2).scenarioName = "smallObstacle";
 
     // Corner scenario
