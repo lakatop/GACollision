@@ -50,8 +50,8 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
       logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
-      //cross.ModifyPopulation(ref pop._population, i);
-      //mutation.ModifyPopulation(ref pop._population, i);
+      cross.ModifyPopulation(ref pop._population, i);
+      mutation.ModifyPopulation(ref pop._population, i);
     }
 
     jerkFitness.ModifyPopulation(ref pop._population, iterations);
