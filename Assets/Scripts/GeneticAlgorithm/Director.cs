@@ -138,11 +138,7 @@ public class GeneticAlgorithmDirector
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       populationSize = populationSize,
-      agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
       pathSize = pathSize,
-      startPosition = agent.position,
-      forward = agent.GetForward(),
     };
 
     //ga.popInitialization = new DebugInitialization()

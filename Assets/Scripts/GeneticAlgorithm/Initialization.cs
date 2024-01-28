@@ -210,11 +210,7 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
   [ReadOnly] public int populationSize;
-  [ReadOnly] public float agentSpeed;
-  [ReadOnly] public float updateInterval;
   [ReadOnly] public int pathSize;
-  [ReadOnly] public Vector2 startPosition;
-  [ReadOnly] public Vector2 forward;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -235,6 +231,43 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
         individual.path[j] = new float2(rotation, acc);
       }
       currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+
+[BurstCompile]
+public struct BezierInitialization : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public int populationSize;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
+  [ReadOnly] public int pathSize;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 endPosition;
+  [ReadOnly] public Vector2 forward;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    float maxDeg = 30;
+    float quadDistance = (endPosition - startPosition).magnitude / 4;
+    float controlPointLenght = Mathf.Tan(maxDeg * Mathf.Deg2Rad) * quadDistance;
+    float subFactor = (controlPointLenght * 2) / populationSize;
+
+    for(int i = 0; i < currentPopulation.Length; i++)
+    {
+      Vector2 controlPointDirection = new Vector2(controlPointLenght, 0);
+      currentPopulation[i].bezierCurve.CreateInitialPath(startPosition, endPosition, forward, controlPointDirection);
+      controlPointLenght -= subFactor;
     }
   }
 

@@ -139,3 +139,39 @@ public struct NativeBasicPopulationDrawer
     }
   }
 }
+
+[BurstCompile]
+public struct BezierIndividualStruct
+{
+  public void Initialize(int length, Allocator allocator)
+  {
+    fitness = 0f;
+    bezierCurve.Initialize(length, allocator);
+  }
+
+  public void Dispose()
+  {
+    bezierCurve.Dispose();
+    accelerations.Dispose();
+  }
+
+  public float fitness;
+  public BezierCurve bezierCurve;
+  public UnsafeList<float> accelerations;
+}
+
+[BurstCompile]
+public struct NativeBezierPopulation : IParallelPopulation<BasicIndividualStruct>
+{
+  [BurstCompile]
+  public void Dispose()
+  {
+    foreach (var individual in _population)
+    {
+      individual.Dispose();
+    }
+    _population.Dispose();
+  }
+
+  public NativeArray<BezierIndividualStruct> _population;
+}
