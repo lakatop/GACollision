@@ -10,10 +10,10 @@ public class BasicGAAgentParallel : BaseAgent
 {
   public override IBaseCollisionAvoider collisionAlg { get; set; }
   public override IBasePathPlanner pathPlanningAlg { get; set; }
+  public Vector2 nextVel { get; set; }
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
-  private Vector2 nextVel { get; set; }
   private Vector2 previousLocation { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private JobHandle _gaJobHandle { get; set; }
