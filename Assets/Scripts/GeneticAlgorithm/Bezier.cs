@@ -7,23 +7,24 @@ using Unity.Collections;
 [BurstCompile]
 public struct BezierCurve
 {
-  UnsafeList<Vector2> points;
+  public UnsafeList<Vector2> points;
 
   public void Initialize(int length, Allocator allocator)
   {
     points = new UnsafeList<Vector2>(length, allocator);
+    points.Resize(length);
   }
 
-  public void CreateInitialPath(Vector2 startPos, Vector2 endPos, Vector2 agentsDirection, Vector2 controlPointsDirection)
+  public void CreateInitialPath(Vector2 startPos, Vector2 endPos, Vector2 agentsDirection, float controlPointsDirection)
   {
     var quarterDistance = (endPos - startPos).magnitude / 4;
     var P1 = startPos + ((agentsDirection.normalized * quarterDistance) + (Vector2.Perpendicular(agentsDirection.normalized) * controlPointsDirection));
-    var P2Dir = (endPos - startPos);
-    var P2 = endPos + (P2Dir.normalized * quarterDistance) + (Vector2.Perpendicular(P2Dir) * controlPointsDirection);
-    points.Add(startPos);
-    points.Add(P1);
-    points.Add(P2);
-    points.Add(endPos);
+    var P2Dir = (startPos - endPos);
+    var P2 = endPos + (P2Dir.normalized * quarterDistance) + (Vector2.Perpendicular((endPos - startPos).normalized) * controlPointsDirection);
+    points[0] = startPos;
+    points[1] = P1;
+    points[2] = P2;
+    points[3] = endPos;
   }
 
   public void AddAditionalAnchorPoints()

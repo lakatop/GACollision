@@ -255,6 +255,7 @@ public struct BezierInitialization : IParallelPopulationModifier<BezierIndividua
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 endPosition;
   [ReadOnly] public Vector2 forward;
+  [ReadOnly] public Unity.Mathematics.Random _rand;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
@@ -265,9 +266,15 @@ public struct BezierInitialization : IParallelPopulationModifier<BezierIndividua
 
     for(int i = 0; i < currentPopulation.Length; i++)
     {
-      Vector2 controlPointDirection = new Vector2(controlPointLenght, 0);
-      currentPopulation[i].bezierCurve.CreateInitialPath(startPosition, endPosition, forward, controlPointDirection);
+      var individual = currentPopulation[i];
+      individual.bezierCurve.CreateInitialPath(startPosition, endPosition, forward, controlPointLenght);
       controlPointLenght -= subFactor;
+      for(int j = 0; j < pathSize; j++)
+      {
+        var acc = (_rand.NextFloat() * 2f) - 1f;
+        individual.accelerations[j] = acc;
+      }
+      currentPopulation[i] = individual;
     }
   }
 
