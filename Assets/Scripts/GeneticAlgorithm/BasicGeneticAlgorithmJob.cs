@@ -140,14 +140,28 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 [BurstCompile]
 public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BezierIndividualStruct>
 {
+  // Crossover
   //public MeanCrossOperatorParallel cross;
-  //public BasicMutationOperatorParallel mutation;
+
+  // Mutation
+  public BezierStraightFinishMutationOperatorParallel straightFinishMutation;
+  public BezierShuffleAccMutationOperatorParallel shuffleMutation;
+
+  // Fitness
   public BezierFitnessJerkCostParallel jerkFitness;
   public BezierFitnessCollisionParallel collisionFitness;
   public BezierFitnessEndDistanceParallel endDistanceFitness;
+
+  // Selection
   public BezierNegativeSelectionParallel selection;
+
+  // Initialization
   public BezierInitialization popInitialization;
+
+  // Ranking
   public BezierWeightedSumRanking ranking;
+
+  // Population
   public NativeBezierPopulation pop;
   //public FitnessEvaluationLogger logger;
   public BezierPopulationDrawer popDrawer;
@@ -185,7 +199,8 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       //logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
       //cross.ModifyPopulation(ref pop._population, i);
-      //mutation.ModifyPopulation(ref pop._population, i);
+      straightFinishMutation.ModifyPopulation(ref pop._population, i);
+      shuffleMutation.ModifyPopulation(ref pop._population, i);
     }
 
     jerkFitness.ModifyPopulation(ref pop._population, iterations);

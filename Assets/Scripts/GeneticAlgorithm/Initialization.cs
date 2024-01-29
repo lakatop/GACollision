@@ -249,8 +249,6 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
 public struct BezierInitialization : IParallelPopulationModifier<BezierIndividualStruct>
 {
   [ReadOnly] public int populationSize;
-  [ReadOnly] public float agentSpeed;
-  [ReadOnly] public float updateInterval;
   [ReadOnly] public int pathSize;
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 endPosition;
