@@ -17,7 +17,7 @@ public class BasicGAAgentParallel : BaseAgent
   private Vector2 previousLocation { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private JobHandle _gaJobHandle { get; set; }
-  private BasicGeneticAlgorithmParallel gaJob { get; set; }
+  private BezierGeneticAlgorithmParallel gaJob { get; set; }
   Unity.Collections.NativeArray<Vector2> _winner { get; set; }
   private bool jobScheduled { get; set; }
   private float _updateTimer { get; set; }
@@ -79,7 +79,7 @@ public class BasicGAAgentParallel : BaseAgent
     if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
       // Run GA
-      gaJob = (BasicGeneticAlgorithmParallel)_gaDirector.MakeBasicGAParallel(this);
+      gaJob = (BezierGeneticAlgorithmParallel)_gaDirector.MakeBezierGAParallel(this);
 
       _winner = gaJob._winner;
 
@@ -101,7 +101,7 @@ public class BasicGAAgentParallel : BaseAgent
       nextVel = _winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
       previousLocation = position;
-      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
+      //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
       iteration++;
       gaJob.Dispose();
 

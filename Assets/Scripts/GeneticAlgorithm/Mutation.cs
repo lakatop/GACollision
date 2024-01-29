@@ -86,6 +86,103 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
   }
 }
 
+// -------------- Bezier mutations --------------
+
+[BurstCompile]
+public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 startPos;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float maxAcc;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      // Mutate with high probability, but still let some chance to other individuals
+      if (mutProb > 0.8)
+        return;
+
+      // Find out whether we can go straight to destination (depending on acceleration restrictions)
+      // If yes, create straight line (in form of bezier) to destination
+      var distanceToDestination = (destination - startPos).magnitude;
+      var velocityChange = distanceToDestination - startVelocity;
+      if (Mathf.Abs(velocityChange) < (maxAcc * _updateInterval) && (velocityChange + startVelocity) < _agentSpeed)
+      {
+        // Create a straight bezier
+        var neededAcc = distanceToDestination - velocityChange;
+        var individual = currentPopulation[i];
+        individual.accelerations[0] = neededAcc;
+        for (int j = 1; j < individual.accelerations.Length; j++)
+        {
+          individual.accelerations[j] = 0;
+        }
+        var bezier = individual.bezierCurve;
+        bezier.points[0] = startPos;
+        bezier.points[1] = startPos;
+        bezier.points[2] = destination;
+        bezier.points[3] = destination;
+        for (int j = 4; j < bezier.points.Length; j++)
+        {
+          bezier.points[j] = destination;
+        }
+
+        individual.bezierCurve = bezier;
+      }
+
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+[BurstCompile]
+public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.5)
+        return;
+
+      var individual = currentPopulation[i];
+
+      for (int j = 0; j < individual.accelerations.Length; j++)
+      {
+        var acc = (_rand.NextFloat() * 2f) - 1f;
+        individual.accelerations[j] = acc;
+      }
+
+      currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
 /// -------------------- Invalidated because of different individual representation --------------------
 
 /// <summary>

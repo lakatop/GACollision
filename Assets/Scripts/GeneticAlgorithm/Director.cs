@@ -144,8 +144,6 @@ public class GeneticAlgorithmDirector
     ga.popInitialization = new BezierInitialization()
     {
       populationSize = populationSize,
-      agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
       pathSize = pathSize,
       startPosition = agent.position,
       endPosition = agent.destination,
@@ -224,8 +222,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
-    int populationSize = 10;
-    int iterations = 50;
+    int populationSize = 50;
+    int iterations = 10;
     int pathSize = 10;
     float maxAcc = 1f;
 
@@ -247,14 +245,21 @@ public class GeneticAlgorithmDirector
     //  iterations = iterations,
     //};
 
-    //// Set mutation
-    //ga.mutation = new BasicMutationOperatorParallel()
-    //{
-    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //  _agentSpeed = agent.speed,
-    //  _updateInterval = SimulationManager.Instance._agentUpdateInterval,
-    //  _rotationRange = 15,
-    //};
+    // Set mutation
+    ga.straightFinishMutation = new BezierStraightFinishMutationOperatorParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      _agentSpeed = agent.speed,
+      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      startPos = agent.position,
+      destination = agent.destination,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      maxAcc = maxAcc
+    };
+    ga.shuffleMutation = new BezierShuffleAccMutationOperatorParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+    };
 
     // Set fitnesses
     ga.collisionFitness = new BezierFitnessCollisionParallel()
@@ -315,8 +320,6 @@ public class GeneticAlgorithmDirector
     ga.popInitialization = new BezierInitialization()
     {
       populationSize = populationSize,
-      agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
       pathSize = pathSize,
       startPosition = agent.position,
       endPosition = agent.destination,
