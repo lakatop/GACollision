@@ -487,7 +487,7 @@ public class SimulationManager : MonoBehaviour
     var agent1 = _agents[0];
     ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
     _agentsScenarioDestinations.Add(new Vector2(-25, 40));
-    agent1.SetForward(new Vector2(0, -1));
+    agent1.SetForward(new Vector2(0, 1));
     ((BaseAgent)agent1).scenarioName = "straightLine";
 
     // Small obstacle scenario

@@ -217,7 +217,7 @@ public struct BezierPopulationDrawer
         float t = j / (float)resolution;
         var endDraw = individual.bezierCurve.EvaluateCubic(startPos, P1, P2, endPos, t);
         UnityEngine.Debug.DrawLine(new UnityEngine.Vector3(startDraw.x, 0, startDraw.y),
-          new UnityEngine.Vector3(endDraw.x, 0, endDraw.y), new UnityEngine.Color(0, 1, 0), 1, false);
+          new UnityEngine.Vector3(endDraw.x, 0, endDraw.y), new UnityEngine.Color(0, 1, 0), 0.5f, false);
         startDraw = endDraw;
       }
     }
