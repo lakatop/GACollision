@@ -146,6 +146,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
   // Mutation
   public BezierStraightFinishMutationOperatorParallel straightFinishMutation;
   public BezierShuffleAccMutationOperatorParallel shuffleMutation;
+  public BezierShuffleControlPointsMutationOperatorParallel controlPointsMutation;
   //public BezierStretchAccMutationOperatorParallel stretchMutation;
   public BezierSmoothAccMutationOperatorParallel smoothMutation;
 
@@ -201,6 +202,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       //logger.LogPopulationState(ref pop._population, i);
       selection.ModifyPopulation(ref pop._population, i);
       //cross.ModifyPopulation(ref pop._population, i);
+      controlPointsMutation.ModifyPopulation(ref pop._population, i);
       smoothMutation.ModifyPopulation(ref pop._population, i);
       shuffleMutation.ModifyPopulation(ref pop._population, i);
       straightFinishMutation.ModifyPopulation(ref pop._population, i);

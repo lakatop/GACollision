@@ -347,6 +347,58 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
   }
 }
 
+/// <summary>
+/// Bezier individual mutation.
+/// Defines new position of control points randomly selected from appropriate space.
+/// </summary>
+[BurstCompile]
+public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 endPosition;
+  [ReadOnly] public Vector2 forward;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.3)
+        return;
+
+      // Define restrictions on control points position
+      var individual = currentPopulation[i];
+      float maxDeg = 30;
+      float halfDistance = (endPosition - startPosition).magnitude / 2;
+      float upDistance = _rand.NextFloat(halfDistance);
+      float controlPointLenght = Mathf.Tan(maxDeg * Mathf.Deg2Rad) * upDistance;
+      float sideDistance = _rand.NextFloat(-controlPointLenght, controlPointLenght);
+
+      // Calculate position of new P1 and P2 control points
+      var newP1 = startPosition + ((forward.normalized * upDistance) + (Vector2.Perpendicular(forward.normalized) * sideDistance));
+      var P2Dir = (startPosition - endPosition);
+      var newP2 = endPosition + (P2Dir.normalized * upDistance) + (Vector2.Perpendicular((endPosition - startPosition).normalized) * sideDistance);
+
+      // Replace old contorl points with new ones
+      individual.bezierCurve.points[1] = newP1;
+      individual.bezierCurve.points[2] = newP2;
+
+      // Replace old individual
+      currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
 /// -------------------- Invalidated because of different individual representation --------------------
 
 /// <summary>

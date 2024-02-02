@@ -264,19 +264,13 @@ public class GeneticAlgorithmDirector
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
     };
-    //ga.stretchMutation = new BezierStretchAccMutationOperatorParallel()
-    //{
-    //  rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //  quadTree = SimulationManager.Instance.GetQuadTree(),
-    //  agentSpeed = agent.speed,
-    //  updateInterval = SimulationManager.Instance._agentUpdateInterval,
-    //  startPos = agent.position,
-    //  destination = agent.destination,
-    //  startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
-    //  maxAcc = maxAcc,
-    //  agentRadius = 0.5f,
-    //  agentIndex = agent.id
-    //};
+    ga.controlPointsMutation = new BezierShuffleControlPointsMutationOperatorParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      startPosition = agent.position,
+      endPosition = agent.destination,
+      forward = agent.GetForward()
+    };
 
     // Set fitnesses
     ga.collisionFitness = new BezierFitnessCollisionParallel()
