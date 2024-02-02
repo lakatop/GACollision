@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine.Assertions;
 using UnityEngine;
 using Unity.Burst;
+using NativeQuadTree;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -99,6 +100,7 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
   [ReadOnly] public float startVelocity;
   [ReadOnly] public float maxAcc;
 
+
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -149,6 +151,162 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 }
 
 [BurstCompile]
+public struct BezierStretchAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public Vector2 startPos;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int j = 0; j < currentPopulation.Length; j++)
+    {
+      var individual = currentPopulation[j];
+      var newPos = startPos;
+
+      var stepIndex = 1;
+      var alreadyTraveled = 0f;
+
+      float controlNetLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[1]) +
+        Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
+        Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
+      float estimatedCurveLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[3]) + controlNetLength / 2f;
+      int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
+
+      var prevVelocity = startVelocity;
+      for (int i = 0; i < individual.accelerations.Length; i++)
+      {
+        var acc = individual.accelerations[i];
+        var currentAcc = maxAcc * acc;
+        var velocity = prevVelocity + currentAcc;
+        velocity = Mathf.Clamp(velocity, 0, updateInterval * agentSpeed);
+        var collisionsWhenVelocity = 0;
+        Vector2 pointWhenVelocity = Vector2.zero;
+        float traveledAtVelocity = 0f;
+
+        var maxVelocity = Mathf.Clamp(prevVelocity + maxAcc, 0, updateInterval * agentSpeed);
+        var collisionsWhenMaxVelocity = 0;
+
+        var wentPastVelocity = false;
+
+        // Calculate position on a bezier curve
+        float t = alreadyTraveled;
+        Vector2 pointOncurve = Vector2.zero;
+        while (t <= 1)
+        {
+          t += 1f / divisions;
+          pointOncurve = individual.bezierCurve.EvaluateCubic(
+            individual.bezierCurve.points[0],
+            individual.bezierCurve.points[1],
+            individual.bezierCurve.points[2],
+            individual.bezierCurve.points[3],
+            t);
+
+          var distanceSinceLastPoint = (newPos - pointOncurve).magnitude;
+          // We may have overshoot it, but only by small distance so we will not bother with it
+          if (distanceSinceLastPoint >= velocity && !wentPastVelocity)
+          {
+            collisionsWhenVelocity = UtilsGA.UtilsGA.Collides(quadTree, newPos, pointOncurve, agentRadius, agentIndex, stepIndex);
+            // Check whether velocities are the same
+            if (Mathf.Abs(maxVelocity - velocity) < 0.001f)
+            {
+              collisionsWhenMaxVelocity = collisionsWhenVelocity;
+            }
+            traveledAtVelocity = t;
+            pointWhenVelocity = pointOncurve;
+            wentPastVelocity = true;
+          }
+          else if (distanceSinceLastPoint >= maxVelocity)
+          {
+            collisionsWhenVelocity = UtilsGA.UtilsGA.Collides(quadTree, newPos, pointOncurve, agentRadius, agentIndex, stepIndex);
+            if (collisionsWhenMaxVelocity <= collisionsWhenVelocity)
+            {
+              individual.accelerations[i] = maxVelocity;
+              velocity = maxVelocity;
+              newPos = pointOncurve;
+              alreadyTraveled = t;
+              break;
+            }
+            else
+            {
+              alreadyTraveled = traveledAtVelocity;
+              newPos = pointWhenVelocity;
+              break;
+            }
+
+          }
+        }
+
+        if (t >= 1f && Mathf.Abs((pointOncurve - newPos).magnitude) < 0.001f)
+        {
+          // we traveled to the end of curve, but our previous point hasnt changed.
+          // Calculate velocities to end directly in destination
+          // Might take multiple velocites to slow down
+        }
+
+        prevVelocity = velocity;
+        stepIndex++;
+      }
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+[BurstCompile]
+public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.9)
+        return;
+
+      var individual = currentPopulation[i];
+
+      for (int j = 1; j < individual.accelerations.Length; j++)
+      {
+        var acc1 = individual.accelerations[j];
+        var acc2 = individual.accelerations[j - 1];
+
+        var mean = (acc1 + acc2) / 2;
+        individual.accelerations[j] = mean;
+        individual.accelerations[j - 1] = mean;
+      }
+
+      currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+[BurstCompile]
 public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
@@ -158,17 +316,75 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
-      if (mutProb > 0.5)
+      // Low mutation rate because we are counting on other mutation to smooth accelerations
+      if (mutProb > 0.2)
         return;
 
       var individual = currentPopulation[i];
 
       for (int j = 0; j < individual.accelerations.Length; j++)
       {
+        // Also dont change every acceleration, just some
+        mutProb = _rand.NextFloat();
+        if (mutProb > 0.3)
+          continue;
+
         var acc = (_rand.NextFloat() * 2f) - 1f;
         individual.accelerations[j] = acc;
       }
 
+      currentPopulation[i] = individual;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+/// <summary>
+/// Bezier individual mutation.
+/// Defines new position of control points randomly selected from appropriate space.
+/// </summary>
+[BurstCompile]
+public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 endPosition;
+  [ReadOnly] public Vector2 forward;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.3)
+        return;
+
+      // Define restrictions on control points position
+      var individual = currentPopulation[i];
+      float maxDeg = 30;
+      float halfDistance = (endPosition - startPosition).magnitude / 2;
+      float upDistance = _rand.NextFloat(halfDistance);
+      float controlPointLenght = Mathf.Tan(maxDeg * Mathf.Deg2Rad) * upDistance;
+      float sideDistance = _rand.NextFloat(-controlPointLenght, controlPointLenght);
+
+      // Calculate position of new P1 and P2 control points
+      var newP1 = startPosition + ((forward.normalized * upDistance) + (Vector2.Perpendicular(forward.normalized) * sideDistance));
+      var P2Dir = (startPosition - endPosition);
+      var newP2 = endPosition + (P2Dir.normalized * upDistance) + (Vector2.Perpendicular((endPosition - startPosition).normalized) * sideDistance);
+
+      // Replace old contorl points with new ones
+      individual.bezierCurve.points[1] = newP1;
+      individual.bezierCurve.points[2] = newP2;
+
+      // Replace old individual
       currentPopulation[i] = individual;
     }
   }
