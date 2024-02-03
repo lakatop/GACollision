@@ -107,7 +107,7 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
     {
       var mutProb = _rand.NextFloat();
       // Mutate with high probability, but still let some chance to other individuals
-      if (mutProb > 0.7)
+      if (mutProb > 0.8)
         return;
 
       // Find out whether we can go straight to destination (depending on acceleration restrictions)

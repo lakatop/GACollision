@@ -195,7 +195,7 @@ public struct BezierNegativeSelectionParallel : IParallelPopulationModifier<Bezi
 
     currentPopulation.Sort(new BezierIndividualSortAscending());
 
-    int n = 5;
+    int n = 50;
 
     for (int i = n; i < currentPopulation.Length; i++)
     {
