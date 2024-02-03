@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static UnityEngine.Rendering.HableCurve;
 
 public static class PathDrawer
 {
@@ -18,10 +17,10 @@ public static class PathDrawer
     Debug.DrawRay(new Vector3(arrowEnd.x, 0, arrowEnd.y), left * arrowSize, new Color(1,0,0), 100, false);
   }
 
-  public static void DrawDestination(Vector2 destination)
+  public static void DrawDestination(Vector2 destination, Color color)
   {
-    Debug.DrawLine(new Vector3(destination.x - 1, 0, destination.y), new Vector3(destination.x + 1, 0, destination.y), new Color(1, 1, 1), 0, false);
-    Debug.DrawLine(new Vector3(destination.x, 0, destination.y - 1), new Vector3(destination.x, 0, destination.y + 1), new Color(1, 1, 1), 0, false);
+    Debug.DrawLine(new Vector3(destination.x - 1, 0, destination.y), new Vector3(destination.x + 1, 0, destination.y), color, 0, false);
+    Debug.DrawLine(new Vector3(destination.x, 0, destination.y - 1), new Vector3(destination.x, 0, destination.y + 1), color, 0, false);
   }
 
   public static void DrawCollisionPoint(Vector2 position)
