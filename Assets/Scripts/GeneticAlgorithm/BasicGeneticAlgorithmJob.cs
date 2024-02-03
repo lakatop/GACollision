@@ -280,6 +280,8 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       if (distanceSinceLastPoint >= velocity)
       {
         _winner[0] = pointOncurve - _startPosition;
+        // We need to scale velocity back
+        _winner[0] = _winner[0] * (1 / updateInteraval);
         break;
       }
     }

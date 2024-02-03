@@ -222,8 +222,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
-    int populationSize = 50;
-    int iterations = 50;
+    int populationSize = 500;
+    int iterations = 10;
     int pathSize = 10;
     float maxAcc = 1f;
 
@@ -253,7 +253,7 @@ public class GeneticAlgorithmDirector
       _updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startPos = agent.position,
       destination = agent.destination,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc
     };
     ga.shuffleMutation = new BezierShuffleAccMutationOperatorParallel()
@@ -281,7 +281,7 @@ public class GeneticAlgorithmDirector
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.6f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
       maxAgentSpeed = agent.speed
@@ -293,7 +293,7 @@ public class GeneticAlgorithmDirector
       _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.25f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
       maxAgentSpeed = agent.speed
@@ -303,7 +303,7 @@ public class GeneticAlgorithmDirector
       _startPosition = agent.position,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.15f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
       maxAgentSpeed = agent.speed
@@ -321,13 +321,6 @@ public class GeneticAlgorithmDirector
     };
 
     // Set initialization
-    //ga.popInitialization = new KineticFriendlyInitialization()
-    //{
-    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //  populationSize = populationSize,
-    //  pathSize = pathSize,
-    //};
-
     ga.popInitialization = new BezierInitialization()
     {
       populationSize = populationSize,
@@ -345,35 +338,10 @@ public class GeneticAlgorithmDirector
     //  previousVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude
     //};
 
-    //// Set logger
-    //var topIndividuals = new NativeArray<BasicIndividualStruct>(iterations + 1, Allocator.TempJob);
-    //for (int i = 0; i < topIndividuals.Length; i++)
-    //{
-    //  var element = topIndividuals[i];
-    //  element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
-    //  element.path.Resize(pathSize);
-    //  element.fitness = 0;
-    //  topIndividuals[i] = element;
-    //}
-    //ga.logger = new FitnessEvaluationLogger()
-    //{
-    //  _topIndividuals = topIndividuals,
-    //};
-
     ga.populationSize = populationSize;
     ga.iterations = iterations;
 
     // Initialize population
-    //var population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    //for (int i = 0; i < populationSize; i++)
-    //{
-    //  var element = population[i];
-    //  element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
-    //  element.path.Resize(pathSize);
-    //  element.fitness = 0;
-    //  population[i] = element;
-    //}
-
     var population = new NativeArray<BezierIndividualStruct>(populationSize, Allocator.TempJob);
     for (int i = 0; i < populationSize; i++)
     {
@@ -399,7 +367,7 @@ public class GeneticAlgorithmDirector
       agent.speed,
       agent.position,
       agent.GetForward(),
-      ((BasicGAAgentParallel)agent).nextVel.magnitude,
+      ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc,
       SimulationManager.Instance._agentUpdateInterval,
     });

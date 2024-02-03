@@ -113,30 +113,30 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
       // Find out whether we can go straight to destination (depending on acceleration restrictions)
       // If yes, create straight line (in form of bezier) to destination
       var distanceToDestination = (destination - startPos).magnitude;
-      var velocityChange = distanceToDestination - startVelocity;
-      if (Mathf.Abs(velocityChange) < (maxAcc * _updateInterval) && (velocityChange + startVelocity) < _agentSpeed)
+      var maxTravelDistance = Mathf.Clamp(startVelocity + maxAcc, 0, _agentSpeed * _updateInterval);
+      var minTravelDistance = Mathf.Clamp(startVelocity - maxAcc, 0, _agentSpeed * _updateInterval);
+      // If true, we can move diractly to destination by one move
+      if (minTravelDistance < distanceToDestination && distanceToDestination < maxTravelDistance)
       {
-        // Create a straight bezier
-        var neededAcc = distanceToDestination - velocityChange;
         var individual = currentPopulation[i];
-        individual.accelerations[0] = neededAcc;
-        for (int j = 1; j < individual.accelerations.Length; j++)
-        {
-          individual.accelerations[j] = 0;
-        }
         var bezier = individual.bezierCurve;
         bezier.points[0] = startPos;
         bezier.points[1] = startPos;
         bezier.points[2] = destination;
         bezier.points[3] = destination;
-        for (int j = 4; j < bezier.points.Length; j++)
-        {
-          bezier.points[j] = destination;
-        }
+
+        var velocityChange = distanceToDestination - startVelocity;
+        var newAcc = velocityChange / maxAcc;
 
         individual.bezierCurve = bezier;
-      }
+        individual.accelerations[0] = newAcc;
+        for (int j = 1; j < individual.accelerations.Length; j++)
+        {
+          individual.accelerations[j] = 0;
+        }
 
+        currentPopulation[i] = individual;
+      }
     }
   }
 
@@ -317,7 +317,7 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
     {
       var mutProb = _rand.NextFloat();
       // Low mutation rate because we are counting on other mutation to smooth accelerations
-      if (mutProb > 0.2)
+      if (mutProb > 0.3)
         return;
 
       var individual = currentPopulation[i];
@@ -364,7 +364,7 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
-      if (mutProb > 0.3)
+      if (mutProb > 0.4)
         return;
 
       // Define restrictions on control points position
