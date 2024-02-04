@@ -363,10 +363,6 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      if (mutProb > 0.4)
-        return;
-
       // Define restrictions on control points position
       var individual = currentPopulation[i];
       float maxDeg = 30;

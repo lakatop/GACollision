@@ -170,5 +170,10 @@ namespace UtilsGA
 
       return r;
     }
+
+    public static float CalculateCollisionDecayFunction(int step)
+    {
+      return Mathf.Pow((float)System.Math.E, -0.5f * (step - 0.5f));
+    }
   }
 }
