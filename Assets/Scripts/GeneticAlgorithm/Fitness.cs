@@ -622,6 +622,8 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 
       var alreadyTraveled = 0f;
 
+      var fitness = 0f;
+
       float controlNetLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[1]) +
         Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
         Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
@@ -629,8 +631,9 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
       int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
 
       var prevVelocity = startVelocity;
-      foreach (var acc in individual.accelerations)
+      for (int i = 0; i < individual.accelerations.Length; i++)
       {
+        var acc = individual.accelerations[i];
         var currentAcc = maxAcc * acc;
         var velocity = prevVelocity + currentAcc;
         velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
@@ -638,6 +641,40 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 
         // Calculate position on a bezier curve
         float t = alreadyTraveled;
+
+        // If true, we overshoot the distance
+        if (t >= 1 && i < individual.accelerations.Length)
+        {
+          // Calculate Distance To Destination
+          var distanceToDestination = (_destination - newPos).magnitude;
+
+          prevVelocity = individual.accelerations[i - 1];
+
+          if (prevVelocity - distanceToDestination < maxAcc)
+          {
+            fitness = distanceToDestination;
+          }
+          else
+          {
+            var traveled = 0f;
+            while (prevVelocity > 0)
+            {
+              if (prevVelocity - maxAcc > 0)
+              {
+                traveled += prevVelocity - maxAcc;
+              }
+
+              prevVelocity -= maxAcc;
+            }
+
+            fitness = ((traveled - distanceToDestination) * 2) + distanceToDestination;
+          }
+
+          break;
+        }
+
+        bool overshoot = true;
+
         while(t <= 1)
         {
           t += 1f / divisions;
@@ -654,14 +691,26 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
           {
             newPos = pointOncurve;
             alreadyTraveled = t;
+            overshoot = false;
             break;
           }
+
+          alreadyTraveled = t;
+        }
+
+        // Lets not count this as we overshoot
+        // Go to the beginning of the cycle where we handle this situation
+        if (overshoot && i > 0)
+        {
+          i--;
         }
 
         prevVelocity = velocity;
+
+        fitness = (_destination - newPos).magnitude;
       }
 
-      fitnesses[index] = (_destination - newPos).magnitude;
+      fitnesses[index] = fitness;
       index++;
     }
   }
@@ -676,6 +725,106 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
     fitnesses.Dispose();
   }
 }
+
+
+[BurstCompile]
+public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  public Vector2 _startPosition;
+  public Vector2 _destination;
+  public NativeArray<float> fitnesses;
+  public float weight;
+  public float maxAcc;
+  public float startVelocity;
+  public float updateInteraval;
+  public float maxAgentSpeed;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    var index = 0;
+    foreach (var individual in currentPopulation)
+    {
+      var newPos = _startPosition;
+
+      var alreadyTraveled = 0f;
+
+      float controlNetLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[1]) +
+        Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
+        Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
+      float estimatedCurveLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[3]) + controlNetLength / 2f;
+      int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
+
+      var prevVelocity = startVelocity;
+      var pathSize = individual.accelerations.Length - 1;
+      for (int i = 0; i < individual.accelerations.Length; i++)
+      {
+        var acc = individual.accelerations[i];
+        var currentAcc = maxAcc * acc;
+        var velocity = prevVelocity + currentAcc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
+
+
+        // Calculate position on a bezier curve
+        float t = alreadyTraveled;
+
+        // If true, we overshoot the distance
+        if (t >= 1 && i < individual.accelerations.Length)
+        {
+          pathSize = i -1;
+          break;
+        }
+
+        bool overshoot = true;
+
+        while (t <= 1)
+        {
+          t += 1f / divisions;
+          Vector2 pointOncurve = individual.bezierCurve.EvaluateCubic(
+            individual.bezierCurve.points[0],
+            individual.bezierCurve.points[1],
+            individual.bezierCurve.points[2],
+            individual.bezierCurve.points[3],
+            t);
+
+          var distanceSinceLastPoint = (newPos - pointOncurve).magnitude;
+          // We may have overshoot it, but only by small distance so we will not bother with it
+          if (distanceSinceLastPoint >= velocity)
+          {
+            newPos = pointOncurve;
+            alreadyTraveled = t;
+            overshoot = false;
+            break;
+          }
+
+          alreadyTraveled = t;
+        }
+
+        // Lets not count this as we overshoot
+        // Go to the beginning of the cycle where we handle this situation
+        if (overshoot && i > 0)
+        {
+          i--;
+        }
+
+        prevVelocity = velocity;
+      }
+
+      fitnesses[index] = pathSize;
+      index++;
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+    fitnesses.Dispose();
+  }
+}
+
 
 [BurstCompile]
 public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<BezierIndividualStruct>
@@ -741,6 +890,8 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
             alreadyTraveled = t;
             break;
           }
+
+          alreadyTraveled = t;
         }
 
         prevVelocity = velocity;
@@ -823,6 +974,8 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
             alreadyTraveled = t;
             break;
           }
+
+          alreadyTraveled = t;
         }
 
         velocityIndex++;

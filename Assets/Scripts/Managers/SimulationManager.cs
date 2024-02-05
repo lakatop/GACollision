@@ -142,17 +142,9 @@ public class SimulationManager : MonoBehaviour
     // On right mouse click - set new destination for all agents
     else if (Input.GetMouseButtonDown(1))
     {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      if (Physics.Raycast(ray, out var hitInfo))
+      for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
       {
-        for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
-        {
-          _agents[i].SetDestination(_agentsScenarioDestinations[i]);
-        }
-        //foreach (var agent in _agents)
-        //{
-        //  agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 30));
-        //}
+        _agents[i].SetDestination(_agentsScenarioDestinations[i]);
       }
     }
     else
@@ -175,7 +167,7 @@ public class SimulationManager : MonoBehaviour
 
         // Create a new quadtree and data
         _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
-        CreateAgentsQuadPosition(10);
+        CreateAgentsQuadPosition(5);
         var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
         _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Persistent);
         int index = 0;
@@ -472,7 +464,7 @@ public class SimulationManager : MonoBehaviour
   private void CreateScenarios()
   {
     // Create agents
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 1; i++)
     {
       _agents.Add(new BasicGAAgentParallel());
       var agent = _agents[_agents.Count - 1];
@@ -483,37 +475,37 @@ public class SimulationManager : MonoBehaviour
       }
     }
 
-    // Straight line scenario
-    var agent1 = _agents[0];
-    ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
-    _agentsScenarioDestinations.Add(new Vector2(-25, 40));
-    agent1.SetForward(new Vector2(0, 1));
-    ((BaseAgent)agent1).scenarioName = "straightLine";
+    //// Straight line scenario
+    //var agent1 = _agents[0];
+    //((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
+    //_agentsScenarioDestinations.Add(new Vector2(-25, 40));
+    //agent1.SetForward(new Vector2(0, 1));
+    //((BaseAgent)agent1).scenarioName = "straightLine";
 
-    // Small obstacle scenario
-    var agent2 = _agents[1];
-    ((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
-    _agentsScenarioDestinations.Add(new Vector2(25, 40));
-    agent2.SetForward(new Vector2(0, 1));
-    ((BaseAgent)agent2).scenarioName = "smallObstacle";
+    //// Small obstacle scenario
+    //var agent2 = _agents[1];
+    //((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
+    //_agentsScenarioDestinations.Add(new Vector2(25, 40));
+    //agent2.SetForward(new Vector2(0, 1));
+    //((BaseAgent)agent2).scenarioName = "smallObstacle";
 
     // Corner scenario
-    var agent3 = _agents[2];
+    var agent3 = _agents[0];
     ((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
     _agentsScenarioDestinations.Add(new Vector2(-40, -15));
     ((BaseAgent)agent3).scenarioName = "cornerProblem";
 
-    // 2 opposite agents scenario
-    var agent4 = _agents[3];
-    ((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
-    _agentsScenarioDestinations.Add(new Vector2(25, -5));
-    ((BaseAgent)agent4).scenarioName = "oppositeAgents";
+    //// 2 opposite agents scenario
+    //var agent4 = _agents[3];
+    //((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -5));
+    //((BaseAgent)agent4).scenarioName = "oppositeAgents";
 
-    var agent5 = _agents[4];
-    ((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
-    agent5.SetForward(new Vector2(0, -1));
-    _agentsScenarioDestinations.Add(new Vector2(25, -95));
-    ((BaseAgent)agent5).scenarioName = "oppositeAgents";
+    //var agent5 = _agents[4];
+    //((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
+    //agent5.SetForward(new Vector2(0, -1));
+    //_agentsScenarioDestinations.Add(new Vector2(25, -95));
+    //((BaseAgent)agent5).scenarioName = "oppositeAgents";
 
     foreach (var agent in _agents)
     {

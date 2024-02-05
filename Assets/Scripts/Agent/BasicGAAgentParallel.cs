@@ -23,7 +23,7 @@ public class BasicGAAgentParallel : BaseAgent
   private float _updateTimer { get; set; }
   private bool _runGa { get; set; }
   private int iteration { get; set; }
-  private float pathSize = 25f;
+  private float pathSize = 12.5f;
   private int maxSkipDestinations = 1;
 
   public BasicGAAgentParallel()
@@ -76,6 +76,7 @@ public class BasicGAAgentParallel : BaseAgent
               var newDestDir = (_path.corners[_cornerIndex + skippedDestinations] - interDest).normalized;
               var moveBackSize = (totalSize + interSize) - pathSize;
               newDestination = interDest + (newDestDir * moveBackSize);
+              break;
             }
             else
             {

@@ -223,8 +223,8 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BezierGeneticAlgorithmParallel();
     int populationSize = 500;
-    int iterations = 10;
-    int pathSize = 10;
+    int iterations = 30;
+    int pathSize = 5;
     float maxAcc = 1f;
 
     //// Set crossover
@@ -280,7 +280,7 @@ public class GeneticAlgorithmDirector
       _agentIndex = agent.id,
       _quadTree = SimulationManager.Instance.GetQuadTree(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.6f,
+      weight = 0.5f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
@@ -292,7 +292,7 @@ public class GeneticAlgorithmDirector
       _startPosition = agent.position,
       _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.25f,
+      weight = 0.15f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
@@ -301,6 +301,17 @@ public class GeneticAlgorithmDirector
     ga.jerkFitness = new BezierFitnessJerkCostParallel()
     {
       _startPosition = agent.position,
+      fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
+      weight = 0.2f,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      maxAcc = maxAcc,
+      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      maxAgentSpeed = agent.speed
+    };
+    ga.ttdFitness = new BezierFitnessTimeToDestinationParallel()
+    {
+      _startPosition = agent.position,
+      _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.15f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
