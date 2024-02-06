@@ -227,23 +227,12 @@ public class GeneticAlgorithmDirector
     int pathSize = 5;
     float maxAcc = 1f;
 
-    //// Set crossover
-    //var offsprings = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    //for (int i = 0; i < populationSize; i++)
-    //{
-    //  var element = offsprings[i];
-    //  element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
-    //  element.path.Resize(pathSize);
-    //  element.fitness = 0;
-    //  offsprings[i] = element;
-    //}
-    //ga.cross = new MeanCrossOperatorParallel()
-    //{
-    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //  offsprings = offsprings,
-    //  pathSize = pathSize,
-    //  iterations = iterations,
-    //};
+    // Set crossover
+    ga.cross = new UniformBezierCrossOperatorParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      parents = new NativeArray<BezierIndividualStruct>(2, Allocator.TempJob),
+    };
 
     // Set mutation
     ga.straightFinishMutation = new BezierStraightFinishMutationOperatorParallel()
