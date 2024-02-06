@@ -142,17 +142,9 @@ public class SimulationManager : MonoBehaviour
     // On right mouse click - set new destination for all agents
     else if (Input.GetMouseButtonDown(1))
     {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      if (Physics.Raycast(ray, out var hitInfo))
+      for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
       {
-        for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
-        {
-          _agents[i].SetDestination(_agentsScenarioDestinations[i]);
-        }
-        //foreach (var agent in _agents)
-        //{
-        //  agent.SetDestination(new Vector2(agent.position.x, agent.position.y + 30));
-        //}
+        _agents[i].SetDestination(_agentsScenarioDestinations[i]);
       }
     }
     else
@@ -175,7 +167,7 @@ public class SimulationManager : MonoBehaviour
 
         // Create a new quadtree and data
         _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
-        CreateAgentsQuadPosition(10);
+        CreateAgentsQuadPosition(5);
         var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
         _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Persistent);
         int index = 0;

@@ -141,19 +141,19 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BezierIndividualStruct>
 {
   // Crossover
-  //public MeanCrossOperatorParallel cross;
+  public UniformBezierCrossOperatorParallel cross;
 
   // Mutation
   public BezierStraightFinishMutationOperatorParallel straightFinishMutation;
   public BezierShuffleAccMutationOperatorParallel shuffleMutation;
   public BezierShuffleControlPointsMutationOperatorParallel controlPointsMutation;
-  //public BezierStretchAccMutationOperatorParallel stretchMutation;
   public BezierSmoothAccMutationOperatorParallel smoothMutation;
 
   // Fitness
   public BezierFitnessJerkCostParallel jerkFitness;
   public BezierFitnessCollisionParallel collisionFitness;
   public BezierFitnessEndDistanceParallel endDistanceFitness;
+  public BezierFitnessTimeToDestinationParallel ttdFitness;
 
   // Selection
   public BezierNegativeSelectionParallel selection;
@@ -187,34 +187,59 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   public void Execute()
   {
+    // Initialisation
     popInitialization.ModifyPopulation(ref pop._population, 0);
 
     for (int i = 0; i < iterations; i++)
     {
+      // Fitness
       jerkFitness.ModifyPopulation(ref pop._population, i);
       collisionFitness.ModifyPopulation(ref pop._population, i);
       endDistanceFitness.ModifyPopulation(ref pop._population, i);
+      ttdFitness.ModifyPopulation(ref pop._population, i);
 
-      ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+      // Ranking
+      ranking.CalculateRanking(ref jerkFitness.fitnesses,
+                               ref collisionFitness.fitnesses,
+                               ref endDistanceFitness.fitnesses,
+                               ref ttdFitness.fitnesses,
+                               jerkFitness.weight,
+                               collisionFitness.weight,
+                               endDistanceFitness.weight,
+                               ttdFitness.weight);
       ranking.ModifyPopulation(ref pop._population, i);
 
+      // Logging
       //logger.LogPopulationState(ref pop._population, i);
+
+      // Selection
       selection.ModifyPopulation(ref pop._population, i);
-      //cross.ModifyPopulation(ref pop._population, i);
+
+      // Operators - cross
+      cross.ModifyPopulation(ref pop._population, i);
+
+      // Operators - mutation
       controlPointsMutation.ModifyPopulation(ref pop._population, i);
-      popDrawer.DrawPopulation(ref pop._population);
       smoothMutation.ModifyPopulation(ref pop._population, i);
       shuffleMutation.ModifyPopulation(ref pop._population, i);
       straightFinishMutation.ModifyPopulation(ref pop._population, i);
+
+      // Debug draw
+      //popDrawer.DrawPopulation(ref pop._population);
     }
 
     jerkFitness.ModifyPopulation(ref pop._population, iterations);
     collisionFitness.ModifyPopulation(ref pop._population, iterations);
     endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
 
-    ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+    ranking.CalculateRanking(ref jerkFitness.fitnesses,
+                         ref collisionFitness.fitnesses,
+                         ref endDistanceFitness.fitnesses,
+                         ref ttdFitness.fitnesses,
+                         jerkFitness.weight,
+                         collisionFitness.weight,
+                         endDistanceFitness.weight,
+                         ttdFitness.weight);
     ranking.ModifyPopulation(ref pop._population, iterations);
 
     //logger.LogPopulationState(ref pop._population, iterations);
@@ -302,11 +327,16 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   public void Dispose()
   {
-    //cross.Dispose();
-    //mutation.Dispose();
+    straightFinishMutation.Dispose();
+    shuffleMutation.Dispose();
+    controlPointsMutation.Dispose();
+    smoothMutation.Dispose();
+
     jerkFitness.Dispose();
     collisionFitness.Dispose();
     endDistanceFitness.Dispose();
+    ttdFitness.Dispose();
+
     selection.Dispose();
     //logger.Dispose();
     ranking.Dispose();

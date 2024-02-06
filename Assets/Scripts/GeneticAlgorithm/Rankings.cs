@@ -161,13 +161,15 @@ public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndiv
     }
   }
 
-  public void CalculateRanking(ref NativeArray<float> fitnessValues1, ref NativeArray<float> fitnessValues2, ref NativeArray<float> fitnessValues3,
-                               float weight1, float weight2, float weight3)
+  public void CalculateRanking(ref NativeArray<float> fitnessValues1, ref NativeArray<float> fitnessValues2,
+                               ref NativeArray<float> fitnessValues3, ref NativeArray<float> fitnessValues4,
+                               float weight1, float weight2, float weight3, float weight4)
   {
     //Calculate resultingFitness using Z-score
     var normF1 = new NativeArray<float>(fitnessValues1.Length, Allocator.Temp);
     var normF2 = new NativeArray<float>(fitnessValues2.Length, Allocator.Temp);
     var normF3 = new NativeArray<float>(fitnessValues3.Length, Allocator.Temp);
+    var normF4 = new NativeArray<float>(fitnessValues4.Length, Allocator.Temp);
 
     // Z-score normalization of first fitnesses
     float mean = 0f;
@@ -264,14 +266,47 @@ public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndiv
       }
     }
 
+    // Z-score normalization of third fitnesses
+    mean = 0f;
+
+    for (int i = 0; i < fitnessValues4.Length; i++)
+    {
+      mean += fitnessValues4[i];
+    }
+    mean = mean / fitnessValues4.Length;
+
+    squaredSum = 0f;
+    for (int i = 0; i < fitnessValues4.Length; i++)
+    {
+      squaredSum += ((mean - fitnessValues4[i]) * (mean - fitnessValues4[i]));
+    }
+
+    variance = squaredSum / fitnessValues4.Length;
+    stdDev = Mathf.Sqrt(variance);
+    if (stdDev == 0)
+    {
+      for (int i = 0; i < fitnessValues4.Length; i++)
+      {
+        normF4[i] = 0;
+      }
+    }
+    else
+    {
+      for (int i = 0; i < fitnessValues4.Length; i++)
+      {
+        normF4[i] = (fitnessValues4[i] - mean) / stdDev;
+      }
+    }
+
     for (int i = 0; i < resultingFitnesses.Length; i++)
     {
-      resultingFitnesses[i] = normF1[i] * weight1 + normF2[i] * weight2 + normF3[i] * weight3;
+      resultingFitnesses[i] = normF1[i] * weight1 + normF2[i] * weight2 + normF3[i] * weight3 + normF4[i] * weight4;
     }
 
     normF1.Dispose();
     normF2.Dispose();
     normF3.Dispose();
+    normF4.Dispose();
   }
 
   public string GetComponentName()
