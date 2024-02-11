@@ -105,9 +105,12 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      // Mutate with high probability, but still let some chance to other individuals
-      if (mutProb > 0.8)
+      //var mutProb = _rand.NextFloat();
+      //// Mutate with high probability, but still let some chance to other individuals
+      //if (mutProb > 0.3)
+      //  return;
+
+      if (i != 0)
         return;
 
       // Find out whether we can go straight to destination (depending on acceleration restrictions)
@@ -137,6 +140,83 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 
         currentPopulation[i] = individual;
       }
+    }
+  }
+
+  public string GetComponentName()
+  {
+    return GetType().Name;
+  }
+
+  public void Dispose()
+  {
+  }
+}
+
+
+[BurstCompile]
+public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
+{
+  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public float _agentSpeed;
+  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float maxAcc;
+
+  public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
+  {
+    for (int i = 0; i < currentPopulation.Length; i++)
+    {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.9)
+        return;
+
+      var individual = currentPopulation[i];
+
+      var currentAcc = maxAcc * individual.accelerations[0];
+      var velocity = startVelocity + currentAcc;
+      velocity = Mathf.Clamp(velocity, 0, _updateInterval * _agentSpeed);
+
+      // Calculate how many steps it would take to deccelerate to 0
+      // We need to round up
+      var deccelerationStepsCount = (int)System.Math.Round(velocity + 0.5f, System.MidpointRounding.AwayFromZero);
+
+      // Calculate how long path is to destination
+      var destinationDistance = 0f;
+      float controlNetLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[1]) +
+        Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
+        Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
+      float estimatedCurveLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[3]) + controlNetLength / 2f;
+      int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
+
+      var previousPoint = individual.bezierCurve.points[0];
+      var t = 0f;
+      while(t <= 1)
+      {
+        t += 1f / divisions;
+        Vector2 pointOncurve = individual.bezierCurve.EvaluateCubic(
+          individual.bezierCurve.points[0],
+          individual.bezierCurve.points[1],
+          individual.bezierCurve.points[2],
+          individual.bezierCurve.points[3],
+          t);
+
+        destinationDistance += (pointOncurve - previousPoint).magnitude;
+        previousPoint = pointOncurve;
+      }
+
+      // Calculate maximum velocity that we can go if we want to decelerate to 0 in destination
+      var maxAcceptableVelocity = (destinationDistance / deccelerationStepsCount) + ((deccelerationStepsCount - 1) / 2);
+
+      // If true, we need to deccelerate
+      if(velocity > maxAcceptableVelocity)
+      {
+        var newAcc = maxAcceptableVelocity - velocity;
+        newAcc = Mathf.Clamp(newAcc, -1, 1);
+        individual.accelerations[0] = newAcc;
+      }
+
+      currentPopulation[i] = individual;
     }
   }
 

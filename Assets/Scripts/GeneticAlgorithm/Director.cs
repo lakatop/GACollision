@@ -222,8 +222,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
-    int populationSize = 500;
-    int iterations = 30;
+    int populationSize = 100;
+    int iterations = 50;
     int pathSize = 5;
     float maxAcc = 1f;
 
@@ -242,6 +242,14 @@ public class GeneticAlgorithmDirector
       _updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startPos = agent.position,
       destination = agent.destination,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      maxAcc = maxAcc
+    };
+    ga.clampVelocityMutation = new BezierClampVelocityMutationOperatorParallel()
+    {
+      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      _agentSpeed = agent.speed,
+      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc
     };
@@ -281,7 +289,7 @@ public class GeneticAlgorithmDirector
       _startPosition = agent.position,
       _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.15f,
+      weight = 0.2f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,
@@ -290,6 +298,7 @@ public class GeneticAlgorithmDirector
     ga.jerkFitness = new BezierFitnessJerkCostParallel()
     {
       _startPosition = agent.position,
+      _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.2f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
@@ -302,7 +311,7 @@ public class GeneticAlgorithmDirector
       _startPosition = agent.position,
       _destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
-      weight = 0.15f,
+      weight = 0.1f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
       updateInteraval = SimulationManager.Instance._agentUpdateInterval,

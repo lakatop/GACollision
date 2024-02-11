@@ -648,27 +648,21 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
           // Calculate Distance To Destination
           var distanceToDestination = (_destination - newPos).magnitude;
 
-          prevVelocity = individual.accelerations[i - 1];
+          // Calculate where we end up after overshooting
+          var overshootVector = (_destination - newPos).normalized * velocity;
 
-          if (prevVelocity - distanceToDestination < maxAcc)
+          // Calculate how far it would be untill we slow down to 0
+          var traveled = 0f;
+          while (velocity > 0)
           {
-            fitness = distanceToDestination;
+            traveled += velocity;
+            velocity -= maxAcc;
           }
-          else
-          {
-            var traveled = 0f;
-            while (prevVelocity > 0)
-            {
-              if (prevVelocity - maxAcc > 0)
-              {
-                traveled += prevVelocity - maxAcc;
-              }
 
-              prevVelocity -= maxAcc;
-            }
-
-            fitness = ((traveled - distanceToDestination) * 2) + distanceToDestination;
-          }
+          // Fitness = distance from endpos to destination (*2 = for path to the endpos and back to destination)
+          fitness = (traveled - distanceToDestination) * 2;
+          // Penalize individuals that overshoot
+          fitness *= 2f;
 
           break;
         }
@@ -918,6 +912,7 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
 public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
   public Vector2 _startPosition;
+  public Vector2 _destination;
   public NativeArray<float> fitnesses;
   public float weight;
   public float startVelocity;
@@ -946,12 +941,45 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
       int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
 
       var velocityIndex = 0;
-      foreach (var acc in individual.accelerations)
+      for (int i = 0; i < individual.accelerations.Length; i++)
       {
+        var acc = individual.accelerations[i];
         var currentAcc = maxAcc * acc;
         var velocity = prevVelocity + currentAcc;
         velocity = Mathf.Clamp(velocity, 0, updateInteraval * maxAgentSpeed);
 
+        // If true, we overshoot
+        if (alreadyTraveled >= 1)
+        {
+          // Calculate remaining velocities as if we try to go directly to the destination
+          var remainingVelocity = velocity;
+          var headingVelocity = (_destination - newPos).normalized;
+          while (remainingVelocity > 0 && velocityIndex < velocities.Length)
+          {
+            velocities[velocityIndex] = headingVelocity * remainingVelocity;
+            newPos = newPos + velocities[velocityIndex];
+            remainingVelocity -= maxAcc;
+            remainingVelocity = Mathf.Clamp(remainingVelocity, 0, updateInteraval * maxAgentSpeed);
+            velocityIndex++;
+          }
+
+          // Take path back - evenly distributed
+          var remainingDistance = (newPos - _destination).magnitude;
+          // Switch to opposite direction
+          headingVelocity = new Vector2(-headingVelocity.x, -headingVelocity.y);
+          while (remainingDistance > Mathf.Epsilon && velocityIndex < velocities.Length)
+          {
+            velocity = (remainingDistance < maxAcc) ? remainingDistance : maxAcc;
+            velocities[velocityIndex] = headingVelocity * velocity;
+            velocityIndex++;
+            remainingDistance -= velocity;
+          }
+
+          break;
+        }
+
+
+        bool overshoot = true;
 
         // Calculate position on a bezier curve
         float t = alreadyTraveled;
@@ -972,14 +1000,22 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
             velocities[velocityIndex] = (pointOncurve - newPos);
             newPos = pointOncurve;
             alreadyTraveled = t;
+            overshoot = false;
             break;
           }
 
           alreadyTraveled = t;
         }
 
-        velocityIndex++;
-        prevVelocity = velocity;
+        if (overshoot)
+        {
+          i--;
+        }
+        else
+        {
+          velocityIndex++;
+          prevVelocity = velocity;
+        }
       }
 
       for (int i = 1; i < velocities.Length; i++)

@@ -145,6 +145,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   // Mutation
   public BezierStraightFinishMutationOperatorParallel straightFinishMutation;
+  public BezierClampVelocityMutationOperatorParallel clampVelocityMutation;
   public BezierShuffleAccMutationOperatorParallel shuffleMutation;
   public BezierShuffleControlPointsMutationOperatorParallel controlPointsMutation;
   public BezierSmoothAccMutationOperatorParallel smoothMutation;
@@ -222,7 +223,8 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       controlPointsMutation.ModifyPopulation(ref pop._population, i);
       smoothMutation.ModifyPopulation(ref pop._population, i);
       shuffleMutation.ModifyPopulation(ref pop._population, i);
-      straightFinishMutation.ModifyPopulation(ref pop._population, i);
+      clampVelocityMutation.ModifyPopulation(ref pop._population, i);
+      //straightFinishMutation.ModifyPopulation(ref pop._population, i);
 
       // Debug draw
       //popDrawer.DrawPopulation(ref pop._population);
@@ -231,6 +233,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     jerkFitness.ModifyPopulation(ref pop._population, iterations);
     collisionFitness.ModifyPopulation(ref pop._population, iterations);
     endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
+    ttdFitness.ModifyPopulation(ref pop._population, iterations);
 
     ranking.CalculateRanking(ref jerkFitness.fitnesses,
                          ref collisionFitness.fitnesses,
@@ -290,6 +293,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     var currentAcc = maxAcc * individual.accelerations[0];
     var velocity = startVelocity + currentAcc;
     velocity = Mathf.Clamp(velocity, 0, updateInteraval * _agentSpeed);
+    bool overshoot = true;
     float t = 0;
     while (t <= 1)
     {
@@ -308,8 +312,17 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
         _winner[0] = pointOncurve - _startPosition;
         // We need to scale velocity back
         _winner[0] = _winner[0] * (1 / updateInteraval);
+        overshoot = false;
         break;
       }
+    }
+
+    if (overshoot)
+    {
+      var destination = individual.bezierCurve.points[3];
+      var headingVector = (destination - _startPosition).normalized * velocity;
+      _winner[0] = headingVector;
+      _winner[0] = _winner[0] * (1 / updateInteraval);
     }
   }
 
@@ -331,11 +344,14 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     shuffleMutation.Dispose();
     controlPointsMutation.Dispose();
     smoothMutation.Dispose();
+    clampVelocityMutation.Dispose();
 
     jerkFitness.Dispose();
     collisionFitness.Dispose();
     endDistanceFitness.Dispose();
     ttdFitness.Dispose();
+
+    cross.Dispose();
 
     selection.Dispose();
     //logger.Dispose();

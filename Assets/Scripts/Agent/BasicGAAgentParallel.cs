@@ -106,7 +106,7 @@ public class BasicGAAgentParallel : BaseAgent
     //destination = CalculateNewDestination();
     _updateTimer += Time.deltaTime;
 
-    if ((position - destination).magnitude <= 0.1f)
+    if ((position - destination).magnitude <= 0.1f && nextVel.magnitude < 2f)
     {
       nextVel = Vector2.zero;
       return;
@@ -135,11 +135,12 @@ public class BasicGAAgentParallel : BaseAgent
     {
       _gaJobHandle.Complete();
       jobScheduled = false;
-      Debug.Log(string.Format("Position {0}", position));
-      Debug.Log(string.Format("Previous position {0}", previousLocation));
+      //Debug.Log(string.Format("Position {0}", position));
+      //Debug.Log(string.Format("Previous position {0}", previousLocation));
       PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance._agentUpdateInterval);
       nextVel = _winner[0];
       Debug.Log(string.Format("Next winner {0}", nextVel));
+      Debug.Log(string.Format("Next winner magnitude {0}", nextVel.magnitude));
       previousLocation = position;
       //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
       iteration++;
