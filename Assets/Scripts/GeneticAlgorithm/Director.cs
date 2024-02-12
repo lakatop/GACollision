@@ -223,7 +223,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BezierGeneticAlgorithmParallel();
     int populationSize = 100;
-    int iterations = 50;
+    int iterations = 100;
     int pathSize = 5;
     float maxAcc = 1f;
 
@@ -242,6 +242,7 @@ public class GeneticAlgorithmDirector
       _updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startPos = agent.position,
       destination = agent.destination,
+      forward = agent.GetForward(),
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc
     };
