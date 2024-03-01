@@ -128,21 +128,14 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 
     for (int i = 0; i < individual.accelerations.Length; i++)
     {
-      // Check whether we need to slow down already
-      var currentAcc = maxAcc * individual.accelerations[i];
-      var velocity = prevVelocity + currentAcc;
-      velocity = Mathf.Clamp(velocity, 0, _updateInterval * _agentSpeed);
-
-      // Calculate how many steps it would take to deccelerate to 0
-      // We need to round up
-      var deccelerationStepsCount = (int)System.Math.Round(prevVelocity + 0.5f, System.MidpointRounding.AwayFromZero);
       var destinationDistance = (destination - currentPosition).magnitude;
-      // Calculate maximum velocity that we can go if we want to decelerate to 0 in destination
-      var maxAcceptableVelocity = (destinationDistance / deccelerationStepsCount) + ((deccelerationStepsCount - 1) / 2);
 
-      var newVelocity = Mathf.Clamp(maxAcceptableVelocity, 0, velocity);
-      var newAcc = newVelocity - (velocity - currentAcc);
+      var maxAcceptableVelocity = UtilsGA.UtilsGA.CalculateMaxVelocity(destinationDistance);
+
+      var newVelocity = Mathf.Clamp(maxAcceptableVelocity, 0, _agentSpeed * _updateInterval);
+      var newAcc = newVelocity - prevVelocity;
       newAcc = Mathf.Clamp(newAcc, -1, maxAcc);
+      newVelocity = prevVelocity + newAcc;
       individual.accelerations[i] = newAcc;
       prevVelocity = newVelocity;
       currentPosition = currentPosition + ((destination - currentPosition).normalized * newVelocity);
@@ -176,9 +169,9 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      if (mutProb > 0.9)
-        return;
+      //var mutProb = _rand.NextFloat();
+      //if (mutProb > 0.9)
+      //  return;
 
       var individual = currentPopulation[i];
 
@@ -186,9 +179,6 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
       var velocity = startVelocity + currentAcc;
       velocity = Mathf.Clamp(velocity, 0, _updateInterval * _agentSpeed);
 
-      // Calculate how many steps it would take to deccelerate to 0
-      // We need to round up
-      var deccelerationStepsCount = (int)System.Math.Round(startVelocity + 0.5f, System.MidpointRounding.AwayFromZero);
 
       // Calculate how long path is to destination
       var destinationDistance = 0f;
@@ -215,7 +205,7 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
       }
 
       // Calculate maximum velocity that we can go if we want to decelerate to 0 in destination
-      var maxAcceptableVelocity = (destinationDistance / deccelerationStepsCount) + ((deccelerationStepsCount - 1) / 2);
+      var maxAcceptableVelocity = UtilsGA.UtilsGA.CalculateMaxVelocity(destinationDistance);
 
       // If true, we need to deccelerate
       if(velocity > maxAcceptableVelocity)
@@ -336,6 +326,10 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
+      var mutProb = _rand.NextFloat();
+      if (mutProb > 0.3)
+        return;
+
       // Define restrictions on control points position
       var individual = currentPopulation[i];
       float maxDeg = 30;

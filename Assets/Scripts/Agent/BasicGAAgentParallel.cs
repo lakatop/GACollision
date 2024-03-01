@@ -23,7 +23,7 @@ public class BasicGAAgentParallel : BaseAgent
   private float _updateTimer { get; set; }
   private bool _runGa { get; set; }
   private int iteration { get; set; }
-  private float pathSize = 12.5f;
+  private float pathSize = 17.5f;
   private int maxSkipDestinations = 1;
 
   public BasicGAAgentParallel()
@@ -112,10 +112,10 @@ public class BasicGAAgentParallel : BaseAgent
       return;
     }
 
-    SetDestination(new Vector2(_path.corners[_path.corners.Length - 1].x, _path.corners[_path.corners.Length - 1].z));
 
     if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
+      SetDestination(new Vector2(_path.corners[_path.corners.Length - 1].x, _path.corners[_path.corners.Length - 1].z));
       // Run GA
       gaJob = (BezierGeneticAlgorithmParallel)_gaDirector.MakeBezierGAParallel(this);
 
@@ -142,7 +142,7 @@ public class BasicGAAgentParallel : BaseAgent
       Debug.Log(string.Format("Next winner {0}", nextVel));
       Debug.Log(string.Format("Next winner magnitude {0}", nextVel.magnitude));
       previousLocation = position;
-      //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
+      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
       iteration++;
       gaJob.Dispose();
 
