@@ -229,7 +229,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       smoothMutation.ModifyPopulation(ref pop._population, i);
       shuffleMutation.ModifyPopulation(ref pop._population, i);
       clampVelocityMutation.ModifyPopulation(ref pop._population, i);
-      straightFinishMutation.ModifyPopulation(ref pop._population, i);
+      //straightFinishMutation.ModifyPopulation(ref pop._population, i);
 
       // Debug draw
       //popDrawer.DrawPopulation(ref pop._population);

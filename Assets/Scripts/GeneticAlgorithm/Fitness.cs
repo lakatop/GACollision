@@ -628,7 +628,7 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
         Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
       float estimatedCurveLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[3]) + controlNetLength / 2f;
-      int divisions = Mathf.CeilToInt(estimatedCurveLength * 50);
+      int divisions = Mathf.CeilToInt(estimatedCurveLength * 100);
 
       bool overshoot = false;
 

@@ -176,7 +176,10 @@ public struct BezierIndividualLogger
       builder.AppendLine(string.Format("{0}", fit));
     }
 
-    File.WriteAllText(string.Format("Plotting/{0}/fitness-Individual-{1}-{2}.csv", scenarioName, agentId, iteration), builder.ToString());
+    FileInfo file = new FileInfo(string.Format("Plotting/{0}/fitness-Individual-{1}-{2}.csv", scenarioName, agentId, iteration));
+    file.Directory.Create(); // If the directory already exists, this method does nothing.
+
+    File.WriteAllText(file.FullName, builder.ToString());
 
     // Log Jerk fitness
     builder.Clear();

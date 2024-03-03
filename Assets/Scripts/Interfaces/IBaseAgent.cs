@@ -56,6 +56,10 @@ public interface IBaseAgent
   /// </summary>
   float updateInterval { get { return 0f; } set { this.updateInterval = value; } }
   /// <summary>
+  /// Returns whether agent is in its final destination
+  /// </summary>
+  bool inDestination { get; set; }
+  /// <summary>
   /// Agents position
   /// </summary>
   Vector2 position { get; }

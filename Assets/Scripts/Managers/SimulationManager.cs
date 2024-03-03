@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-
+using UnityEngine.SceneManagement;
+using System.Threading;
 /// <summary>
 /// Singleton
 /// Agent manager class
@@ -23,6 +23,22 @@ public class SimulationManager : MonoBehaviour
   /// List of all obstacles present in the simulation
   /// </summary>
   public List<Obstacle> _obstacles { get; private set; }
+  /// <summary>
+  /// List of scenarios
+  /// </summary>
+  public List<IScenario> _scenarios { get; set; }
+  /// <summary>
+  /// Flag determining whether the scenario has already started
+  /// </summary>
+  private bool _scenarioStarted { get; set; }
+  /// <summary>
+  /// Index keeping track of which scenario is currently running
+  /// </summary>
+  private int _scenarioIndex { get; set; }
+  /// <summary>
+  /// Flag whether we should skip next frame Update. Used when scene is currently in load
+  /// </summary>
+  private bool _skipNextFrame { get; set; }
   /// <summary>
   /// List of all collision avoidance algorithms that registered themselves to SimulationManager
   /// </summary>
@@ -73,14 +89,18 @@ public class SimulationManager : MonoBehaviour
 
   void Awake()
   {
+    System.Console.WriteLine("SimulationManager Awake call");
     if (Instance != null && Instance != this)
     {
-      Destroy(this);
+      Destroy(gameObject);
+      return;
     }
-    else
-    {
-      Instance = this;
-    }
+    //else
+    //{
+    //  Instance = this;
+    //}
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
 
     _agents = new List<IBaseAgent>();
     _obstacles = new List<Obstacle>();
@@ -92,114 +112,112 @@ public class SimulationManager : MonoBehaviour
     _agentUpdateInterval = 0.5f;
     _quadTreeCreated = false;
     _agentsScenarioDestinations = new List<Vector2>();
+    _scenarioStarted = false;
+    _scenarioIndex = 0;
+    _skipNextFrame = true;
   }
 
   void Start()
   {
-    RegisterObstacles();
-    RegisterWalkingPlatform();
-    TransformObstaclesToQuadElements();
+    System.Console.WriteLine("SimulationManager StartCall");
+    CreateScenarios();
+    SetScenarioResources();
   }
 
   /// <summary>
   /// Called every simulation step
-  /// Check for user input and update agents
+  /// Handles switching to other scenes if scenario in current one has finished
+  /// Updates simulation
   /// </summary>
   void Update()
   {
-    _updateTimer += Time.deltaTime;
-    // TODO: will probably require refactor in the future:
-    //    more robust user input, setting destination to just some client(s) etc.
-
-    // On left mouse click - spawn agent
-    if (Input.GetMouseButtonDown(0))
+    System.Console.WriteLine("SimulationManager Update call");
+    if (_skipNextFrame)
     {
-      if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-      {
-        foreach (var obj in _agents)
-        {
-          if(obj != null && ((BaseAgent)obj)._object != null)
-          {
-            Destroy(((BaseAgent)obj)._object);
-          }
-        }
+      _skipNextFrame = false;
+      return;
+    }
 
-        _agents.Clear();
-        _agentsScenarioDestinations.Clear();
-        if (_quadTreeCreated)
-        {
-          _quadTree.Dispose();
-          _quadTreeData.Dispose();
-          _quadTreeCreated = false;
-        }
+    if (!_scenarioStarted)
+    {
+      _scenarios[_scenarioIndex].SetupScenario(_agents);
+      _scenarios[_scenarioIndex].runCounter--;
+      SetScenarioResources();
+      CreateQuadtreeAndData();
+      _scenarioStarted = true;
+      // Wait one more frame so that objects get spawned
+      return;
+    }
+
+    _updateTimer += Time.deltaTime;
+
+    if (_scenarioStarted && AllAgentsFinished())
+    {
+      if (ShouldRepeatScenario())
+      {
+        ClearScenarioResources();
+        _scenarioStarted = false;
+        _skipNextFrame = true;
+        _updateTimer = 0f;
+      }
+      else if (IsThereNextScenario())
+      {
+        ClearScenarioResources();
+        SetNextScenario();
+        _updateTimer = 0f;
       }
       else
       {
-        SpawnAgent();
-      }
-
-    }
-    // On right mouse click - set new destination for all agents
-    else if (Input.GetMouseButtonDown(1))
-    {
-      for (int i = 0; i < _agentsScenarioDestinations.Count; i++)
-      {
-        _agents[i].SetDestination(_agentsScenarioDestinations[i]);
+        // Ideally end application, but it seems iOS has some troubles with that
+        //UnityEditor.EditorApplication.isPlaying = false;
       }
     }
     else
     {
-      if (_updateTimer > _agentUpdateInterval)
-      {
-        foreach(var agent in _agents)
-        {
-          agent.OnAfterUpdate(Vector2.zero);
-        }
+      RunSimulation();
+    }
+  }
 
-        _updateTimer = 0f;
+  private void RunSimulation()
+  {
+    System.Console.WriteLine("RUNNING RunSimulation");
+    _scenarioStarted = true;
 
-        // Dispose previous quadtree and its data
-        if (_quadTreeCreated)
-        {
-          _quadTree.Dispose();
-          _quadTreeData.Dispose();
-        }
-
-        // Create a new quadtree and data
-        _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
-        CreateAgentsQuadPosition(5);
-        var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
-        _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Persistent);
-        int index = 0;
-        foreach (var staticElement in _quadtreeStaticElements)
-        {
-          _quadTreeData[index] = staticElement;
-          index++;
-        }
-        foreach (var agentPos in _quadAgentsPositions)
-        {
-          _quadTreeData[index] = agentPos;
-          index++;
-        }
-        _quadTree.ClearAndBulkInsert(_quadTreeData);
-        _quadTreeCreated = true;
-      }
-
-      // Update simulation
+    if (_updateTimer > _agentUpdateInterval)
+    {
       foreach (var agent in _agents)
       {
-        agent.OnBeforeUpdate();
-      }
-      //foreach (var collisionAvoider in _collisionListeners)
-      //{
-      //  collisionAvoider.Update();
-      //}
-      foreach (var agent in _agents)
-      {
+        Debug.Log("In destination: " + agent.inDestination);
         agent.OnAfterUpdate(Vector2.zero);
       }
+
+      _updateTimer = 0f;
+
+      // Dispose previous quadtree and its data
+      if (_quadTreeCreated)
+      {
+        _quadTree.Dispose();
+        _quadTreeData.Dispose();
+      }
+
+      CreateQuadtreeAndData();
     }
 
+    // Update simulation
+    foreach (var agent in _agents)
+    {
+      agent.OnBeforeUpdate();
+      Debug.Log("In destination: " + agent.inDestination);
+    }
+    //foreach (var collisionAvoider in _collisionListeners)
+    //{
+    //  collisionAvoider.Update();
+    //}
+    foreach (var agent in _agents)
+    {
+      agent.OnAfterUpdate(Vector2.zero);
+      Debug.Log("In destination: " + agent.inDestination);
+    }
   }
 
   private void OnDestroy()
@@ -254,6 +272,7 @@ public class SimulationManager : MonoBehaviour
 
   private void RegisterObstacles()
   {
+    _obstacles.Clear();
     // Find all NavMeshModifier components in the scene
     NavMeshModifier[] navMeshModifiers = GameObject.FindObjectsOfType<NavMeshModifier>();
 
@@ -344,6 +363,7 @@ public class SimulationManager : MonoBehaviour
   private void TransformObstaclesToQuadElements()
   {
     var agentRadius = 0.5f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
+    _quadtreeStaticElements.Clear();
     foreach (var obstacle in _obstacles)
     {
       var start = obstacle.vertices[0];
@@ -456,67 +476,166 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Returns whether all agents are in their final destination
+  /// </summary>
+  /// <returns>Whether all agents are in their final destination</returns>
+  private bool AllAgentsFinished()
+  {
+    bool finished = true;
+    foreach (var agent in _agents)
+    {
+      finished &= agent.inDestination;
+    }
+
+    return finished;
+  }
+
+  private void CreateScenarios()
+  {
+    System.Console.WriteLine("Creating scenarios");
+    _scenarios = new List<IScenario>
+    {
+      new StraightLineScenario(1),
+      new SmallObstacleScenario(1),
+      new CornerScenario(1),
+      new OppositeScenario(1)
+    };
+  }
+
+  private bool IsThereNextScenario()
+  {
+    return _scenarioIndex < (_scenarios.Count - 1);
+  }
+
+  private bool ShouldRepeatScenario()
+  {
+    return _scenarios[_scenarioIndex].runCounter > 0;
+  }
+
+  private void  SetNextScenario()
+  {
+    var nextSceneIndex = _scenarioIndex + 1;
+
+    if (nextSceneIndex >= _scenarios.Count)
+      return;
+    SceneManager.LoadScene(nextSceneIndex);
+    _scenarios[nextSceneIndex].runCounter--;
+    _scenarioStarted = false;
+    _skipNextFrame = true;
+    _scenarioIndex++;
+  }
+
+  private void SetScenarioResources()
+  {
+    RegisterObstacles();
+    RegisterWalkingPlatform();
+    TransformObstaclesToQuadElements();
+  }
+
+  private void CreateQuadtreeAndData()
+  {
+    _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
+    CreateAgentsQuadPosition(7);
+    var length = _quadtreeStaticElements.Count + _quadAgentsPositions.Count;
+    _quadTreeData = new NativeArray<NativeQuadTree.QuadElement<TreeNode>>(length, Allocator.Persistent);
+    int index = 0;
+    foreach (var staticElement in _quadtreeStaticElements)
+    {
+      _quadTreeData[index] = staticElement;
+      index++;
+    }
+    foreach (var agentPos in _quadAgentsPositions)
+    {
+      _quadTreeData[index] = agentPos;
+      index++;
+    }
+    _quadTree.ClearAndBulkInsert(_quadTreeData);
+    _quadTreeCreated = true;
+  }
+
+  private void ClearScenarioResources()
+  {
+    foreach (var agent in _agents)
+    {
+      Destroy(((BaseAgent)agent)._object);
+    }
+    _agents.Clear();
+    _obstacles.Clear();
+    _quadtreeStaticElements.Clear();
+    if (_quadTreeCreated)
+    {
+      _quadTree.Dispose();
+      _quadTreeData.Dispose();
+      _quadTreeCreated = false;
+    }
+  }
+
+  /// <summary>
+  /// Getter for _quadTree
+  /// </summary>
+  /// <returns>SimulationManager's _quadTree</returns>
   public NativeQuadTree.NativeQuadTree<TreeNode> GetQuadTree()
   {
     return _quadTree;
   }
 
-  private void CreateScenarios()
-  {
-    // Create agents
-    for(int i = 0; i < 5; i++)
-    {
-      _agents.Add(new BasicGAAgentParallel());
-      var agent = _agents[_agents.Count - 1];
-      agent.id = _agents.Count;
-      if (agent is BaseAgent)
-      {
-        ((BaseAgent)agent).SetName();
-      }
-    }
+  //private void CreateScenarios()
+  //{
+  //  // Create agents
+  //  for(int i = 0; i < 1; i++)
+  //  {
+  //    _agents.Add(new BasicGAAgentParallel());
+  //    var agent = _agents[_agents.Count - 1];
+  //    agent.id = _agents.Count;
+  //    if (agent is BaseAgent)
+  //    {
+  //      ((BaseAgent)agent).SetName();
+  //    }
+  //  }
 
-    // Straight line scenario
-    var agent1 = _agents[0];
-    ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
-    _agentsScenarioDestinations.Add(new Vector2(-25, 40));
-    agent1.SetForward(new Vector2(0, 1));
-    ((BaseAgent)agent1).scenarioName = "straightLine";
+  //  // Straight line scenario
+  //  var agent1 = _agents[0];
+  //  ((BaseAgent)agent1).SpawnPosition(new Vector2(-25, 1));
+  //  _agentsScenarioDestinations.Add(new Vector2(-25, 40));
+  //  agent1.SetForward(new Vector2(0, 1));
+  //  ((BaseAgent)agent1).scenarioName = "straightLine";
 
-    // Small obstacle scenario
-    var agent2 = _agents[1];
-    ((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
-    _agentsScenarioDestinations.Add(new Vector2(25, 40));
-    agent2.SetForward(new Vector2(0, 1));
-    ((BaseAgent)agent2).scenarioName = "smallObstacle";
+  //  //// Small obstacle scenario
+  //  //var agent2 = _agents[1];
+  //  //((BaseAgent)agent2).SpawnPosition(new Vector2(25, 1));
+  //  //_agentsScenarioDestinations.Add(new Vector2(25, 40));
+  //  //agent2.SetForward(new Vector2(0, 1));
+  //  //((BaseAgent)agent2).scenarioName = "smallObstacle";
 
-    // Corner scenario
-    var agent3 = _agents[2];
-    ((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
-    _agentsScenarioDestinations.Add(new Vector2(-40, -15));
-    ((BaseAgent)agent3).scenarioName = "cornerProblem";
+  //  //// Corner scenario
+  //  //var agent3 = _agents[2];
+  //  //((BaseAgent)agent3).SpawnPosition(new Vector2(-40, -40));
+  //  //_agentsScenarioDestinations.Add(new Vector2(-40, -15));
+  //  //((BaseAgent)agent3).scenarioName = "cornerProblem";
 
-    // 2 opposite agents scenario
-    var agent4 = _agents[3];
-    ((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
-    _agentsScenarioDestinations.Add(new Vector2(25, -5));
-    ((BaseAgent)agent4).scenarioName = "oppositeAgents";
+  //  //// 2 opposite agents scenario
+  //  //var agent4 = _agents[3];
+  //  //((BaseAgent)agent4).SpawnPosition(new Vector2(25, -75));
+  //  //_agentsScenarioDestinations.Add(new Vector2(25, -5));
+  //  //((BaseAgent)agent4).scenarioName = "oppositeAgents";
 
-    var agent5 = _agents[4];
-    ((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
-    agent5.SetForward(new Vector2(0, -1));
-    _agentsScenarioDestinations.Add(new Vector2(25, -95));
-    ((BaseAgent)agent5).scenarioName = "oppositeAgents";
+  //  //var agent5 = _agents[4];
+  //  //((BaseAgent)agent5).SpawnPosition(new Vector2(25, -30));
+  //  //agent5.SetForward(new Vector2(0, -1));
+  //  //_agentsScenarioDestinations.Add(new Vector2(25, -95));
+  //  //((BaseAgent)agent5).scenarioName = "oppositeAgents";
 
-    foreach (var agent in _agents)
-    {
-      // Set agents destination to their current position so they stay in place until trigger
-      agent.SetDestination(agent.position);
+  //  foreach (var agent in _agents)
+  //  {
+  //    // Set agents destination to their current position so they stay in place until trigger
+  //    agent.SetDestination(agent.position);
 
-      // Register agents to other collision avoiders
-      foreach (var collisionAvoider in _collisionListeners)
-      {
-        collisionAvoider.OnAgentAdded(agent);
-      }
-    }
-  }
+  //    // Register agents to other collision avoiders
+  //    foreach (var collisionAvoider in _collisionListeners)
+  //    {
+  //      collisionAvoider.OnAgentAdded(agent);
+  //    }
+  //  }
+  //}
 }
