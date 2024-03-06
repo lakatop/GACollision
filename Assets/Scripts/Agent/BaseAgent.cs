@@ -57,6 +57,8 @@ public abstract class BaseAgent : IBaseAgent
   public Vector2 destination { get; protected set; }
   /// <inheritdoc cref="IBaseAgent.updateInterval"/>
   public float updateInterval { get; set; }
+  /// <inheritdoc cref="IBaseAgent.inDestination"/>
+  public bool inDestination { get; set; }
   /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
   public abstract IBaseCollisionAvoider collisionAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>

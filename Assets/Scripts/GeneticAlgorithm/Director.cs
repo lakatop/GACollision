@@ -223,7 +223,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BezierGeneticAlgorithmParallel();
     int populationSize = 100; //100
-    int iterations = 50; //50
+    int iterations = 20; //50
     int pathSize = 7;
     float maxAcc = 1f;
 

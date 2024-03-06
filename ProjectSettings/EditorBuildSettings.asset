@@ -6,9 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StraightLineScene.unity
+    guid: 124f7626b0e5b4f468653349e32c9c87
+  - enabled: 1
+    path: Assets/Scenes/SmallObstacleScene.unity
+    guid: 7f7b85d3d3c234eb29976db714b34b38
+  - enabled: 1
+    path: Assets/Scenes/CornerScene.unity
+    guid: 36b43356998c741d8979e6c88d7e1f49
+  - enabled: 1
+    path: Assets/Scenes/OppositeScene.unity
+    guid: d1033034036394536938f15f38d4bd68
+  - enabled: 1
+    path: Assets/Scenes/OppositeMultipleScene.unity
+    guid: 569833288a15842609f939d5cd96aa70
+  - enabled: 1
+    path: Assets/Scenes/OppositeCircleScene.unity
+    guid: 5cd67b695fa2b4d68b0553941726b603
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/Scene2.unity
-    guid: 6a71e03a27c5947289d25ba195ec8768
   m_configObjects: {}

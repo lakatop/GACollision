@@ -40,6 +40,7 @@ public class BasicGAAgentParallel : BaseAgent
     _runGa = true;
     iteration = 0;
     previousLocation = position;
+    inDestination = false;
   }
 
   public override void SetDestination(Vector2 des)
@@ -98,6 +99,9 @@ public class BasicGAAgentParallel : BaseAgent
     {
       destination = position;
     }
+
+    // This is to reset NavMeshAgent's default behaviour to start navigation after path planinng
+    GetComponent<NavMeshAgent>().Warp(_object.transform.position);
   }
 
   // Run GA and get results
@@ -109,9 +113,11 @@ public class BasicGAAgentParallel : BaseAgent
     if ((position - destination).magnitude <= 0.1f && nextVel.magnitude < 2f)
     {
       nextVel = Vector2.zero;
+      inDestination = true;
       return;
     }
 
+    inDestination = false;
 
     if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
     {
@@ -155,8 +161,9 @@ public class BasicGAAgentParallel : BaseAgent
     //Debug.Log(string.Format("Forward {0}", GetForward()));
     if(_path.status == NavMeshPathStatus.PathComplete)
     {
-      foreach (var corner in _path.corners)
+      for (int i = 1; i < _path.corners.Length; i++)
       {
+        var corner = _path.corners[i];
         PathDrawer.DrawDestination(new Vector2(corner.x, corner.z), Color.white);
       }
       PathDrawer.DrawDestination(destination, Color.yellow);
