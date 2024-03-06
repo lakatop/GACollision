@@ -222,9 +222,9 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
-    int populationSize = 100;
-    int iterations = 100;
-    int pathSize = 5;
+    int populationSize = 100; //100
+    int iterations = 50; //50
+    int pathSize = 7;
     float maxAcc = 1f;
 
     // Set crossover
@@ -339,6 +339,16 @@ public class GeneticAlgorithmDirector
       endPosition = agent.destination,
       forward = agent.GetForward(),
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
+    };
+
+    // Set logger
+    ga.logger = new BezierIndividualLogger()
+    {
+      individualFitness = new NativeArray<float>(iterations + 1, Allocator.TempJob),
+      jerkFitness = new NativeArray<float>(iterations + 1, Allocator.TempJob),
+      collisionFitness = new NativeArray<float>(iterations + 1, Allocator.TempJob),
+      endDistanceFitness = new NativeArray<float>(iterations + 1, Allocator.TempJob),
+      ttdFitness = new NativeArray<float>(iterations + 1, Allocator.TempJob)
     };
 
     //ga.popInitialization = new DebugInitialization()

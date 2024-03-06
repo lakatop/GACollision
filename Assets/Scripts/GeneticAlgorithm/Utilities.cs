@@ -3,6 +3,8 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+using System;
+
 namespace UtilsGA
 {
   public static class UtilsGA
@@ -174,6 +176,53 @@ namespace UtilsGA
     public static float CalculateCollisionDecayFunction(int step)
     {
       return Mathf.Pow((float)System.Math.E, -0.5f * (step - 0.5f));
+    }
+
+    /// <summary>
+    /// Calculates maximum velocity agent can have currently to be still able to decelerate to destination correctly
+    /// </summary>
+    /// <param name="D">Destination distance</param>
+    /// <returns></returns>
+    public static float CalculateMaxVelocity(float D)
+    {
+      // If D is bigger than 4.5, we can definitelly go with max agents speed = 2.5f because we are able to decelerate in 3 steps to 0
+      if (D > 4.5f)
+      {
+        return 2.5f;
+      }
+
+      // The steps table is following:
+      // D = [0 -1] --> n = 1
+      // D = (1 - 3] --> n = 2
+      // D = (3 - 4.5] --> n = 3
+      int n = 1;
+      if (D > 1 && D <= 3)
+      {
+        n = 2;
+      }
+      else if (D > 3 && D <= 4.5)
+      {
+        n = 3;
+      }
+
+      // Calculate maximum velocity using formula
+      var maxAcceptableVelocity = (D / n) + ((float)(n - 1) / 2);
+      return maxAcceptableVelocity;
+    }
+
+    public static float GetMinValueFromArray(ref NativeArray<float> arr)
+    {
+      var min = arr[0];
+
+      for (int i = 1; i < arr.Length; i++)
+      {
+        if (arr[i] < min)
+        {
+          min = arr[i];
+        }
+      }
+
+      return min;
     }
   }
 }

@@ -167,7 +167,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   // Population
   public NativeBezierPopulation pop;
-  //public FitnessEvaluationLogger logger;
+  public BezierIndividualLogger logger;
   public BezierPopulationDrawer popDrawer;
 
 
@@ -211,7 +211,12 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       ranking.ModifyPopulation(ref pop._population, i);
 
       // Logging
-      //logger.LogPopulationState(ref pop._population, i);
+      logger.LogPopulationState(ref ranking.resultingFitnesses,
+                                ref jerkFitness.fitnesses,
+                                ref collisionFitness.fitnesses,
+                                ref endDistanceFitness.fitnesses,
+                                ref ttdFitness.fitnesses,
+                                i);
 
       // Selection
       selection.ModifyPopulation(ref pop._population, i);
@@ -245,8 +250,14 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
                          ttdFitness.weight);
     ranking.ModifyPopulation(ref pop._population, iterations);
 
-    //logger.LogPopulationState(ref pop._population, iterations);
-    popDrawer.DrawPopulation(ref pop._population);
+    logger.LogPopulationState(ref ranking.resultingFitnesses,
+                          ref jerkFitness.fitnesses,
+                          ref collisionFitness.fitnesses,
+                          ref endDistanceFitness.fitnesses,
+                          ref ttdFitness.fitnesses,
+                          iterations);
+    // Debug Draw
+    //popDrawer.DrawPopulation(ref pop._population);
     SetWinner();
   }
 
@@ -354,7 +365,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     cross.Dispose();
 
     selection.Dispose();
-    //logger.Dispose();
+    logger.Dispose();
     ranking.Dispose();
     _winner.Dispose();
     pop.Dispose();
