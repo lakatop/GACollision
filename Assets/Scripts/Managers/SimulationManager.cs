@@ -499,7 +499,9 @@ public class SimulationManager : MonoBehaviour
       new StraightLineScenario(1),
       new SmallObstacleScenario(1),
       new CornerScenario(1),
-      new OppositeScenario(1)
+      new OppositeScenario(1),
+      new OppositeMultipleScenario(1),
+      new OppositeCircleScenario(1)
     };
   }
 

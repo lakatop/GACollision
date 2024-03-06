@@ -895,7 +895,7 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
           {
             if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, pointOncurve, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
             {
-              PathDrawer.DrawConnectionLine(newPos, pointOncurve);
+              //PathDrawer.DrawConnectionLine(newPos, pointOncurve);
               fitness += col * UtilsGA.UtilsGA.CalculateCollisionDecayFunction(stepIndex - 1);
             }
             newPos = pointOncurve;
