@@ -27,7 +27,8 @@ public class OppositeScenario : IScenario
     }
 
     Vector2 spawnPosition = new Vector2(0, -20);
-    Vector2 destination = new Vector2(0, 30);
+    //Vector2 destination = new Vector2(0, 30);
+    Vector2 destination = new Vector2(0, -20);
 
     ((BaseAgent)agent).SpawnPosition(spawnPosition);
     agent.SetDestination(destination);
