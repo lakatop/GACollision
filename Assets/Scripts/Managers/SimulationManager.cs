@@ -293,7 +293,7 @@ public class SimulationManager : MonoBehaviour
       if (boxCollider == null)
       {
         Debug.LogError("BoxCollider component not found.");
-        return;
+        continue;
       }
 
       // Get the cube's collider bounds
