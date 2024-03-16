@@ -332,13 +332,15 @@ public class AgentLogger
   public void CreateConfigurationFile(string configuration)
   {
     var confFile = _csvFile = "Plotting/" + _configurationId + "/" + "config.txt";
+    FileInfo fileInfo = new FileInfo(confFile);
+    fileInfo.Directory.Create();
 
     if (File.Exists(confFile))
     {
       return;
     }
 
-    using (var file = File.AppendText(confFile))
+    using (var file = File.CreateText(confFile))
     {
       file.WriteLine(configuration);
     }

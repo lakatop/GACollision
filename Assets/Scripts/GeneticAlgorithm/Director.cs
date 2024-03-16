@@ -222,8 +222,8 @@ public class GeneticAlgorithmDirector
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
-    int populationSize = 10; //100
-    int iterations = 1; //20
+    int populationSize = 100; //100
+    int iterations = 20; //20
     int pathSize = 7;
     float maxAcc = 1f;
 
