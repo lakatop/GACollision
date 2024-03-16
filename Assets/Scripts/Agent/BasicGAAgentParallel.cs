@@ -128,6 +128,8 @@ public class BasicGAAgentParallel : BaseAgent
     {
       nextVel = Vector2.zero;
       inDestination = true;
+      logger.SetConfigurationId(gaJob.GetHyperparametersId());
+      logger.CreateConfigurationFile(gaJob.GetConfiguration());
       return;
     }
 
@@ -185,7 +187,6 @@ public class BasicGAAgentParallel : BaseAgent
       }
       PathDrawer.DrawDestination(destination, Color.yellow);
     }
-
 
     var vel = nextVel * Time.deltaTime;
     var pos = position + vel;

@@ -736,6 +736,11 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
     return GetType().Name;
   }
 
+  public float GetFitnessWeight()
+  {
+    return weight;
+  }
+
   public void Dispose()
   {
     fitnesses.Dispose();
@@ -866,6 +871,11 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
     return GetType().Name;
   }
 
+  public float GetFitnessWeight()
+  {
+    return weight;
+  }
+
   public void Dispose()
   {
     fitnesses.Dispose();
@@ -953,6 +963,11 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
   public string GetComponentName()
   {
     return GetType().Name;
+  }
+
+  public float GetFitnessWeight()
+  {
+    return weight;
   }
 
   public void Dispose()
@@ -1124,6 +1139,11 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
   public string GetComponentName()
   {
     return GetType().Name;
+  }
+
+  public float GetFitnessWeight()
+  {
+    return weight;
   }
 
   public void Dispose()

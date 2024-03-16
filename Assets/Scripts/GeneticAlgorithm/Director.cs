@@ -232,6 +232,7 @@ public class GeneticAlgorithmDirector
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       parents = new NativeArray<BezierIndividualStruct>(2, Allocator.TempJob),
+      _crossProb = 0.1f,
     };
 
     // Set mutation
@@ -244,7 +245,8 @@ public class GeneticAlgorithmDirector
       destination = agent.destination,
       forward = agent.GetForward(),
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
-      maxAcc = maxAcc
+      maxAcc = maxAcc,
+      _mutationProb = 1.0f,
     };
     ga.clampVelocityMutation = new BezierClampVelocityMutationOperatorParallel()
     {
@@ -252,22 +254,26 @@ public class GeneticAlgorithmDirector
       _agentSpeed = agent.speed,
       _updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
-      maxAcc = maxAcc
+      maxAcc = maxAcc,
+      _mutationProb = 1.0f,
     };
     ga.shuffleMutation = new BezierShuffleAccMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      _mutationProb = 0.3f,
     };
     ga.smoothMutation = new BezierSmoothAccMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      _mutationProb = 0.9f,
     };
     ga.controlPointsMutation = new BezierShuffleControlPointsMutationOperatorParallel()
     {
       _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       startPosition = agent.position,
       endPosition = agent.destination,
-      forward = agent.GetForward()
+      forward = agent.GetForward(),
+      _mutationProb = 0.3f,
     };
 
     // Set fitnesses

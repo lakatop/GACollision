@@ -49,6 +49,7 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
   public NativeArray<BezierIndividualStruct> parents;
+  [ReadOnly] public float _crossProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
@@ -56,7 +57,7 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
     {
       var crossProb = _rand.NextFloat();
       // Do cross only with small probability
-      if (crossProb > 0.1)
+      if (crossProb > _crossProb)
         return;
 
       var parent1 = currentPopulation[i];
@@ -98,6 +99,11 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
   public string GetComponentName()
   {
     return GetType().Name;
+  }
+
+  public float GetCrossProbability()
+  {
+    return _crossProb;
   }
 
   public void Dispose()

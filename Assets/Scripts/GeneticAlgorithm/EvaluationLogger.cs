@@ -299,7 +299,7 @@ public class AgentLogger
 
   public void CreateCsv()
   {
-    _csvFile = "Plotting/" + _scenarioId + "/" + _agentId + ".csv";
+    _csvFile = "Plotting/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
     FileInfo fileInfo = new FileInfo(_csvFile);
     fileInfo.Directory.Create();
 
@@ -326,6 +326,21 @@ public class AgentLogger
     using (var file = File.AppendText(_csvFile))
     {
       file.WriteLine("{0},{1},{2},{3},{4},{5}", pathLength, pathDuration, collisionCount, framesInCollision, pathJerk, gaTimes);
+    }
+  }
+
+  public void CreateConfigurationFile(string configuration)
+  {
+    var confFile = _csvFile = "Plotting/" + _configurationId + "/" + "config.txt";
+
+    if (File.Exists(confFile))
+    {
+      return;
+    }
+
+    using (var file = File.AppendText(confFile))
+    {
+      file.WriteLine(configuration);
     }
   }
 

@@ -58,6 +58,10 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private NativeQuadTree.AABB2D _platfornm { get; set; }
   /// <summary>
+  /// Gameobject that represents walking platform
+  /// </summary>
+  private GameObject _platformObject { get; set; }
+  /// <summary>
   /// Represents QuadElements (points) for static obstacles
   /// </summary>
   private List<NativeQuadTree.QuadElement<TreeNode>> _quadtreeStaticElements { get; set; }
@@ -348,6 +352,8 @@ public class SimulationManager : MonoBehaviour
         return;
       }
 
+      _platformObject = obj;
+
       // Get the cube's collider bounds
       Bounds bounds = boxCollider.bounds;
       _platfornm = new NativeQuadTree.AABB2D(
@@ -497,10 +503,10 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("Creating scenarios");
     _scenarios = new List<IScenario>
     {
-      new StraightLineScenario(1),
+      //new StraightLineScenario(1),
       //new SmallObstacleScenario(1),
       //new CornerScenario(1),
-      //new OppositeScenario(1),
+      new OppositeScenario(1),
       //new OppositeMultipleScenario(1),
       //new OppositeCircleScenario(1),
       //new NarrowCoridorTurnAroundScenario(1),
@@ -586,5 +592,14 @@ public class SimulationManager : MonoBehaviour
   public NativeQuadTree.NativeQuadTree<TreeNode> GetQuadTree()
   {
     return _quadTree;
+  }
+
+  /// <summary>
+  /// Getter for platform object
+  /// </summary>
+  /// <returnsSimulaitonManager's _platformObject></returns>
+  public GameObject GetPlatform()
+  {
+    return _platformObject;
   }
 }

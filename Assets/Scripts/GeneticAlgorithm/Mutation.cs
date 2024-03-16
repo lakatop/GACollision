@@ -100,10 +100,14 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
   [ReadOnly] public float _updateInterval;
   [ReadOnly] public float startVelocity;
   [ReadOnly] public float maxAcc;
-
+  [ReadOnly] public float _mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
+    var mutProb = _rand.NextFloat();
+    if (mutProb > _mutationProb)
+      return;
+
     // Take last individual
     var individual = currentPopulation[currentPopulation.Length - 1];
 
@@ -150,6 +154,11 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
     return GetType().Name;
   }
 
+  public float GetMutationProbabilty()
+  {
+    return _mutationProb;
+  }
+
   public void Dispose()
   {
   }
@@ -164,14 +173,15 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
   [ReadOnly] public float _updateInterval;
   [ReadOnly] public float startVelocity;
   [ReadOnly] public float maxAcc;
+  [ReadOnly] public float _mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      //var mutProb = _rand.NextFloat();
-      //if (mutProb > 0.9)
-      //  return;
+      var mutProb = _rand.NextFloat();
+      if (mutProb > _mutationProb)
+        return;
 
       var individual = currentPopulation[i];
 
@@ -224,6 +234,11 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
     return GetType().Name;
   }
 
+  public float GetMutationProbabilty()
+  {
+    return _mutationProb;
+  }
+
   public void Dispose()
   {
   }
@@ -234,13 +249,14 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
 public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public float _mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
-      if (mutProb > 0.9)
+      if (mutProb > _mutationProb)
         return;
 
       var individual = currentPopulation[i];
@@ -264,6 +280,11 @@ public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModif
     return GetType().Name;
   }
 
+  public float GetMutationProbabilty()
+  {
+    return _mutationProb;
+  }
+
   public void Dispose()
   {
   }
@@ -273,6 +294,7 @@ public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModif
 public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
   [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public float _mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
@@ -280,7 +302,7 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
     {
       var mutProb = _rand.NextFloat();
       // Low mutation rate because we are counting on other mutation to smooth accelerations
-      if (mutProb > 0.3)
+      if (mutProb > _mutationProb)
         return;
 
       var individual = currentPopulation[i];
@@ -289,7 +311,7 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
       {
         // Also dont change every acceleration, just some
         mutProb = _rand.NextFloat();
-        if (mutProb > 0.3)
+        if (mutProb > _mutationProb)
           continue;
 
         var acc = (_rand.NextFloat() * 2f) - 1f;
@@ -303,6 +325,11 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
   public string GetComponentName()
   {
     return GetType().Name;
+  }
+
+  public float GetMutationProbabilty()
+  {
+    return _mutationProb;
   }
 
   public void Dispose()
@@ -321,13 +348,14 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 endPosition;
   [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float _mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var mutProb = _rand.NextFloat();
-      if (mutProb > 0.3)
+      if (mutProb > _mutationProb)
         return;
 
       // Define restrictions on control points position
@@ -355,6 +383,11 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
   public string GetComponentName()
   {
     return GetType().Name;
+  }
+
+  public float GetMutationProbabilty()
+  {
+    return _mutationProb;
   }
 
   public void Dispose()
