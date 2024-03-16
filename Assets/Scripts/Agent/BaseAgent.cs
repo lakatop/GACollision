@@ -156,6 +156,20 @@ public abstract class BaseAgent : IBaseAgent
   }
 
   /// <summary>
+  /// Triggered by AgentCollisionDetectionHandler.OnCollisionEnter
+  /// </summary>
+  public virtual void OnCollisionEnter()
+  {
+  }
+
+  /// <summary>
+  /// Triggered by AgentCollisionDetectionHandler.OnCollisionStay
+  /// </summary>
+  public virtual void OnCollisionStay()
+  {
+  }
+
+  /// <summary>
   /// Get component attached to agent's GameObject
   /// </summary>
   /// <typeparam name="T">Component type</typeparam>
@@ -183,5 +197,26 @@ public abstract class BaseAgent : IBaseAgent
   public GameObject GetGameObject()
   {
     return _object;
+  }
+}
+
+
+public class AgentCollisionDetectionHandler : MonoBehaviour
+{
+  private BaseAgent _agent;
+
+  public AgentCollisionDetectionHandler(BaseAgent agent)
+  {
+    _agent = agent;
+  }
+
+  private void OnCollisionEnter(Collision collision)
+  {
+    _agent.OnCollisionEnter();
+  }
+
+  private void OnCollisionStay(Collision collision)
+  {
+    _agent.OnCollisionStay();
   }
 }

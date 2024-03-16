@@ -40,6 +40,18 @@ public class OppositeCircleScenario : IScenario
       agent.SetForward((destination - spawnPosition).normalized);
       ((BaseAgent)agent).scenarioName = _scenarioName;
     }
+
+    AdditionalAgentSetup(agents);
+  }
+
+  public void ClearScenario(List<IBaseAgent> agents)
+  {
+    foreach (var agent in agents)
+    {
+      ((BasicGAAgentParallel)agent).logger.SetEndTime(Time.realtimeSinceStartupAsDouble);
+      ((BasicGAAgentParallel)agent).logger.CreateCsv();
+      ((BasicGAAgentParallel)agent).logger.AppendCsvLog();
+    }
   }
 
   private Vector2 GetCirclePosition(int index, int agentsCount, float radius)
@@ -51,5 +63,15 @@ public class OppositeCircleScenario : IScenario
       x = radius * Mathf.Cos(theta),
       y = radius * Mathf.Sin(theta)
     };
+  }
+
+  private void AdditionalAgentSetup(List<IBaseAgent> agents)
+  {
+    foreach (var agent in agents)
+    {
+      ((BasicGAAgentParallel)agent).logger.SetAgentId(agent.id.ToString());
+      ((BasicGAAgentParallel)agent).logger.SetScenarioId(_scenarioName);
+      ((BasicGAAgentParallel)agent).logger.SetStartTime(Time.realtimeSinceStartupAsDouble);
+    }
   }
 }

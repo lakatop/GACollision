@@ -153,16 +153,16 @@ public class SimulationManager : MonoBehaviour
 
     if (_scenarioStarted && AllAgentsFinished())
     {
+      ClearScenarioResources();
+
       if (ShouldRepeatScenario())
       {
-        ClearScenarioResources();
         _scenarioStarted = false;
         _skipNextFrame = true;
         _updateTimer = 0f;
       }
       else if (IsThereNextScenario())
       {
-        ClearScenarioResources();
         SetNextScenario();
         _updateTimer = 0f;
       }
@@ -170,6 +170,7 @@ public class SimulationManager : MonoBehaviour
       {
         // Ideally end application, but it seems iOS has some troubles with that
         //UnityEditor.EditorApplication.isPlaying = false;
+        Application.Unload();
       }
     }
     else
@@ -497,14 +498,14 @@ public class SimulationManager : MonoBehaviour
     _scenarios = new List<IScenario>
     {
       new StraightLineScenario(1),
-      new SmallObstacleScenario(1),
-      new CornerScenario(1),
-      new OppositeScenario(1),
-      new OppositeMultipleScenario(1),
-      new OppositeCircleScenario(1),
-      new NarrowCoridorTurnAroundScenario(1),
-      new NarrowCoridorOppositeScenario(1),
-      new NarrowCoridorsOppositeNoNavmeshScenario(1)
+      //new SmallObstacleScenario(1),
+      //new CornerScenario(1),
+      //new OppositeScenario(1),
+      //new OppositeMultipleScenario(1),
+      //new OppositeCircleScenario(1),
+      //new NarrowCoridorTurnAroundScenario(1),
+      //new NarrowCoridorOppositeScenario(1),
+      //new NarrowCoridorsOppositeNoNavmeshScenario(1)
     };
   }
 
@@ -561,6 +562,8 @@ public class SimulationManager : MonoBehaviour
 
   private void ClearScenarioResources()
   {
+    _scenarios[_scenarioIndex].ClearScenario(_agents);
+
     foreach (var agent in _agents)
     {
       Destroy(((BaseAgent)agent)._object);

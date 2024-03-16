@@ -9,6 +9,11 @@ public interface IScenario
   /// <param name="agents">SimulationManager's list of agents</param>
   public void SetupScenario(List<IBaseAgent> agents);
   /// <summary>
+  /// Perform any remaining actions before scenario resources will be cleared
+  /// </summary>
+  /// <param name="agents">SimulationManager's list of agents that were present in scenario</param>
+  public void ClearScenario(List<IBaseAgent> agents);
+  /// <summary>
   /// Counter how many times this scenario should run
   /// </summary>
   public int runCounter { get; set; }
