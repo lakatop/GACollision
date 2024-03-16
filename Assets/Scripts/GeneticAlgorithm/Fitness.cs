@@ -628,13 +628,17 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
         Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
       float estimatedCurveLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[3]) + controlNetLength / 2f;
-      int divisions = Mathf.CeilToInt(estimatedCurveLength * 100);
+      int divisions = Mathf.CeilToInt(estimatedCurveLength * 20);
 
       bool overshoot = false;
-
+      bool inDestination = false;
       var prevVelocity = startVelocity;
+
       for (int i = 0; i < individual.accelerations.Length; i++)
       {
+        if (inDestination)
+          break;
+
         var acc = individual.accelerations[i];
         var currentAcc = maxAcc * acc;
         var velocity = prevVelocity + currentAcc;
@@ -649,10 +653,6 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         {
           // Calculate Distance To Destination
           var distanceToDestination = (_destination - newPos).magnitude;
-
-
-          // Calculate where we end up after overshooting
-          var overshootVector = (_destination - newPos).normalized * velocity;
 
           // Calculate how far it would be untill we slow down to 0
           var traveled = 0f;
@@ -690,7 +690,7 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 
             var distanceSinceLastPoint = (newPos - pointOncurve).magnitude;
             // We may have overshoot it, but only by small distance so we will not bother with it
-            if(Mathf.Abs(velocity - distanceSinceLastPoint) <= 0.01f)
+            if (velocity <= distanceSinceLastPoint)
             {
               newPos = pointOncurve;
               alreadyTraveled = t;
@@ -703,10 +703,18 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         }
 
 
-        // Lets not count this as we overshoot
-        // Go to the beginning of the cycle where we handle this situation
         if (overshoot)
         {
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          // Check if we would be able to stop at the destination
+          // If yes, count this as we would arrive properly and dont overshoot
+          if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
+          {
+            inDestination = true;
+            newPos = _destination;
+            fitness = 0;
+            continue;
+          }
           i--;
         }
         else
@@ -765,8 +773,13 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
       var prevVelocity = startVelocity;
       var pathSize = individual.accelerations.Length - 1;
       bool overshoot = false;
+      bool inDestination = false;
+
       for (int i = 0; i < individual.accelerations.Length; i++)
       {
+        if (inDestination)
+          break;
+
         var acc = individual.accelerations[i];
         var currentAcc = maxAcc * acc;
         var velocity = prevVelocity + currentAcc;
@@ -779,7 +792,19 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
         // If true, we overshoot the distance
         if (overshoot)
         {
-          pathSize = i;
+          // Calculate how many steps it would take untill we slow down to 0
+          var traveled = 0;
+          var initialVelocity = velocity;
+          while (velocity > 0)
+          {
+            traveled++;
+            velocity -= maxAcc;
+          }
+          // Fitness = distance from endpos to destination (*2 = for path to the endpos and back to destination)
+          pathSize = i; // the distance it took so far
+          pathSize += 1; // +1 for crossing the destination
+          pathSize += (traveled - 1) * 2; // slowing down steps + return to destination (for returning simply multiply by steps it took to slow donw)
+
           break;
         }
 
@@ -797,7 +822,7 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
 
           var distanceSinceLastPoint = (newPos - pointOncurve).magnitude;
           // We may have overshoot it, but only by small distance so we will not bother with it
-          if (distanceSinceLastPoint >= velocity)
+          if (velocity <= distanceSinceLastPoint)
           {
             newPos = pointOncurve;
             alreadyTraveled = t;
@@ -812,6 +837,16 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
         // Go to the beginning of the cycle where we handle this situation
         if (overshoot)
         {
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          // Check if we would be able to stop at the destination
+          // If yes, count this as we would arrive properly and dont overshoot
+          if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
+          {
+            inDestination = true;
+            newPos = _destination;
+            pathSize = i;
+            continue;
+          }
           i--;
         }
         else
@@ -891,7 +926,7 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
 
           var distanceSinceLastPoint = (newPos - pointOncurve).magnitude;
           // We may have overshoot it, but only by small distance so we will not bother with it
-          if (distanceSinceLastPoint >= velocity)
+          if (velocity <= distanceSinceLastPoint)
           {
             if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, pointOncurve, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
             {
@@ -960,8 +995,13 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
 
       var velocityIndex = 0;
       bool overshoot = false;
+      bool inDestination = false;
+
       for (int i = 0; i < individual.accelerations.Length; i++)
       {
+        if (inDestination)
+          break;
+
         var acc = individual.accelerations[i];
         var currentAcc = maxAcc * acc;
         var velocity = prevVelocity + currentAcc;
@@ -1028,6 +1068,22 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
 
         if (overshoot)
         {
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          // Check if we would be able to stop at the destination
+          // If yes, count this as we would arrive properly and dont overshoot
+          if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
+          {
+            inDestination = true;
+            velocities[velocityIndex] = (_destination - newPos);
+            for (int j = velocityIndex + 1; j < individual.accelerations.Length; j++)
+            {
+              velocities[j] = Vector2.zero;
+            }
+            newPos = _destination;
+
+            continue;
+          }
+
           i--;
         }
         else

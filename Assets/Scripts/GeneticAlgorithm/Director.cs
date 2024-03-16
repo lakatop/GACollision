@@ -215,7 +215,7 @@ public class GeneticAlgorithmDirector
       ((BasicGAAgentParallel)agent).nextVel.magnitude,
       maxAcc,
       SimulationManager.Instance._agentUpdateInterval,
-});
+    });
 
     return ga;
   }
@@ -223,7 +223,7 @@ public class GeneticAlgorithmDirector
   {
     var ga = new BezierGeneticAlgorithmParallel();
     int populationSize = 100; //100
-    int iterations = 20; //50
+    int iterations = 20; //20
     int pathSize = 7;
     float maxAcc = 1f;
 
