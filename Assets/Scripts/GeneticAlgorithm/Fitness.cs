@@ -705,7 +705,7 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
@@ -842,7 +842,7 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
         // Go to the beginning of the cycle where we handle this situation
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
@@ -1083,7 +1083,7 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
 
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.1f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
