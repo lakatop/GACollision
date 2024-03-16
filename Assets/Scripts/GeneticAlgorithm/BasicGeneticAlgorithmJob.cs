@@ -250,14 +250,17 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
                          ttdFitness.weight);
     ranking.ModifyPopulation(ref pop._population, iterations);
 
-    logger.LogPopulationState(ref ranking.resultingFitnesses,
-                          ref jerkFitness.fitnesses,
-                          ref collisionFitness.fitnesses,
-                          ref endDistanceFitness.fitnesses,
-                          ref ttdFitness.fitnesses,
-                          iterations);
+    // Logging
+    //logger.LogPopulationState(ref ranking.resultingFitnesses,
+    //                      ref jerkFitness.fitnesses,
+    //                      ref collisionFitness.fitnesses,
+    //                      ref endDistanceFitness.fitnesses,
+    //                      ref ttdFitness.fitnesses,
+    //                      iterations);
+
     // Debug Draw
     //popDrawer.DrawPopulation(ref pop._population);
+
     SetWinner();
   }
 
@@ -340,13 +343,50 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
   public string GetConfiguration()
   {
     var builder = new System.Text.StringBuilder();
-    //builder.AppendLine(string.Format("CROSS,{0}", cross.GetComponentName()));
-    //builder.AppendLine(string.Format("MUTATION,{0}", mutation.GetComponentName()));
-    builder.AppendLine(string.Format("FITNESSES,{0}, {1}, {2}", jerkFitness.GetComponentName(), endDistanceFitness.GetComponentName(), collisionFitness.GetComponentName()));
-    builder.AppendLine(string.Format("SELECTION,{0}", selection.GetComponentName()));
-    builder.AppendLine(string.Format("INITIALIZATION,{0}", popInitialization.GetComponentName()));
+
+    // cross
+    builder.AppendLine(string.Format("CROSS,{0}", cross.GetComponentName()));
+
+    // mutation
+    builder.AppendLine(string.Format("MUTATION {0}, {1}", controlPointsMutation.GetComponentName(), controlPointsMutation.GetMutationProbabilty().ToString()));
+    builder.AppendLine(string.Format("MUTATION {0}, {1}", smoothMutation.GetComponentName(), smoothMutation.GetMutationProbabilty().ToString()));
+    builder.AppendLine(string.Format("MUTATION {0}, {1}", shuffleMutation.GetComponentName(), shuffleMutation.GetMutationProbabilty().ToString()));
+    builder.AppendLine(string.Format("MUTATION {0}, {1}", clampVelocityMutation.GetComponentName(), clampVelocityMutation.GetMutationProbabilty().ToString()));
+    builder.AppendLine(string.Format("MUTATION {0}, {1}", straightFinishMutation.GetComponentName(), straightFinishMutation.GetMutationProbabilty().ToString()));
+
+    // fitness
+    builder.AppendLine(string.Format("FITNESSES {0}, {1}", jerkFitness.GetComponentName(), jerkFitness.GetFitnessWeight().ToString()));
+    builder.AppendLine(string.Format("FITNESSES {0}, {1}", collisionFitness.GetComponentName(), collisionFitness.GetFitnessWeight().ToString()));
+    builder.AppendLine(string.Format("FITNESSES {0}, {1}", endDistanceFitness.GetComponentName(), endDistanceFitness.GetFitnessWeight().ToString()));
+    builder.AppendLine(string.Format("FITNESSES {0}, {1}", ttdFitness.GetComponentName(), ttdFitness.GetFitnessWeight().ToString()));
+
+    // selection
+    builder.AppendLine(string.Format("SELECTION {0}", selection.GetComponentName()));
+
+    // initialisation
+    builder.AppendLine(string.Format("INITIALIZATION {0}", popInitialization.GetComponentName()));
+
+    // general population info
+    builder.AppendLine(string.Format("POPULATION SIZE {0}, ITERATIONS {1}", populationSize, iterations));
 
     return builder.ToString();
+  }
+
+  public string GetHyperparametersId()
+  {
+    return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}-{8}-{9}",
+      controlPointsMutation.GetMutationProbabilty().ToString(),
+      smoothMutation.GetMutationProbabilty().ToString(),
+      shuffleMutation.GetMutationProbabilty().ToString(),
+      clampVelocityMutation.GetMutationProbabilty().ToString(),
+      straightFinishMutation.GetMutationProbabilty().ToString(),
+      cross.GetCrossProbability().ToString(),
+      collisionFitness.GetFitnessWeight().ToString(),
+      endDistanceFitness.GetFitnessWeight().ToString(),
+      jerkFitness.GetFitnessWeight().ToString(),
+      ttdFitness.GetFitnessWeight().ToString(),
+      populationSize.ToString(),
+      iterations.ToString());
   }
 
   public void Dispose()

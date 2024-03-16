@@ -3,6 +3,7 @@ using Unity.Collections;
 using System.Text;
 using System.IO;
 using Unity.Burst;
+using System.Collections.Generic;
 using System.Linq;
 
 [BurstCompile]
@@ -246,4 +247,110 @@ public struct BezierIndividualLogger
     endDistanceFitness.Dispose();
     ttdFitness.Dispose();
   }
+}
+
+
+public class ScenarioLogger
+{
+
+}
+
+public class AgentLogger
+{
+  private List<Vector2> _velocities { get; set; }
+  private List<double> _gaTimes { get; set; }
+  private uint _collisionCount { get; set; }
+  private uint _framesInCollision { get; set; }
+  private double _pathStartTime { get; set; }
+  private double _pathEndTime { get; set; }
+  private string _scenarioId { get; set; }
+  private string _agentId { get; set; }
+  private string _configurationId { get; set; }
+  private string _csvFile { get; set; }
+  private static List<string> _columns = new List<string>
+  {
+    "PathLength", // Number of segments in path
+    "PathDuration", // Duration (in seconds) how long it took agent to go from start to end position
+    "CollisionCount", // Collision count
+    "FramesInCollision", // How many frames agent was in collision
+    "PathJerk", // Jerk value of path
+    "GaTimes" // How long (in ms) it took for algorithm to run in average
+  };
+
+  public AgentLogger()
+  {
+    _velocities = new List<Vector2>();
+    _gaTimes = new List<double>();
+    _collisionCount = 0;
+    _framesInCollision = 0;
+    _pathStartTime = 0f;
+    _pathEndTime = 0f;
+  }
+
+  public void AddVelocity(Vector2 vel)
+  {
+    _velocities.Add(vel);
+  }
+
+  public void AddGaTime(double time)
+  {
+    _gaTimes.Add(time);
+  }
+
+  public void CreateCsv()
+  {
+    _csvFile = "Plotting/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
+    FileInfo fileInfo = new FileInfo(_csvFile);
+    fileInfo.Directory.Create();
+
+    if (File.Exists(_csvFile))
+    {
+      return;
+    }
+
+    using (var file = File.CreateText(_csvFile))
+    {
+      file.WriteLine(string.Join(",", _columns));
+    }
+  }
+
+  public void AppendCsvLog()
+  {
+    var pathLength = _velocities.Count;
+    var pathDuration = _pathEndTime - _pathStartTime;
+    var collisionCount = _collisionCount;
+    var framesInCollision = _framesInCollision;
+    var pathJerk = UtilsGA.UtilsGA.CalculatePathJerk(_velocities);
+    var gaTimes = _gaTimes.Average();
+
+    using (var file = File.AppendText(_csvFile))
+    {
+      file.WriteLine("{0},{1},{2},{3},{4},{5}", pathLength, pathDuration, collisionCount, framesInCollision, pathJerk, gaTimes);
+    }
+  }
+
+  public void CreateConfigurationFile(string configuration)
+  {
+    var confFile = _csvFile = "Plotting/" + _configurationId + "/" + "config.txt";
+    FileInfo fileInfo = new FileInfo(confFile);
+    fileInfo.Directory.Create();
+
+    if (File.Exists(confFile))
+    {
+      return;
+    }
+
+    using (var file = File.CreateText(confFile))
+    {
+      file.WriteLine(configuration);
+    }
+  }
+
+  public void AddCollisionCount() { _collisionCount++; }
+  public void AddFramesInCollision() { _framesInCollision++; }
+  public void SetEndTime(double endTime) { _pathEndTime = endTime; }
+  public void SetStartTime(double startTime) { _pathStartTime = startTime; }
+  public void SetScenarioId(string name) { _scenarioId = name; }
+  public void SetAgentId(string name) { _agentId = name; }
+  public void SetConfigurationId(string confId) { _configurationId = confId; }
 }

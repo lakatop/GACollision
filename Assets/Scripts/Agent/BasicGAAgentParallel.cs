@@ -11,6 +11,7 @@ public class BasicGAAgentParallel : BaseAgent
   public override IBaseCollisionAvoider collisionAlg { get; set; }
   public override IBasePathPlanner pathPlanningAlg { get; set; }
   public Vector2 nextVel { get; set; }
+  public AgentLogger logger { get; set; }
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
@@ -25,6 +26,7 @@ public class BasicGAAgentParallel : BaseAgent
   private int iteration { get; set; }
   private float pathSize = 17.5f;
   private int maxSkipDestinations = 1;
+  private double _gaStartRunTime { get; set; }
 
   public BasicGAAgentParallel()
   {
@@ -41,6 +43,8 @@ public class BasicGAAgentParallel : BaseAgent
     iteration = 0;
     previousLocation = position;
     inDestination = false;
+    logger = new AgentLogger();
+    _gaStartRunTime = 0f;
   }
 
   public override void SetDestination(Vector2 des)
@@ -104,6 +108,16 @@ public class BasicGAAgentParallel : BaseAgent
     GetComponent<NavMeshAgent>().Warp(_object.transform.position);
   }
 
+  public override void OnCollisionEnter()
+  {
+    logger.AddCollisionCount();
+  }
+
+  public override void OnCollisionStay()
+  {
+    logger.AddFramesInCollision();
+  }
+
   // Run GA and get results
   public override void OnBeforeUpdate()
   {
@@ -114,6 +128,8 @@ public class BasicGAAgentParallel : BaseAgent
     {
       nextVel = Vector2.zero;
       inDestination = true;
+      logger.SetConfigurationId(gaJob.GetHyperparametersId());
+      logger.CreateConfigurationFile(gaJob.GetConfiguration());
       return;
     }
 
@@ -126,6 +142,7 @@ public class BasicGAAgentParallel : BaseAgent
       gaJob = (BezierGeneticAlgorithmParallel)_gaDirector.MakeBezierGAParallel(this);
 
       _winner = gaJob._winner;
+      _gaStartRunTime = Time.realtimeSinceStartupAsDouble * 1000;
 
       jobScheduled = true;
       _gaJobHandle = gaJob.Schedule();
@@ -145,11 +162,13 @@ public class BasicGAAgentParallel : BaseAgent
       //Debug.Log(string.Format("Previous position {0}", previousLocation));
       PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance._agentUpdateInterval);
       nextVel = _winner[0];
-      Debug.Log(string.Format("Next winner {0}", nextVel));
-      Debug.Log(string.Format("Next winner magnitude {0}", nextVel.magnitude));
+      //Debug.Log(string.Format("Next winner {0}", nextVel));
+      //Debug.Log(string.Format("Next winner magnitude {0}", nextVel.magnitude));
       previousLocation = position;
-      gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
+      //gaJob.logger.WriteRes(gaJob.GetConfiguration(), iteration, scenarioName, id.ToString());
       iteration++;
+      logger.AddVelocity(nextVel);
+      logger.AddGaTime((Time.realtimeSinceStartupAsDouble * 1000) - _gaStartRunTime);
       gaJob.Dispose();
 
       jobScheduled = false;
@@ -168,7 +187,6 @@ public class BasicGAAgentParallel : BaseAgent
       }
       PathDrawer.DrawDestination(destination, Color.yellow);
     }
-
 
     var vel = nextVel * Time.deltaTime;
     var pos = position + vel;

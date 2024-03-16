@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-using System;
+using System.Collections.Generic;
 
 namespace UtilsGA
 {
@@ -223,6 +223,36 @@ namespace UtilsGA
       }
 
       return min;
+    }
+
+    public static float CalculatePathJerk(List<Vector2> velocities)
+    {
+      if (velocities.Count < 3)
+        return 0f;
+
+      Vector2[] accelerations = new Vector2[velocities.Count - 1];
+      Vector2[] jerks = new Vector2[accelerations.Length - 1];
+
+      for (int i = 1; i < velocities.Count; i++)
+      {
+        accelerations[i - 1] = velocities[i] - velocities[i - 1];
+      }
+
+      for (int i = 1; i < accelerations.Length; i++)
+      {
+        jerks[i - 1] = accelerations[i] - accelerations[i - 1];
+      }
+
+      float sumSquaredMagnitude = 0f;
+      foreach (var v in jerks)
+      {
+        sumSquaredMagnitude += v.sqrMagnitude;
+      }
+
+      float averageSqrMagnirude = sumSquaredMagnitude / jerks.Length;
+      float averageMagnitude = Mathf.Sqrt(averageSqrMagnirude);
+
+      return averageMagnitude;
     }
   }
 }

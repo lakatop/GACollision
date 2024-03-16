@@ -58,6 +58,10 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private NativeQuadTree.AABB2D _platfornm { get; set; }
   /// <summary>
+  /// Gameobject that represents walking platform
+  /// </summary>
+  private GameObject _platformObject { get; set; }
+  /// <summary>
   /// Represents QuadElements (points) for static obstacles
   /// </summary>
   private List<NativeQuadTree.QuadElement<TreeNode>> _quadtreeStaticElements { get; set; }
@@ -153,16 +157,16 @@ public class SimulationManager : MonoBehaviour
 
     if (_scenarioStarted && AllAgentsFinished())
     {
+      ClearScenarioResources();
+
       if (ShouldRepeatScenario())
       {
-        ClearScenarioResources();
         _scenarioStarted = false;
         _skipNextFrame = true;
         _updateTimer = 0f;
       }
       else if (IsThereNextScenario())
       {
-        ClearScenarioResources();
         SetNextScenario();
         _updateTimer = 0f;
       }
@@ -170,6 +174,7 @@ public class SimulationManager : MonoBehaviour
       {
         // Ideally end application, but it seems iOS has some troubles with that
         //UnityEditor.EditorApplication.isPlaying = false;
+        Application.Unload();
       }
     }
     else
@@ -292,7 +297,7 @@ public class SimulationManager : MonoBehaviour
       BoxCollider boxCollider = obj.GetComponent<BoxCollider>();
       if (boxCollider == null)
       {
-        Debug.LogError("BoxCollider component not found.");
+        //Debug.LogError("BoxCollider component not found.");
         continue;
       }
 
@@ -346,6 +351,8 @@ public class SimulationManager : MonoBehaviour
         Debug.LogError("BoxCollider component not found.");
         return;
       }
+
+      _platformObject = obj;
 
       // Get the cube's collider bounds
       Bounds bounds = boxCollider.bounds;
@@ -561,6 +568,8 @@ public class SimulationManager : MonoBehaviour
 
   private void ClearScenarioResources()
   {
+    _scenarios[_scenarioIndex].ClearScenario(_agents);
+
     foreach (var agent in _agents)
     {
       Destroy(((BaseAgent)agent)._object);
@@ -583,5 +592,14 @@ public class SimulationManager : MonoBehaviour
   public NativeQuadTree.NativeQuadTree<TreeNode> GetQuadTree()
   {
     return _quadTree;
+  }
+
+  /// <summary>
+  /// Getter for platform object
+  /// </summary>
+  /// <returnsSimulaitonManager's _platformObject></returns>
+  public GameObject GetPlatform()
+  {
+    return _platformObject;
   }
 }

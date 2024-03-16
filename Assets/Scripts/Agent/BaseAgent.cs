@@ -30,11 +30,14 @@ public abstract class BaseAgent : IBaseAgent
   {
     _object = GameObject.CreatePrimitive(PrimitiveType.Capsule);
     _object.GetComponent<CapsuleCollider>().radius = 0.5f;
+    _object.AddComponent<Rigidbody>();
     _object.AddComponent<NavMeshAgent>();
     _object.GetComponent<NavMeshAgent>().baseOffset = 1f;
     _object.GetComponent<MeshRenderer>().material = Resources.Load<Material>(_materialPath);
     _object.AddComponent<DirectionArrowGizmo>();
     _object.AddComponent<LineRenderer>();
+    _object.AddComponent<AgentCollisionDetectionHandler>();
+    _object.GetComponent<AgentCollisionDetectionHandler>()._agent = this;
 
     //Create3DArrowIndicator(_object.transform);
   }
@@ -156,6 +159,20 @@ public abstract class BaseAgent : IBaseAgent
   }
 
   /// <summary>
+  /// Triggered by AgentCollisionDetectionHandler.OnCollisionEnter
+  /// </summary>
+  public virtual void OnCollisionEnter()
+  {
+  }
+
+  /// <summary>
+  /// Triggered by AgentCollisionDetectionHandler.OnCollisionStay
+  /// </summary>
+  public virtual void OnCollisionStay()
+  {
+  }
+
+  /// <summary>
   /// Get component attached to agent's GameObject
   /// </summary>
   /// <typeparam name="T">Component type</typeparam>
@@ -183,5 +200,28 @@ public abstract class BaseAgent : IBaseAgent
   public GameObject GetGameObject()
   {
     return _object;
+  }
+}
+
+
+public class AgentCollisionDetectionHandler : MonoBehaviour
+{
+  public BaseAgent _agent;
+
+
+  private void OnCollisionEnter(Collision collision)
+  {
+    if (collision.gameObject != SimulationManager.Instance.GetPlatform())
+    {
+      _agent.OnCollisionEnter();
+    }
+  }
+
+  private void OnCollisionStay(Collision collision)
+  {
+    if (collision.gameObject != SimulationManager.Instance.GetPlatform())
+    {
+      _agent.OnCollisionStay();
+    }
   }
 }
