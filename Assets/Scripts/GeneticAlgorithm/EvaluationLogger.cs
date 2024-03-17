@@ -294,7 +294,7 @@ public class AgentLogger
 
   public void CreateCsv()
   {
-    _csvFile = "Plotting/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
+    _csvFile = "Plotting/Runs/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
     FileInfo fileInfo = new FileInfo(_csvFile);
     fileInfo.Directory.Create();
 
@@ -326,7 +326,7 @@ public class AgentLogger
 
   public void CreateConfigurationFile(string configuration)
   {
-    var confFile = _csvFile = "Plotting/" + _configurationId + "/" + "config.txt";
+    var confFile = "Plotting/Runs" + _configurationId + "/" + "config.txt";
     FileInfo fileInfo = new FileInfo(confFile);
     fileInfo.Directory.Create();
 
