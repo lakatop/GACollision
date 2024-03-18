@@ -4,8 +4,6 @@ using Unity.Mathematics;
 using UnityEngine.Assertions;
 
 
-
-
 public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
 {
   public BasicGeneticAlgorithm()
@@ -110,6 +108,4 @@ public class BasicGeneticAlgorithm : IGeneticAlgorithm<BasicIndividual>
       }
     }
   }
-
-
 }

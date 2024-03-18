@@ -55,7 +55,7 @@ public class ORCACollision : IBaseCollisionAvoider
       }
       else
       {
-        _adapter.SetAgentPosition(((ORCAAgent)agent)._orcaId, agent.position);
+        _adapter.SetAgentPosition(((ORCAAgent)agent).orcaId, agent.position);
       }
     }
 
@@ -68,7 +68,7 @@ public class ORCACollision : IBaseCollisionAvoider
     int id = _adapter.AddAgent(agent);
     if(agent is ORCAAgent)
     {
-      ((ORCAAgent)agent)._orcaId = id;
+      ((ORCAAgent)agent).orcaId = id;
     }
     else
     {

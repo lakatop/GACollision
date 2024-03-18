@@ -141,7 +141,7 @@ public class BasicGAAgentParallel : BaseAgent
       // Run GA
       gaJob = (BezierGeneticAlgorithmParallel)_gaDirector.MakeBezierGAParallel(this);
 
-      _winner = gaJob._winner;
+      _winner = gaJob.winner;
       _gaStartRunTime = Time.realtimeSinceStartupAsDouble * 1000;
 
       jobScheduled = true;

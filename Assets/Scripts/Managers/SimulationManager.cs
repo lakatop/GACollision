@@ -572,7 +572,7 @@ public class SimulationManager : MonoBehaviour
 
     foreach (var agent in _agents)
     {
-      Destroy(((BaseAgent)agent)._object);
+      Destroy(((BaseAgent)agent).GetGameObject());
     }
     _agents.Clear();
     _obstacles.Clear();

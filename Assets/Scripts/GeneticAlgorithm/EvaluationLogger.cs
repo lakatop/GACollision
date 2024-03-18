@@ -9,11 +9,11 @@ using System.Linq;
 [BurstCompile]
 public struct StraightLineEvaluationLogger
 {
-  public NativeArray<BasicIndividualStruct> _topIndividuals;
-  public Vector2 _agentPosition;
-  public Vector2 _agentDestination;
-  public Vector2 _agentForward;
-  public float _agentSpeed;
+  public NativeArray<BasicIndividualStruct> topIndividuals;
+  [ReadOnly] public Vector2 agentPosition;
+  [ReadOnly] public Vector2 agentDestination;
+  [ReadOnly] public Vector2 agentForward;
+  [ReadOnly] public float agentSpeed;
 
 
   public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
@@ -28,13 +28,13 @@ public struct StraightLineEvaluationLogger
       }
     }
 
-    var outdatedIndividual = _topIndividuals[iteration];
+    var outdatedIndividual = topIndividuals[iteration];
     outdatedIndividual.fitness = bestIndividual.fitness;
     for (int j = 0; j < outdatedIndividual.path.Length; j++)
     {
       outdatedIndividual.path[j] = bestIndividual.path[j];
     }
-    _topIndividuals[iteration] = outdatedIndividual;
+    topIndividuals[iteration] = outdatedIndividual;
   }
 
   public void WriteRes(string configuration, int iteration)
@@ -44,18 +44,18 @@ public struct StraightLineEvaluationLogger
 
     builder.AppendLine("Fitness,Objective");
 
-    for (int i = 0; i < _topIndividuals.Length; i++)
+    for (int i = 0; i < topIndividuals.Length; i++)
     {
-      var individual = _topIndividuals[i];
-      var position = _agentPosition;
+      var individual = topIndividuals[i];
+      var position = agentPosition;
       var fit = individual.fitness.ToString();
 
-      var objective = (_agentDestination - position).normalized;
-      objective = objective * _agentSpeed * SimulationManager.Instance._agentUpdateInterval;
+      var objective = (agentDestination - position).normalized;
+      objective = objective * agentSpeed * SimulationManager.Instance._agentUpdateInterval;
       objective = objective + position;
 
       // calculate how far are we from objective
-      var rotationVector = _agentForward.normalized;
+      var rotationVector = agentForward.normalized;
       if (rotationVector.x == 0 && rotationVector.y == 0)
         rotationVector = new Vector2(1, 0);
       var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, individual.path[0].x);
@@ -71,18 +71,18 @@ public struct StraightLineEvaluationLogger
 
   public void Dispose()
   {
-    for (int i = 0; i < _topIndividuals.Length; i++)
+    for (int i = 0; i < topIndividuals.Length; i++)
     {
-      _topIndividuals[i].Dispose();
+      topIndividuals[i].Dispose();
     }
-    _topIndividuals.Dispose();
+    topIndividuals.Dispose();
   }
 }
 
 [BurstCompile]
 public struct FitnessEvaluationLogger
 {
-  public NativeArray<BasicIndividualStruct> _topIndividuals;
+  public NativeArray<BasicIndividualStruct> topIndividuals;
 
 
   public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
@@ -97,13 +97,13 @@ public struct FitnessEvaluationLogger
       }
     }
 
-    var outdatedIndividual = _topIndividuals[iteration];
+    var outdatedIndividual = topIndividuals[iteration];
     outdatedIndividual.fitness = bestIndividual.fitness;
     for (int j = 0; j < outdatedIndividual.path.Length; j++)
     {
       outdatedIndividual.path[j] = bestIndividual.path[j];
     }
-    _topIndividuals[iteration] = outdatedIndividual;
+    topIndividuals[iteration] = outdatedIndividual;
   }
 
   public void WriteRes(string configuration, int iteration, string scenarioName, string agentId)
@@ -113,9 +113,9 @@ public struct FitnessEvaluationLogger
 
     builder.AppendLine("Fitness");
 
-    for (int i = 0; i < _topIndividuals.Length; i++)
+    for (int i = 0; i < topIndividuals.Length; i++)
     {
-      var fit = _topIndividuals[i].fitness.ToString();
+      var fit = topIndividuals[i].fitness.ToString();
       builder.AppendLine(string.Format("{0}", fit));
     }
 
@@ -124,11 +124,11 @@ public struct FitnessEvaluationLogger
 
   public void Dispose()
   {
-    for (int i = 0; i < _topIndividuals.Length; i++)
+    for (int i = 0; i < topIndividuals.Length; i++)
     {
-      _topIndividuals[i].Dispose();
+      topIndividuals[i].Dispose();
     }
-    _topIndividuals.Dispose();
+    topIndividuals.Dispose();
   }
 }
 
@@ -249,11 +249,6 @@ public struct BezierIndividualLogger
   }
 }
 
-
-public class ScenarioLogger
-{
-
-}
 
 public class AgentLogger
 {

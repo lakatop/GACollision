@@ -96,12 +96,12 @@ public class BasicFitnessFunction : IPopulationModifier<BasicIndividual>
 [BurstCompile]
 public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
-  public float _agentRadius;
-  public int _agentIndex;
-  public NativeQuadTree<TreeNode> _quadTree;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public Vector2 forward;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -112,8 +112,8 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
     // At the end, check how far are we from destination
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
 
       var stepIndex = 1;
       foreach (var pos in currentPopulation[i].path)
@@ -123,7 +123,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
 
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+        if (UtilsGA.UtilsGA.Collides(quadTree, newPos, rotatedAndTranslatedVector, agentRadius, agentIndex, stepIndex) is var col && col > 0)
         {
           var temp = currentPopulation[i];
           temp.fitness = 0;
@@ -143,7 +143,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
         continue;
       }
 
-      var diff = (_destination - newPos).magnitude;
+      var diff = (destination - newPos).magnitude;
       float fitness;
       if (diff < 0.001f)
       {
@@ -151,7 +151,7 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
       }
       else
       {
-        fitness = 1 / (_destination - newPos).magnitude;
+        fitness = 1 / (destination - newPos).magnitude;
       }
       var temp2 = currentPopulation[i];
       temp2.fitness = fitness;
@@ -172,18 +172,18 @@ public struct BasicFitnessFunctionParallel : IParallelPopulationModifier<BasicIn
 /// "Along-the-way" fitness
 /// Takes (position - destination).magnitude as initial fitness
 /// For each position in individuals path calculates (pos - detination).magnitude and substracts this value ^2 from current fitness
-/// Penalization -> if pos collides, it substracts value^3 (instead of value^2)
+/// Penalization -> if pos collides, it substracts value^5 (instead of value^2)
 /// Warning: resulting fitness may be negative
 /// </summary>
 [BurstCompile]
 public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
-  public float _agentRadius;
-  public int _agentIndex;
-  public NativeQuadTree<TreeNode> _quadTree;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public Vector2 forward;
   public NativeArray<float> fitnesses;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
@@ -191,10 +191,10 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var fitness = Mathf.Pow((_destination - _startPosition).magnitude, 2);
+      var fitness = Mathf.Pow((destination - startPosition).magnitude, 2);
 
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
 
       var stepIndex = 1;
 
@@ -204,13 +204,13 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+        if (UtilsGA.UtilsGA.Collides(quadTree, newPos, rotatedAndTranslatedVector, agentRadius, agentIndex, stepIndex) is var col && col > 0)
         {
-          fitness = (Mathf.Pow((_destination - newPos).magnitude, 5));
+          fitness = (Mathf.Pow((destination - newPos).magnitude, 5));
         }
         else
         {
-          fitness -= Mathf.Pow((_destination - newPos).magnitude, 2);
+          fitness -= Mathf.Pow((destination - newPos).magnitude, 2);
         }
 
         newPos = rotatedAndTranslatedVector;
@@ -248,12 +248,12 @@ public struct FitnessContinuousDistanceParallel : IParallelPopulationModifier<Ba
 [BurstCompile]
 public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
-  public float _agentRadius;
-  public int _agentIndex;
-  public NativeQuadTree<TreeNode> _quadTree;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public Vector2 forward;
   public NativeArray<float> fitnesses;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
@@ -261,10 +261,10 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var fitness = Mathf.Pow((_destination - _startPosition).magnitude, 2);
+      var fitness = Mathf.Pow((destination - startPosition).magnitude, 2);
 
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
 
       var stepIndex = 1;
 
@@ -274,8 +274,8 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
         var rotatedAndTranslatedVector = rotatedVector * pos.y;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        var firstPosMagnintude = (_destination - newPos).magnitude;
-        var secondPosMagnitude = (_destination - rotatedAndTranslatedVector).magnitude;
+        var firstPosMagnintude = (destination - newPos).magnitude;
+        var secondPosMagnitude = (destination - rotatedAndTranslatedVector).magnitude;
         var diff = firstPosMagnintude - secondPosMagnitude;
 
         // we are getting away from destination
@@ -289,7 +289,7 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
         }
 
         // Also check for collisions
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+        if (UtilsGA.UtilsGA.Collides(quadTree, newPos, rotatedAndTranslatedVector, agentRadius, agentIndex, stepIndex) is var col && col > 0)
         {
           // Take closer collisions more seriously
           fitness -= Mathf.Pow((individual.path.Length + 1 - stepIndex), 7);
@@ -306,7 +306,7 @@ public struct FitnessRelativeVectorParallel : IParallelPopulationModifier<BasicI
         // Segments that end closer to the destination should be preferred
         if(stepIndex == individual.path.Length + 1)
         {
-          fitness -= Mathf.Pow((_destination - rotatedAndTranslatedVector).magnitude, 2);
+          fitness -= Mathf.Pow((destination - rotatedAndTranslatedVector).magnitude, 2);
         }
       }
 
@@ -380,27 +380,27 @@ public struct FitnessAngleSumSmoothnessParallel : IParallelPopulationModifier<Ba
 }
 
 /// <summary>
-/// Fitness calcualted using jerk cost
+/// Fitness calculated using jerk cost
 /// </summary>
 [BurstCompile]
 public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float startVelocity;
-  public float maxAcc;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
       var prevVelocity = startVelocity;
 
       var stepIndex = 1;
@@ -473,18 +473,18 @@ public struct FitnessJerkCostParallel : IParallelPopulationModifier<BasicIndivid
 [BurstCompile]
 public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
-  public float _agentRadius;
-  public int _agentIndex;
-  public NativeQuadTree<TreeNode> _quadTree;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float maxAcc;
-  public float startVelocity;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -493,8 +493,8 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
     {
       float fitness = 0f;
 
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
 
       var stepIndex = 1;
       var prevVelocity = startVelocity;
@@ -508,7 +508,7 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
         var rotatedAndTranslatedVector = rotatedVector * velocity;
         rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedAndTranslatedVector, newPos);
 
-        if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, rotatedAndTranslatedVector, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+        if (UtilsGA.UtilsGA.Collides(quadTree, newPos, rotatedAndTranslatedVector, agentRadius, agentIndex, stepIndex) is var col && col > 0)
         {
           //PathDrawer.DrawCollisionPoint(newPos);
           //PathDrawer.DrawCollisionPoint(rotatedAndTranslatedVector);
@@ -545,23 +545,23 @@ public struct FitnessCollisionParallel : IParallelPopulationModifier<BasicIndivi
 [BurstCompile]
 public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
-  public Vector2 _forward;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float maxAcc;
-  public float startVelocity;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
-      var rotationVector = _forward.normalized;
+      var newPos = startPosition;
+      var rotationVector = forward.normalized;
 
       var stepIndex = 1;
 
@@ -582,7 +582,7 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
         stepIndex++;
       }
 
-      fitnesses[index] = (_destination - newPos).magnitude;
+      fitnesses[index] = (destination - newPos).magnitude;
       index++;
     }
   }
@@ -604,21 +604,21 @@ public struct FitnessEndDistanceParallel : IParallelPopulationModifier<BasicIndi
 [BurstCompile]
 public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float maxAcc;
-  public float startVelocity;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
+      var newPos = startPosition;
 
       var alreadyTraveled = 0f;
 
@@ -652,7 +652,7 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         if (overshoot)
         {
           // Calculate Distance To Destination
-          var distanceToDestination = (_destination - newPos).magnitude;
+          var distanceToDestination = (destination - newPos).magnitude;
 
           // Calculate how far it would be untill we slow down to 0
           var traveled = 0f;
@@ -705,13 +705,13 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
           {
             inDestination = true;
-            newPos = _destination;
+            newPos = destination;
             fitness = 0;
             continue;
           }
@@ -723,7 +723,7 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
         }
 
 
-        fitness = (_destination - newPos).magnitude;
+        fitness = (destination - newPos).magnitude;
       }
 
       fitnesses[index] = fitness;
@@ -751,21 +751,21 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 [BurstCompile]
 public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float maxAcc;
-  public float startVelocity;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
+      var newPos = startPosition;
 
       var alreadyTraveled = 0f;
 
@@ -842,13 +842,13 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
         // Go to the beginning of the cycle where we handle this situation
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
           {
             inDestination = true;
-            newPos = _destination;
+            newPos = destination;
             pathSize = i;
             continue;
           }
@@ -886,23 +886,23 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
 [BurstCompile]
 public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public float _agentRadius;
-  public int _agentIndex;
-  public NativeQuadTree<TreeNode> _quadTree;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public float agentRadius;
+  [ReadOnly] public int agentIndex;
+  [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float maxAcc;
-  public float startVelocity;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
+      var newPos = startPosition;
       var fitness = 0f;
 
       var stepIndex = 1;
@@ -938,7 +938,7 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
           // We may have overshoot it, but only by small distance so we will not bother with it
           if (velocity <= distanceSinceLastPoint)
           {
-            if (UtilsGA.UtilsGA.Collides(_quadTree, newPos, pointOncurve, _agentRadius, _agentIndex, stepIndex) is var col && col > 0)
+            if (UtilsGA.UtilsGA.Collides(quadTree, newPos, pointOncurve, agentRadius, agentIndex, stepIndex) is var col && col > 0)
             {
               //PathDrawer.DrawConnectionLine(newPos, pointOncurve);
               fitness += col * UtilsGA.UtilsGA.CalculateCollisionDecayFunction(stepIndex - 1);
@@ -979,21 +979,21 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
 [BurstCompile]
 public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  public Vector2 _startPosition;
-  public Vector2 _destination;
+  [ReadOnly] public Vector2 startPosition;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public float weight;
+  [ReadOnly] public float startVelocity;
+  [ReadOnly] public float maxAcc;
+  [ReadOnly] public float updateInteraval;
+  [ReadOnly] public float maxAgentSpeed;
   public NativeArray<float> fitnesses;
-  public float weight;
-  public float startVelocity;
-  public float maxAcc;
-  public float updateInteraval;
-  public float maxAgentSpeed;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
     foreach (var individual in currentPopulation)
     {
-      var newPos = _startPosition;
+      var newPos = startPosition;
       var prevVelocity = startVelocity;
 
       NativeArray<Vector2> velocities = new NativeArray<Vector2>(individual.accelerations.Length, Allocator.Temp);
@@ -1027,7 +1027,7 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
         {
           // Calculate remaining velocities as if we try to go directly to the destination
           var remainingVelocity = velocity;
-          var headingVelocity = (_destination - newPos).normalized;
+          var headingVelocity = (destination - newPos).normalized;
           while (remainingVelocity > 0 && velocityIndex < velocities.Length)
           {
             velocities[velocityIndex] = headingVelocity * remainingVelocity;
@@ -1038,7 +1038,7 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
           }
 
           // Take path back - evenly distributed
-          var remainingDistance = (newPos - _destination).magnitude;
+          var remainingDistance = (newPos - destination).magnitude;
           // Switch to opposite direction
           headingVelocity = new Vector2(-headingVelocity.x, -headingVelocity.y);
           while (remainingDistance > Mathf.Epsilon && velocityIndex < velocities.Length)
@@ -1083,18 +1083,18 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
 
         if (overshoot)
         {
-          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((_destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
+          var maxVel = UtilsGA.UtilsGA.CalculateMaxVelocity((destination - newPos).magnitude + 0.15f); // 0.1f for imprecision in bezier length calculation
           // Check if we would be able to stop at the destination
           // If yes, count this as we would arrive properly and dont overshoot
           if (Mathf.Abs(maxVel - prevVelocity) <= maxAcc)
           {
             inDestination = true;
-            velocities[velocityIndex] = (_destination - newPos);
+            velocities[velocityIndex] = (destination - newPos);
             for (int j = velocityIndex + 1; j < individual.accelerations.Length; j++)
             {
               velocities[j] = Vector2.zero;
             }
-            newPos = _destination;
+            newPos = destination;
 
             continue;
           }

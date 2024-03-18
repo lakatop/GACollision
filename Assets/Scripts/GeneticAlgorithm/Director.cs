@@ -66,7 +66,7 @@ public class GeneticAlgorithmDirector
     }
     ga.cross = new MeanCrossOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       offsprings = offsprings,
       pathSize = pathSize,
       iterations = iterations,
@@ -75,21 +75,21 @@ public class GeneticAlgorithmDirector
     // Set mutation
     ga.mutation = new BasicMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _agentSpeed = agent.speed,
-      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
-      _rotationRange = 15, 
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      agentSpeed = agent.speed,
+      updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      rotationRange = 15, 
     };
 
     // Set fitnesses
     ga.collisionFitness = new FitnessCollisionParallel()
     {
-      _startPosition = agent.position,
-      _destination = agent.destination,
-      _agentRadius = 0.5f,
-      _agentIndex = agent.id,
-      _quadTree = SimulationManager.Instance.GetQuadTree(),
-      _forward = agent.GetForward(),
+      startPosition = agent.position,
+      destination = agent.destination,
+      agentRadius = 0.5f,
+      agentIndex = agent.id,
+      quadTree = SimulationManager.Instance.GetQuadTree(),
+      forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.6f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
@@ -99,9 +99,9 @@ public class GeneticAlgorithmDirector
     };
     ga.endDistanceFitness = new FitnessEndDistanceParallel()
     {
-      _startPosition = agent.position,
-      _destination = agent.destination,
-      _forward = agent.GetForward(),
+      startPosition = agent.position,
+      destination = agent.destination,
+      forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.3f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
@@ -111,8 +111,8 @@ public class GeneticAlgorithmDirector
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
     {
-      _startPosition = agent.position,
-      _forward = agent.GetForward(),
+      startPosition = agent.position,
+      forward = agent.GetForward(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.1f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
@@ -128,28 +128,18 @@ public class GeneticAlgorithmDirector
     };
 
     // Set selection
-    ga.selection = new NegativeSelectionParallel()
+    ga.selection = new ElitistSelectionParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
     };
 
     // Set initialization
-    //ga.popInitialization = new KineticFriendlyInitialization()
-    //{
-    //  _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-    //  populationSize = populationSize,
-    //  pathSize = pathSize,
-    //};
-
-    ga.popInitialization = new BezierInitialization()
+    ga.popInitialization = new KineticFriendlyInitialization()
     {
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       populationSize = populationSize,
       pathSize = pathSize,
-      startPosition = agent.position,
-      endPosition = agent.destination,
-      forward = agent.GetForward(),
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
     };
+
 
     //ga.popInitialization = new DebugInitialization()
     //{
@@ -170,31 +160,24 @@ public class GeneticAlgorithmDirector
     }
     ga.logger = new FitnessEvaluationLogger()
     {
-      _topIndividuals = topIndividuals,
+      topIndividuals = topIndividuals,
     };
 
     ga.populationSize = populationSize;
     ga.iterations = iterations;
 
     // Initialize population
-    //var population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
-    //for (int i = 0; i < populationSize; i++)
-    //{
-    //  var element = population[i];
-    //  element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
-    //  element.path.Resize(pathSize);
-    //  element.fitness = 0;
-    //  population[i] = element;
-    //}
-
-    var population = new NativeArray<BezierIndividualStruct>(populationSize, Allocator.TempJob);
+    var population = new NativeArray<BasicIndividualStruct>(populationSize, Allocator.TempJob);
     for (int i = 0; i < populationSize; i++)
     {
       var element = population[i];
-      element.Initialize(pathSize, Allocator.TempJob); // *3 for 1 anchor point and 2 control points
+      element.path = new Unity.Collections.LowLevel.Unsafe.UnsafeList<Unity.Mathematics.float2>(pathSize, Allocator.TempJob);
+      element.path.Resize(pathSize);
+      element.fitness = 0;
       population[i] = element;
     }
-    ga.pop = new NativeBezierPopulation()
+
+    ga.pop = new NativeBasicPopulation()
     {
       _population = population
     };
@@ -204,8 +187,8 @@ public class GeneticAlgorithmDirector
     {
     };
 
-    ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
-    ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
+    ga.winner = new NativeArray<Vector2>(1, Allocator.TempJob);
+    ga.rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
     ga.SetResources(new System.Collections.Generic.List<object>
     {
       Time.deltaTime,
@@ -219,6 +202,7 @@ public class GeneticAlgorithmDirector
 
     return ga;
   }
+
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
@@ -230,59 +214,59 @@ public class GeneticAlgorithmDirector
     // Set crossover
     ga.cross = new UniformBezierCrossOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       parents = new NativeArray<BezierIndividualStruct>(2, Allocator.TempJob),
-      _crossProb = 0.1f,
+      crossProb = 0.1f,
     };
 
     // Set mutation
     ga.straightFinishMutation = new BezierStraightFinishMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _agentSpeed = agent.speed,
-      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      agentSpeed = agent.speed,
+      updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startPos = agent.position,
       destination = agent.destination,
       forward = agent.GetForward(),
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
-      _mutationProb = 1.0f,
+      mutationProb = 1.0f,
     };
     ga.clampVelocityMutation = new BezierClampVelocityMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _agentSpeed = agent.speed,
-      _updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      agentSpeed = agent.speed,
+      updateInterval = SimulationManager.Instance._agentUpdateInterval,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
       maxAcc = maxAcc,
-      _mutationProb = 1.0f,
+      mutationProb = 1.0f,
     };
     ga.shuffleMutation = new BezierShuffleAccMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _mutationProb = 0.3f,
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      mutationProb = 0.3f,
     };
     ga.smoothMutation = new BezierSmoothAccMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
-      _mutationProb = 0.9f,
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      mutationProb = 0.9f,
     };
     ga.controlPointsMutation = new BezierShuffleControlPointsMutationOperatorParallel()
     {
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       startPosition = agent.position,
       endPosition = agent.destination,
       forward = agent.GetForward(),
-      _mutationProb = 0.3f,
+      mutationProb = 0.3f,
     };
 
     // Set fitnesses
     ga.collisionFitness = new BezierFitnessCollisionParallel()
     {
-      _startPosition = agent.position,
-      _agentRadius = 0.5f,
-      _agentIndex = agent.id,
-      _quadTree = SimulationManager.Instance.GetQuadTree(),
+      startPosition = agent.position,
+      agentRadius = 0.5f,
+      agentIndex = agent.id,
+      quadTree = SimulationManager.Instance.GetQuadTree(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.5f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
@@ -293,8 +277,8 @@ public class GeneticAlgorithmDirector
 
     ga.endDistanceFitness = new BezierFitnessEndDistanceParallel()
     {
-      _startPosition = agent.position,
-      _destination = agent.destination,
+      startPosition = agent.position,
+      destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.2f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
@@ -304,8 +288,8 @@ public class GeneticAlgorithmDirector
     };
     ga.jerkFitness = new BezierFitnessJerkCostParallel()
     {
-      _startPosition = agent.position,
-      _destination = agent.destination,
+      startPosition = agent.position,
+      destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.2f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
@@ -315,8 +299,8 @@ public class GeneticAlgorithmDirector
     };
     ga.ttdFitness = new BezierFitnessTimeToDestinationParallel()
     {
-      _startPosition = agent.position,
-      _destination = agent.destination,
+      startPosition = agent.position,
+      destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.1f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
@@ -332,7 +316,7 @@ public class GeneticAlgorithmDirector
     };
 
     // Set selection
-    ga.selection = new BezierNegativeSelectionParallel()
+    ga.selection = new BezierElitistSelectionParallel()
     {
     };
 
@@ -344,7 +328,7 @@ public class GeneticAlgorithmDirector
       startPosition = agent.position,
       endPosition = agent.destination,
       forward = agent.GetForward(),
-      _rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
+      rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime))
     };
 
     // Set logger
@@ -377,7 +361,7 @@ public class GeneticAlgorithmDirector
     }
     ga.pop = new NativeBezierPopulation()
     {
-      _population = population
+      population = population
     };
 
     // Set population drawer
@@ -385,8 +369,8 @@ public class GeneticAlgorithmDirector
     {
     };
 
-    ga._winner = new NativeArray<Vector2>(1, Allocator.TempJob);
-    ga._rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
+    ga.winner = new NativeArray<Vector2>(1, Allocator.TempJob);
+    ga.rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
     ga.SetResources(new System.Collections.Generic.List<object>
     {
       Time.deltaTime,

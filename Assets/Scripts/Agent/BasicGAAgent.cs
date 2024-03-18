@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using Unity.Jobs;
 
 /// <summary>
 /// Basic EA agent
@@ -13,8 +12,7 @@ public class BasicGAAgent : BaseAgent
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex { get; set; }
-  private float _elapsedTime { get; set; }
-  private Vector2 nextVel { get; set; }
+  private Vector2 _nextVel { get; set; }
   private GeneticAlgorithmDirector _gaDirector { get; set; }
   private BasicGeneticAlgorithmBuilder _gaBuilder { get; set; }
 
@@ -28,7 +26,6 @@ public class BasicGAAgent : BaseAgent
     _gaBuilder = new BasicGeneticAlgorithmBuilder();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
-    _elapsedTime = 0.0f;
     speed = 5.0f;
   }
 
@@ -68,7 +65,7 @@ public class BasicGAAgent : BaseAgent
 
     if ((position - destination).magnitude <= 0.1f)
     {
-      nextVel = Vector2.zero;
+      _nextVel = Vector2.zero;
       return;
     }
 
@@ -78,14 +75,14 @@ public class BasicGAAgent : BaseAgent
     var _gaAlg = _gaBuilder.GetResult();
     _gaAlg.RunGA();
 
-    nextVel = _gaAlg.GetResult();
+    _nextVel = _gaAlg.GetResult();
   }
 
   // Set agent position and start new EA cycle
   public override void OnAfterUpdate(Vector2 newPos)
   {
-    var vel = nextVel;
-    var pos = position + nextVel;
+    var vel = _nextVel;
+    var pos = position + _nextVel;
 
     SetPosition(pos);
     SetForward(vel.normalized);

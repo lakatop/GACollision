@@ -27,11 +27,6 @@ public struct BezierCurve
     points[3] = endPos;
   }
 
-  public void AddAditionalAnchorPoints()
-  {
-
-  }
-
   public Vector2 EvaluateQuadratic(Vector2 a, Vector2 b, Vector2 c, float t)
   {
     Vector2 p0 = Vector2.Lerp(a, b, t);

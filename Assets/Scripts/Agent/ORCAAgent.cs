@@ -7,20 +7,20 @@ public class ORCAAgent : BaseAgent
   public override IBaseCollisionAvoider collisionAlg { get; set; }
   public override IBasePathPlanner pathPlanningAlg { get; set; }
   public Vector2 prevPos { get; set; }
-  public int _orcaId { get; set; }
+  public int orcaId { get; set; }
   private NavMeshAgent _navMeshAgent { get; set; }
   private NavMeshPath _path { get; set; }
   private int _cornerIndex {get;set;}
-  private float elapsedTime = 0f;
+  private float _elapsedTime = 0f;
 
-  private System.Random random;
+  private System.Random _random;
 
   public ORCAAgent()
   {
     collisionAlg = SimulationManager.Instance._collisionManager.GetOrCreateCollisionAlg<ORCACollision>(() => new ORCACollision(this));
     pathPlanningAlg = new NavMeshPathPlanner(this);
-    _orcaId = -1;
-    random = new System.Random();
+    orcaId = -1;
+    _random = new System.Random();
     _navMeshAgent = GetComponent<NavMeshAgent>();
     _navMeshAgent.autoBraking = false;
     _path = new NavMeshPath();
@@ -53,11 +53,11 @@ public class ORCAAgent : BaseAgent
 
   public override void OnBeforeUpdate()
   {
-    elapsedTime += Time.deltaTime;
-    if (_orcaId == -1 && elapsedTime < updateInterval)
+    _elapsedTime += Time.deltaTime;
+    if (orcaId == -1 && _elapsedTime < updateInterval)
       return;
 
-    elapsedTime = 0f;
+    _elapsedTime = 0f;
 
     //Move agent
     Vector2 desiredDestination = CalculateNewDestination();
@@ -68,24 +68,24 @@ public class ORCAAgent : BaseAgent
     if ((desiredDestination - orcaPos).magnitude < 0.1f)
     {
       desiredVelocity = Vector2.zero;
-      collisionAlg.SetAgentPreferredVelocity(_orcaId, desiredVelocity);
+      collisionAlg.SetAgentPreferredVelocity(orcaId, desiredVelocity);
       return;
     }
     else if (desiredVelocity.magnitude < 1.0f)
       desiredVelocity = desiredVelocity.normalized;
 
-    collisionAlg.SetAgentPreferredVelocity(_orcaId, desiredVelocity);
+    collisionAlg.SetAgentPreferredVelocity(orcaId, desiredVelocity);
     ///* Perturb a little to avoid deadlocks due to perfect symmetry. */
-    float angle = (float)random.NextDouble() * 2.0f * (float)Math.PI;
-    float dist = (float)random.NextDouble() * 0.0001f;
-    collisionAlg.SetAgentPreferredVelocity(_orcaId, collisionAlg.GetAgentPreferredVelocity(_orcaId) +
+    float angle = (float)_random.NextDouble() * 2.0f * (float)Math.PI;
+    float dist = (float)_random.NextDouble() * 0.0001f;
+    collisionAlg.SetAgentPreferredVelocity(orcaId, collisionAlg.GetAgentPreferredVelocity(orcaId) +
                     dist * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
   }
 
   public override void OnAfterUpdate(Vector2 desiredVelocity)
   {
-    var pos = collisionAlg.GetAgentPosition(_orcaId);
-    var vel = collisionAlg.GetAgentPreferredVelocity(_orcaId);
+    var pos = collisionAlg.GetAgentPosition(orcaId);
+    var vel = collisionAlg.GetAgentPreferredVelocity(orcaId);
 
     SetPosition(pos);
     SetForward(vel);
