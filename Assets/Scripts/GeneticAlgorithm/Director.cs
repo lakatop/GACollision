@@ -77,7 +77,7 @@ public class GeneticAlgorithmDirector
     {
       rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      updateInterval = SimulationManager.Instance.agentUpdateInterval,
       rotationRange = 15, 
     };
 
@@ -94,7 +94,7 @@ public class GeneticAlgorithmDirector
       weight = 0.6f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
     ga.endDistanceFitness = new FitnessEndDistanceParallel()
@@ -106,7 +106,7 @@ public class GeneticAlgorithmDirector
       weight = 0.3f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
     ga.jerkFitness = new FitnessJerkCostParallel()
@@ -117,7 +117,7 @@ public class GeneticAlgorithmDirector
       weight = 0.1f,
       startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
 
@@ -197,7 +197,7 @@ public class GeneticAlgorithmDirector
       agent.GetForward(),
       ((BasicGAAgentParallel)agent).nextVel.magnitude,
       maxAcc,
-      SimulationManager.Instance._agentUpdateInterval,
+      SimulationManager.Instance.agentUpdateInterval,
     });
 
     return ga;
@@ -224,11 +224,11 @@ public class GeneticAlgorithmDirector
     {
       rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
+      updateInterval = SimulationManager.Instance.agentUpdateInterval,
       startPos = agent.position,
       destination = agent.destination,
       forward = agent.GetForward(),
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
       mutationProb = 1.0f,
     };
@@ -236,8 +236,8 @@ public class GeneticAlgorithmDirector
     {
       rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime)),
       agentSpeed = agent.speed,
-      updateInterval = SimulationManager.Instance._agentUpdateInterval,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      updateInterval = SimulationManager.Instance.agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
       mutationProb = 1.0f,
     };
@@ -269,9 +269,9 @@ public class GeneticAlgorithmDirector
       quadTree = SimulationManager.Instance.GetQuadTree(),
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.5f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
 
@@ -281,9 +281,9 @@ public class GeneticAlgorithmDirector
       destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.2f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
     ga.jerkFitness = new BezierFitnessJerkCostParallel()
@@ -292,9 +292,9 @@ public class GeneticAlgorithmDirector
       destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.2f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
     ga.ttdFitness = new BezierFitnessTimeToDestinationParallel()
@@ -303,9 +303,9 @@ public class GeneticAlgorithmDirector
       destination = agent.destination,
       fitnesses = new NativeArray<float>(populationSize, Allocator.TempJob),
       weight = 0.1f,
-      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      startVelocity = ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc = maxAcc,
-      updateInteraval = SimulationManager.Instance._agentUpdateInterval,
+      updateInteraval = SimulationManager.Instance.agentUpdateInterval,
       maxAgentSpeed = agent.speed
     };
 
@@ -377,9 +377,9 @@ public class GeneticAlgorithmDirector
       agent.speed,
       agent.position,
       agent.GetForward(),
-      ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance._agentUpdateInterval,
+      ((BasicGAAgentParallel)agent).nextVel.magnitude * SimulationManager.Instance.agentUpdateInterval,
       maxAcc,
-      SimulationManager.Instance._agentUpdateInterval,
+      SimulationManager.Instance.agentUpdateInterval,
     });
 
     return ga;
