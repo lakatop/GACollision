@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 /// <summary>
 /// Agent class with collision and path planning handled by Unity NavMeshAgent

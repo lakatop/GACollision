@@ -33,7 +33,7 @@ public class ORCACollision : IBaseCollisionAvoider
   {
     _adapter.SetAgentDefaults(15.0f, 10, 5.0f, 5.0f, 0.5f, 8.0f, new RVO.Vector2(0.0f, 0.0f));
     _adapter.SetTimeStep(_timeStep);
-    RegisterObstacles(_simManager._obstacles);
+    RegisterObstacles(_simManager.obstacles);
   }
 
   /// <inheritdoc cref="IBaseCollisionAvoider.Update"/>
@@ -55,7 +55,7 @@ public class ORCACollision : IBaseCollisionAvoider
       }
       else
       {
-        _adapter.SetAgentPosition(((ORCAAgent)agent)._orcaId, agent.position);
+        _adapter.SetAgentPosition(((ORCAAgent)agent).orcaId, agent.position);
       }
     }
 
@@ -68,7 +68,7 @@ public class ORCACollision : IBaseCollisionAvoider
     int id = _adapter.AddAgent(agent);
     if(agent is ORCAAgent)
     {
-      ((ORCAAgent)agent)._orcaId = id;
+      ((ORCAAgent)agent).orcaId = id;
     }
     else
     {

@@ -72,7 +72,7 @@ public class BasicSelectionFunction : IPopulationModifier<BasicIndividual>
 [BurstCompile]
 public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   public NativeArray<double> relativeFitnesses;
   public NativeArray<double> wheel;
 
@@ -106,7 +106,7 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      double val = _rand.NextFloat();
+      double val = rand.NextFloat();
       index = 0;
       foreach (var wheelVal in wheel)
       {
@@ -152,10 +152,8 @@ public struct BasicSelectionFunctionParallel : IParallelPopulationModifier<Basic
 /// Only takes first n best individuals
 /// </summary>
 [BurstCompile]
-public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
+public struct ElitistSelectionParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
 
@@ -188,7 +186,7 @@ public struct NegativeSelectionParallel : IParallelPopulationModifier<BasicIndiv
 
 
 [BurstCompile]
-public struct BezierNegativeSelectionParallel : IParallelPopulationModifier<BezierIndividualStruct>
+public struct BezierElitistSelectionParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {

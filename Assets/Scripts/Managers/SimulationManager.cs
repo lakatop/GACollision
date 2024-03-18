@@ -22,11 +22,11 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// List of all obstacles present in the simulation
   /// </summary>
-  public List<Obstacle> _obstacles { get; private set; }
+  public List<Obstacle> obstacles { get; private set; }
   /// <summary>
   /// List of scenarios
   /// </summary>
-  public List<IScenario> _scenarios { get; set; }
+  public List<IScenario> scenarios { get; set; }
   /// <summary>
   /// Flag determining whether the scenario has already started
   /// </summary>
@@ -73,6 +73,9 @@ public class SimulationManager : MonoBehaviour
   /// Quadtree for current simulation
   /// </summary>
   private NativeQuadTree.NativeQuadTree<TreeNode> _quadTree { get; set; }
+  /// <summary>
+  /// Boolean flag wheter _quadTree was created
+  /// </summary>
   private bool _quadTreeCreated { get; set; }
   /// <summary>
   /// Data to fill _quadTree with
@@ -81,15 +84,12 @@ public class SimulationManager : MonoBehaviour
   /// <summary>
   /// Delta t - determines how often agent calculates new position
   /// </summary>
-  public float _agentUpdateInterval { get; private set; }
+  public float agentUpdateInterval { get; private set; }
   /// <summary>
   /// 
   /// </summary>
   private float _updateTimer { get; set; }
-  /// <summary>
-  /// Agents destinations in different scenarios that they should swithc to after trigger
-  /// </summary>
-  private List<Vector2> _agentsScenarioDestinations { get; set; }
+
 
   void Awake()
   {
@@ -99,23 +99,18 @@ public class SimulationManager : MonoBehaviour
       Destroy(gameObject);
       return;
     }
-    //else
-    //{
-    //  Instance = this;
-    //}
     Instance = this;
     DontDestroyOnLoad(gameObject);
 
     _agents = new List<IBaseAgent>();
-    _obstacles = new List<Obstacle>();
+    obstacles = new List<Obstacle>();
     _collisionListeners = new List<IBaseCollisionAvoider>();
     _collisionManager = new AlgorithmsManager();
     _resourceListeners = new List<IResourceManager>();
     _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
-    _agentUpdateInterval = 0.5f;
+    agentUpdateInterval = 0.5f;
     _quadTreeCreated = false;
-    _agentsScenarioDestinations = new List<Vector2>();
     _scenarioStarted = false;
     _scenarioIndex = 0;
     _skipNextFrame = true;
@@ -144,8 +139,8 @@ public class SimulationManager : MonoBehaviour
 
     if (!_scenarioStarted)
     {
-      _scenarios[_scenarioIndex].SetupScenario(_agents);
-      _scenarios[_scenarioIndex].runCounter--;
+      scenarios[_scenarioIndex].SetupScenario(_agents);
+      scenarios[_scenarioIndex].runCounter--;
       SetScenarioResources();
       CreateQuadtreeAndData();
       _scenarioStarted = true;
@@ -188,7 +183,7 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("RUNNING RunSimulation");
     _scenarioStarted = true;
 
-    if (_updateTimer > _agentUpdateInterval)
+    if (_updateTimer > agentUpdateInterval)
     {
       foreach (var agent in _agents)
       {
@@ -212,16 +207,11 @@ public class SimulationManager : MonoBehaviour
     foreach (var agent in _agents)
     {
       agent.OnBeforeUpdate();
-      Debug.Log("In destination: " + agent.inDestination);
     }
-    //foreach (var collisionAvoider in _collisionListeners)
-    //{
-    //  collisionAvoider.Update();
-    //}
+
     foreach (var agent in _agents)
     {
       agent.OnAfterUpdate(Vector2.zero);
-      Debug.Log("In destination: " + agent.inDestination);
     }
   }
 
@@ -277,7 +267,7 @@ public class SimulationManager : MonoBehaviour
 
   private void RegisterObstacles()
   {
-    _obstacles.Clear();
+    obstacles.Clear();
     // Find all NavMeshModifier components in the scene
     NavMeshModifier[] navMeshModifiers = GameObject.FindObjectsOfType<NavMeshModifier>();
 
@@ -306,7 +296,7 @@ public class SimulationManager : MonoBehaviour
 
       // Calculate cube corners based on collider bounds
       List<Vector2> corners = CalculateCubeCorners(bounds);
-      _obstacles.Add(new Obstacle(corners));
+      obstacles.Add(new Obstacle(corners));
 
       // Do something with the cube corners (e.g., print or process them)
       foreach (Vector2 corner in corners)
@@ -371,7 +361,7 @@ public class SimulationManager : MonoBehaviour
   {
     var agentRadius = 0.5f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
     _quadtreeStaticElements.Clear();
-    foreach (var obstacle in _obstacles)
+    foreach (var obstacle in obstacles)
     {
       var start = obstacle.vertices[0];
       var end = obstacle.vertices[1];
@@ -437,7 +427,7 @@ public class SimulationManager : MonoBehaviour
     {
       var pos = agent.position;
       var forward = agent.GetForward().normalized;
-      var velocity = forward * agent.speed * _agentUpdateInterval;
+      var velocity = forward * agent.speed * agentUpdateInterval;
 
       for (int i = 0; i < steps; i++)
       {
@@ -501,7 +491,7 @@ public class SimulationManager : MonoBehaviour
   private void CreateScenarios()
   {
     System.Console.WriteLine("Creating scenarios");
-    _scenarios = new List<IScenario>
+    scenarios = new List<IScenario>
     {
       new StraightLineScenario(1),
       new SmallObstacleScenario(1),
@@ -517,22 +507,22 @@ public class SimulationManager : MonoBehaviour
 
   private bool IsThereNextScenario()
   {
-    return _scenarioIndex < (_scenarios.Count - 1);
+    return _scenarioIndex < (scenarios.Count - 1);
   }
 
   private bool ShouldRepeatScenario()
   {
-    return _scenarios[_scenarioIndex].runCounter > 0;
+    return scenarios[_scenarioIndex].runCounter > 0;
   }
 
   private void  SetNextScenario()
   {
     var nextSceneIndex = _scenarioIndex + 1;
 
-    if (nextSceneIndex >= _scenarios.Count)
+    if (nextSceneIndex >= scenarios.Count)
       return;
     SceneManager.LoadScene(nextSceneIndex);
-    _scenarios[nextSceneIndex].runCounter--;
+    scenarios[nextSceneIndex].runCounter--;
     _scenarioStarted = false;
     _skipNextFrame = true;
     _scenarioIndex++;
@@ -568,14 +558,14 @@ public class SimulationManager : MonoBehaviour
 
   private void ClearScenarioResources()
   {
-    _scenarios[_scenarioIndex].ClearScenario(_agents);
+    scenarios[_scenarioIndex].ClearScenario(_agents);
 
     foreach (var agent in _agents)
     {
-      Destroy(((BaseAgent)agent)._object);
+      Destroy(((BaseAgent)agent).GetGameObject());
     }
     _agents.Clear();
-    _obstacles.Clear();
+    obstacles.Clear();
     _quadtreeStaticElements.Clear();
     if (_quadTreeCreated)
     {

@@ -47,24 +47,24 @@ public class BasicCrossOperator : IPopulationModifier<BasicIndividual>
 [BurstCompile]
 public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   public NativeArray<BezierIndividualStruct> parents;
-  [ReadOnly] public float _crossProb;
+  [ReadOnly] public float crossProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length - 1; i += 2)
     {
-      var crossProb = _rand.NextFloat();
+      var crossProb = rand.NextFloat();
       // Do cross only with small probability
-      if (crossProb > _crossProb)
+      if (crossProb > this.crossProb)
         return;
 
       var parent1 = currentPopulation[i];
-      var nextParentIndex = _rand.NextInt(currentPopulation.Length);
+      var nextParentIndex = rand.NextInt(currentPopulation.Length);
       while (nextParentIndex == i)
       {
-        nextParentIndex = _rand.NextInt(currentPopulation.Length);
+        nextParentIndex = rand.NextInt(currentPopulation.Length);
       }
 
       parents[0] = currentPopulation[i];
@@ -75,18 +75,18 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
 
 
 
-      int prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+      int prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
       P1.x = parents[prob].bezierCurve.points[1].x;
-      prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+      prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
       P1.y = parents[prob].bezierCurve.points[1].y;
-      prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+      prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
       P2.x = parents[prob].bezierCurve.points[2].x;
-      prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+      prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
       P2.y = parents[prob].bezierCurve.points[2].y;
 
       for (int j = 0; j < parent1.accelerations.Length; j++)
       {
-        prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+        prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
         parent1.accelerations[j] = parents[prob].accelerations[j];
       }
 
@@ -103,7 +103,7 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
 
   public float GetCrossProbability()
   {
-    return _crossProb;
+    return crossProb;
   }
 
   public void Dispose()
@@ -119,7 +119,7 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
 [BurstCompile]
 public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public int pathSize;
   public NativeArray<BasicIndividualStruct> offsprings;
   public NativeArray<BasicIndividualStruct> parents;
@@ -138,7 +138,7 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
 
       for (int j = 0; j < parents[0].path.Length; j++)
       {
-        int prob = (int)System.Math.Round(_rand.NextFloat(), System.MidpointRounding.AwayFromZero);
+        int prob = (int)System.Math.Round(rand.NextFloat(), System.MidpointRounding.AwayFromZero);
         off1.path[j] = parents[prob].path[j];
         off2.path[j] = parents[1 - prob].path[j];
       }
@@ -174,7 +174,7 @@ public struct BasicCrossOperatorParallel : IParallelPopulationModifier<BasicIndi
 [BurstCompile]
 public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   public NativeArray<BasicIndividualStruct> offsprings;
   public int pathSize;
   public int iterations;
@@ -202,8 +202,8 @@ public struct MeanCrossOperatorParallel : IParallelPopulationModifier<BasicIndiv
       }
 
       // Randomly select 1 parent from pair and 1 random parent from parents population and do the same
-      var parentIndex = _rand.NextInt(2);
-      var secondParentIndex = _rand.NextInt(currentPopulation.Length);
+      var parentIndex = rand.NextInt(2);
+      var secondParentIndex = rand.NextInt(currentPopulation.Length);
 
       parent1 = currentPopulation[parentIndex];
       parent2 = currentPopulation[secondParentIndex];

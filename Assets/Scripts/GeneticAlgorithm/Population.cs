@@ -187,14 +187,14 @@ public struct NativeBezierPopulation : IParallelPopulation<BasicIndividualStruct
   [BurstCompile]
   public void Dispose()
   {
-    foreach (var individual in _population)
+    foreach (var individual in population)
     {
       individual.Dispose();
     }
-    _population.Dispose();
+    population.Dispose();
   }
 
-  public NativeArray<BezierIndividualStruct> _population;
+  public NativeArray<BezierIndividualStruct> population;
 }
 
 [BurstCompile]

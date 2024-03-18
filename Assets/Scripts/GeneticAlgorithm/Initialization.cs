@@ -6,7 +6,7 @@ using UnityEngine;
 [BurstCompile]
 public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public int populationSize;
   [ReadOnly] public float agentSpeed;
   [ReadOnly] public float timeDelta;
@@ -23,8 +23,8 @@ public struct BasicInitialization : IParallelPopulationModifier<BasicIndividualS
       var individual = currentPopulation[i];
       for (int j = 0; j < pathSize; j++)
       {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange);
-        var size = _rand.NextFloat(agentSpeed) * timeDelta;
+        var rotation = rand.NextFloat(-rotationRange, rotationRange);
+        var size = rand.NextFloat(agentSpeed) * timeDelta;
         individual.path[j] = new float2(rotation, size);
       }
       currentPopulation[i] = individual;
@@ -144,7 +144,7 @@ public struct DebugInitialization : IParallelPopulationModifier<BasicIndividualS
 [BurstCompile]
 public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public int populationSize;
   [ReadOnly] public float agentSpeed;
   [ReadOnly] public float updateInterval;
@@ -166,8 +166,8 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
 
       for (int j = 1; j < pathSize; j++)
       {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange);
-        var size = _rand.NextFloat(agentSpeed) * updateInterval;
+        var rotation = rand.NextFloat(-rotationRange, rotationRange);
+        var size = rand.NextFloat(agentSpeed) * updateInterval;
         individual.path[j] = new float2(rotation, size);
       }
       currentPopulation[i] = individual;
@@ -208,7 +208,7 @@ public struct GlobeInitialization : IParallelPopulationModifier<BasicIndividualS
 [BurstCompile]
 public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public int populationSize;
   [ReadOnly] public int pathSize;
 
@@ -221,13 +221,13 @@ public struct KineticFriendlyInitialization : IParallelPopulationModifier<BasicI
     for (int i = 0; i < currentPopulation.Length; i++)
     {
       var individual = currentPopulation[i];
-      individual.path[0] = new float2(initRotation, (_rand.NextFloat() * 2f) - 1f);
+      individual.path[0] = new float2(initRotation, (rand.NextFloat() * 2f) - 1f);
       initRotation += initRotationRange;
 
       for (int j = 1; j < pathSize; j++)
       {
-        var rotation = _rand.NextFloat(-rotationRange, rotationRange);
-        var acc = (_rand.NextFloat() * 2f) - 1f;
+        var rotation = rand.NextFloat(-rotationRange, rotationRange);
+        var acc = (rand.NextFloat() * 2f) - 1f;
         individual.path[j] = new float2(rotation, acc);
       }
       currentPopulation[i] = individual;
@@ -253,7 +253,7 @@ public struct BezierInitialization : IParallelPopulationModifier<BezierIndividua
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 endPosition;
   [ReadOnly] public Vector2 forward;
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
@@ -269,7 +269,7 @@ public struct BezierInitialization : IParallelPopulationModifier<BezierIndividua
       controlPointLenght -= subFactor;
       for(int j = 0; j < pathSize; j++)
       {
-        var acc = (_rand.NextFloat() * 2f) - 1f;
+        var acc = (rand.NextFloat() * 2f) - 1f;
         individual.accelerations[j] = acc;
       }
       currentPopulation[i] = individual;

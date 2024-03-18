@@ -6,7 +6,6 @@ using Unity.Burst;
 using Unity.Collections;
 
 
-
 [BurstCompile]
 public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
 {
@@ -15,10 +14,10 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public FitnessJerkCostParallel jerkFitness;
   public FitnessCollisionParallel collisionFitness;
   public FitnessEndDistanceParallel endDistanceFitness;
-  public NegativeSelectionParallel selection;
-  public BezierInitialization popInitialization;
+  public ElitistSelectionParallel selection;
+  public KineticFriendlyInitialization popInitialization;
   public WeightedSumRanking ranking;
-  public NativeBezierPopulation pop;
+  public NativeBasicPopulation pop;
   public FitnessEvaluationLogger logger;
   public BezierPopulationDrawer popDrawer;
 
@@ -26,17 +25,17 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   public int iterations { get; set; }
   public int populationSize { get; set; }
 
-  public NativeArray<Vector2> _winner;
-  public float _timeDelta;
-  public float _agentSpeed;
-  public Vector2 _startPosition;
-  public Vector2 _forward;
+  public NativeArray<Vector2> winner;
+  public float timeDelta;
+  public float agentSpeed;
+  public Vector2 startPosition;
+  public Vector2 forward;
 
   public float startVelocity;
   public float maxAcc;
   public float updateInteraval;
 
-  public Unity.Mathematics.Random _rand;
+  public Unity.Mathematics.Random rand;
 
   public void Execute()
   {
@@ -44,30 +43,29 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
     for (int i = 0; i < iterations; i++)
     {
-      //jerkFitness.ModifyPopulation(ref pop._population, i);
-      //collisionFitness.ModifyPopulation(ref pop._population, i);
-      //endDistanceFitness.ModifyPopulation(ref pop._population, i);
+      jerkFitness.ModifyPopulation(ref pop._population, i);
+      collisionFitness.ModifyPopulation(ref pop._population, i);
+      endDistanceFitness.ModifyPopulation(ref pop._population, i);
 
-      //ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-      //  jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
-      //ranking.ModifyPopulation(ref pop._population, i);
+      ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
+        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+      ranking.ModifyPopulation(ref pop._population, i);
 
-      //logger.LogPopulationState(ref pop._population, i);
-      //selection.ModifyPopulation(ref pop._population, i);
-      //cross.ModifyPopulation(ref pop._population, i);
-      //mutation.ModifyPopulation(ref pop._population, i);
+      logger.LogPopulationState(ref pop._population, i);
+      selection.ModifyPopulation(ref pop._population, i);
+      cross.ModifyPopulation(ref pop._population, i);
+      mutation.ModifyPopulation(ref pop._population, i);
     }
 
-    //jerkFitness.ModifyPopulation(ref pop._population, iterations);
-    //collisionFitness.ModifyPopulation(ref pop._population, iterations);
-    //endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
+    jerkFitness.ModifyPopulation(ref pop._population, iterations);
+    collisionFitness.ModifyPopulation(ref pop._population, iterations);
+    endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
 
-    //ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-    //    jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
-    //ranking.ModifyPopulation(ref pop._population, iterations);
+    ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
+        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
+    ranking.ModifyPopulation(ref pop._population, iterations);
 
-    //logger.LogPopulationState(ref pop._population, iterations);
-    popDrawer.DrawPopulation(ref pop._population);
+    logger.LogPopulationState(ref pop._population, iterations);
     SetWinner();
   }
 
@@ -75,12 +73,12 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
   {
     Assert.IsTrue(resources.Count == 7);
 
-    _timeDelta = (float)resources[0];
-    _agentSpeed = (float)resources[1];
-    _startPosition = (Vector2)resources[2];
-    _forward = (Vector2)resources[3];
-    if (_forward.x == 0 && _forward.y == 0)
-      _forward = new Vector2(1, 0);
+    timeDelta = (float)resources[0];
+    agentSpeed = (float)resources[1];
+    startPosition = (Vector2)resources[2];
+    forward = (Vector2)resources[3];
+    if (forward.x == 0 && forward.y == 0)
+      forward = new Vector2(1, 0);
     startVelocity = (float)resources[4];
     maxAcc = (float)resources[5];
     updateInteraval = (float)resources[6];
@@ -88,26 +86,26 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
 
   public Vector2 GetResult()
   {
-    return _winner[0];
+    return winner[0];
   }
 
   private void SetWinner()
   {
-    _winner[0] = new Vector2(0, 0);
-    //float minFitness = float.MaxValue;
-    //foreach (var individual in pop._population)
-    //{
-    //  if (minFitness > individual.fitness)
-    //  {
-    //    var v = UtilsGA.UtilsGA.RotateVector(_forward.normalized, individual.path[0].x);
-    //    var acc = maxAcc * individual.path[0].y;
-    //    var velocity = startVelocity + acc;
-    //    velocity = Mathf.Clamp(velocity, 0, updateInteraval * _agentSpeed);
-    //    v *= velocity;
-    //    _winner[0] = new Vector2(v.x, v.y);
-    //    minFitness = individual.fitness;
-    //  }
-    //}
+    winner[0] = new Vector2(0, 0);
+    float minFitness = float.MaxValue;
+    foreach (var individual in pop._population)
+    {
+      if (minFitness > individual.fitness)
+      {
+        var v = UtilsGA.UtilsGA.RotateVector(forward.normalized, individual.path[0].x);
+        var acc = maxAcc * individual.path[0].y;
+        var velocity = startVelocity + acc;
+        velocity = Mathf.Clamp(velocity, 0, updateInteraval * agentSpeed);
+        v *= velocity;
+        winner[0] = new Vector2(v.x, v.y);
+        minFitness = individual.fitness;
+      }
+    }
   }
 
   public string GetConfiguration()
@@ -132,7 +130,7 @@ public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<Ba
     selection.Dispose();
     logger.Dispose();
     ranking.Dispose();
-    _winner.Dispose();
+    winner.Dispose();
     pop.Dispose();
   }
 }
@@ -157,7 +155,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
   public BezierFitnessTimeToDestinationParallel ttdFitness;
 
   // Selection
-  public BezierNegativeSelectionParallel selection;
+  public BezierElitistSelectionParallel selection;
 
   // Initialization
   public BezierInitialization popInitialization;
@@ -174,30 +172,30 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
   public int iterations { get; set; }
   public int populationSize { get; set; }
 
-  public NativeArray<Vector2> _winner;
-  public float _timeDelta;
-  public float _agentSpeed;
-  public Vector2 _startPosition;
-  public Vector2 _forward;
+  public NativeArray<Vector2> winner;
+  public float timeDelta;
+  public float agentSpeed;
+  public Vector2 startPosition;
+  public Vector2 forward;
 
   public float startVelocity;
   public float maxAcc;
   public float updateInteraval;
 
-  public Unity.Mathematics.Random _rand;
+  public Unity.Mathematics.Random rand;
 
   public void Execute()
   {
     // Initialisation
-    popInitialization.ModifyPopulation(ref pop._population, 0);
+    popInitialization.ModifyPopulation(ref pop.population, 0);
 
     for (int i = 0; i < iterations; i++)
     {
       // Fitness
-      jerkFitness.ModifyPopulation(ref pop._population, i);
-      collisionFitness.ModifyPopulation(ref pop._population, i);
-      endDistanceFitness.ModifyPopulation(ref pop._population, i);
-      ttdFitness.ModifyPopulation(ref pop._population, i);
+      jerkFitness.ModifyPopulation(ref pop.population, i);
+      collisionFitness.ModifyPopulation(ref pop.population, i);
+      endDistanceFitness.ModifyPopulation(ref pop.population, i);
+      ttdFitness.ModifyPopulation(ref pop.population, i);
 
       // Ranking
       ranking.CalculateRanking(ref jerkFitness.fitnesses,
@@ -208,7 +206,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
                                collisionFitness.weight,
                                endDistanceFitness.weight,
                                ttdFitness.weight);
-      ranking.ModifyPopulation(ref pop._population, i);
+      ranking.ModifyPopulation(ref pop.population, i);
 
       // Logging
       logger.LogPopulationState(ref ranking.resultingFitnesses,
@@ -219,26 +217,26 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
                                 i);
 
       // Selection
-      selection.ModifyPopulation(ref pop._population, i);
+      selection.ModifyPopulation(ref pop.population, i);
 
       // Operators - cross
-      cross.ModifyPopulation(ref pop._population, i);
+      cross.ModifyPopulation(ref pop.population, i);
 
       // Operators - mutation
-      controlPointsMutation.ModifyPopulation(ref pop._population, i);
-      smoothMutation.ModifyPopulation(ref pop._population, i);
-      shuffleMutation.ModifyPopulation(ref pop._population, i);
-      clampVelocityMutation.ModifyPopulation(ref pop._population, i);
-      straightFinishMutation.ModifyPopulation(ref pop._population, i);
+      controlPointsMutation.ModifyPopulation(ref pop.population, i);
+      smoothMutation.ModifyPopulation(ref pop.population, i);
+      shuffleMutation.ModifyPopulation(ref pop.population, i);
+      clampVelocityMutation.ModifyPopulation(ref pop.population, i);
+      straightFinishMutation.ModifyPopulation(ref pop.population, i);
 
       // Debug draw
       //popDrawer.DrawPopulation(ref pop._population);
     }
 
-    jerkFitness.ModifyPopulation(ref pop._population, iterations);
-    collisionFitness.ModifyPopulation(ref pop._population, iterations);
-    endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
-    ttdFitness.ModifyPopulation(ref pop._population, iterations);
+    jerkFitness.ModifyPopulation(ref pop.population, iterations);
+    collisionFitness.ModifyPopulation(ref pop.population, iterations);
+    endDistanceFitness.ModifyPopulation(ref pop.population, iterations);
+    ttdFitness.ModifyPopulation(ref pop.population, iterations);
 
     ranking.CalculateRanking(ref jerkFitness.fitnesses,
                          ref collisionFitness.fitnesses,
@@ -248,7 +246,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
                          collisionFitness.weight,
                          endDistanceFitness.weight,
                          ttdFitness.weight);
-    ranking.ModifyPopulation(ref pop._population, iterations);
+    ranking.ModifyPopulation(ref pop.population, iterations);
 
     // Logging
     //logger.LogPopulationState(ref ranking.resultingFitnesses,
@@ -268,12 +266,12 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
   {
     Assert.IsTrue(resources.Count == 7);
 
-    _timeDelta = (float)resources[0];
-    _agentSpeed = (float)resources[1];
-    _startPosition = (Vector2)resources[2];
-    _forward = (Vector2)resources[3];
-    if (_forward.x == 0 && _forward.y == 0)
-      _forward = new Vector2(1, 0);
+    timeDelta = (float)resources[0];
+    agentSpeed = (float)resources[1];
+    startPosition = (Vector2)resources[2];
+    forward = (Vector2)resources[3];
+    if (forward.x == 0 && forward.y == 0)
+      forward = new Vector2(1, 0);
     startVelocity = (float)resources[4];
     maxAcc = (float)resources[5];
     updateInteraval = (float)resources[6];
@@ -281,24 +279,24 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   public Vector2 GetResult()
   {
-    return _winner[0];
+    return winner[0];
   }
 
   private void SetWinner()
   {
-    _winner[0] = new Vector2(0, 0);
+    winner[0] = new Vector2(0, 0);
     float minFitness = float.MaxValue;
     var winnerIndex = 0;
-    for (int i = 0; i < pop._population.Length; i++)
+    for (int i = 0; i < pop.population.Length; i++)
     {
-      if(minFitness > pop._population[i].fitness)
+      if(minFitness > pop.population[i].fitness)
       {
-        minFitness = pop._population[i].fitness;
+        minFitness = pop.population[i].fitness;
         winnerIndex = i;
       }
     }
 
-    var individual = pop._population[winnerIndex];
+    var individual = pop.population[winnerIndex];
     float controlNetLength = Vector2.Distance(individual.bezierCurve.points[0], individual.bezierCurve.points[1]) +
       Vector2.Distance(individual.bezierCurve.points[1], individual.bezierCurve.points[2]) +
       Vector2.Distance(individual.bezierCurve.points[2], individual.bezierCurve.points[3]);
@@ -306,7 +304,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
     var currentAcc = maxAcc * individual.accelerations[0];
     var velocity = startVelocity + currentAcc;
-    velocity = Mathf.Clamp(velocity, 0, updateInteraval * _agentSpeed);
+    velocity = Mathf.Clamp(velocity, 0, updateInteraval * agentSpeed);
     bool overshoot = true;
     float t = 0;
     while (t <= 1)
@@ -319,13 +317,13 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
         individual.bezierCurve.points[3],
         t);
 
-      var distanceSinceLastPoint = (_startPosition - pointOncurve).magnitude;
+      var distanceSinceLastPoint = (startPosition - pointOncurve).magnitude;
       // We may have overshoot it, but only by small distance so we will not bother with it
       if (distanceSinceLastPoint >= velocity)
       {
-        _winner[0] = pointOncurve - _startPosition;
+        winner[0] = pointOncurve - startPosition;
         // We need to scale velocity back
-        _winner[0] = _winner[0] * (1 / updateInteraval);
+        winner[0] = winner[0] * (1 / updateInteraval);
         overshoot = false;
         break;
       }
@@ -334,9 +332,9 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     if (overshoot)
     {
       var destination = individual.bezierCurve.points[3];
-      var headingVector = (destination - _startPosition).normalized * velocity;
-      _winner[0] = headingVector;
-      _winner[0] = _winner[0] * (1 / updateInteraval);
+      var headingVector = (destination - startPosition).normalized * velocity;
+      winner[0] = headingVector;
+      winner[0] = winner[0] * (1 / updateInteraval);
     }
   }
 
@@ -407,7 +405,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     selection.Dispose();
     logger.Dispose();
     ranking.Dispose();
-    _winner.Dispose();
+    winner.Dispose();
     pop.Dispose();
   }
 }

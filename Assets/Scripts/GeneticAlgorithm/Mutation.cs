@@ -4,7 +4,6 @@ using Unity.Mathematics;
 using UnityEngine.Assertions;
 using UnityEngine;
 using Unity.Burst;
-using NativeQuadTree;
 
 public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 {
@@ -51,23 +50,23 @@ public class BasicMutationOperator : IPopulationModifier<BasicIndividual>
 [BurstCompile]
 public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _updateInterval;
-  [ReadOnly] public float _rotationRange;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
+  [ReadOnly] public float rotationRange;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
+      var mutProb = rand.NextFloat();
       if (mutProb > 0.5)
       {
         var individual = currentPopulation[i];
         for (int j = 0; j < individual.path.Length; j++)
         {
-          var acc = (_rand.NextFloat() * 2) - 1;
-          var angle = _rand.NextFloat(-_rotationRange, _rotationRange);
+          var acc = (rand.NextFloat() * 2) - 1;
+          var angle = rand.NextFloat(-rotationRange, rotationRange);
           var temp = individual.path[j];
           temp.x = angle;
           temp.y = acc;
@@ -92,20 +91,20 @@ public struct BasicMutationOperatorParallel : IParallelPopulationModifier<BasicI
 [BurstCompile]
 public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public Vector2 startPos;
   [ReadOnly] public Vector2 destination;
   [ReadOnly] public Vector2 forward;
-  [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
   [ReadOnly] public float startVelocity;
   [ReadOnly] public float maxAcc;
-  [ReadOnly] public float _mutationProb;
+  [ReadOnly] public float mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
-    var mutProb = _rand.NextFloat();
-    if (mutProb > _mutationProb)
+    var mutProb = rand.NextFloat();
+    if (mutProb > mutationProb)
       return;
 
     // Take last individual
@@ -136,7 +135,7 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 
       var maxAcceptableVelocity = UtilsGA.UtilsGA.CalculateMaxVelocity(destinationDistance);
 
-      var newVelocity = Mathf.Clamp(maxAcceptableVelocity, 0, _agentSpeed * _updateInterval);
+      var newVelocity = Mathf.Clamp(maxAcceptableVelocity, 0, agentSpeed * updateInterval);
       var newAcc = newVelocity - prevVelocity;
       newAcc = Mathf.Clamp(newAcc, -1, maxAcc);
       newVelocity = prevVelocity + newAcc;
@@ -156,7 +155,7 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 
   public float GetMutationProbabilty()
   {
-    return _mutationProb;
+    return mutationProb;
   }
 
   public void Dispose()
@@ -168,26 +167,26 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
 [BurstCompile]
 public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
   [ReadOnly] public float startVelocity;
   [ReadOnly] public float maxAcc;
-  [ReadOnly] public float _mutationProb;
+  [ReadOnly] public float mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      if (mutProb > _mutationProb)
+      var mutProb = rand.NextFloat();
+      if (mutProb > mutationProb)
         return;
 
       var individual = currentPopulation[i];
 
       var currentAcc = maxAcc * individual.accelerations[0];
       var velocity = startVelocity + currentAcc;
-      velocity = Mathf.Clamp(velocity, 0, _updateInterval * _agentSpeed);
+      velocity = Mathf.Clamp(velocity, 0, updateInterval * agentSpeed);
 
 
       // Calculate how long path is to destination
@@ -236,7 +235,7 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
 
   public float GetMutationProbabilty()
   {
-    return _mutationProb;
+    return mutationProb;
   }
 
   public void Dispose()
@@ -248,15 +247,15 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
 [BurstCompile]
 public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public float _mutationProb;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public float mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      if (mutProb > _mutationProb)
+      var mutProb = rand.NextFloat();
+      if (mutProb > mutationProb)
         return;
 
       var individual = currentPopulation[i];
@@ -282,7 +281,7 @@ public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModif
 
   public float GetMutationProbabilty()
   {
-    return _mutationProb;
+    return mutationProb;
   }
 
   public void Dispose()
@@ -293,16 +292,16 @@ public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModif
 [BurstCompile]
 public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public float _mutationProb;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public float mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
+      var mutProb = rand.NextFloat();
       // Low mutation rate because we are counting on other mutation to smooth accelerations
-      if (mutProb > _mutationProb)
+      if (mutProb > mutationProb)
         return;
 
       var individual = currentPopulation[i];
@@ -310,11 +309,11 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
       for (int j = 0; j < individual.accelerations.Length; j++)
       {
         // Also dont change every acceleration, just some
-        mutProb = _rand.NextFloat();
-        if (mutProb > _mutationProb)
+        mutProb = rand.NextFloat();
+        if (mutProb > mutationProb)
           continue;
 
-        var acc = (_rand.NextFloat() * 2f) - 1f;
+        var acc = (rand.NextFloat() * 2f) - 1f;
         individual.accelerations[j] = acc;
       }
 
@@ -329,7 +328,7 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
 
   public float GetMutationProbabilty()
   {
-    return _mutationProb;
+    return mutationProb;
   }
 
   public void Dispose()
@@ -344,27 +343,27 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
 [BurstCompile]
 public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
+  [ReadOnly] public Unity.Mathematics.Random rand;
   [ReadOnly] public Vector2 startPosition;
   [ReadOnly] public Vector2 endPosition;
   [ReadOnly] public Vector2 forward;
-  [ReadOnly] public float _mutationProb;
+  [ReadOnly] public float mutationProb;
 
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
-      if (mutProb > _mutationProb)
+      var mutProb = rand.NextFloat();
+      if (mutProb > mutationProb)
         return;
 
       // Define restrictions on control points position
       var individual = currentPopulation[i];
       float maxDeg = 30;
       float halfDistance = (endPosition - startPosition).magnitude / 2;
-      float upDistance = _rand.NextFloat(halfDistance);
+      float upDistance = rand.NextFloat(halfDistance);
       float controlPointLenght = Mathf.Tan(maxDeg * Mathf.Deg2Rad) * upDistance;
-      float sideDistance = _rand.NextFloat(-controlPointLenght, controlPointLenght);
+      float sideDistance = rand.NextFloat(-controlPointLenght, controlPointLenght);
 
       // Calculate position of new P1 and P2 control points
       var newP1 = startPosition + ((forward.normalized * upDistance) + (Vector2.Perpendicular(forward.normalized) * sideDistance));
@@ -387,7 +386,7 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
 
   public float GetMutationProbabilty()
   {
-    return _mutationProb;
+    return mutationProb;
   }
 
   public void Dispose()
@@ -404,13 +403,13 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
 [BurstCompile]
 public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public Vector2 _destination;
-  [ReadOnly] public Vector2 _agentPosition;
-  [ReadOnly] public Vector2 _forward;
-  [ReadOnly] public float _rotationAngle;
-  [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public Vector2 agentPosition;
+  [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float rotationAngle;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -418,22 +417,22 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
     var mutationRate = 0.3f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
+      var mutProb = rand.NextFloat();
       if (mutProb < 1 - mutationRate)
         continue;
 
       var individual = currentPopulation[i];
 
-      var rotationVector = _forward.normalized;
+      var rotationVector = forward.normalized;
       var seg1 = individual.path[0];
       var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
 
-      var straightVectorToDestination = (_destination - _agentPosition);
+      var straightVectorToDestination = (destination - agentPosition);
       var startAngle = -Vector2.SignedAngle(straightVectorToDestination, rotatedVector);
 
       // Special case when we can go straight to the destination with single vector
-      if (Mathf.Abs(startAngle) < _rotationAngle
-        && straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      if (Mathf.Abs(startAngle) < rotationAngle
+        && straightVectorToDestination.magnitude < (agentSpeed * updateInterval))
       {
         individual.path[0] = new float2 { x = startAngle, y = straightVectorToDestination.magnitude };
         for (int j = 1; j < individual.path.Length; j++)
@@ -446,7 +445,7 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
       }
 
       // Check if we can achieve turning towards the destination in smooth circle motion
-      var maxAngleChange = (individual.path.Length - 1) * _rotationAngle;
+      var maxAngleChange = (individual.path.Length - 1) * rotationAngle;
       // * 2 because first half of circle will take angle, second is symmetrical
       // only acute angles
       if (maxAngleChange < startAngle * 2 && (startAngle >= 90 || startAngle <= -90))
@@ -466,29 +465,29 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 
       // We wont be able to make it in single path
       // Go as further as we can
-      if (uniformSegmentSize > _agentSpeed * _updateInterval)
+      if (uniformSegmentSize > agentSpeed * updateInterval)
       {
-        rotatedVector = rotatedVector * _agentSpeed * _updateInterval;
-        var rotatedAndTranslated = _agentPosition + rotatedVector;
+        rotatedVector = rotatedVector * agentSpeed * updateInterval;
+        var rotatedAndTranslated = agentPosition + rotatedVector;
 
         var radius = UtilsGA.UtilsGA.GetCircleRadius(
-          new System.Numerics.Complex(_agentPosition.x, _agentPosition.y),
-          new System.Numerics.Complex(_destination.x, _destination.y),
+          new System.Numerics.Complex(agentPosition.x, agentPosition.y),
+          new System.Numerics.Complex(destination.x, destination.y),
           new System.Numerics.Complex(rotatedAndTranslated.x, rotatedAndTranslated.y));
 
         if (radius < 0)
           continue;
 
-        var baseHalf = (_agentSpeed * _updateInterval) / 2;
+        var baseHalf = (agentSpeed * updateInterval) / 2;
         var stepAngle = 2 * Mathf.Asin((float)(baseHalf / radius));
 
         var stepAngleDegrees = stepAngle * Mathf.Rad2Deg;
 
         // Create a new path
-        individual.path[0] = new float2 { x = individual.path[0].x, y = _agentSpeed * _updateInterval };
+        individual.path[0] = new float2 { x = individual.path[0].x, y = agentSpeed * updateInterval };
         for (int j = 1; j < individual.path.Length; j++)
         {
-          individual.path[j] = new float2 { x = stepAngleDegrees, y = _agentSpeed * _updateInterval };
+          individual.path[j] = new float2 { x = stepAngleDegrees, y = agentSpeed * updateInterval };
         }
 
         currentPopulation[i] = individual;
@@ -526,13 +525,13 @@ public struct EvenCircleMutationOperatorParallel : IParallelPopulationModifier<B
 [BurstCompile]
 public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier<BasicIndividualStruct>
 {
-  [ReadOnly] public Unity.Mathematics.Random _rand;
-  [ReadOnly] public Vector2 _destination;
-  [ReadOnly] public Vector2 _agentPosition;
-  [ReadOnly] public Vector2 _forward;
-  [ReadOnly] public float _rotationAngle;
-  [ReadOnly] public float _agentSpeed;
-  [ReadOnly] public float _updateInterval;
+  [ReadOnly] public Unity.Mathematics.Random rand;
+  [ReadOnly] public Vector2 destination;
+  [ReadOnly] public Vector2 agentPosition;
+  [ReadOnly] public Vector2 forward;
+  [ReadOnly] public float rotationAngle;
+  [ReadOnly] public float agentSpeed;
+  [ReadOnly] public float updateInterval;
 
   public void ModifyPopulation(ref NativeArray<BasicIndividualStruct> currentPopulation, int iteration)
   {
@@ -540,17 +539,17 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
     var mutationRate = 0.5f;
     for (int i = 0; i < currentPopulation.Length; i++)
     {
-      var mutProb = _rand.NextFloat();
+      var mutProb = rand.NextFloat();
       if (mutProb < 1 - mutationRate)
         continue;
 
       var individual = currentPopulation[i];
 
-      var straightVectorToDestination = (_destination - _agentPosition);
-      var startAngle = Vector2.SignedAngle(straightVectorToDestination, _forward);
+      var straightVectorToDestination = (destination - agentPosition);
+      var startAngle = Vector2.SignedAngle(straightVectorToDestination, forward);
 
       // Special case when we can go straight to the destination with single vector
-      if (straightVectorToDestination.magnitude < (_agentSpeed * _updateInterval))
+      if (straightVectorToDestination.magnitude < (agentSpeed * updateInterval))
       {
         individual.path[0] = new float2 { x = -startAngle, y = straightVectorToDestination.magnitude };
         for (int j = 1; j < individual.path.Length; j++)
@@ -564,10 +563,10 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
 
       var remainingLength = straightVectorToDestination.magnitude;
       var index = 0;
-      var maxMove = _agentSpeed * _updateInterval;
+      var maxMove = agentSpeed * updateInterval;
 
       // Straight line to destination
-      if (-_rotationAngle < startAngle && startAngle < _rotationAngle)
+      if (-rotationAngle < startAngle && startAngle < rotationAngle)
       {
         var turnAngle = startAngle;
         while (remainingLength > 0 && index < individual.path.Length)
@@ -595,17 +594,17 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       }
 
       // Create greedy circle rotation towards the destination
-      var rotationVector = _forward.normalized;
+      var rotationVector = forward.normalized;
       var seg1 = individual.path[0];
       var rotationSign = seg1.x > 0 ? -1 : 1;
       var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, seg1.x);
       rotatedVector = rotatedVector * maxMove;
 
-      var pos = _agentPosition;
+      var pos = agentPosition;
       var rotatedAndTranslated = pos + rotatedVector;
       var radius = UtilsGA.UtilsGA.GetCircleRadius(
-        new System.Numerics.Complex(_agentPosition.x, _agentPosition.y),
-        new System.Numerics.Complex(_destination.x, _destination.y),
+        new System.Numerics.Complex(agentPosition.x, agentPosition.y),
+        new System.Numerics.Complex(destination.x, destination.y),
         new System.Numerics.Complex(rotatedAndTranslated.x, rotatedAndTranslated.y));
 
       if (radius < 0)
@@ -617,9 +616,9 @@ public struct GreedyCircleMutationOperatorParallel : IParallelPopulationModifier
       do
       {
         // We can go straight to destination by 1 move
-        if((rotatedAndTranslated - _destination).magnitude < maxMove)
+        if((rotatedAndTranslated - destination).magnitude < maxMove)
         {
-          individual.path[index] = new float2 { x = Vector2.SignedAngle(rotatedVector, (_destination - rotatedAndTranslated)), y = (rotatedAndTranslated - _destination).magnitude };
+          individual.path[index] = new float2 { x = Vector2.SignedAngle(rotatedVector, (destination - rotatedAndTranslated)), y = (rotatedAndTranslated - destination).magnitude };
           index++;
           break;
         }

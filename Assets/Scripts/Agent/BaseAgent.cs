@@ -16,7 +16,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <summary>
   /// GameObject representing Agent
   /// </summary>
-  public GameObject _object = null;
+  protected GameObject _object = null;
   /// <summary>
   /// Path to material of agent
   /// </summary>
@@ -37,7 +37,7 @@ public abstract class BaseAgent : IBaseAgent
     _object.AddComponent<DirectionArrowGizmo>();
     _object.AddComponent<LineRenderer>();
     _object.AddComponent<AgentCollisionDetectionHandler>();
-    _object.GetComponent<AgentCollisionDetectionHandler>()._agent = this;
+    _object.GetComponent<AgentCollisionDetectionHandler>().agent = this;
 
     //Create3DArrowIndicator(_object.transform);
   }
@@ -206,14 +206,14 @@ public abstract class BaseAgent : IBaseAgent
 
 public class AgentCollisionDetectionHandler : MonoBehaviour
 {
-  public BaseAgent _agent;
+  public BaseAgent agent;
 
 
   private void OnCollisionEnter(Collision collision)
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())
     {
-      _agent.OnCollisionEnter();
+      agent.OnCollisionEnter();
     }
   }
 
@@ -221,7 +221,7 @@ public class AgentCollisionDetectionHandler : MonoBehaviour
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())
     {
-      _agent.OnCollisionStay();
+      agent.OnCollisionStay();
     }
   }
 }
