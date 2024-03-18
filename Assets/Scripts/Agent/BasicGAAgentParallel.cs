@@ -37,7 +37,7 @@ public class BasicGAAgentParallel : BaseAgent
     _path = new NavMeshPath();
     speed = 5.0f;
     jobScheduled = false;
-    _updateTimer = SimulationManager.Instance._agentUpdateInterval;
+    _updateTimer = SimulationManager.Instance.agentUpdateInterval;
     nextVel = Vector2.zero;
     _runGa = true;
     iteration = 0;
@@ -135,7 +135,7 @@ public class BasicGAAgentParallel : BaseAgent
 
     inDestination = false;
 
-    if (_runGa && SimulationManager.Instance._agentUpdateInterval < _updateTimer)
+    if (_runGa && SimulationManager.Instance.agentUpdateInterval < _updateTimer)
     {
       SetDestination(new Vector2(_path.corners[_path.corners.Length - 1].x, _path.corners[_path.corners.Length - 1].z));
       // Run GA
@@ -160,7 +160,7 @@ public class BasicGAAgentParallel : BaseAgent
       jobScheduled = false;
       //Debug.Log(string.Format("Position {0}", position));
       //Debug.Log(string.Format("Previous position {0}", previousLocation));
-      PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance._agentUpdateInterval);
+      PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance.agentUpdateInterval);
       nextVel = _winner[0];
       //Debug.Log(string.Format("Next winner {0}", nextVel));
       //Debug.Log(string.Format("Next winner magnitude {0}", nextVel.magnitude));

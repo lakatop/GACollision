@@ -51,7 +51,7 @@ public struct StraightLineEvaluationLogger
       var fit = individual.fitness.ToString();
 
       var objective = (agentDestination - position).normalized;
-      objective = objective * agentSpeed * SimulationManager.Instance._agentUpdateInterval;
+      objective = objective * agentSpeed * SimulationManager.Instance.agentUpdateInterval;
       objective = objective + position;
 
       // calculate how far are we from objective
