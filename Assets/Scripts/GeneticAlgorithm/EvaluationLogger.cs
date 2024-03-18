@@ -326,7 +326,7 @@ public class AgentLogger
 
   public void CreateConfigurationFile(string configuration)
   {
-    var confFile = "Plotting/Runs" + _configurationId + "/" + "config.txt";
+    var confFile = "Plotting/Runs/" + _configurationId + "/" + "config.txt";
     FileInfo fileInfo = new FileInfo(confFile);
     fileInfo.Directory.Create();
 
