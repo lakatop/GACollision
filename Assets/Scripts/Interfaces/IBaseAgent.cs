@@ -68,10 +68,6 @@ public interface IBaseAgent
   /// </summary>
   Vector2 destination { get; }
   /// <summary>
-  /// Collision avoidance algorithm that agent uses
-  /// </summary>
-  IBaseCollisionAvoider collisionAlg { get; set; }
-  /// <summary>
   /// Path planning algorithm that agent uses
   /// </summary>
   IBasePathPlanner pathPlanningAlg { get; set; }

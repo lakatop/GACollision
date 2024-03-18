@@ -62,8 +62,6 @@ public abstract class BaseAgent : IBaseAgent
   public float updateInterval { get; set; }
   /// <inheritdoc cref="IBaseAgent.inDestination"/>
   public bool inDestination { get; set; }
-  /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
-  public abstract IBaseCollisionAvoider collisionAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
@@ -77,18 +75,11 @@ public abstract class BaseAgent : IBaseAgent
 
     // Set current position
     position = pos;
-    //var step = speed * Time.deltaTime;
 
     // Also transform gameobject
     if (_object != null)
     {
-      //_object.transform.position = Vector3.MoveTowards(new Vector3(position.x, 1.58f, position.y), new Vector3(pos.x, 1.58f, pos.y), step);
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
-      // We cannot use Warp for MyNavMeshAgent because it would override its calculations and we wouldnt move after that
-      if (!(this is MyNavMeshAgent))
-      {
-        GetComponent<NavMeshAgent>().Warp(_object.transform.position);
-      }
     }
   }
   /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
@@ -110,14 +101,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.GetVelocity"/>
   public Vector2 GetVelocity()
   {
-    if (this is MyNavMeshAgent)
-    {
-      return GetComponent<NavMeshAgent>().velocity;
-    }
-    else
-    {
-      return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
-    }
+    return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
   }
   
   // Other methods ----------------------------------------------------------------

@@ -40,20 +40,6 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private bool _skipNextFrame { get; set; }
   /// <summary>
-  /// List of all collision avoidance algorithms that registered themselves to SimulationManager
-  /// </summary>
-  private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
-  /// <summary>
-  /// List of all classes that require some special resource allocation/deallocation during simulation
-  /// e.g. GeneticAlgorithm for NativeArray(s)
-  /// </summary>
-  private List<IResourceManager> _resourceListeners { get; set; }
-  /// <summary>
-  /// Manager for collision avoidance algorithms
-  /// This should be the only instance in entire simulation
-  /// </summary>
-  public AlgorithmsManager _collisionManager { get; private set; }
-  /// <summary>
   /// Walking platform bound
   /// </summary>
   private NativeQuadTree.AABB2D _platfornm { get; set; }
@@ -104,9 +90,6 @@ public class SimulationManager : MonoBehaviour
 
     _agents = new List<IBaseAgent>();
     obstacles = new List<Obstacle>();
-    _collisionListeners = new List<IBaseCollisionAvoider>();
-    _collisionManager = new AlgorithmsManager();
-    _resourceListeners = new List<IResourceManager>();
     _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
     agentUpdateInterval = 0.5f;
@@ -222,26 +205,6 @@ public class SimulationManager : MonoBehaviour
       _quadTree.Dispose();
       _quadTreeData.Dispose();
     }
-  }
-
-  /// <summary>
-  /// Add collision avoidance algorithm instance to list of listeners.
-  /// This listener will receive updating calls
-  /// </summary>
-  /// <param name="collisionAvoider">Instance to be added</param>
-  public void RegisterCollisionListener(IBaseCollisionAvoider collisionAvoider)
-  {
-    _collisionListeners.Add(collisionAvoider);
-  }
-
-  /// <summary>
-  /// Add resource handling class to listener list.
-  /// This listener will receive updating calls
-  /// </summary>
-  /// <param name="resourceManager">Intance to be added</param>
-  public void RegisterResourceListener(IResourceManager resourceManager)
-  {
-    _resourceListeners.Add(resourceManager);
   }
 
   /// <summary>

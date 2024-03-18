@@ -8,7 +8,6 @@ using Unity.Jobs;
 /// </summary>
 public class BasicGAAgentParallel : BaseAgent
 {
-  public override IBaseCollisionAvoider collisionAlg { get; set; }
   public override IBasePathPlanner pathPlanningAlg { get; set; }
   public Vector2 nextVel { get; set; }
   public AgentLogger logger { get; set; }
