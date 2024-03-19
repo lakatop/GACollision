@@ -45,4 +45,3 @@ public class NavMeshPathPlanner: IBasePathPlanner
     _navMeshAgent.path = path;
   }
 }
-

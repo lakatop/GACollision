@@ -3,7 +3,8 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using Unity.Collections;
 using UnityEngine.SceneManagement;
-using System.Threading;
+
+
 /// <summary>
 /// Singleton
 /// Agent manager class
@@ -214,18 +215,6 @@ public class SimulationManager : MonoBehaviour
   public List<IBaseAgent> GetAgents()
   {
     return _agents;
-  }
-
-  /// <summary>
-  /// Create new agent according to current mouse position
-  /// </summary>
-  private void SpawnAgent()
-  {
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    if (Physics.Raycast(ray, out var hitInfo))
-    {
-      CreateScenarios();
-    }
   }
 
   private void RegisterObstacles()
