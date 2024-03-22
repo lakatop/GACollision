@@ -65,28 +65,27 @@ csv_files = [
 for file in csv_files:
     df = []
     for run in runs:
-        df.append(pd.read_csv(file))
+        df.append(
+            pd.read_csv(
+                main_directory + "/" + run + "/RunAverage/" + file.split("/")[-1]
+            )
+        )
 
-    column_names = [
-        col for col in df[0].columns if col != "iteration" and col != "run_id"
-    ]
+    combined_df = pd.concat(df, ignore_index=True)
 
-    num_subplots = len(column_names)
     fig, axes = plt.subplots(num_subplots, 1, figsize=(10, 6 * num_subplots))
-
-    # Plot each column in separate subplot
-    # X axis will be run_id
-    for i, col in enumerate(column_names):
+    for i, column in enumerate(
+        combined_df.columns[:-1]
+    ):  # Exclude the last column (run_id)
         ax = axes[i]
-        for j, run in enumerate(runs):
-            ax.plot(df[j]["run_id"], df[j][col], label=run)
-        ax.set_xlabel("Run ID")
-        ax.set_ylabel(col)
-        ax.set_title(col)
-        # ax.set_xticks(range(len(runs)))  # Set x-axis ticks as integers
-        ax.grid(True)  # Add grid lines for better readability
-        ax.legend()
+        ax.plot(combined_df["run_id"], combined_df[column], label=column)
+        ax.set_title("Columns vs run_id")
+        ax.set_xlabel("run_id")
+        ax.set_ylabel("Values")
+        # ax.legend()
+        ax.grid(True)
 
+    # plt.show()
     plt.tight_layout()
     plt.savefig(
         main_directory + "/all_runs_" + file.split("/")[-1].replace(".csv", ".png")

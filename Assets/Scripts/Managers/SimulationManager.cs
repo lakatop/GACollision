@@ -445,7 +445,7 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("Creating scenarios");
     scenarios = new List<IScenario>
     {
-      new StraightLineScenario(1),
+      new StraightLineScenario(2),
       new SmallObstacleScenario(1),
       new CornerScenario(1),
       new OppositeScenario(1),
