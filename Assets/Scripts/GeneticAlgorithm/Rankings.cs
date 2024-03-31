@@ -124,7 +124,7 @@ public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndiv
       }
     }
 
-    // Z-score normalization of third fitnesses
+    // Z-score normalization of fourth fitnesses
     mean = 0f;
 
     for (int i = 0; i < fitnessValues4.Length; i++)

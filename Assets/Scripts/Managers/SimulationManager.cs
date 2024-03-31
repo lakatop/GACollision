@@ -73,7 +73,7 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   public float agentUpdateInterval { get; private set; }
   /// <summary>
-  /// 
+  /// Temporary Time.deltaTime accumulator
   /// </summary>
   private float _updateTimer { get; set; }
 
@@ -102,7 +102,6 @@ public class SimulationManager : MonoBehaviour
 
   void Start()
   {
-    System.Console.WriteLine("SimulationManager StartCall");
     CreateScenarios();
     SetScenarioResources();
   }
@@ -114,7 +113,6 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   void Update()
   {
-    System.Console.WriteLine("SimulationManager Update call");
     if (_skipNextFrame)
     {
       _skipNextFrame = false;
@@ -164,14 +162,12 @@ public class SimulationManager : MonoBehaviour
 
   private void RunSimulation()
   {
-    System.Console.WriteLine("RUNNING RunSimulation");
     _scenarioStarted = true;
 
     if (_updateTimer > agentUpdateInterval)
     {
       foreach (var agent in _agents)
       {
-        Debug.Log("In destination: " + agent.inDestination);
         agent.OnAfterUpdate(Vector2.zero);
       }
 
@@ -311,7 +307,7 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private void TransformObstaclesToQuadElements()
   {
-    var agentRadius = 0.5f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
+    var agentRadius = 0.5f;
     _quadtreeStaticElements.Clear();
     foreach (var obstacle in obstacles)
     {

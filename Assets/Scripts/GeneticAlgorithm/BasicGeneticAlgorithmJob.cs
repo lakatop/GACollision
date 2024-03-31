@@ -80,12 +80,13 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       ranking.ModifyPopulation(ref pop.population, i);
 
       // Logging
-      logger.LogPopulationState(ref ranking.resultingFitnesses,
-                                ref jerkFitness.fitnesses,
-                                ref collisionFitness.fitnesses,
-                                ref endDistanceFitness.fitnesses,
-                                ref ttdFitness.fitnesses,
-                                i);
+      // Uncomment lines below to use more detailed logging of population in each iteration
+      //logger.LogPopulationState(ref ranking.resultingFitnesses,
+      //                          ref jerkFitness.fitnesses,
+      //                          ref collisionFitness.fitnesses,
+      //                          ref endDistanceFitness.fitnesses,
+      //                          ref ttdFitness.fitnesses,
+      //                          i);
 
       // Selection
       selection.ModifyPopulation(ref pop.population, i);
@@ -101,7 +102,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       straightFinishMutation.ModifyPopulation(ref pop.population, i);
 
       // Debug draw
-      //popDrawer.DrawPopulation(ref pop._population);
+      //popDrawer.DrawPopulation(ref pop.population);
     }
 
     jerkFitness.ModifyPopulation(ref pop.population, iterations);
@@ -120,6 +121,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     ranking.ModifyPopulation(ref pop.population, iterations);
 
     // Logging
+    // Uncomment lines below to use more detailed logging of population in each iteration
     //logger.LogPopulationState(ref ranking.resultingFitnesses,
     //                      ref jerkFitness.fitnesses,
     //                      ref collisionFitness.fitnesses,
@@ -128,7 +130,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     //                      iterations);
 
     // Debug Draw
-    //popDrawer.DrawPopulation(ref pop._population);
+    //popDrawer.DrawPopulation(ref pop.population);
 
     SetWinner();
   }
