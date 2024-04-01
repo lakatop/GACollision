@@ -176,7 +176,7 @@ public class SimulationManager : MonoBehaviour
     {
       foreach (var agent in _agents)
       {
-        agent.OnAfterUpdate(Vector2.zero);
+        agent.OnAfterUpdate();
       }
 
       _updateTimer = 0f;
@@ -199,7 +199,7 @@ public class SimulationManager : MonoBehaviour
 
     foreach (var agent in _agents)
     {
-      agent.OnAfterUpdate(Vector2.zero);
+      agent.OnAfterUpdate();
     }
   }
 

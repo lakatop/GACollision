@@ -44,7 +44,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.OnBeforeUpdate"/>
   public abstract void OnBeforeUpdate();
   /// <inheritdoc cref="IBaseAgent.OnAfterUpdate"/>
-  public abstract void OnAfterUpdate(Vector2 newPos);
+  public abstract void OnAfterUpdate();
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
   public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>

@@ -208,7 +208,7 @@ public class BasicGAAgentParallel : BaseAgent
   /// <summary>
   /// Setting new position, forward vector and destination of an agent
   /// </summary>
-  public override void OnAfterUpdate(Vector2 newPos)
+  public override void OnAfterUpdate()
   {
     if (jobScheduled)
     {

@@ -11,11 +11,10 @@ public interface IBaseAgent
   /// </summary>
   void OnBeforeUpdate();
   /// <summary>
-  /// Updatefunction for an agent
+  /// Update function for an agent
   /// Called every simulation step after other updates
   /// </summary>
-  /// <param name="newPos">New position</param>
-  void OnAfterUpdate(Vector2 newPos);
+  void OnAfterUpdate();
   /// <summary>
   /// Sets agents position
   /// </summary>
