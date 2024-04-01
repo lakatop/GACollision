@@ -113,36 +113,7 @@ public class BasicGAAgentParallel : BaseAgent
       {
         destination = new Vector2(_path.corners[1].x, _path.corners[1].z); // on index 0 there is current agents position
         _cornerIndex = 1;
-
-        // We are closer to destination than maximum path size
-        // Check whether we can set destination further
-        if ((position - destination).magnitude < pathSize && _path.corners.Length > 2)
-        {
-          int skippedDestinations = 0;
-          var totalSize = (position - destination).magnitude;
-          Vector3 newDestination = new Vector3(destination.x, 0.58f, destination.y);
-          while (skippedDestinations < maxSkipDestinations && (_cornerIndex + skippedDestinations + 1 < _path.corners.Length))
-          {
-            var interDest = _path.corners[_cornerIndex + skippedDestinations + 1];
-            var interSize = (_path.corners[_cornerIndex + skippedDestinations] - interDest).magnitude;
-            if(totalSize + interSize > pathSize)
-            {
-              // find point on line
-              var newDestDir = (_path.corners[_cornerIndex + skippedDestinations] - interDest).normalized;
-              var moveBackSize = (totalSize + interSize) - pathSize;
-              newDestination = interDest + (newDestDir * moveBackSize);
-              break;
-            }
-            else
-            {
-              totalSize += interSize;
-              newDestination = _path.corners[_cornerIndex + skippedDestinations + 1];
-              skippedDestinations++;
-            }
-          }
-
-          destination = new Vector2(newDestination.x, newDestination.z);
-        }
+        CheckToSkipDestination();
       }
       else
       {
@@ -156,6 +127,39 @@ public class BasicGAAgentParallel : BaseAgent
 
     // This is to reset NavMeshAgent's default behaviour to start navigation after path planinng
     GetComponent<NavMeshAgent>().Warp(_object.transform.position);
+  }
+
+  private void CheckToSkipDestination()
+  {
+    // We are closer to destination than maximum path size
+    // Check whether we can set destination further
+    if ((position - destination).magnitude < pathSize && _path.corners.Length > 2)
+    {
+      int skippedDestinations = 0;
+      var totalSize = (position - destination).magnitude;
+      Vector3 newDestination = new Vector3(destination.x, 0.58f, destination.y);
+      while (skippedDestinations < maxSkipDestinations && (_cornerIndex + skippedDestinations + 1 < _path.corners.Length))
+      {
+        var interDest = _path.corners[_cornerIndex + skippedDestinations + 1];
+        var interSize = (_path.corners[_cornerIndex + skippedDestinations] - interDest).magnitude;
+        if (totalSize + interSize > pathSize)
+        {
+          // find point on line
+          var newDestDir = (_path.corners[_cornerIndex + skippedDestinations] - interDest).normalized;
+          var moveBackSize = (totalSize + interSize) - pathSize;
+          newDestination = interDest + (newDestDir * moveBackSize);
+          break;
+        }
+        else
+        {
+          totalSize += interSize;
+          newDestination = _path.corners[_cornerIndex + skippedDestinations + 1];
+          skippedDestinations++;
+        }
+      }
+
+      destination = new Vector2(newDestination.x, newDestination.z);
+    }
   }
 
   /// <inheritdoc cref="BaseAgent.OnCollisionEnter"/>
@@ -175,7 +179,6 @@ public class BasicGAAgentParallel : BaseAgent
   /// </summary>
   public override void OnBeforeUpdate()
   {
-    //destination = CalculateNewDestination();
     _updateTimer += Time.deltaTime;
 
     if ((position - destination).magnitude <= 0.1f && nextVel.magnitude < 2f)
@@ -191,7 +194,7 @@ public class BasicGAAgentParallel : BaseAgent
 
     if (_runGa && SimulationManager.Instance.agentUpdateInterval < _updateTimer)
     {
-      SetDestination(new Vector2(_path.corners[_path.corners.Length - 1].x, _path.corners[_path.corners.Length - 1].z));
+      CheckToSkipDestination();
       // Run GA
       gaJob = (BezierGeneticAlgorithmParallel)_gaDirector.MakeBezierGAParallel(this);
 
