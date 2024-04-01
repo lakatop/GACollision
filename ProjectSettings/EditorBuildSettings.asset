@@ -24,12 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/OppositeCircleScene.unity
     guid: 5cd67b695fa2b4d68b0553941726b603
   - enabled: 1
-    path: Assets/Scenes/NarrowCoridorTurnAroundScene.unity
-    guid: 8d60eafb176f64780a42360dfeafa5b7
-  - enabled: 1
     path: Assets/Scenes/NarrowCorridorOpposite.unity
     guid: 95ee9c5e5081e4effa66fdd26a8f8d36
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/NarrowCorridorNoNavmeshOpposite.unity
+    guid: 529d69e25689c4aeda0ec75f67cc0553
   m_configObjects: {}

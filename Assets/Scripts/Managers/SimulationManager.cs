@@ -478,7 +478,6 @@ public class SimulationManager : MonoBehaviour
       new OppositeScenario(1),
       new OppositeMultipleScenario(1),
       new OppositeCircleScenario(1),
-      new NarrowCoridorTurnAroundScenario(1),
       new NarrowCoridorOppositeScenario(1),
       new NarrowCoridorsOppositeNoNavmeshScenario(1)
     };

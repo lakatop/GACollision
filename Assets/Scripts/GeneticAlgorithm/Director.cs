@@ -166,7 +166,7 @@ public class GeneticAlgorithmDirector
     for (int i = 0; i < populationSize; i++)
     {
       var element = population[i];
-      element.Initialize(pathSize, Allocator.TempJob); // *3 for 1 anchor point and 2 control points
+      element.Initialize(pathSize, Allocator.TempJob);
       population[i] = element;
     }
     ga.pop = new NativeBezierPopulation()

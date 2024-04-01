@@ -17,7 +17,7 @@ public struct BezierIndividualStruct
   public void Initialize(int length, Allocator allocator)
   {
     fitness = 0f;
-    bezierCurve.Initialize(length * 3, allocator);
+    bezierCurve.Initialize(4, allocator); // 4 for cubic bezier curve
     accelerations = new UnsafeList<float>(length, allocator);
     accelerations.Resize(length);
   }
