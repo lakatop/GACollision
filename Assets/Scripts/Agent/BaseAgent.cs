@@ -55,8 +55,6 @@ public abstract class BaseAgent : IBaseAgent
   public Vector2 position { get; protected set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
   public Vector2 destination { get; protected set; }
-  /// <inheritdoc cref="IBaseAgent.updateInterval"/>
-  public float updateInterval { get; set; }
   /// <inheritdoc cref="IBaseAgent.inDestination"/>
   public bool inDestination { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>

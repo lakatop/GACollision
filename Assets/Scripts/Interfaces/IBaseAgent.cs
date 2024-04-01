@@ -51,11 +51,6 @@ public interface IBaseAgent
   /// </summary>
   float speed { get; set; }
   /// <summary>
-  /// Interval for how often should agent call Update on itself
-  /// Defaults to 0, meaning it will be updated every simulation step
-  /// </summary>
-  float updateInterval { get { return 0f; } set { this.updateInterval = value; } }
-  /// <summary>
   /// Returns whether agent is in its final destination
   /// </summary>
   bool inDestination { get; set; }
