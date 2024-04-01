@@ -2,20 +2,54 @@
 using UnityEngine;
 using Unity.Burst;
 
-
+/// <summary>
+/// StraightFinish mutation for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// Current position of an agent
+  /// </summary>
   [ReadOnly] public Vector2 startPos;
+  /// <summary>
+  /// Destination of an agent
+  /// </summary>
   [ReadOnly] public Vector2 destination;
+  /// <summary>
+  /// Agents forward vector
+  /// </summary>
   [ReadOnly] public Vector2 forward;
+  /// <summary>
+  /// Maximum agents speed
+  /// </summary>
   [ReadOnly] public float agentSpeed;
+  /// <summary>
+  /// how often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInterval;
+  /// <summary>
+  /// Current velocity of an agent
+  /// </summary>
   [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// Maximum agents acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// Probablity of mutation
+  /// </summary>
   [ReadOnly] public float mutationProb;
 
+  /// <summary>
+  /// Perform mutation on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var mutProb = rand.NextFloat();
@@ -63,32 +97,69 @@ public struct BezierStraightFinishMutationOperatorParallel : IParallelPopulation
     currentPopulation[currentPopulation.Length - 1] = individual;
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for mutation probability
+  /// </summary>
+  /// <returns>Mutation probability</returns>
   public float GetMutationProbabilty()
   {
     return mutationProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }
 }
 
 
+/// <summary>
+/// ClampVelocity mutation for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// Maximum agents speed
+  /// </summary>
   [ReadOnly] public float agentSpeed;
+  /// <summary>
+  /// How often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInterval;
+  /// <summary>
+  /// agents current velocity
+  /// </summary>
   [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// agents maximum acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// Probability of mutation
+  /// </summary>
   [ReadOnly] public float mutationProb;
 
+  /// <summary>
+  /// Perform mutation on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -143,28 +214,53 @@ public struct BezierClampVelocityMutationOperatorParallel : IParallelPopulationM
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for mutation probability
+  /// </summary>
+  /// <returns>Mutation probability</returns>
   public float GetMutationProbabilty()
   {
     return mutationProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }
 }
 
 
+/// <summary>
+/// SmoothAcc mutation for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// Probability of mutation
+  /// </summary>
   [ReadOnly] public float mutationProb;
 
+  /// <summary>
+  /// Perform mutation on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -189,27 +285,52 @@ public struct BezierSmoothAccMutationOperatorParallel : IParallelPopulationModif
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for mutation probability
+  /// </summary>
+  /// <returns>Mutation probability</returns>
   public float GetMutationProbabilty()
   {
     return mutationProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }
 }
 
+/// <summary>
+/// ShuffleAcc mutation for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// Probability of mutation
+  /// </summary>
   [ReadOnly] public float mutationProb;
 
+  /// <summary>
+  /// Perform mutation on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -236,34 +357,64 @@ public struct BezierShuffleAccMutationOperatorParallel : IParallelPopulationModi
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for mutation probability
+  /// </summary>
+  /// <returns>Mutation probability</returns>
   public float GetMutationProbabilty()
   {
     return mutationProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }
 }
 
 /// <summary>
-/// Bezier individual mutation.
-/// Defines new position of control points randomly selected from appropriate space.
+/// ShuffleControlPoints mutation for BezierIndividualStruct designed to be used inside Unity jobs
 /// </summary>
 [BurstCompile]
 public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// agents current position
+  /// </summary>
   [ReadOnly] public Vector2 startPosition;
+  /// <summary>
+  /// agents destination
+  /// </summary>
   [ReadOnly] public Vector2 endPosition;
+  /// <summary>
+  /// agents forward vector
+  /// </summary>
   [ReadOnly] public Vector2 forward;
+  /// <summary>
+  /// Probability of mutation
+  /// </summary>
   [ReadOnly] public float mutationProb;
 
+  /// <summary>
+  /// Perform mutation on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length; i++)
@@ -294,16 +445,27 @@ public struct BezierShuffleControlPointsMutationOperatorParallel : IParallelPopu
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for mutation probability
+  /// </summary>
+  /// <returns>Mutation probability</returns>
   public float GetMutationProbabilty()
   {
     return mutationProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }

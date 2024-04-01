@@ -3,10 +3,17 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
-
+/// <summary>
+/// Bezier individual struct designed to be used inside of Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierIndividualStruct
 {
+  /// <summary>
+  /// Initialize individual
+  /// </summary>
+  /// <param name="length">Number of control points</param>
+  /// <param name="allocator">Storage allocator</param>
   public void Initialize(int length, Allocator allocator)
   {
     fitness = 0f;
@@ -15,17 +22,32 @@ public struct BezierIndividualStruct
     accelerations.Resize(length);
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     bezierCurve.Dispose();
     accelerations.Dispose();
   }
 
+  /// <summary>
+  /// Fitness of individual
+  /// </summary>
   public float fitness;
+  /// <summary>
+  /// Bezier curve of individual representing path
+  /// </summary>
   public BezierCurve bezierCurve;
+  /// <summary>
+  /// List of agents accelerations on path
+  /// </summary>
   public UnsafeList<float> accelerations;
 }
 
+/// <summary>
+/// BezierIndividualStruct ascending comparer
+/// </summary>
 [BurstCompile]
 public struct BezierIndividualSortAscending : IComparer<BezierIndividualStruct>
 {
@@ -46,9 +68,15 @@ public struct BezierIndividualSortAscending : IComparer<BezierIndividualStruct>
   }
 }
 
+/// <summary>
+/// BezierIndividualStruct population
+/// </summary>
 [BurstCompile]
 public struct NativeBezierPopulation : IParallelPopulation<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   [BurstCompile]
   public void Dispose()
   {
@@ -59,12 +87,22 @@ public struct NativeBezierPopulation : IParallelPopulation<BezierIndividualStruc
     population.Dispose();
   }
 
+  /// <summary>
+  /// Population of individuals
+  /// </summary>
   public NativeArray<BezierIndividualStruct> population;
 }
 
+/// <summary>
+/// BezierIndividualStruct population debub drawer
+/// </summary>
 [BurstCompile]
 public struct BezierPopulationDrawer
 {
+  /// <summary>
+  /// Draw population using debug lines
+  /// </summary>
+  /// <param name="currentPopulation"></param>
   public void DrawPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation)
   {
     for (int i = 0; i < currentPopulation.Length; i++)

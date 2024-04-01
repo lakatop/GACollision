@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 
+/// <summary>
+/// Defines interface for scenarios
+/// </summary>
 public interface IScenario
 {
   /// <summary>

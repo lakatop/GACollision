@@ -5,7 +5,9 @@ using UnityEngine.Assertions;
 using Unity.Burst;
 using Unity.Collections;
 
-
+/// <summary>
+/// Struct representing Bezier GA job
+/// </summary>
 [BurstCompile]
 public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BezierIndividualStruct>
 {
@@ -55,6 +57,9 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   public Unity.Mathematics.Random rand;
 
+  /// <summary>
+  /// Main method that executes the GA
+  /// </summary>
   public void Execute()
   {
     // Initialisation
@@ -102,6 +107,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       straightFinishMutation.ModifyPopulation(ref pop.population, i);
 
       // Debug draw
+      // Uncomment lines below to see debug draw of population
       //popDrawer.DrawPopulation(ref pop.population);
     }
 
@@ -130,11 +136,16 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     //                      iterations);
 
     // Debug Draw
+    // Uncomment lines below to see debug draw of population
     //popDrawer.DrawPopulation(ref pop.population);
 
     SetWinner();
   }
 
+  /// <summary>
+  /// Set additional resources of the struct
+  /// </summary>
+  /// <param name="resources">Resources that will be set</param>
   public void SetResources(List<object> resources)
   {
     Assert.IsTrue(resources.Count == 7);
@@ -150,11 +161,18 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     updateInteraval = (float)resources[6];
   }
 
+  /// <summary>
+  /// Getter of winning velocity
+  /// </summary>
+  /// <returns>Winning velocity</returns>
   public Vector2 GetResult()
   {
     return winner[0];
   }
 
+  /// <summary>
+  /// Set winning velocity
+  /// </summary>
   private void SetWinner()
   {
     winner[0] = new Vector2(0, 0);
@@ -211,6 +229,10 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     }
   }
 
+  /// <summary>
+  /// Creates a string capturing configuration of this GA
+  /// </summary>
+  /// <returns>Configuration of this GA</returns>
   public string GetConfiguration()
   {
     var builder = new System.Text.StringBuilder();
@@ -243,6 +265,10 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     return builder.ToString();
   }
 
+  /// <summary>
+  /// Getter for hyperparameters
+  /// </summary>
+  /// <returns>String capturing hyperparameters</returns>
   public string GetHyperparametersId()
   {
     return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10}-{11}",
@@ -260,6 +286,9 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       iterations.ToString());
   }
 
+  /// <summary>
+  /// Clearing resources
+  /// </summary>
   public void Dispose()
   {
     straightFinishMutation.Dispose();

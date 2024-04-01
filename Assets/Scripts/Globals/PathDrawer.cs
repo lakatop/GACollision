@@ -1,7 +1,16 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Class for debug draws of path
+/// </summary>
 public static class PathDrawer
 {
+  /// <summary>
+  /// Draw part of agents path
+  /// </summary>
+  /// <param name="previousPosition">agents previous position</param>
+  /// <param name="currentPosition">agents current position</param>
+  /// <param name="pathSelected">agents velocity winner</param>
   public static void DrawPath(Vector2 previousPosition, Vector2 currentPosition, Vector2 pathSelected)
   {
     Debug.DrawLine(new Vector3(previousPosition.x, 0f, previousPosition.y), new Vector3(currentPosition.x, 0f, currentPosition.y), new Color(0,0,1), 100, false);
@@ -17,23 +26,22 @@ public static class PathDrawer
     Debug.DrawRay(new Vector3(arrowEnd.x, 0, arrowEnd.y), left * arrowSize, new Color(1,0,0), 100, false);
   }
 
+  /// <summary>
+  /// Draw destination of agent
+  /// </summary>
+  /// <param name="destination">Position of destination</param>
+  /// <param name="color">Color of drawing</param>
   public static void DrawDestination(Vector2 destination, Color color)
   {
     Debug.DrawLine(new Vector3(destination.x - 1, 0, destination.y), new Vector3(destination.x + 1, 0, destination.y), color, 0, false);
     Debug.DrawLine(new Vector3(destination.x, 0, destination.y - 1), new Vector3(destination.x, 0, destination.y + 1), color, 0, false);
   }
 
-  public static void DrawCollisionPoint(Vector2 position)
-  {
-    Debug.DrawLine(new Vector3(position.x - 1, 0, position.y), new Vector3(position.x + 1, 0, position.y), new Color(0, 0, 1), 100, false);
-    Debug.DrawLine(new Vector3(position.x, 0, position.y - 1), new Vector3(position.x, 0, position.y + 1), new Color(0, 0, 1), 100, false);
-  }
-
-  public static void DrawConnectionLine(Vector2 start, Vector2 end)
-  {
-    Debug.DrawLine(new Vector3(start.x, 0f, start.y), new Vector3(end.x, 0f, end.y), new Color(0, 0, 1), 1, false);
-  }
-
+  /// <summary>
+  /// Draw debug circles. Used for obstacles debug draw
+  /// </summary>
+  /// <param name="center2">Center of circle</param>
+  /// <param name="radius">Radius of circle</param>
   public static void DrawCircle(Vector2 center2, float radius)
   {
     Vector3 center = new Vector3(center2.x, 0f, center2.y);

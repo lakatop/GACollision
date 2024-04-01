@@ -1,11 +1,18 @@
 ﻿using Unity.Collections;
 using UnityEngine;
 
-
+/// <summary>
+/// Director class for creating various GAs
+/// </summary>
 public class GeneticAlgorithmDirector
 {
   public GeneticAlgorithmDirector() { }
 
+  /// <summary>
+  /// Make parallel GA with BezierIndividualStruct individual
+  /// </summary>
+  /// <param name="agent">Agent on which this GA will run</param>
+  /// <returns>Resulting GA struct</returns>
   public IGeneticAlgorithmParallel<BezierIndividualStruct> MakeBezierGAParallel(BaseAgent agent)
   {
     var ga = new BezierGeneticAlgorithmParallel();
@@ -174,6 +181,8 @@ public class GeneticAlgorithmDirector
 
     ga.winner = new NativeArray<Vector2>(1, Allocator.TempJob);
     ga.rand = new Unity.Mathematics.Random((uint)(uint.MaxValue * Time.deltaTime));
+
+    // Set additional resources
     ga.SetResources(new System.Collections.Generic.List<object>
     {
       Time.deltaTime,

@@ -1,14 +1,30 @@
 ﻿using Unity.Collections;
 using Unity.Burst;
 
-
+/// <summary>
+/// Uniform crossover for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Random object variable
+  /// </summary>
   [ReadOnly] public Unity.Mathematics.Random rand;
+  /// <summary>
+  /// Array to hold parents of crossover
+  /// </summary>
   public NativeArray<BezierIndividualStruct> parents;
+  /// <summary>
+  /// Probability for crossover
+  /// </summary>
   [ReadOnly] public float crossProb;
 
+  /// <summary>
+  /// Perform crossover on population
+  /// </summary>
+  /// <param name="currentPopulation">Population for crossover</param>
+  /// <param name="iteration">Iteration of the GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     for (int i = 0; i < currentPopulation.Length - 1; i += 2)
@@ -54,16 +70,27 @@ public struct UniformBezierCrossOperatorParallel : IParallelPopulationModifier<B
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for probability of this crossover
+  /// </summary>
+  /// <returns>Probabilty of crossover</returns>
   public float GetCrossProbability()
   {
     return crossProb;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     parents.Dispose();

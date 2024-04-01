@@ -2,12 +2,22 @@
 using UnityEngine;
 using Unity.Burst;
 
-
+/// <summary>
+/// Weighted sum for Bezier individual fitnesses
+/// </summary>
 [BurstCompile]
 public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Resulting fitnesses for each individual
+  /// </summary>
   public NativeArray<float> resultingFitnesses;
 
+  /// <summary>
+  /// Set fitness for population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     //Write resultingFitness to individuals
@@ -19,6 +29,17 @@ public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndiv
     }
   }
 
+  /// <summary>
+  /// Perform weighted sum calculation from population fitnesses
+  /// </summary>
+  /// <param name="fitnessValues1">Array of first fitnesses</param>
+  /// <param name="fitnessValues2">Array of second fitnesses</param>
+  /// <param name="fitnessValues3">Array of third fitnesses</param>
+  /// <param name="fitnessValues4">Array of fourth fitnesses</param>
+  /// <param name="weight1">Weight of first fitnesses</param>
+  /// <param name="weight2">Weight of second fitnesses</param>
+  /// <param name="weight3">Weight of third fitnesses</param>
+  /// <param name="weight4">Weight of fourth fitnesses</param>
   public void CalculateRanking(ref NativeArray<float> fitnessValues1, ref NativeArray<float> fitnessValues2,
                                ref NativeArray<float> fitnessValues3, ref NativeArray<float> fitnessValues4,
                                float weight1, float weight2, float weight3, float weight4)
@@ -167,11 +188,18 @@ public struct BezierWeightedSumRanking : IParallelPopulationModifier<BezierIndiv
     normF4.Dispose();
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     resultingFitnesses.Dispose();

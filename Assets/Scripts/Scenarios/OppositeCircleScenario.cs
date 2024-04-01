@@ -7,15 +7,26 @@ using UnityEngine;
 /// </summary>
 public class OppositeCircleScenario : IScenario
 {
+  /// <summary>
+  /// Name of scenario
+  /// </summary>
   private const string _scenarioName = "oppositeCircleAgents";
 
+  /// <summary>
+  /// Counter how many times scenario should be run
+  /// </summary>
   public int runCounter { get; set; }
 
+  /// <summary>
+  /// Constructor
+  /// </summary>
+  /// <param name="runCount">sets runCounter</param>
   public OppositeCircleScenario(int runCount)
   {
     runCounter = runCount;
   }
 
+  /// <inheritdoc cref="IScenario.SetupScenario(List{IBaseAgent})"/>
   public void SetupScenario(List<IBaseAgent> agents)
   {
     for (int i = 0; i < 10; i++)
@@ -44,6 +55,7 @@ public class OppositeCircleScenario : IScenario
     AdditionalAgentSetup(agents);
   }
 
+  /// <inheritdoc cref="IScenario.ClearScenario(List{IBaseAgent})"/>
   public void ClearScenario(List<IBaseAgent> agents)
   {
     foreach (var agent in agents)
@@ -54,6 +66,13 @@ public class OppositeCircleScenario : IScenario
     }
   }
 
+  /// <summary>
+  /// Calculate agents position on circle
+  /// </summary>
+  /// <param name="index">Index of agent</param>
+  /// <param name="agentsCount">Number of agents</param>
+  /// <param name="radius">Radius of circle</param>
+  /// <returns>Position of agent on circle</returns>
   private Vector2 GetCirclePosition(int index, int agentsCount, float radius)
   {
     var rotationAngle = 360 / agentsCount;
@@ -65,6 +84,10 @@ public class OppositeCircleScenario : IScenario
     };
   }
 
+  /// <summary>
+  /// Add additional setup for agents
+  /// </summary>
+  /// <param name="agents">List of agents present in scenario</param>
   private void AdditionalAgentSetup(List<IBaseAgent> agents)
   {
     foreach (var agent in agents)

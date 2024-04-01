@@ -77,7 +77,9 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private float _updateTimer { get; set; }
 
-
+  /// <summary>
+  /// Called as a first method for this component - perform initialisation
+  /// </summary>
   void Awake()
   {
     System.Console.WriteLine("SimulationManager Awake call");
@@ -100,6 +102,9 @@ public class SimulationManager : MonoBehaviour
     _skipNextFrame = true;
   }
 
+  /// <summary>
+  /// Called on component start after Awake method
+  /// </summary>
   void Start()
   {
     CreateScenarios();
@@ -160,6 +165,9 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Update agents and data related to their update
+  /// </summary>
   private void RunSimulation()
   {
     _scenarioStarted = true;
@@ -195,6 +203,9 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Called when this component is detroyed
+  /// </summary>
   private void OnDestroy()
   {
     if (_quadTreeCreated)
@@ -213,6 +224,9 @@ public class SimulationManager : MonoBehaviour
     return _agents;
   }
 
+  /// <summary>
+  /// Register obstacles present in current simulation scenario
+  /// </summary>
   private void RegisterObstacles()
   {
     obstacles.Clear();
@@ -254,6 +268,11 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Calculate corners of rectangle based on its bounds
+  /// </summary>
+  /// <param name="bounds">Bounds of rectangle</param>
+  /// <returns>List of rectangles corners</returns>
   private List<Vector2> CalculateCubeCorners(Bounds bounds)
   {
     Vector2 center = new Vector2(bounds.center.x, bounds.center.z);
@@ -271,6 +290,9 @@ public class SimulationManager : MonoBehaviour
     return corners;
   }
 
+  /// <summary>
+  /// Register walkable platform in current simulation
+  /// </summary>
   private void RegisterWalkingPlatform()
   {
     // Find all NavMeshModifier components in the scene
@@ -356,6 +378,12 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Check whether point is within given bounds
+  /// </summary>
+  /// <param name="bounds">Bounds in which we want to check</param>
+  /// <param name="point">Point for checking</param>
+  /// <returns>True if point is within bounds, false otherwise</returns>
   private bool IsWithingBounds(NativeQuadTree.AABB2D bounds, Vector2 point)
   {
     return bounds.Contains(new Unity.Mathematics.float2(point.x, point.y));
@@ -436,6 +464,9 @@ public class SimulationManager : MonoBehaviour
     return finished;
   }
 
+  /// <summary>
+  /// Populate scenarios list
+  /// </summary>
   private void CreateScenarios()
   {
     System.Console.WriteLine("Creating scenarios");
@@ -453,16 +484,27 @@ public class SimulationManager : MonoBehaviour
     };
   }
 
+  /// <summary>
+  /// Check if there is next scenario
+  /// </summary>
+  /// <returns>True if we have next scenario in list, false otherwise</returns>
   private bool IsThereNextScenario()
   {
     return _scenarioIndex < (scenarios.Count - 1);
   }
 
+  /// <summary>
+  /// Check if we should repeat current scenario
+  /// </summary>
+  /// <returns>True if we should repeat current scenario, false otherwise</returns>
   private bool ShouldRepeatScenario()
   {
     return scenarios[_scenarioIndex].runCounter > 0;
   }
 
+  /// <summary>
+  /// Sets next scenario
+  /// </summary>
   private void  SetNextScenario()
   {
     var nextSceneIndex = _scenarioIndex + 1;
@@ -476,6 +518,9 @@ public class SimulationManager : MonoBehaviour
     _scenarioIndex++;
   }
 
+  /// <summary>
+  /// Sets resources needed for current scenario
+  /// </summary>
   private void SetScenarioResources()
   {
     RegisterObstacles();
@@ -483,6 +528,9 @@ public class SimulationManager : MonoBehaviour
     TransformObstaclesToQuadElements();
   }
 
+  /// <summary>
+  /// Create new _quadTree and populate it with data of current scenario
+  /// </summary>
   private void CreateQuadtreeAndData()
   {
     _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
@@ -504,6 +552,9 @@ public class SimulationManager : MonoBehaviour
     _quadTreeCreated = true;
   }
 
+  /// <summary>
+  /// Clear resources of current scenario
+  /// </summary>
   private void ClearScenarioResources()
   {
     scenarios[_scenarioIndex].ClearScenario(_agents);

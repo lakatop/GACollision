@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Collections;
-using UnityEngine;
 
-
+/// <summary>
+/// Elitist selection for BezierIndividualStruct desidned to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierElitistSelectionParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Perform Elitist selection on population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
 
@@ -32,11 +36,18 @@ public struct BezierElitistSelectionParallel : IParallelPopulationModifier<Bezie
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
   }

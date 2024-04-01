@@ -7,7 +7,13 @@ using UnityEngine.AI;
 /// </summary>
 public class NavMeshPathPlanner: IBasePathPlanner
 {
+  /// <summary>
+  /// Agent this path planner is attached to
+  /// </summary>
   private IBaseAgent _agent = null;
+  /// <summary>
+  /// NavMeshAgent _agent is attached to
+  /// </summary>
   private NavMeshAgent _navMeshAgent = null;
 
   public NavMeshPathPlanner(IBaseAgent agent)

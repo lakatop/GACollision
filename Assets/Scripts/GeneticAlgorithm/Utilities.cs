@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 namespace UtilsGA
 {
+  /// <summary>
+  /// Static class for utility functions
+  /// </summary>
   public static class UtilsGA
   {
     /// <summary>
@@ -210,6 +213,11 @@ namespace UtilsGA
       return maxAcceptableVelocity;
     }
 
+    /// <summary>
+    /// Return mimimum value from array
+    /// </summary>
+    /// <param name="arr">Array to search minimum value in</param>
+    /// <returns>Minimum value of arr</returns>
     public static float GetMinValueFromArray(ref NativeArray<float> arr)
     {
       var min = arr[0];
@@ -225,6 +233,11 @@ namespace UtilsGA
       return min;
     }
 
+    /// <summary>
+    /// Perform JerkCost calculation on given path
+    /// </summary>
+    /// <param name="velocities">Velocities that form path</param>
+    /// <returns>JerkCost of path created from velocites</returns>
     public static float CalculatePathJerk(List<Vector2> velocities)
     {
       if (velocities.Count < 3)

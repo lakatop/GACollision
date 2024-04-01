@@ -37,8 +37,6 @@ public abstract class BaseAgent : IBaseAgent
     _object.AddComponent<LineRenderer>();
     _object.AddComponent<AgentCollisionDetectionHandler>();
     _object.GetComponent<AgentCollisionDetectionHandler>().agent = this;
-
-    //Create3DArrowIndicator(_object.transform);
   }
 
   // IBaseAgent interface ---------------------------------------------------------
@@ -105,6 +103,9 @@ public abstract class BaseAgent : IBaseAgent
   
   // Other methods ----------------------------------------------------------------
 
+  /// <summary>
+  /// Represents scenario name in which agent is present
+  /// </summary>
   public string scenarioName { get; set; }
 
   /// <summary>
@@ -175,23 +176,39 @@ public abstract class BaseAgent : IBaseAgent
     return _object.AddComponent<T>();
   }
 
+  /// <summary>
+  /// Getter for agents position
+  /// </summary>
+  /// <returns>Position of agent</returns>
   public Vector3 GetPos()
   {
     return _object.transform.position;
   }
 
+  /// <summary>
+  /// Getter for gameobject of agent
+  /// </summary>
+  /// <returns>Agent's gameobject</returns>
   public GameObject GetGameObject()
   {
     return _object;
   }
 }
 
-
+/// <summary>
+/// Class for collision detection inside the simulation
+/// </summary>
 public class AgentCollisionDetectionHandler : MonoBehaviour
 {
+  /// <summary>
+  /// Reference to agent to which this component is attached
+  /// </summary>
   public BaseAgent agent;
 
-
+  /// <summary>
+  /// Called when agent enters collision
+  /// </summary>
+  /// <param name="collision">Collision object</param>
   private void OnCollisionEnter(Collision collision)
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())
@@ -200,6 +217,10 @@ public class AgentCollisionDetectionHandler : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Called each frame agent stays in collision
+  /// </summary>
+  /// <param name="collision">Collision object</param>
   private void OnCollisionStay(Collision collision)
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())

@@ -3,19 +3,50 @@ using NativeQuadTree;
 using Unity.Collections;
 using Unity.Burst;
 
-
+/// <summary>
+/// EndDistance fitness for BezierIndividualStruct designed ot be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Current position of an agent
+  /// </summary>
   [ReadOnly] public Vector2 startPosition;
+  /// <summary>
+  /// Destination of an agent
+  /// </summary>
   [ReadOnly] public Vector2 destination;
+  /// <summary>
+  /// Weight of this fitness used inside weighted sum
+  /// </summary>
   [ReadOnly] public float weight;
+  /// <summary>
+  /// Maximum agents acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// agents current velocity
+  /// </summary>
   [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// How often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInteraval;
+  /// <summary>
+  /// Maximum agents speed
+  /// </summary>
   [ReadOnly] public float maxAgentSpeed;
+  /// <summary>
+  /// Array for holding population fitnesses
+  /// </summary>
   public NativeArray<float> fitnesses;
 
+  /// <summary>
+  /// Calcualte EndDistance fitness in population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
@@ -134,16 +165,27 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for fitness weight
+  /// </summary>
+  /// <returns>Fitness weight</returns>
   public float GetFitnessWeight()
   {
     return weight;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     fitnesses.Dispose();
@@ -151,18 +193,50 @@ public struct BezierFitnessEndDistanceParallel : IParallelPopulationModifier<Bez
 }
 
 
+/// <summary>
+/// TimeToDestination fitness for BezierIndividualStruct designed ot be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Current position of an agent
+  /// </summary>
   [ReadOnly] public Vector2 startPosition;
+  /// <summary>
+  /// Destination of an agent
+  /// </summary>
   [ReadOnly] public Vector2 destination;
+  /// <summary>
+  /// Weight of this fitness used inside weighted sum
+  /// </summary>
   [ReadOnly] public float weight;
+  /// <summary>
+  /// Maximum agents acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// agents current velocity
+  /// </summary>
   [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// How often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInteraval;
+  /// <summary>
+  /// Maximum agents speed
+  /// </summary>
   [ReadOnly] public float maxAgentSpeed;
+  /// <summary>
+  /// Array for holding population fitnesses
+  /// </summary>
   public NativeArray<float> fitnesses;
 
+  /// <summary>
+  /// Calcualte TimeToDestination fitness in population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
@@ -269,16 +343,27 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for fitness weight
+  /// </summary>
+  /// <returns>Fitness weight</returns>
   public float GetFitnessWeight()
   {
     return weight;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     fitnesses.Dispose();
@@ -286,20 +371,60 @@ public struct BezierFitnessTimeToDestinationParallel : IParallelPopulationModifi
 }
 
 
+/// <summary>
+/// Collision fitness for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Agents current position
+  /// </summary>
   [ReadOnly] public Vector2 startPosition;
+  /// <summary>
+  /// Radius of agent
+  /// </summary>
   [ReadOnly] public float agentRadius;
+  /// <summary>
+  /// Agents id
+  /// </summary>
   [ReadOnly] public int agentIndex;
+  /// <summary>
+  /// Quadtree for collision detection
+  /// </summary>
   [ReadOnly] public NativeQuadTree<TreeNode> quadTree;
+  /// <summary>
+  /// Weight of this fitness used inside weighted sum
+  /// </summary>
   [ReadOnly] public float weight;
+  /// <summary>
+  /// Maximum agents acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// Agents starting velocity
+  /// </summary>
   [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// How often is agent running GA
+  /// </summary>  /// <summary>
+  /// How often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInteraval;
+  /// <summary>
+  /// MAximum agents velocity
+  /// </summary>
   [ReadOnly] public float maxAgentSpeed;
+  /// <summary>
+  /// Array for holding population fitnesses
+  /// </summary>
   public NativeArray<float> fitnesses;
 
+  /// <summary>
+  /// Calcualte Collision fitness in population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
@@ -343,7 +468,6 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
           {
             if (UtilsGA.UtilsGA.Collides(quadTree, newPos, pointOncurve, agentRadius, agentIndex, stepIndex) is var col && col > 0)
             {
-              //PathDrawer.DrawConnectionLine(newPos, pointOncurve);
               fitness += col * UtilsGA.UtilsGA.CalculateCollisionDecayFunction(stepIndex - 1);
             }
             newPos = pointOncurve;
@@ -363,16 +487,27 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for fitness weight
+  /// </summary>
+  /// <returns>Fitness weight</returns>
   public float GetFitnessWeight()
   {
     return weight;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     fitnesses.Dispose();
@@ -380,18 +515,50 @@ public struct BezierFitnessCollisionParallel : IParallelPopulationModifier<Bezie
 }
 
 
+/// <summary>
+/// JerkCost fitness for BezierIndividualStruct designed to be used inside Unity jobs
+/// </summary>
 [BurstCompile]
 public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<BezierIndividualStruct>
 {
+  /// <summary>
+  /// Current position of an agent
+  /// </summary>
   [ReadOnly] public Vector2 startPosition;
+  /// <summary>
+  /// Destination of an agent
+  /// </summary>
   [ReadOnly] public Vector2 destination;
+  /// <summary>
+  /// Weight of this fitness used inside weighted sum
+  /// </summary>
   [ReadOnly] public float weight;
-  [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// Maximum agents acceleration/deceleration
+  /// </summary>
   [ReadOnly] public float maxAcc;
+  /// <summary>
+  /// agents current velocity
+  /// </summary>
+  [ReadOnly] public float startVelocity;
+  /// <summary>
+  /// How often is agent running GA
+  /// </summary>
   [ReadOnly] public float updateInteraval;
+  /// <summary>
+  /// Maximum agents speed
+  /// </summary>
   [ReadOnly] public float maxAgentSpeed;
+  /// <summary>
+  /// Array holding population fitnesses
+  /// </summary>
   public NativeArray<float> fitnesses;
 
+  /// <summary>
+  /// Calcualte JerkCost fitness in population
+  /// </summary>
+  /// <param name="currentPopulation">Population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void ModifyPopulation(ref NativeArray<BezierIndividualStruct> currentPopulation, int iteration)
   {
     var index = 0;
@@ -540,16 +707,27 @@ public struct BezierFitnessJerkCostParallel : IParallelPopulationModifier<Bezier
     }
   }
 
+  /// <summary>
+  /// Getter for component name
+  /// </summary>
+  /// <returns>Name of this struct</returns>
   public string GetComponentName()
   {
     return GetType().Name;
   }
 
+  /// <summary>
+  /// Getter for fitness weight
+  /// </summary>
+  /// <returns>Fitness weight</returns>
   public float GetFitnessWeight()
   {
     return weight;
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     fitnesses.Dispose();
