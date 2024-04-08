@@ -154,9 +154,8 @@ public class SimulationManager : MonoBehaviour
       }
       else
       {
-        // Ideally end application, but it seems iOS has some troubles with that
-        //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Unload();
+        // When playing via editor, this is how we quit the simulation (but keep unity running)
+        UnityEditor.EditorApplication.isPlaying = false;
       }
     }
     else
@@ -352,7 +351,9 @@ public class SimulationManager : MonoBehaviour
 
           },
         });
-        PathDrawer.DrawCircle(point, agentRadius);
+
+        // For debug drawing uncomment the following line
+        //PathDrawer.DrawCircle(point, agentRadius);
 
         point.x += 2 * agentRadius;
         while(point.x <= (end.x - agentRadius))
@@ -368,7 +369,9 @@ public class SimulationManager : MonoBehaviour
 
             },
           });
-          PathDrawer.DrawCircle(point, agentRadius);
+
+          // For debug drawing uncomment the following line
+          //PathDrawer.DrawCircle(point, agentRadius);
           point.x += 2 * agentRadius;
         }
 
@@ -472,7 +475,7 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("Creating scenarios");
     scenarios = new List<IScenario>
     {
-      new StraightLineScenario(2),
+      new StraightLineScenario(1),
       new SmallObstacleScenario(1),
       new CornerScenario(1),
       new OppositeScenario(1),

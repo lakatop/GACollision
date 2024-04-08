@@ -217,7 +217,8 @@ public class BasicGAAgentParallel : BaseAgent
     {
       _gaJobHandle.Complete();
       jobScheduled = false;
-      PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance.agentUpdateInterval);
+      // For debug draw of the path uncomment the following line
+      //PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance.agentUpdateInterval);
       nextVel = _winner[0];
       previousLocation = position;
       logger.AddVelocity(nextVel);
@@ -230,22 +231,22 @@ public class BasicGAAgentParallel : BaseAgent
       _runGa = true;
     }
 
-    //Debug.Log(string.Format("Forward {0}", GetForward()));
-    if(_path.status == NavMeshPathStatus.PathComplete)
-    {
-      for (int i = 1; i < _path.corners.Length; i++)
-      {
-        var corner = _path.corners[i];
-        PathDrawer.DrawDestination(new Vector2(corner.x, corner.z), Color.white);
-      }
-      PathDrawer.DrawDestination(destination, Color.yellow);
-    }
+    // For debug drawing of the destinations uncomment following lines
+    //if(_path.status == NavMeshPathStatus.PathComplete)
+    //{
+    //  for (int i = 1; i < _path.corners.Length; i++)
+    //  {
+    //    var corner = _path.corners[i];
+    //    PathDrawer.DrawDestination(new Vector2(corner.x, corner.z), Color.white);
+    //  }
+    //  PathDrawer.DrawDestination(destination, Color.yellow);
+    //}
 
     var vel = nextVel * Time.deltaTime;
     var pos = position + vel;
 
     SetPosition(pos);
-    SetForward((vel.normalized).magnitude == 0 ? GetForward() : vel.normalized);
+    SetForward((vel.normalized).magnitude < float.Epsilon ? GetForward() : vel.normalized);
 
     if ((pos - new Vector2(destination.x, destination.y)).magnitude < 1f && (_cornerIndex < (_path.corners.Length - 1)))
     {
