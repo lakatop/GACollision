@@ -1,0 +1,14 @@
+CROSS,UniformBezierCrossOperatorParallel
+MUTATION BezierShuffleControlPointsMutationOperatorParallel, 0.3
+MUTATION BezierSmoothAccMutationOperatorParallel, 0.9
+MUTATION BezierShuffleAccMutationOperatorParallel, 0.3
+MUTATION BezierClampVelocityMutationOperatorParallel, 1
+MUTATION BezierStraightFinishMutationOperatorParallel, 1
+FITNESSES BezierFitnessJerkCostParallel, 0.4
+FITNESSES BezierFitnessCollisionParallel, 0.15
+FITNESSES BezierFitnessEndDistanceParallel, 0.4
+FITNESSES BezierFitnessTimeToDestinationParallel, 0.05
+SELECTION BezierElitistSelectionParallel
+INITIALIZATION BezierInitialization
+POPULATION SIZE 100, ITERATIONS 20
+
