@@ -1,0 +1,115 @@
+\doxysection{Bezier\+Fitness\+Time\+To\+Destination\+Parallel Struct Reference}
+\hypertarget{struct_bezier_fitness_time_to_destination_parallel}{}\label{struct_bezier_fitness_time_to_destination_parallel}\index{BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}}
+
+
+Time\+To\+Destination fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed ot be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Fitness\+Time\+To\+Destination\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_fitness_time_to_destination_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_fitness_time_to_destination_parallel_a9ac6ce9385107e705177c31dfcc5671b}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Calcualte Time\+To\+Destination fitness in population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_fitness_time_to_destination_parallel_a2532b2ee39114391378ef88377cd9641}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_fitness_time_to_destination_parallel_a7abf6f286cb00b0c02a693f603f2e165}{Get\+Fitness\+Weight}} ()
+\begin{DoxyCompactList}\small\item\em Getter for fitness weight. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a2822b27302a3b1e770b45596d28fed86}\label{struct_bezier_fitness_time_to_destination_parallel_a2822b27302a3b1e770b45596d28fed86} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_ae27ac685f151ad6b977798d65427a1f4}\label{struct_bezier_fitness_time_to_destination_parallel_ae27ac685f151ad6b977798d65427a1f4} 
+Vector2 {\bfseries start\+Position}
+\begin{DoxyCompactList}\small\item\em Current position of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_ac1356cfeed2d132c8c90ae549d84376b}\label{struct_bezier_fitness_time_to_destination_parallel_ac1356cfeed2d132c8c90ae549d84376b} 
+Vector2 {\bfseries destination}
+\begin{DoxyCompactList}\small\item\em Destination of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_ad7a11a55458a47a82758f443a0a45af1}\label{struct_bezier_fitness_time_to_destination_parallel_ad7a11a55458a47a82758f443a0a45af1} 
+float {\bfseries weight}
+\begin{DoxyCompactList}\small\item\em Weight of this fitness used inside weighted sum. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a7f4e8d1bf7ec785e99bfefe50e934546}\label{struct_bezier_fitness_time_to_destination_parallel_a7f4e8d1bf7ec785e99bfefe50e934546} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em Maximum agents acceleration/deceleration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a0013705dadcaa2d2f2a2b8a1cf2be797}\label{struct_bezier_fitness_time_to_destination_parallel_a0013705dadcaa2d2f2a2b8a1cf2be797} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em agents current velocity \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a7cba423f0053f3f59ea19770f6c32ebc}\label{struct_bezier_fitness_time_to_destination_parallel_a7cba423f0053f3f59ea19770f6c32ebc} 
+float {\bfseries update\+Interaval}
+\begin{DoxyCompactList}\small\item\em How often is agent running GA. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a412a9bae0195465e173ccac4c9dc5ce2}\label{struct_bezier_fitness_time_to_destination_parallel_a412a9bae0195465e173ccac4c9dc5ce2} 
+float {\bfseries max\+Agent\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximum agents speed. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_aea59db54eb72c5558971ed900a21f8cb}\label{struct_bezier_fitness_time_to_destination_parallel_aea59db54eb72c5558971ed900a21f8cb} 
+Native\+Array$<$ float $>$ {\bfseries fitnesses}
+\begin{DoxyCompactList}\small\item\em Array for holding population fitnesses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Time\+To\+Destination fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed ot be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a2532b2ee39114391378ef88377cd9641}\label{struct_bezier_fitness_time_to_destination_parallel_a2532b2ee39114391378ef88377cd9641} 
+\index{BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Fitness\+Time\+To\+Destination\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a7abf6f286cb00b0c02a693f603f2e165}\label{struct_bezier_fitness_time_to_destination_parallel_a7abf6f286cb00b0c02a693f603f2e165} 
+\index{BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}!GetFitnessWeight@{GetFitnessWeight}}
+\index{GetFitnessWeight@{GetFitnessWeight}!BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}}
+\doxysubsubsection{\texorpdfstring{GetFitnessWeight()}{GetFitnessWeight()}}
+{\footnotesize\ttfamily float Bezier\+Fitness\+Time\+To\+Destination\+Parallel.\+Get\+Fitness\+Weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for fitness weight. 
+
+\begin{DoxyReturn}{Returns}
+Fitness weight
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_time_to_destination_parallel_a9ac6ce9385107e705177c31dfcc5671b}\label{struct_bezier_fitness_time_to_destination_parallel_a9ac6ce9385107e705177c31dfcc5671b} 
+\index{BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierFitnessTimeToDestinationParallel@{BezierFitnessTimeToDestinationParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Fitness\+Time\+To\+Destination\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Calcualte Time\+To\+Destination fitness in population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Fitness.\+cs\end{DoxyCompactItemize}

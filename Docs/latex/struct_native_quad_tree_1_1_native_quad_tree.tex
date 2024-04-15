@@ -1,0 +1,113 @@
+\doxysection{Native\+Quad\+Tree.\+Native\+Quad\+Tree\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{struct_native_quad_tree_1_1_native_quad_tree}{}\label{struct_native_quad_tree_1_1_native_quad_tree}\index{NativeQuadTree.NativeQuadTree$<$ T $>$@{NativeQuadTree.NativeQuadTree$<$ T $>$}}
+
+
+A Quad\+Tree aimed to be used with Burst, supports fast bulk insertion and querying.  
+
+
+Inheritance diagram for Native\+Quad\+Tree.\+Native\+Quad\+Tree\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_native_quad_tree_1_1_native_quad_tree}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree_1_1_quad_tree_range_query}{Quad\+Tree\+Range\+Query}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree_a5c6fd442341ae96aafbaf087a401d122}{Native\+Quad\+Tree}} (\mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}} bounds, Allocator allocator=Allocator.\+Temp, int max\+Depth=6, short max\+Leaf\+Elements=16, int initial\+Elements\+Capacity=256)
+\begin{DoxyCompactList}\small\item\em Create a new Quad\+Tree. \end{DoxyCompactList}\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_abb66b35b73446d4893eb97928d9d1109}\label{struct_native_quad_tree_1_1_native_quad_tree_abb66b35b73446d4893eb97928d9d1109} 
+void {\bfseries Clear\+And\+Bulk\+Insert} (Native\+Array$<$ \mbox{\hyperlink{struct_native_quad_tree_1_1_quad_element}{Quad\+Element}}$<$ T $>$ $>$ incoming\+Elements)
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a949b3b806ea9af59246ef83865978e3b}\label{struct_native_quad_tree_1_1_native_quad_tree_a949b3b806ea9af59246ef83865978e3b} 
+int {\bfseries Increment\+Index} (int depth, Native\+Array$<$ int $>$ morton\+Codes, int i, int at\+Index)
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_adb05720e6a2859c00512406bcf06632c}\label{struct_native_quad_tree_1_1_native_quad_tree_adb05720e6a2859c00512406bcf06632c} 
+void {\bfseries Recursive\+Prepare\+Leaves} (int prev\+Offset, int depth)
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a80af094b35f879a5c102f3a2b77277f5}\label{struct_native_quad_tree_1_1_native_quad_tree_a80af094b35f879a5c102f3a2b77277f5} 
+void {\bfseries Range\+Query} (\mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}} bounds, Native\+List$<$ \mbox{\hyperlink{struct_native_quad_tree_1_1_quad_element}{Quad\+Element}}$<$ T $>$ $>$ results)
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_ad5c79930410158c2b8f6d8f5582a3008}\label{struct_native_quad_tree_1_1_native_quad_tree_ad5c79930410158c2b8f6d8f5582a3008} 
+void {\bfseries Clear} ()
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a87789eaca9c133e0afe4def78da2c892}\label{struct_native_quad_tree_1_1_native_quad_tree_a87789eaca9c133e0afe4def78da2c892} 
+void {\bfseries Dispose} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a37ce7f12b2556828651828f83db786e1}\label{struct_native_quad_tree_1_1_native_quad_tree_a37ce7f12b2556828651828f83db786e1} 
+static void {\bfseries Draw} (\mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree}}$<$ T $>$ tree, Native\+List$<$ \mbox{\hyperlink{struct_native_quad_tree_1_1_quad_element}{Quad\+Element}}$<$ T $>$ $>$ results, \mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}} range, Color\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} texture)
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a206db5d81f32f29fb8d6facc5d1975f0}\label{struct_native_quad_tree_1_1_native_quad_tree_a206db5d81f32f29fb8d6facc5d1975f0} 
+static void {\bfseries Draw\+Bounds} (Color\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} texture, \mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}} bounds, \mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree}}$<$ T $>$ tree)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a949f704808814904a8c04c01339fac7b}\label{struct_native_quad_tree_1_1_native_quad_tree_a949f704808814904a8c04c01339fac7b} 
+Unsafe\+List$<$ \mbox{\hyperlink{struct_native_quad_tree_1_1_quad_element}{Quad\+Element}}$<$ T $>$ $>$ \texorpdfstring{$\ast$}{*} {\bfseries elements}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_acca52d8aec10b97de9c40edb7cc0319a}\label{struct_native_quad_tree_1_1_native_quad_tree_acca52d8aec10b97de9c40edb7cc0319a} 
+Unsafe\+List$<$ int $>$ \texorpdfstring{$\ast$}{*} {\bfseries lookup}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a7f6615ce9ffbe022ca0dba6684eae3ba}\label{struct_native_quad_tree_1_1_native_quad_tree_a7f6615ce9ffbe022ca0dba6684eae3ba} 
+Unsafe\+List$<$ \mbox{\hyperlink{struct_native_quad_tree_1_1_quad_node}{Quad\+Node}} $>$ \texorpdfstring{$\ast$}{*} {\bfseries nodes}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_acdf6bac6bdf5c98ab9faffe3b90c1f5c}\label{struct_native_quad_tree_1_1_native_quad_tree_acdf6bac6bdf5c98ab9faffe3b90c1f5c} 
+int {\bfseries elements\+Count}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a84ad04a8260043b04a5664c09190992c}\label{struct_native_quad_tree_1_1_native_quad_tree_a84ad04a8260043b04a5664c09190992c} 
+int {\bfseries max\+Depth}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a84a25c7552f456ab4915a699e9cdbca0}\label{struct_native_quad_tree_1_1_native_quad_tree_a84a25c7552f456ab4915a699e9cdbca0} 
+short {\bfseries max\+Leaf\+Elements}
+\item 
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a829f6b80cf2c99119f29562b886fce90}\label{struct_native_quad_tree_1_1_native_quad_tree_a829f6b80cf2c99119f29562b886fce90} 
+\mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}} {\bfseries bounds}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A Quad\+Tree aimed to be used with Burst, supports fast bulk insertion and querying. 
+
+Editor drawing of the \doxylink{namespace_native_quad_tree}{Native\+Quad\+Tree}.
+
+TODO\+:
+\begin{DoxyItemize}
+\item Better test coverage
+\item Automated depth / bounds / max leaf elements calculation 
+\end{DoxyItemize}\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T} : {\em unmanaged}]\end{description}
+\end{Desc}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{struct_native_quad_tree_1_1_native_quad_tree_a5c6fd442341ae96aafbaf087a401d122}\label{struct_native_quad_tree_1_1_native_quad_tree_a5c6fd442341ae96aafbaf087a401d122} 
+\index{NativeQuadTree.NativeQuadTree$<$ T $>$@{NativeQuadTree.NativeQuadTree$<$ T $>$}!NativeQuadTree@{NativeQuadTree}}
+\index{NativeQuadTree@{NativeQuadTree}!NativeQuadTree.NativeQuadTree$<$ T $>$@{NativeQuadTree.NativeQuadTree$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{NativeQuadTree()}{NativeQuadTree()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree.\+Native\+Quad\+Tree}}$<$ T $>$.\mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_native_quad_tree_1_1_a_a_b_b2_d}{AABB2D}}}]{bounds,  }\item[{Allocator}]{allocator = {\ttfamily Allocator\+:\+:Temp},  }\item[{int}]{max\+Depth = {\ttfamily 6},  }\item[{short}]{max\+Leaf\+Elements = {\ttfamily 16},  }\item[{int}]{initial\+Elements\+Capacity = {\ttfamily 256} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create a new Quad\+Tree. 
+
+
+\begin{DoxyItemize}
+\item Ensure the bounds are not way bigger than needed, otherwise the buckets are very off. Probably best to calculate bounds
+\item The higher the depth, the larger the overhead, it especially goes up at a depth of 7/8 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/third-\/party/\+Native\+Quadtree/Native\+Quad\+Tree.\+cs\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/third-\/party/\+Native\+Quadtree/Native\+Quad\+Tree\+Drawing.\+cs\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/third-\/party/\+Native\+Quadtree/Native\+Quad\+Tree\+Range\+Query.\+cs\end{DoxyCompactItemize}

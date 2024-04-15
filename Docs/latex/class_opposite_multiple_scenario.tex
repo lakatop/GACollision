@@ -1,0 +1,130 @@
+\doxysection{Opposite\+Multiple\+Scenario Class Reference}
+\hypertarget{class_opposite_multiple_scenario}{}\label{class_opposite_multiple_scenario}\index{OppositeMultipleScenario@{OppositeMultipleScenario}}
+
+
+Scenario where 10 agents go into opposite directions -\/ 5 vs 5.  
+
+
+Inheritance diagram for Opposite\+Multiple\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_opposite_multiple_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_opposite_multiple_scenario_ad6cc13c3248f75a6992eca8fe3dd8638}{Opposite\+Multiple\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opposite_multiple_scenario_a1c55c61f07da9505953d4761e9014796}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opposite_multiple_scenario_ab1e23555a1f3c355385d429325e685b1}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_opposite_multiple_scenario_afb4b604bd217b975fae09de63ee4adea}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Scenario where 10 agents go into opposite directions -\/ 5 vs 5. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_opposite_multiple_scenario_ad6cc13c3248f75a6992eca8fe3dd8638}\label{class_opposite_multiple_scenario_ad6cc13c3248f75a6992eca8fe3dd8638} 
+\index{OppositeMultipleScenario@{OppositeMultipleScenario}!OppositeMultipleScenario@{OppositeMultipleScenario}}
+\index{OppositeMultipleScenario@{OppositeMultipleScenario}!OppositeMultipleScenario@{OppositeMultipleScenario}}
+\doxysubsubsection{\texorpdfstring{OppositeMultipleScenario()}{OppositeMultipleScenario()}}
+{\footnotesize\ttfamily Opposite\+Multiple\+Scenario.\+Opposite\+Multiple\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_opposite_multiple_scenario_ab1e23555a1f3c355385d429325e685b1}\label{class_opposite_multiple_scenario_ab1e23555a1f3c355385d429325e685b1} 
+\index{OppositeMultipleScenario@{OppositeMultipleScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!OppositeMultipleScenario@{OppositeMultipleScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Opposite\+Multiple\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_opposite_multiple_scenario_a1c55c61f07da9505953d4761e9014796}\label{class_opposite_multiple_scenario_a1c55c61f07da9505953d4761e9014796} 
+\index{OppositeMultipleScenario@{OppositeMultipleScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!OppositeMultipleScenario@{OppositeMultipleScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Opposite\+Multiple\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_opposite_multiple_scenario_afb4b604bd217b975fae09de63ee4adea}\label{class_opposite_multiple_scenario_afb4b604bd217b975fae09de63ee4adea} 
+\index{OppositeMultipleScenario@{OppositeMultipleScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!OppositeMultipleScenario@{OppositeMultipleScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Opposite\+Multiple\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Opposite\+Multiple\+Scenario.\+cs\end{DoxyCompactItemize}

@@ -1,0 +1,73 @@
+\doxysection{Bezier\+Elitist\+Selection\+Parallel Struct Reference}
+\hypertarget{struct_bezier_elitist_selection_parallel}{}\label{struct_bezier_elitist_selection_parallel}\index{BezierElitistSelectionParallel@{BezierElitistSelectionParallel}}
+
+
+Elitist selection for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} desidned to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Elitist\+Selection\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_elitist_selection_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_elitist_selection_parallel_a64b4e023140fb577cd970e5bc5a9f66b}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform Elitist selection on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_elitist_selection_parallel_a45ddab69fe33dd9937df0e630096437e}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_elitist_selection_parallel_a31a8dcc759e3036b7ba901340d2607c6}\label{struct_bezier_elitist_selection_parallel_a31a8dcc759e3036b7ba901340d2607c6} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Elitist selection for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} desidned to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_elitist_selection_parallel_a45ddab69fe33dd9937df0e630096437e}\label{struct_bezier_elitist_selection_parallel_a45ddab69fe33dd9937df0e630096437e} 
+\index{BezierElitistSelectionParallel@{BezierElitistSelectionParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierElitistSelectionParallel@{BezierElitistSelectionParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Elitist\+Selection\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_elitist_selection_parallel_a64b4e023140fb577cd970e5bc5a9f66b}\label{struct_bezier_elitist_selection_parallel_a64b4e023140fb577cd970e5bc5a9f66b} 
+\index{BezierElitistSelectionParallel@{BezierElitistSelectionParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierElitistSelectionParallel@{BezierElitistSelectionParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Elitist\+Selection\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform Elitist selection on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Selection.\+cs\end{DoxyCompactItemize}

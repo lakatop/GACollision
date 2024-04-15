@@ -1,0 +1,92 @@
+\doxysection{Bezier\+Individual\+Logger Struct Reference}
+\hypertarget{struct_bezier_individual_logger}{}\label{struct_bezier_individual_logger}\index{BezierIndividualLogger@{BezierIndividualLogger}}
+
+
+Logger class for logging during parallel GA run.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_individual_logger_a1c43b4e1a9e861c5ae3bb546b57e1362}{Log\+Population\+State}} (ref Native\+Array$<$ float $>$ pop, ref Native\+Array$<$ float $>$ jerkF, ref Native\+Array$<$ float $>$ colF, ref Native\+Array$<$ float $>$ endF, ref Native\+Array$<$ float $>$ ttdF, int iteration)
+\begin{DoxyCompactList}\small\item\em Capture current state of the population. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_bezier_individual_logger_ad20b08ef288e5e1471b5160f02b0c96f}{Write\+Res}} (string configuration, int iteration, string scenario\+Name, string agent\+Id)
+\begin{DoxyCompactList}\small\item\em Writing results into a csv file. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_logger_a0251ff9a2f559d8f9ae44daa03897958}\label{struct_bezier_individual_logger_a0251ff9a2f559d8f9ae44daa03897958} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_individual_logger_aee5a5eed4422601ca882e56fb0abeccf}\label{struct_bezier_individual_logger_aee5a5eed4422601ca882e56fb0abeccf} 
+Native\+Array$<$ float $>$ {\bfseries individual\+Fitness}
+\begin{DoxyCompactList}\small\item\em Array to hold best individual fitness of each GA iteration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_logger_acf3e919807f4c5129c3c262ca3cdbc2d}\label{struct_bezier_individual_logger_acf3e919807f4c5129c3c262ca3cdbc2d} 
+Native\+Array$<$ float $>$ {\bfseries jerk\+Fitness}
+\begin{DoxyCompactList}\small\item\em Array to hold best Jerk fitness of each GA iteration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_logger_a9dc4d64350bad9528e07a92ecc172a49}\label{struct_bezier_individual_logger_a9dc4d64350bad9528e07a92ecc172a49} 
+Native\+Array$<$ float $>$ {\bfseries collision\+Fitness}
+\begin{DoxyCompactList}\small\item\em Array to hold best Collision fitness of each GA iteration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_logger_a55dcbd5631c717aa75b4f87f32edb6e5}\label{struct_bezier_individual_logger_a55dcbd5631c717aa75b4f87f32edb6e5} 
+Native\+Array$<$ float $>$ {\bfseries end\+Distance\+Fitness}
+\begin{DoxyCompactList}\small\item\em Array to hold best End\+Distance fitness of each GA iteration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_logger_a8f5a10d1166526692fb050d36c7bfd81}\label{struct_bezier_individual_logger_a8f5a10d1166526692fb050d36c7bfd81} 
+Native\+Array$<$ float $>$ {\bfseries ttd\+Fitness}
+\begin{DoxyCompactList}\small\item\em Array to hold best Time\+To\+Destination fitness of each GA iteration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Logger class for logging during parallel GA run. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_individual_logger_a1c43b4e1a9e861c5ae3bb546b57e1362}\label{struct_bezier_individual_logger_a1c43b4e1a9e861c5ae3bb546b57e1362} 
+\index{BezierIndividualLogger@{BezierIndividualLogger}!LogPopulationState@{LogPopulationState}}
+\index{LogPopulationState@{LogPopulationState}!BezierIndividualLogger@{BezierIndividualLogger}}
+\doxysubsubsection{\texorpdfstring{LogPopulationState()}{LogPopulationState()}}
+{\footnotesize\ttfamily void Bezier\+Individual\+Logger.\+Log\+Population\+State (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ float $>$}]{pop,  }\item[{ref Native\+Array$<$ float $>$}]{jerkF,  }\item[{ref Native\+Array$<$ float $>$}]{colF,  }\item[{ref Native\+Array$<$ float $>$}]{endF,  }\item[{ref Native\+Array$<$ float $>$}]{ttdF,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Capture current state of the population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pop} & Population\textquotesingle{}s fitness array\\
+\hline
+{\em jerkF} & Jerk fitnesses of the population\\
+\hline
+{\em colF} & Collision fitnesses of the population\\
+\hline
+{\em endF} & End\+Destiantion fitnesses of the population\\
+\hline
+{\em ttdF} & Time\+To\+Destination fitnesses of the population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct_bezier_individual_logger_ad20b08ef288e5e1471b5160f02b0c96f}\label{struct_bezier_individual_logger_ad20b08ef288e5e1471b5160f02b0c96f} 
+\index{BezierIndividualLogger@{BezierIndividualLogger}!WriteRes@{WriteRes}}
+\index{WriteRes@{WriteRes}!BezierIndividualLogger@{BezierIndividualLogger}}
+\doxysubsubsection{\texorpdfstring{WriteRes()}{WriteRes()}}
+{\footnotesize\ttfamily void Bezier\+Individual\+Logger.\+Write\+Res (\begin{DoxyParamCaption}\item[{string}]{configuration,  }\item[{int}]{iteration,  }\item[{string}]{scenario\+Name,  }\item[{string}]{agent\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Writing results into a csv file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em configuration} & Configuration of the GA\\
+\hline
+{\em iteration} & Holds GA run counter\\
+\hline
+{\em scenario\+Name} & Name of scenario that GA was run in\\
+\hline
+{\em agent\+Id} & Id of agent that run this GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Evaluation\+Logger.\+cs\end{DoxyCompactItemize}

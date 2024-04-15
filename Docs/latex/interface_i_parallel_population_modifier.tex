@@ -1,0 +1,70 @@
+\doxysection{IParallel\+Population\+Modifier\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Interface Template Reference}
+\hypertarget{interface_i_parallel_population_modifier}{}\label{interface_i_parallel_population_modifier}\index{IParallelPopulationModifier$<$ T $>$@{IParallelPopulationModifier$<$ T $>$}}
+
+
+Population modifier classes -\/ cross, mutation, selection and fitness.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+\Hypertarget{interface_i_parallel_population_modifier_ace99054ae40ac15ddc60bfa9d373aadc}\label{interface_i_parallel_population_modifier_ace99054ae40ac15ddc60bfa9d373aadc} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Population modifier classes -\/ cross, mutation, selection and fitness. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Concrete individual class\\
+\hline
+\end{DoxyTemplParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T} : {\em struct}]\end{description}
+\end{Desc}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}\label{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de} 
+\index{IParallelPopulationModifier$<$ T $>$@{IParallelPopulationModifier$<$ T $>$}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!IParallelPopulationModifier$<$ T $>$@{IParallelPopulationModifier$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier}}$<$ T $>$.Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get name of this component -\/ used for logging purposes in various experiments. 
+
+\begin{DoxyReturn}{Returns}
+Struct declaration name of this component
+\end{DoxyReturn}
+\Hypertarget{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}\label{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309} 
+\index{IParallelPopulationModifier$<$ T $>$@{IParallelPopulationModifier$<$ T $>$}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!IParallelPopulationModifier$<$ T $>$@{IParallelPopulationModifier$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier}}$<$ T $>$.Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ T $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})}
+
+
+
+Modifies population passed as parameter and returns result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population to be modified\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+New modified population
+\end{DoxyReturn}
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Interfaces/IGenetic\+Alg\+Skeleton.\+cs\end{DoxyCompactItemize}

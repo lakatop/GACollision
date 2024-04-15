@@ -1,0 +1,126 @@
+\doxysection{Bezier\+Curve Struct Reference}
+\hypertarget{struct_bezier_curve}{}\label{struct_bezier_curve}\index{BezierCurve@{BezierCurve}}
+
+
+Struct for bezier curve interpretation.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_curve_a18dab4326b64428513b5fc8f3e250ac8}{Initialize}} (int length, Allocator allocator)
+\begin{DoxyCompactList}\small\item\em Initialization of vezier curve. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_bezier_curve_a97a9f954e3b9415923102b0eac60c108}{Create\+Initial\+Path}} (Vector2 start\+Pos, Vector2 end\+Pos, Vector2 agents\+Direction, float control\+Points\+Direction)
+\begin{DoxyCompactList}\small\item\em Creates cubic bezier curve. \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{struct_bezier_curve_a631cb3db54bb3c4829e0f3c78ef9cef6}{Evaluate\+Quadratic}} (Vector2 a, Vector2 b, Vector2 c, float t)
+\begin{DoxyCompactList}\small\item\em Returns point on the quadtratic bezier curve. \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{struct_bezier_curve_a62d225140c03f183ac3d2dfa044cfe97}{Evaluate\+Cubic}} (Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
+\begin{DoxyCompactList}\small\item\em Returns point on the cubic bezier curve. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_curve_a555b285df97a01edb25618cc6cf65dfa}\label{struct_bezier_curve_a555b285df97a01edb25618cc6cf65dfa} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_curve_a52d95a9436e895f6f3f0fa3c8e379e35}\label{struct_bezier_curve_a52d95a9436e895f6f3f0fa3c8e379e35} 
+Unsafe\+List$<$ Vector2 $>$ {\bfseries points}
+\begin{DoxyCompactList}\small\item\em Points defining the bezier curve. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct for bezier curve interpretation. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_curve_a97a9f954e3b9415923102b0eac60c108}\label{struct_bezier_curve_a97a9f954e3b9415923102b0eac60c108} 
+\index{BezierCurve@{BezierCurve}!CreateInitialPath@{CreateInitialPath}}
+\index{CreateInitialPath@{CreateInitialPath}!BezierCurve@{BezierCurve}}
+\doxysubsubsection{\texorpdfstring{CreateInitialPath()}{CreateInitialPath()}}
+{\footnotesize\ttfamily void Bezier\+Curve.\+Create\+Initial\+Path (\begin{DoxyParamCaption}\item[{Vector2}]{start\+Pos,  }\item[{Vector2}]{end\+Pos,  }\item[{Vector2}]{agents\+Direction,  }\item[{float}]{control\+Points\+Direction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates cubic bezier curve. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Pos} & First control points\\
+\hline
+{\em end\+Pos} & Last control point\\
+\hline
+{\em agents\+Direction} & Forward vector of agent\\
+\hline
+{\em control\+Points\+Direction} & Perpendicular distance of second and third control point from their forwarding vectors\\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct_bezier_curve_a62d225140c03f183ac3d2dfa044cfe97}\label{struct_bezier_curve_a62d225140c03f183ac3d2dfa044cfe97} 
+\index{BezierCurve@{BezierCurve}!EvaluateCubic@{EvaluateCubic}}
+\index{EvaluateCubic@{EvaluateCubic}!BezierCurve@{BezierCurve}}
+\doxysubsubsection{\texorpdfstring{EvaluateCubic()}{EvaluateCubic()}}
+{\footnotesize\ttfamily Vector2 Bezier\+Curve.\+Evaluate\+Cubic (\begin{DoxyParamCaption}\item[{Vector2}]{a,  }\item[{Vector2}]{b,  }\item[{Vector2}]{c,  }\item[{Vector2}]{d,  }\item[{float}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns point on the cubic bezier curve. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & First CP\\
+\hline
+{\em b} & Second CP\\
+\hline
+{\em c} & Third CP\\
+\hline
+{\em d} & Fourth CP\\
+\hline
+{\em t} & \mbox{[}0-\/1\mbox{]} parameter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Point on curve given by CPs and t
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_curve_a631cb3db54bb3c4829e0f3c78ef9cef6}\label{struct_bezier_curve_a631cb3db54bb3c4829e0f3c78ef9cef6} 
+\index{BezierCurve@{BezierCurve}!EvaluateQuadratic@{EvaluateQuadratic}}
+\index{EvaluateQuadratic@{EvaluateQuadratic}!BezierCurve@{BezierCurve}}
+\doxysubsubsection{\texorpdfstring{EvaluateQuadratic()}{EvaluateQuadratic()}}
+{\footnotesize\ttfamily Vector2 Bezier\+Curve.\+Evaluate\+Quadratic (\begin{DoxyParamCaption}\item[{Vector2}]{a,  }\item[{Vector2}]{b,  }\item[{Vector2}]{c,  }\item[{float}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns point on the quadtratic bezier curve. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & First CP\\
+\hline
+{\em b} & Second CP\\
+\hline
+{\em c} & Third CP\\
+\hline
+{\em t} & \mbox{[}0-\/1\mbox{]} parameter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Point on curve given by CPs and t
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_curve_a18dab4326b64428513b5fc8f3e250ac8}\label{struct_bezier_curve_a18dab4326b64428513b5fc8f3e250ac8} 
+\index{BezierCurve@{BezierCurve}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!BezierCurve@{BezierCurve}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily void Bezier\+Curve.\+Initialize (\begin{DoxyParamCaption}\item[{int}]{length,  }\item[{Allocator}]{allocator }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initialization of vezier curve. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em length} & How many points will this bezier curve consists of\\
+\hline
+{\em allocator} & Storage allocator\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Bezier.\+cs\end{DoxyCompactItemize}

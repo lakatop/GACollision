@@ -1,0 +1,91 @@
+\doxysection{IScenario Interface Reference}
+\hypertarget{interface_i_scenario}{}\label{interface_i_scenario}\index{IScenario@{IScenario}}
+
+
+Defines interface for scenarios.  
+
+
+Inheritance diagram for IScenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=9.000000cm]{interface_i_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times this scenario should run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines interface for scenarios. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}\label{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49} 
+\index{IScenario@{IScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!IScenario@{IScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void IScenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})}
+
+
+
+Perform any remaining actions before scenario resources will be cleared. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_corner_scenario_ae9e1481b3ea425b3f0da9ba7f0888d31}{Corner\+Scenario}}, \mbox{\hyperlink{class_narrow_coridor_opposite_scenario_a59b4afbc851b039a4339a682153586e5}{Narrow\+Coridor\+Opposite\+Scenario}}, \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_a5568e0b069ae4c3ab33fa4bd3736d2d1}{Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario}}, \mbox{\hyperlink{class_opposite_circle_scenario_a1d992b498fe5c0e6ac416cfedb6fd652}{Opposite\+Circle\+Scenario}}, \mbox{\hyperlink{class_opposite_multiple_scenario_ab1e23555a1f3c355385d429325e685b1}{Opposite\+Multiple\+Scenario}}, \mbox{\hyperlink{class_opposite_scenario_aebed06c2431bfca4bb78091b7b29d7d6}{Opposite\+Scenario}}, \mbox{\hyperlink{class_small_obstacle_scenario_acde959cbf90c19766c4daa6eadc447c8}{Small\+Obstacle\+Scenario}}, and \mbox{\hyperlink{class_straight_line_scenario_a91d187b2e6371f87cc4f972ea81e39af}{Straight\+Line\+Scenario}}.
+
+\Hypertarget{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}\label{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d} 
+\index{IScenario@{IScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!IScenario@{IScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void IScenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})}
+
+
+
+Populates scene with agents, gives them their destination. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_corner_scenario_a289c814c3cb8f7078beb72a175eac1b9}{Corner\+Scenario}}, \mbox{\hyperlink{class_narrow_coridor_opposite_scenario_ad95811f9286da4400e1233e06dc769e5}{Narrow\+Coridor\+Opposite\+Scenario}}, \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_aa64f5e4fa1057bb3ed424be0024cc18e}{Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario}}, \mbox{\hyperlink{class_opposite_circle_scenario_af128605832aabae17121c786b8a4105b}{Opposite\+Circle\+Scenario}}, \mbox{\hyperlink{class_opposite_multiple_scenario_a1c55c61f07da9505953d4761e9014796}{Opposite\+Multiple\+Scenario}}, \mbox{\hyperlink{class_opposite_scenario_a3d474e72bb3487afa825b6861540daa5}{Opposite\+Scenario}}, \mbox{\hyperlink{class_small_obstacle_scenario_aec5cc4d7817bd6e3486a2f49f3fe3f9f}{Small\+Obstacle\+Scenario}}, and \mbox{\hyperlink{class_straight_line_scenario_a11d4f84c71d5037b128f88e160d7ad70}{Straight\+Line\+Scenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}\label{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374} 
+\index{IScenario@{IScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!IScenario@{IScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int IScenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times this scenario should run. 
+
+
+
+Implemented in \mbox{\hyperlink{class_corner_scenario_afd0776f4471bdfe53f6e591af339aa56}{Corner\+Scenario}}, \mbox{\hyperlink{class_narrow_coridor_opposite_scenario_ad03e26af48e120595063f7b8c427d44f}{Narrow\+Coridor\+Opposite\+Scenario}}, \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_a3fe4a3cadd204fd490b409bbd80642c4}{Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario}}, \mbox{\hyperlink{class_opposite_circle_scenario_adc634cc870365f83275bacf3b07fb4fc}{Opposite\+Circle\+Scenario}}, \mbox{\hyperlink{class_opposite_multiple_scenario_afb4b604bd217b975fae09de63ee4adea}{Opposite\+Multiple\+Scenario}}, \mbox{\hyperlink{class_opposite_scenario_a102fe1c3a08a0c5f1da7f9f8525abfe1}{Opposite\+Scenario}}, \mbox{\hyperlink{class_small_obstacle_scenario_a5d16a482450701d5d263a5cf10b5ed53}{Small\+Obstacle\+Scenario}}, and \mbox{\hyperlink{class_straight_line_scenario_a80526fb283882c9d4b0654a8b172d798}{Straight\+Line\+Scenario}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Interfaces/IScenario.\+cs\end{DoxyCompactItemize}

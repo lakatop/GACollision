@@ -1,0 +1,115 @@
+\doxysection{Bezier\+Fitness\+End\+Distance\+Parallel Struct Reference}
+\hypertarget{struct_bezier_fitness_end_distance_parallel}{}\label{struct_bezier_fitness_end_distance_parallel}\index{BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}}
+
+
+End\+Distance fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed ot be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Fitness\+End\+Distance\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_fitness_end_distance_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_fitness_end_distance_parallel_a49658f217d78e93981010c225ee37ecc}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Calcualte End\+Distance fitness in population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_fitness_end_distance_parallel_adbe68984bc81a6af0e093ed5e537a602}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_fitness_end_distance_parallel_af99ca0b1b9eff5b8eb3623d239c55177}{Get\+Fitness\+Weight}} ()
+\begin{DoxyCompactList}\small\item\em Getter for fitness weight. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_ae7f73e84b9126a07e1e24395cfbe2297}\label{struct_bezier_fitness_end_distance_parallel_ae7f73e84b9126a07e1e24395cfbe2297} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_ae6140dfed0da06fba8fbdcf00d3a2e73}\label{struct_bezier_fitness_end_distance_parallel_ae6140dfed0da06fba8fbdcf00d3a2e73} 
+Vector2 {\bfseries start\+Position}
+\begin{DoxyCompactList}\small\item\em Current position of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_a66af2e98c24853b3f18bb986da2595f5}\label{struct_bezier_fitness_end_distance_parallel_a66af2e98c24853b3f18bb986da2595f5} 
+Vector2 {\bfseries destination}
+\begin{DoxyCompactList}\small\item\em Destination of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_abbef9bb1eea11dc6d49189e35bd3c340}\label{struct_bezier_fitness_end_distance_parallel_abbef9bb1eea11dc6d49189e35bd3c340} 
+float {\bfseries weight}
+\begin{DoxyCompactList}\small\item\em Weight of this fitness used inside weighted sum. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_ac338b2e3e972a44caebb8b1267c906eb}\label{struct_bezier_fitness_end_distance_parallel_ac338b2e3e972a44caebb8b1267c906eb} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em Maximum agents acceleration/deceleration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_a524d6e38c22416e15f8a6f8943dc99ba}\label{struct_bezier_fitness_end_distance_parallel_a524d6e38c22416e15f8a6f8943dc99ba} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em agents current velocity \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_ab30914d431a55275eb22515072811145}\label{struct_bezier_fitness_end_distance_parallel_ab30914d431a55275eb22515072811145} 
+float {\bfseries update\+Interaval}
+\begin{DoxyCompactList}\small\item\em How often is agent running GA. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_a53c71e197486d65abbaf70c0566d1608}\label{struct_bezier_fitness_end_distance_parallel_a53c71e197486d65abbaf70c0566d1608} 
+float {\bfseries max\+Agent\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximum agents speed. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_acc24921188d2f7da7b7fd031afa96e0c}\label{struct_bezier_fitness_end_distance_parallel_acc24921188d2f7da7b7fd031afa96e0c} 
+Native\+Array$<$ float $>$ {\bfseries fitnesses}
+\begin{DoxyCompactList}\small\item\em Array for holding population fitnesses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+End\+Distance fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed ot be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_adbe68984bc81a6af0e093ed5e537a602}\label{struct_bezier_fitness_end_distance_parallel_adbe68984bc81a6af0e093ed5e537a602} 
+\index{BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Fitness\+End\+Distance\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_af99ca0b1b9eff5b8eb3623d239c55177}\label{struct_bezier_fitness_end_distance_parallel_af99ca0b1b9eff5b8eb3623d239c55177} 
+\index{BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}!GetFitnessWeight@{GetFitnessWeight}}
+\index{GetFitnessWeight@{GetFitnessWeight}!BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}}
+\doxysubsubsection{\texorpdfstring{GetFitnessWeight()}{GetFitnessWeight()}}
+{\footnotesize\ttfamily float Bezier\+Fitness\+End\+Distance\+Parallel.\+Get\+Fitness\+Weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for fitness weight. 
+
+\begin{DoxyReturn}{Returns}
+Fitness weight
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_end_distance_parallel_a49658f217d78e93981010c225ee37ecc}\label{struct_bezier_fitness_end_distance_parallel_a49658f217d78e93981010c225ee37ecc} 
+\index{BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierFitnessEndDistanceParallel@{BezierFitnessEndDistanceParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Fitness\+End\+Distance\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Calcualte End\+Distance fitness in population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Fitness.\+cs\end{DoxyCompactItemize}

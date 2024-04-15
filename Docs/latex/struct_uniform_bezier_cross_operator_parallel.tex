@@ -1,0 +1,100 @@
+\doxysection{Uniform\+Bezier\+Cross\+Operator\+Parallel Struct Reference}
+\hypertarget{struct_uniform_bezier_cross_operator_parallel}{}\label{struct_uniform_bezier_cross_operator_parallel}\index{UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}}
+
+
+Uniform crossover for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Uniform\+Bezier\+Cross\+Operator\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_uniform_bezier_cross_operator_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_uniform_bezier_cross_operator_parallel_ad5c0216d799e232c2eb9dbba04582992}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform crossover on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_uniform_bezier_cross_operator_parallel_a168f44d18b113297b64ad62d74c8bdbd}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_uniform_bezier_cross_operator_parallel_ab9b2ffc0aab613fe090c36fc93bfe299}{Get\+Cross\+Probability}} ()
+\begin{DoxyCompactList}\small\item\em Getter for probability of this crossover. \end{DoxyCompactList}\item 
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_a59f517abf733158dd0b2e2268744c340}\label{struct_uniform_bezier_cross_operator_parallel_a59f517abf733158dd0b2e2268744c340} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_a828c42a7de05310a46888290c3db24a1}\label{struct_uniform_bezier_cross_operator_parallel_a828c42a7de05310a46888290c3db24a1} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\begin{DoxyCompactList}\small\item\em Random object variable. \end{DoxyCompactList}\item 
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_a4894b7fb4f23445dbf934ba7487fa864}\label{struct_uniform_bezier_cross_operator_parallel_a4894b7fb4f23445dbf934ba7487fa864} 
+Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ {\bfseries parents}
+\begin{DoxyCompactList}\small\item\em Array to hold parents of crossover. \end{DoxyCompactList}\item 
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_ae29d398aaa06bce50487ae023cdbdfb5}\label{struct_uniform_bezier_cross_operator_parallel_ae29d398aaa06bce50487ae023cdbdfb5} 
+float {\bfseries cross\+Prob}
+\begin{DoxyCompactList}\small\item\em Probability for crossover. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Uniform crossover for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_a168f44d18b113297b64ad62d74c8bdbd}\label{struct_uniform_bezier_cross_operator_parallel_a168f44d18b113297b64ad62d74c8bdbd} 
+\index{UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Uniform\+Bezier\+Cross\+Operator\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_ab9b2ffc0aab613fe090c36fc93bfe299}\label{struct_uniform_bezier_cross_operator_parallel_ab9b2ffc0aab613fe090c36fc93bfe299} 
+\index{UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}!GetCrossProbability@{GetCrossProbability}}
+\index{GetCrossProbability@{GetCrossProbability}!UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetCrossProbability()}{GetCrossProbability()}}
+{\footnotesize\ttfamily float Uniform\+Bezier\+Cross\+Operator\+Parallel.\+Get\+Cross\+Probability (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for probability of this crossover. 
+
+\begin{DoxyReturn}{Returns}
+Probabilty of crossover
+\end{DoxyReturn}
+\Hypertarget{struct_uniform_bezier_cross_operator_parallel_ad5c0216d799e232c2eb9dbba04582992}\label{struct_uniform_bezier_cross_operator_parallel_ad5c0216d799e232c2eb9dbba04582992} 
+\index{UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!UniformBezierCrossOperatorParallel@{UniformBezierCrossOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Uniform\+Bezier\+Cross\+Operator\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform crossover on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population for crossover\\
+\hline
+{\em iteration} & Iteration of the GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Crossover.\+cs\end{DoxyCompactItemize}

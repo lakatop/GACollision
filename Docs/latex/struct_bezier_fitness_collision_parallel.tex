@@ -1,0 +1,135 @@
+\doxysection{Bezier\+Fitness\+Collision\+Parallel Struct Reference}
+\hypertarget{struct_bezier_fitness_collision_parallel}{}\label{struct_bezier_fitness_collision_parallel}\index{BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}}
+
+
+Collision fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Fitness\+Collision\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_fitness_collision_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_fitness_collision_parallel_adac9115ef2773f47d361e98dce12902e}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Calcualte Collision fitness in population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_fitness_collision_parallel_a269bacd0047735466429cce9966c3c59}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_fitness_collision_parallel_a0010a6d5a031b1fcb9e7c6dfd0e59508}{Get\+Fitness\+Weight}} ()
+\begin{DoxyCompactList}\small\item\em Getter for fitness weight. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_a50281577c8da3610774849347a669bd1}\label{struct_bezier_fitness_collision_parallel_a50281577c8da3610774849347a669bd1} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_a18878441836c7207c592988b51acefe0}\label{struct_bezier_fitness_collision_parallel_a18878441836c7207c592988b51acefe0} 
+Vector2 {\bfseries start\+Position}
+\begin{DoxyCompactList}\small\item\em Agents current position. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_a09deebb7ec8b8b14dab533074c0ec5ea}\label{struct_bezier_fitness_collision_parallel_a09deebb7ec8b8b14dab533074c0ec5ea} 
+float {\bfseries agent\+Radius}
+\begin{DoxyCompactList}\small\item\em Radius of agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_a64df65b5d626d2fd97249dd07bc4fda9}\label{struct_bezier_fitness_collision_parallel_a64df65b5d626d2fd97249dd07bc4fda9} 
+int {\bfseries agent\+Index}
+\begin{DoxyCompactList}\small\item\em Agents id. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_a8edecfa51dfd7fa10a902940e8254c2e}\label{struct_bezier_fitness_collision_parallel_a8edecfa51dfd7fa10a902940e8254c2e} 
+\mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree}}$<$ \mbox{\hyperlink{struct_tree_node}{Tree\+Node}} $>$ {\bfseries quad\+Tree}
+\begin{DoxyCompactList}\small\item\em Quadtree for collision detection. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_aa293117208aa6361143419d781fb3f1d}\label{struct_bezier_fitness_collision_parallel_aa293117208aa6361143419d781fb3f1d} 
+float {\bfseries weight}
+\begin{DoxyCompactList}\small\item\em Weight of this fitness used inside weighted sum. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_af2a6d50b2beba43f15546c2e423bc59e}\label{struct_bezier_fitness_collision_parallel_af2a6d50b2beba43f15546c2e423bc59e} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em Maximum agents acceleration/deceleration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_ac33faf9f6c75296d966edcb596fbd94b}\label{struct_bezier_fitness_collision_parallel_ac33faf9f6c75296d966edcb596fbd94b} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em Agents starting velocity. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_fitness_collision_parallel_a379fc836b225db3d3a8aa932e280bb58}{update\+Interaval}}
+\begin{DoxyCompactList}\small\item\em How often is agent running GA. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_aa07361134d5e7661d2c31486d7334cef}\label{struct_bezier_fitness_collision_parallel_aa07361134d5e7661d2c31486d7334cef} 
+float {\bfseries max\+Agent\+Speed}
+\begin{DoxyCompactList}\small\item\em MAximum agents velocity. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_collision_parallel_aec5dc2dd5003d51730db78c17998bc73}\label{struct_bezier_fitness_collision_parallel_aec5dc2dd5003d51730db78c17998bc73} 
+Native\+Array$<$ float $>$ {\bfseries fitnesses}
+\begin{DoxyCompactList}\small\item\em Array for holding population fitnesses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Collision fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_fitness_collision_parallel_a269bacd0047735466429cce9966c3c59}\label{struct_bezier_fitness_collision_parallel_a269bacd0047735466429cce9966c3c59} 
+\index{BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Fitness\+Collision\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_collision_parallel_a0010a6d5a031b1fcb9e7c6dfd0e59508}\label{struct_bezier_fitness_collision_parallel_a0010a6d5a031b1fcb9e7c6dfd0e59508} 
+\index{BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}!GetFitnessWeight@{GetFitnessWeight}}
+\index{GetFitnessWeight@{GetFitnessWeight}!BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}}
+\doxysubsubsection{\texorpdfstring{GetFitnessWeight()}{GetFitnessWeight()}}
+{\footnotesize\ttfamily float Bezier\+Fitness\+Collision\+Parallel.\+Get\+Fitness\+Weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for fitness weight. 
+
+\begin{DoxyReturn}{Returns}
+Fitness weight
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_collision_parallel_adac9115ef2773f47d361e98dce12902e}\label{struct_bezier_fitness_collision_parallel_adac9115ef2773f47d361e98dce12902e} 
+\index{BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Fitness\+Collision\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Calcualte Collision fitness in population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_bezier_fitness_collision_parallel_a379fc836b225db3d3a8aa932e280bb58}\label{struct_bezier_fitness_collision_parallel_a379fc836b225db3d3a8aa932e280bb58} 
+\index{BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}!updateInteraval@{updateInteraval}}
+\index{updateInteraval@{updateInteraval}!BezierFitnessCollisionParallel@{BezierFitnessCollisionParallel}}
+\doxysubsubsection{\texorpdfstring{updateInteraval}{updateInteraval}}
+{\footnotesize\ttfamily float Bezier\+Fitness\+Collision\+Parallel.\+update\+Interaval}
+
+
+
+How often is agent running GA. 
+
+///
+
+How often is agent running GA 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Fitness.\+cs\end{DoxyCompactItemize}

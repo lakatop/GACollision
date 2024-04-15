@@ -1,0 +1,196 @@
+\doxysection{Bezier\+Genetic\+Algorithm\+Parallel Struct Reference}
+\hypertarget{struct_bezier_genetic_algorithm_parallel}{}\label{struct_bezier_genetic_algorithm_parallel}\index{BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}}
+
+
+Struct representing Bezier GA job.  
+
+
+Inheritance diagram for Bezier\+Genetic\+Algorithm\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.812298cm]{struct_bezier_genetic_algorithm_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a6e5cc31abc2869992311af3c075672e5}\label{struct_bezier_genetic_algorithm_parallel_a6e5cc31abc2869992311af3c075672e5} 
+void {\bfseries Execute} ()
+\begin{DoxyCompactList}\small\item\em Main method that executes the GA. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_bezier_genetic_algorithm_parallel_ac08d320c1349736a408cfb546d4be1d1}{Set\+Resources}} (List$<$ object $>$ resources)
+\begin{DoxyCompactList}\small\item\em Set additional resources of the struct. \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{struct_bezier_genetic_algorithm_parallel_a8135729df3b2fef6f49b19ccb8d44d3c}{Get\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Getter of winning velocity. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_genetic_algorithm_parallel_a3c7f4b932f7f029cf12698578ec02a65}{Get\+Configuration}} ()
+\begin{DoxyCompactList}\small\item\em Creates a string capturing configuration of this GA. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_genetic_algorithm_parallel_ac7f2753d370f7ed777f0e42399ece872}{Get\+Hyperparameters\+Id}} ()
+\begin{DoxyCompactList}\small\item\em Getter for hyperparameters. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a4295f942dbf37ceca6c4b03ad9adbb37}\label{struct_bezier_genetic_algorithm_parallel_a4295f942dbf37ceca6c4b03ad9adbb37} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clearing resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_genetic_algorithm_parallel}{IGenetic\+Algorithm\+Parallel$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_genetic_algorithm_parallel_af8750e7f6e33e6ed79699128d41d8ce3}{Set\+Resources}} (System.\+Collections.\+Generic.\+List$<$ object $>$ resources)
+\begin{DoxyCompactList}\small\item\em Set any required resources for GA to function (e.\+g. assign quadtree) \end{DoxyCompactList}\item 
+Unity\+Engine.\+Vector2 \mbox{\hyperlink{interface_i_genetic_algorithm_parallel_afaa8af1ab7addfecb63dbc69878a1ff6}{Get\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Getter for last run result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ac03b443bce7b1164643144f190bb51d1}\label{struct_bezier_genetic_algorithm_parallel_ac03b443bce7b1164643144f190bb51d1} 
+\mbox{\hyperlink{struct_uniform_bezier_cross_operator_parallel}{Uniform\+Bezier\+Cross\+Operator\+Parallel}} {\bfseries cross}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ae4092e499dbdfacaec69e72758636fa2}\label{struct_bezier_genetic_algorithm_parallel_ae4092e499dbdfacaec69e72758636fa2} 
+\mbox{\hyperlink{struct_bezier_straight_finish_mutation_operator_parallel}{Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel}} {\bfseries straight\+Finish\+Mutation}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a351c8f09d53a1739adde536bce84ed82}\label{struct_bezier_genetic_algorithm_parallel_a351c8f09d53a1739adde536bce84ed82} 
+\mbox{\hyperlink{struct_bezier_clamp_velocity_mutation_operator_parallel}{Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel}} {\bfseries clamp\+Velocity\+Mutation}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ab730884cfca654919a1f8b61ff51134b}\label{struct_bezier_genetic_algorithm_parallel_ab730884cfca654919a1f8b61ff51134b} 
+\mbox{\hyperlink{struct_bezier_shuffle_acc_mutation_operator_parallel}{Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel}} {\bfseries shuffle\+Mutation}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a02b0305053548ce5bc510fea82a7e7b3}\label{struct_bezier_genetic_algorithm_parallel_a02b0305053548ce5bc510fea82a7e7b3} 
+\mbox{\hyperlink{struct_bezier_shuffle_control_points_mutation_operator_parallel}{Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel}} {\bfseries control\+Points\+Mutation}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ae3a0affc4a54c1e52d1edeebd8afec4d}\label{struct_bezier_genetic_algorithm_parallel_ae3a0affc4a54c1e52d1edeebd8afec4d} 
+\mbox{\hyperlink{struct_bezier_smooth_acc_mutation_operator_parallel}{Bezier\+Smooth\+Acc\+Mutation\+Operator\+Parallel}} {\bfseries smooth\+Mutation}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a9e8a556689d0cd2aeb5947b896ab536f}\label{struct_bezier_genetic_algorithm_parallel_a9e8a556689d0cd2aeb5947b896ab536f} 
+\mbox{\hyperlink{struct_bezier_fitness_jerk_cost_parallel}{Bezier\+Fitness\+Jerk\+Cost\+Parallel}} {\bfseries jerk\+Fitness}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a9a8e24f5aae86725a81695045a444d44}\label{struct_bezier_genetic_algorithm_parallel_a9a8e24f5aae86725a81695045a444d44} 
+\mbox{\hyperlink{struct_bezier_fitness_collision_parallel}{Bezier\+Fitness\+Collision\+Parallel}} {\bfseries collision\+Fitness}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a2608249b6439c2663a413406bf239455}\label{struct_bezier_genetic_algorithm_parallel_a2608249b6439c2663a413406bf239455} 
+\mbox{\hyperlink{struct_bezier_fitness_end_distance_parallel}{Bezier\+Fitness\+End\+Distance\+Parallel}} {\bfseries end\+Distance\+Fitness}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a32e522a4f9ddbda3adc50e53f749db4a}\label{struct_bezier_genetic_algorithm_parallel_a32e522a4f9ddbda3adc50e53f749db4a} 
+\mbox{\hyperlink{struct_bezier_fitness_time_to_destination_parallel}{Bezier\+Fitness\+Time\+To\+Destination\+Parallel}} {\bfseries ttd\+Fitness}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a8ca77266f55c6abdab74ec716c34c76b}\label{struct_bezier_genetic_algorithm_parallel_a8ca77266f55c6abdab74ec716c34c76b} 
+\mbox{\hyperlink{struct_bezier_elitist_selection_parallel}{Bezier\+Elitist\+Selection\+Parallel}} {\bfseries selection}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_abedb8c88631a8d5050fe92c6cfaec44f}\label{struct_bezier_genetic_algorithm_parallel_abedb8c88631a8d5050fe92c6cfaec44f} 
+\mbox{\hyperlink{struct_bezier_initialization}{Bezier\+Initialization}} {\bfseries pop\+Initialization}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a9495560bb96c20a8854765a6708e559d}\label{struct_bezier_genetic_algorithm_parallel_a9495560bb96c20a8854765a6708e559d} 
+\mbox{\hyperlink{struct_bezier_weighted_sum_ranking}{Bezier\+Weighted\+Sum\+Ranking}} {\bfseries ranking}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a5a6ec453f2c3a9bebd898a852f0a3916}\label{struct_bezier_genetic_algorithm_parallel_a5a6ec453f2c3a9bebd898a852f0a3916} 
+\mbox{\hyperlink{struct_native_bezier_population}{Native\+Bezier\+Population}} {\bfseries pop}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a02e4673c99fee6280c67c8c530cbd34e}\label{struct_bezier_genetic_algorithm_parallel_a02e4673c99fee6280c67c8c530cbd34e} 
+\mbox{\hyperlink{struct_bezier_individual_logger}{Bezier\+Individual\+Logger}} {\bfseries logger}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_aa54b9dacbc382ed1ad2db985aa262f16}\label{struct_bezier_genetic_algorithm_parallel_aa54b9dacbc382ed1ad2db985aa262f16} 
+\mbox{\hyperlink{struct_bezier_population_drawer}{Bezier\+Population\+Drawer}} {\bfseries pop\+Drawer}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a7a968d7e25a3ac8905f17e310cfaa1fa}\label{struct_bezier_genetic_algorithm_parallel_a7a968d7e25a3ac8905f17e310cfaa1fa} 
+Native\+Array$<$ Vector2 $>$ {\bfseries winner}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_afe21341765d497aee8b853ebf6649b25}\label{struct_bezier_genetic_algorithm_parallel_afe21341765d497aee8b853ebf6649b25} 
+float {\bfseries time\+Delta}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a357923c7869016f63ab76590d375182c}\label{struct_bezier_genetic_algorithm_parallel_a357923c7869016f63ab76590d375182c} 
+float {\bfseries agent\+Speed}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a1f662c73ab6f60fda087307c7b73cd56}\label{struct_bezier_genetic_algorithm_parallel_a1f662c73ab6f60fda087307c7b73cd56} 
+Vector2 {\bfseries start\+Position}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a297af242d4c14ab49347f2e6d52035cf}\label{struct_bezier_genetic_algorithm_parallel_a297af242d4c14ab49347f2e6d52035cf} 
+Vector2 {\bfseries forward}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ac8d34d15df385ff0d5676427a6a82425}\label{struct_bezier_genetic_algorithm_parallel_ac8d34d15df385ff0d5676427a6a82425} 
+float {\bfseries start\+Velocity}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ab4300f1f895afaceb9afa6b74179ff1b}\label{struct_bezier_genetic_algorithm_parallel_ab4300f1f895afaceb9afa6b74179ff1b} 
+float {\bfseries max\+Acc}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_aed76e66d81e835e4219135e78980640f}\label{struct_bezier_genetic_algorithm_parallel_aed76e66d81e835e4219135e78980640f} 
+float {\bfseries update\+Interaval}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a2c78e43873f5ab231e0bbc0beec1c29d}\label{struct_bezier_genetic_algorithm_parallel_a2c78e43873f5ab231e0bbc0beec1c29d} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_af77aff75c767e52f8313cccc1e4c2eab}\label{struct_bezier_genetic_algorithm_parallel_af77aff75c767e52f8313cccc1e4c2eab} 
+int {\bfseries iterations}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a0c70390dbbac43008ccd5c8cc00b9a8f}\label{struct_bezier_genetic_algorithm_parallel_a0c70390dbbac43008ccd5c8cc00b9a8f} 
+int {\bfseries population\+Size}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_genetic_algorithm_parallel}{IGenetic\+Algorithm\+Parallel$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries iterations}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+int {\bfseries population\+Size}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Number of individuals that 1 population should have. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct representing Bezier GA job. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a3c7f4b932f7f029cf12698578ec02a65}\label{struct_bezier_genetic_algorithm_parallel_a3c7f4b932f7f029cf12698578ec02a65} 
+\index{BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}!GetConfiguration@{GetConfiguration}}
+\index{GetConfiguration@{GetConfiguration}!BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}}
+\doxysubsubsection{\texorpdfstring{GetConfiguration()}{GetConfiguration()}}
+{\footnotesize\ttfamily string Bezier\+Genetic\+Algorithm\+Parallel.\+Get\+Configuration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a string capturing configuration of this GA. 
+
+\begin{DoxyReturn}{Returns}
+Configuration of this GA
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ac7f2753d370f7ed777f0e42399ece872}\label{struct_bezier_genetic_algorithm_parallel_ac7f2753d370f7ed777f0e42399ece872} 
+\index{BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}!GetHyperparametersId@{GetHyperparametersId}}
+\index{GetHyperparametersId@{GetHyperparametersId}!BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}}
+\doxysubsubsection{\texorpdfstring{GetHyperparametersId()}{GetHyperparametersId()}}
+{\footnotesize\ttfamily string Bezier\+Genetic\+Algorithm\+Parallel.\+Get\+Hyperparameters\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for hyperparameters. 
+
+\begin{DoxyReturn}{Returns}
+String capturing hyperparameters
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_a8135729df3b2fef6f49b19ccb8d44d3c}\label{struct_bezier_genetic_algorithm_parallel_a8135729df3b2fef6f49b19ccb8d44d3c} 
+\index{BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}!GetResult@{GetResult}}
+\index{GetResult@{GetResult}!BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}}
+\doxysubsubsection{\texorpdfstring{GetResult()}{GetResult()}}
+{\footnotesize\ttfamily Vector2 Bezier\+Genetic\+Algorithm\+Parallel.\+Get\+Result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter of winning velocity. 
+
+\begin{DoxyReturn}{Returns}
+Winning velocity
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_genetic_algorithm_parallel_ac08d320c1349736a408cfb546d4be1d1}\label{struct_bezier_genetic_algorithm_parallel_ac08d320c1349736a408cfb546d4be1d1} 
+\index{BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}!SetResources@{SetResources}}
+\index{SetResources@{SetResources}!BezierGeneticAlgorithmParallel@{BezierGeneticAlgorithmParallel}}
+\doxysubsubsection{\texorpdfstring{SetResources()}{SetResources()}}
+{\footnotesize\ttfamily void Bezier\+Genetic\+Algorithm\+Parallel.\+Set\+Resources (\begin{DoxyParamCaption}\item[{List$<$ object $>$}]{resources }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set additional resources of the struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resources} & Resources that will be set\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Basic\+Genetic\+Algorithm\+Job.\+cs\end{DoxyCompactItemize}

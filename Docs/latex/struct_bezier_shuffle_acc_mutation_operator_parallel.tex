@@ -1,0 +1,97 @@
+\doxysection{Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel Struct Reference}
+\hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel}{}\label{struct_bezier_shuffle_acc_mutation_operator_parallel}\index{BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}}
+
+
+Shuffle\+Acc mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_shuffle_acc_mutation_operator_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_shuffle_acc_mutation_operator_parallel_a4452c4681fbf07ff43c4023c768b71bc}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform mutation on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_shuffle_acc_mutation_operator_parallel_a20dd6aa360c81aa75e69b92f27c38c7d}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_shuffle_acc_mutation_operator_parallel_a0cc2efabdcd7673f8f9151f199cb8621}{Get\+Mutation\+Probabilty}} ()
+\begin{DoxyCompactList}\small\item\em Getter for mutation probability. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_abd69b84a196763f5e14584ead4d33ee1}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_abd69b84a196763f5e14584ead4d33ee1} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_a5d36e043b4ffb0993c7aaba74de8ca3e}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_a5d36e043b4ffb0993c7aaba74de8ca3e} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\begin{DoxyCompactList}\small\item\em Random object variable. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_a8f3dec1992d92838853c6a7d9855655d}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_a8f3dec1992d92838853c6a7d9855655d} 
+float {\bfseries mutation\+Prob}
+\begin{DoxyCompactList}\small\item\em Probability of mutation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shuffle\+Acc mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_a20dd6aa360c81aa75e69b92f27c38c7d}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_a20dd6aa360c81aa75e69b92f27c38c7d} 
+\index{BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_a0cc2efabdcd7673f8f9151f199cb8621}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_a0cc2efabdcd7673f8f9151f199cb8621} 
+\index{BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}!GetMutationProbabilty@{GetMutationProbabilty}}
+\index{GetMutationProbabilty@{GetMutationProbabilty}!BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetMutationProbabilty()}{GetMutationProbabilty()}}
+{\footnotesize\ttfamily float Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel.\+Get\+Mutation\+Probabilty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for mutation probability. 
+
+\begin{DoxyReturn}{Returns}
+Mutation probability
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_shuffle_acc_mutation_operator_parallel_a4452c4681fbf07ff43c4023c768b71bc}\label{struct_bezier_shuffle_acc_mutation_operator_parallel_a4452c4681fbf07ff43c4023c768b71bc} 
+\index{BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierShuffleAccMutationOperatorParallel@{BezierShuffleAccMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Shuffle\+Acc\+Mutation\+Operator\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform mutation on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Mutation.\+cs\end{DoxyCompactItemize}

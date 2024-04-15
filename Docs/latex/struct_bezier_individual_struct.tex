@@ -1,0 +1,55 @@
+\doxysection{Bezier\+Individual\+Struct Struct Reference}
+\hypertarget{struct_bezier_individual_struct}{}\label{struct_bezier_individual_struct}\index{BezierIndividualStruct@{BezierIndividualStruct}}
+
+
+Bezier individual struct designed to be used inside of Unity jobs.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_individual_struct_ad23e1fe27275925c0c74104dac59e03b}{Initialize}} (int length, Allocator allocator)
+\begin{DoxyCompactList}\small\item\em Initialize individual. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_struct_a1b77d7dad7668fe53c8ec3a48badfae2}\label{struct_bezier_individual_struct_a1b77d7dad7668fe53c8ec3a48badfae2} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_individual_struct_aeb56ac08f5d43d56d458dc3529b4fee7}\label{struct_bezier_individual_struct_aeb56ac08f5d43d56d458dc3529b4fee7} 
+float {\bfseries fitness}
+\begin{DoxyCompactList}\small\item\em Fitness of individual. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_struct_afef8fe2bff24a475bd046d9fdd82955a}\label{struct_bezier_individual_struct_afef8fe2bff24a475bd046d9fdd82955a} 
+\mbox{\hyperlink{struct_bezier_curve}{Bezier\+Curve}} {\bfseries bezier\+Curve}
+\begin{DoxyCompactList}\small\item\em Bezier curve of individual representing path. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_individual_struct_a75db4433ac86232580a04f9880d7d69f}\label{struct_bezier_individual_struct_a75db4433ac86232580a04f9880d7d69f} 
+Unsafe\+List$<$ float $>$ {\bfseries accelerations}
+\begin{DoxyCompactList}\small\item\em List of agents accelerations on path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Bezier individual struct designed to be used inside of Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_individual_struct_ad23e1fe27275925c0c74104dac59e03b}\label{struct_bezier_individual_struct_ad23e1fe27275925c0c74104dac59e03b} 
+\index{BezierIndividualStruct@{BezierIndividualStruct}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!BezierIndividualStruct@{BezierIndividualStruct}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily void Bezier\+Individual\+Struct.\+Initialize (\begin{DoxyParamCaption}\item[{int}]{length,  }\item[{Allocator}]{allocator }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initialize individual. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em length} & Number of control points\\
+\hline
+{\em allocator} & Storage allocator\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Population.\+cs\end{DoxyCompactItemize}

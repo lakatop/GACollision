@@ -1,0 +1,69 @@
+\doxysection{IGenetic\+Algorithm\+Parallel\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Interface Template Reference}
+\hypertarget{interface_i_genetic_algorithm_parallel}{}\label{interface_i_genetic_algorithm_parallel}\index{IGeneticAlgorithmParallel$<$ T $>$@{IGeneticAlgorithmParallel$<$ T $>$}}
+
+
+Interface for genetic algorithm that will run in parallel.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_genetic_algorithm_parallel_af8750e7f6e33e6ed79699128d41d8ce3}{Set\+Resources}} (System.\+Collections.\+Generic.\+List$<$ object $>$ resources)
+\begin{DoxyCompactList}\small\item\em Set any required resources for GA to function (e.\+g. assign quadtree) \end{DoxyCompactList}\item 
+Unity\+Engine.\+Vector2 \mbox{\hyperlink{interface_i_genetic_algorithm_parallel_afaa8af1ab7addfecb63dbc69878a1ff6}{Get\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Getter for last run result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{interface_i_genetic_algorithm_parallel_aa01aac80354be95acdc5c376442a6c93}\label{interface_i_genetic_algorithm_parallel_aa01aac80354be95acdc5c376442a6c93} 
+int {\bfseries iterations}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{interface_i_genetic_algorithm_parallel_aa17b1a2ba00fde3a28587ed679532786}\label{interface_i_genetic_algorithm_parallel_aa17b1a2ba00fde3a28587ed679532786} 
+int {\bfseries population\+Size}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Number of individuals that 1 population should have. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for genetic algorithm that will run in parallel. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Concrete individual class\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interface_i_genetic_algorithm_parallel_afaa8af1ab7addfecb63dbc69878a1ff6}\label{interface_i_genetic_algorithm_parallel_afaa8af1ab7addfecb63dbc69878a1ff6} 
+\index{IGeneticAlgorithmParallel$<$ T $>$@{IGeneticAlgorithmParallel$<$ T $>$}!GetResult@{GetResult}}
+\index{GetResult@{GetResult}!IGeneticAlgorithmParallel$<$ T $>$@{IGeneticAlgorithmParallel$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{GetResult()}{GetResult()}}
+{\footnotesize\ttfamily Unity\+Engine.\+Vector2 \mbox{\hyperlink{interface_i_genetic_algorithm_parallel}{IGenetic\+Algorithm\+Parallel}}$<$ T $>$.Get\+Result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Getter for last run result. 
+
+\begin{DoxyReturn}{Returns}
+Vector that is ranked as best among results of last GA run
+\end{DoxyReturn}
+\Hypertarget{interface_i_genetic_algorithm_parallel_af8750e7f6e33e6ed79699128d41d8ce3}\label{interface_i_genetic_algorithm_parallel_af8750e7f6e33e6ed79699128d41d8ce3} 
+\index{IGeneticAlgorithmParallel$<$ T $>$@{IGeneticAlgorithmParallel$<$ T $>$}!SetResources@{SetResources}}
+\index{SetResources@{SetResources}!IGeneticAlgorithmParallel$<$ T $>$@{IGeneticAlgorithmParallel$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{SetResources()}{SetResources()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interface_i_genetic_algorithm_parallel}{IGenetic\+Algorithm\+Parallel}}$<$ T $>$.Set\+Resources (\begin{DoxyParamCaption}\item[{System.\+Collections.\+Generic.\+List$<$ object $>$}]{resources }\end{DoxyParamCaption})}
+
+
+
+Set any required resources for GA to function (e.\+g. assign quadtree) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resources} & List of resources\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Interfaces/IGenetic\+Alg\+Skeleton.\+cs\end{DoxyCompactItemize}

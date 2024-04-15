@@ -1,0 +1,169 @@
+\doxysection{Agent\+Logger Class Reference}
+\hypertarget{class_agent_logger}{}\label{class_agent_logger}\index{AgentLogger@{AgentLogger}}
+
+
+Class for logging agent related metrics into a csv file.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_agent_logger_a655cc4a3bb384239cb9e4cee796a2ef8}{Add\+Velocity}} (Vector2 vel)
+\begin{DoxyCompactList}\small\item\em Add new velocity to array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_a94cadf5302ab66178fa66b69c1068b16}{Add\+Ga\+Time}} (double time)
+\begin{DoxyCompactList}\small\item\em Add new GA run time. \end{DoxyCompactList}\item 
+\Hypertarget{class_agent_logger_a5e4969400df8a8229dd4004c5e773916}\label{class_agent_logger_a5e4969400df8a8229dd4004c5e773916} 
+void {\bfseries Create\+Csv} ()
+\begin{DoxyCompactList}\small\item\em Create new csv if it doesnt exist already. \end{DoxyCompactList}\item 
+\Hypertarget{class_agent_logger_af10e6492fd185c446411dce1e2955929}\label{class_agent_logger_af10e6492fd185c446411dce1e2955929} 
+void {\bfseries Append\+Csv\+Log} ()
+\begin{DoxyCompactList}\small\item\em Append new log into a csv. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_aa3261f2355d4e69a51b4a75c65a92a59}{Create\+Configuration\+File}} (string configuration)
+\begin{DoxyCompactList}\small\item\em Create a configuration file holding info about the GA. \end{DoxyCompactList}\item 
+\Hypertarget{class_agent_logger_a9d7fcf67b74246f27a5ba012e59138e6}\label{class_agent_logger_a9d7fcf67b74246f27a5ba012e59138e6} 
+void {\bfseries Add\+Collision\+Count} ()
+\begin{DoxyCompactList}\small\item\em Increase \+\_\+collision\+Count counter. \end{DoxyCompactList}\item 
+\Hypertarget{class_agent_logger_a1d3604a5e1462e10b40faef0eb05a592}\label{class_agent_logger_a1d3604a5e1462e10b40faef0eb05a592} 
+void {\bfseries Add\+Frames\+In\+Collision} ()
+\begin{DoxyCompactList}\small\item\em Increase \+\_\+frames\+In\+Collision counter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_a42a311488d7c2e92322678dc95db88b0}{Set\+End\+Time}} (double end\+Time)
+\begin{DoxyCompactList}\small\item\em Setter for \+\_\+path\+End\+Time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_addb3ee3704f0adbc2f356d522256241c}{Set\+Start\+Time}} (double start\+Time)
+\begin{DoxyCompactList}\small\item\em Setter for \+\_\+path\+Start\+Time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_afefe8ac991d7d01118703f0fe10f8a6b}{Set\+Scenario\+Id}} (string name)
+\begin{DoxyCompactList}\small\item\em Setter for \+\_\+scenario\+Id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_ac4141ee5aa8ab541eccf66532de35c5b}{Set\+Agent\+Id}} (string name)
+\begin{DoxyCompactList}\small\item\em Setter for \+\_\+agent\+Id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_agent_logger_a69d8c06c54b7d74b51f5cec48c57ae9b}{Set\+Configuration\+Id}} (string conf\+Id)
+\begin{DoxyCompactList}\small\item\em Setter for \+\_\+configuration\+Id. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class for logging agent related metrics into a csv file. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_agent_logger_a94cadf5302ab66178fa66b69c1068b16}\label{class_agent_logger_a94cadf5302ab66178fa66b69c1068b16} 
+\index{AgentLogger@{AgentLogger}!AddGaTime@{AddGaTime}}
+\index{AddGaTime@{AddGaTime}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{AddGaTime()}{AddGaTime()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Add\+Ga\+Time (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add new GA run time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & GA run time\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_a655cc4a3bb384239cb9e4cee796a2ef8}\label{class_agent_logger_a655cc4a3bb384239cb9e4cee796a2ef8} 
+\index{AgentLogger@{AgentLogger}!AddVelocity@{AddVelocity}}
+\index{AddVelocity@{AddVelocity}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{AddVelocity()}{AddVelocity()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Add\+Velocity (\begin{DoxyParamCaption}\item[{Vector2}]{vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add new velocity to array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vel} & Velocity that will be added\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_aa3261f2355d4e69a51b4a75c65a92a59}\label{class_agent_logger_aa3261f2355d4e69a51b4a75c65a92a59} 
+\index{AgentLogger@{AgentLogger}!CreateConfigurationFile@{CreateConfigurationFile}}
+\index{CreateConfigurationFile@{CreateConfigurationFile}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{CreateConfigurationFile()}{CreateConfigurationFile()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Create\+Configuration\+File (\begin{DoxyParamCaption}\item[{string}]{configuration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create a configuration file holding info about the GA. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em configuration} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_ac4141ee5aa8ab541eccf66532de35c5b}\label{class_agent_logger_ac4141ee5aa8ab541eccf66532de35c5b} 
+\index{AgentLogger@{AgentLogger}!SetAgentId@{SetAgentId}}
+\index{SetAgentId@{SetAgentId}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{SetAgentId()}{SetAgentId()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Set\+Agent\+Id (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for \+\_\+agent\+Id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Agent id\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_a69d8c06c54b7d74b51f5cec48c57ae9b}\label{class_agent_logger_a69d8c06c54b7d74b51f5cec48c57ae9b} 
+\index{AgentLogger@{AgentLogger}!SetConfigurationId@{SetConfigurationId}}
+\index{SetConfigurationId@{SetConfigurationId}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{SetConfigurationId()}{SetConfigurationId()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Set\+Configuration\+Id (\begin{DoxyParamCaption}\item[{string}]{conf\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for \+\_\+configuration\+Id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf\+Id} & Configuration id\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_a42a311488d7c2e92322678dc95db88b0}\label{class_agent_logger_a42a311488d7c2e92322678dc95db88b0} 
+\index{AgentLogger@{AgentLogger}!SetEndTime@{SetEndTime}}
+\index{SetEndTime@{SetEndTime}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{SetEndTime()}{SetEndTime()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Set\+End\+Time (\begin{DoxyParamCaption}\item[{double}]{end\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for \+\_\+path\+End\+Time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em end\+Time} & End time\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_afefe8ac991d7d01118703f0fe10f8a6b}\label{class_agent_logger_afefe8ac991d7d01118703f0fe10f8a6b} 
+\index{AgentLogger@{AgentLogger}!SetScenarioId@{SetScenarioId}}
+\index{SetScenarioId@{SetScenarioId}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{SetScenarioId()}{SetScenarioId()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Set\+Scenario\+Id (\begin{DoxyParamCaption}\item[{string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for \+\_\+scenario\+Id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Scenario id\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_agent_logger_addb3ee3704f0adbc2f356d522256241c}\label{class_agent_logger_addb3ee3704f0adbc2f356d522256241c} 
+\index{AgentLogger@{AgentLogger}!SetStartTime@{SetStartTime}}
+\index{SetStartTime@{SetStartTime}!AgentLogger@{AgentLogger}}
+\doxysubsubsection{\texorpdfstring{SetStartTime()}{SetStartTime()}}
+{\footnotesize\ttfamily void Agent\+Logger.\+Set\+Start\+Time (\begin{DoxyParamCaption}\item[{double}]{start\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for \+\_\+path\+Start\+Time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Time} & Start time\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Evaluation\+Logger.\+cs\end{DoxyCompactItemize}

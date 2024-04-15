@@ -1,0 +1,453 @@
+\doxysection{Base\+Agent Class Reference}
+\hypertarget{class_base_agent}{}\label{class_base_agent}\index{BaseAgent@{BaseAgent}}
+
+
+Agent component represented in game Implements \doxylink{interface_i_base_agent}{IBase\+Agent} interface.  
+
+
+Inheritance diagram for Base\+Agent\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_base_agent}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_base_agent_ada07d4dd0c4f148c62b10f01fdfff401}{On\+Before\+Update}} ()
+\begin{DoxyCompactList}\small\item\em Update function for an agent Called every simulation step before other updates. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_a81720949ed03a9bf35f6cce5d460b2c6}{On\+After\+Update}} ()
+\begin{DoxyCompactList}\small\item\em Update function for an agent Called every simulation step after other updates. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_a7fd76e2846afdf36fe9efb5f875bb4c0}{Set\+Destination}} (Vector2 des)
+\begin{DoxyCompactList}\small\item\em Sets destination for an agent. Agent will navigate towards this point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em des} & Destination to be set\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_a7d1b3d0816362a4537b85bbc7e8b6818}{Set\+Position}} (Vector2 pos)
+\begin{DoxyCompactList}\small\item\em Sets agents position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Position that will be set\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_aa0bd14b4cf81e21f67ab26d3f28ee842}{Set\+Forward}} (Vector2 forw)
+\begin{DoxyCompactList}\small\item\em Sets agents forward vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em forw} & Forward vector\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{class_base_agent_a44f839c34375ad71dda203f34596f2bf}{Get\+Forward}} ()
+\begin{DoxyCompactList}\small\item\em Getter for agents forward vector.
+
+\begin{DoxyReturn}{Returns}
+Agents forward vector
+\end{DoxyReturn}
+ \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{class_base_agent_a350a70d8daee5070c0cc1a0cc133b4aa}{Get\+Velocity}} ()
+\begin{DoxyCompactList}\small\item\em Getter for agents current velocity.
+
+\begin{DoxyReturn}{Returns}
+Current agents velocity
+\end{DoxyReturn}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_a66b876e6a7db6e0ce48b024faacb0583}{Set\+Name}} (string name="{}"{})
+\begin{DoxyCompactList}\small\item\em Set Agents name. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_base_agent_a10731bc30e3faaaf5fe873c71ad30ed7}{Spawn\+Position}} (Vector2 pos)
+\begin{DoxyCompactList}\small\item\em Setter for spawn position. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_base_agent_a38d6f188a689a0b331664b05140e89f5}{On\+Collision\+Enter}} ()
+\begin{DoxyCompactList}\small\item\em Triggered by Agent\+Collision\+Detection\+Handler.\+On\+Collision\+Enter. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_base_agent_a76781aa75c4688874db645b933120fc5}{On\+Collision\+Stay}} ()
+\begin{DoxyCompactList}\small\item\em Triggered by Agent\+Collision\+Detection\+Handler.\+On\+Collision\+Stay. \end{DoxyCompactList}\item 
+T \mbox{\hyperlink{class_base_agent_a211d149a57f78cc4a23918eaac67ccb6}{Get\+Component$<$ T $>$}} ()
+\begin{DoxyCompactList}\small\item\em Get component attached to agent\textquotesingle{}s Game\+Object. \end{DoxyCompactList}\item 
+T \mbox{\hyperlink{class_base_agent_a868ec9195c551cb7e16f227228c18523}{Add\+Component$<$ T $>$}} ()
+\begin{DoxyCompactList}\small\item\em Add component to agent\textquotesingle{}s Game\+Object. \end{DoxyCompactList}\item 
+Vector3 \mbox{\hyperlink{class_base_agent_a26c85c5503a0369373fdebab91346f0f}{Get\+Pos}} ()
+\begin{DoxyCompactList}\small\item\em Getter for agents position. \end{DoxyCompactList}\item 
+Game\+Object \mbox{\hyperlink{class_base_agent_a04730f230a664b6a0454fb5249547871}{Get\+Game\+Object}} ()
+\begin{DoxyCompactList}\small\item\em Getter for gameobject of agent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_base_agent_a13edaf61986940843599b3506c4009d2}\label{class_base_agent_a13edaf61986940843599b3506c4009d2} 
+Game\+Object {\bfseries \+\_\+object} = null
+\begin{DoxyCompactList}\small\item\em Game\+Object representing Agent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_base_agent_ad004b395ec2621ff7c7771471ad38d1b}{id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Agents identifier. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_base_agent_a58efc4e0c8217d9724d98121f771510c}{speed}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Speed of the agent. \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{class_base_agent_acc78e4a4d24aff7e97d84d88cfa21c20}{position}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Agents position. \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{class_base_agent_ab622718b87aea07d9b9bea4908cb9eb4}{destination}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Agents desired destination. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_base_agent_af706d22f5fb8568bb093147213febb3d}{in\+Destination}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns whether agent is in its final destination. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interface_i_base_path_planner}{IBase\+Path\+Planner}} \mbox{\hyperlink{class_base_agent_a555121e076fc66ee338aafbafe04d237}{path\+Planning\+Alg}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Path planning algorithm that agent uses. \end{DoxyCompactList}\item 
+\Hypertarget{class_base_agent_a717b9f184ee560f90cb08ac83e518e43}\label{class_base_agent_a717b9f184ee560f90cb08ac83e518e43} 
+string {\bfseries scenario\+Name}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Represents scenario name in which agent is present. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}}}
+
+
+\doxysubsection{Detailed Description}
+Agent component represented in game Implements \doxylink{interface_i_base_agent}{IBase\+Agent} interface. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_base_agent_a868ec9195c551cb7e16f227228c18523}\label{class_base_agent_a868ec9195c551cb7e16f227228c18523} 
+\index{BaseAgent@{BaseAgent}!AddComponent$<$ T $>$@{AddComponent$<$ T $>$}}
+\index{AddComponent$<$ T $>$@{AddComponent$<$ T $>$}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{AddComponent$<$ T $>$()}{AddComponent< T >()}}
+{\footnotesize\ttfamily T Base\+Agent.\+Add\+Component$<$ T $>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add component to agent\textquotesingle{}s Game\+Object. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Component type\\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+Added component
+\end{DoxyReturn}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T} : {\em Mono\+Behaviour}]\end{description}
+\end{Desc}
+\Hypertarget{class_base_agent_a211d149a57f78cc4a23918eaac67ccb6}\label{class_base_agent_a211d149a57f78cc4a23918eaac67ccb6} 
+\index{BaseAgent@{BaseAgent}!GetComponent$<$ T $>$@{GetComponent$<$ T $>$}}
+\index{GetComponent$<$ T $>$@{GetComponent$<$ T $>$}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{GetComponent$<$ T $>$()}{GetComponent< T >()}}
+{\footnotesize\ttfamily T Base\+Agent.\+Get\+Component$<$ T $>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get component attached to agent\textquotesingle{}s Game\+Object. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Component type\\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+Component of type T attached to agent
+\end{DoxyReturn}
+\Hypertarget{class_base_agent_a44f839c34375ad71dda203f34596f2bf}\label{class_base_agent_a44f839c34375ad71dda203f34596f2bf} 
+\index{BaseAgent@{BaseAgent}!GetForward@{GetForward}}
+\index{GetForward@{GetForward}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{GetForward()}{GetForward()}}
+{\footnotesize\ttfamily Vector2 Base\+Agent.\+Get\+Forward (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for agents forward vector.
+
+\begin{DoxyReturn}{Returns}
+Agents forward vector
+\end{DoxyReturn}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a66d5eac1cd242d91f96bcf2e56598f16}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a04730f230a664b6a0454fb5249547871}\label{class_base_agent_a04730f230a664b6a0454fb5249547871} 
+\index{BaseAgent@{BaseAgent}!GetGameObject@{GetGameObject}}
+\index{GetGameObject@{GetGameObject}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{GetGameObject()}{GetGameObject()}}
+{\footnotesize\ttfamily Game\+Object Base\+Agent.\+Get\+Game\+Object (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for gameobject of agent. 
+
+\begin{DoxyReturn}{Returns}
+Agent\textquotesingle{}s gameobject
+\end{DoxyReturn}
+\Hypertarget{class_base_agent_a26c85c5503a0369373fdebab91346f0f}\label{class_base_agent_a26c85c5503a0369373fdebab91346f0f} 
+\index{BaseAgent@{BaseAgent}!GetPos@{GetPos}}
+\index{GetPos@{GetPos}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{GetPos()}{GetPos()}}
+{\footnotesize\ttfamily Vector3 Base\+Agent.\+Get\+Pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for agents position. 
+
+\begin{DoxyReturn}{Returns}
+Position of agent
+\end{DoxyReturn}
+\Hypertarget{class_base_agent_a350a70d8daee5070c0cc1a0cc133b4aa}\label{class_base_agent_a350a70d8daee5070c0cc1a0cc133b4aa} 
+\index{BaseAgent@{BaseAgent}!GetVelocity@{GetVelocity}}
+\index{GetVelocity@{GetVelocity}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{GetVelocity()}{GetVelocity()}}
+{\footnotesize\ttfamily Vector2 Base\+Agent.\+Get\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for agents current velocity.
+
+\begin{DoxyReturn}{Returns}
+Current agents velocity
+\end{DoxyReturn}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a1e978d07f723232bc699aef4804802c5}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a81720949ed03a9bf35f6cce5d460b2c6}\label{class_base_agent_a81720949ed03a9bf35f6cce5d460b2c6} 
+\index{BaseAgent@{BaseAgent}!OnAfterUpdate@{OnAfterUpdate}}
+\index{OnAfterUpdate@{OnAfterUpdate}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{OnAfterUpdate()}{OnAfterUpdate()}}
+{\footnotesize\ttfamily void Base\+Agent.\+On\+After\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Update function for an agent Called every simulation step after other updates. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_adda7a030eed26830514100354f61fd66}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_ada07d4dd0c4f148c62b10f01fdfff401}\label{class_base_agent_ada07d4dd0c4f148c62b10f01fdfff401} 
+\index{BaseAgent@{BaseAgent}!OnBeforeUpdate@{OnBeforeUpdate}}
+\index{OnBeforeUpdate@{OnBeforeUpdate}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{OnBeforeUpdate()}{OnBeforeUpdate()}}
+{\footnotesize\ttfamily void Base\+Agent.\+On\+Before\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Update function for an agent Called every simulation step before other updates. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a73b80e1be8b1cb69a277315a2451d33a}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a38d6f188a689a0b331664b05140e89f5}\label{class_base_agent_a38d6f188a689a0b331664b05140e89f5} 
+\index{BaseAgent@{BaseAgent}!OnCollisionEnter@{OnCollisionEnter}}
+\index{OnCollisionEnter@{OnCollisionEnter}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{OnCollisionEnter()}{OnCollisionEnter()}}
+{\footnotesize\ttfamily virtual void Base\+Agent.\+On\+Collision\+Enter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Triggered by Agent\+Collision\+Detection\+Handler.\+On\+Collision\+Enter. 
+
+
+
+Reimplemented in \mbox{\hyperlink{class_basic_g_a_agent_parallel_adf6984dd9114f8661179a13840aeb51e}{Basic\+GAAgent\+Parallel}}.
+
+\Hypertarget{class_base_agent_a76781aa75c4688874db645b933120fc5}\label{class_base_agent_a76781aa75c4688874db645b933120fc5} 
+\index{BaseAgent@{BaseAgent}!OnCollisionStay@{OnCollisionStay}}
+\index{OnCollisionStay@{OnCollisionStay}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{OnCollisionStay()}{OnCollisionStay()}}
+{\footnotesize\ttfamily virtual void Base\+Agent.\+On\+Collision\+Stay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Triggered by Agent\+Collision\+Detection\+Handler.\+On\+Collision\+Stay. 
+
+
+
+Reimplemented in \mbox{\hyperlink{class_basic_g_a_agent_parallel_a2207960a22900dd9caa67492efc19cb5}{Basic\+GAAgent\+Parallel}}.
+
+\Hypertarget{class_base_agent_a7fd76e2846afdf36fe9efb5f875bb4c0}\label{class_base_agent_a7fd76e2846afdf36fe9efb5f875bb4c0} 
+\index{BaseAgent@{BaseAgent}!SetDestination@{SetDestination}}
+\index{SetDestination@{SetDestination}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{SetDestination()}{SetDestination()}}
+{\footnotesize\ttfamily void Base\+Agent.\+Set\+Destination (\begin{DoxyParamCaption}\item[{Vector2}]{des }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Sets destination for an agent. Agent will navigate towards this point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em des} & Destination to be set\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a93c115f2d98bf66c42034a37c97d26ca}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_aa0bd14b4cf81e21f67ab26d3f28ee842}\label{class_base_agent_aa0bd14b4cf81e21f67ab26d3f28ee842} 
+\index{BaseAgent@{BaseAgent}!SetForward@{SetForward}}
+\index{SetForward@{SetForward}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{SetForward()}{SetForward()}}
+{\footnotesize\ttfamily void Base\+Agent.\+Set\+Forward (\begin{DoxyParamCaption}\item[{Vector2}]{forw }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets agents forward vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em forw} & Forward vector\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a1a70c92591a8e34a88e8051527039c90}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a66b876e6a7db6e0ce48b024faacb0583}\label{class_base_agent_a66b876e6a7db6e0ce48b024faacb0583} 
+\index{BaseAgent@{BaseAgent}!SetName@{SetName}}
+\index{SetName@{SetName}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{SetName()}{SetName()}}
+{\footnotesize\ttfamily void Base\+Agent.\+Set\+Name (\begin{DoxyParamCaption}\item[{string}]{name = {\ttfamily "{}"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set Agents name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Agents name. If empty, Agents name defaults to "{}\+Agent$<$id$>$"{}$<$/id$>$\\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_base_agent_a7d1b3d0816362a4537b85bbc7e8b6818}\label{class_base_agent_a7d1b3d0816362a4537b85bbc7e8b6818} 
+\index{BaseAgent@{BaseAgent}!SetPosition@{SetPosition}}
+\index{SetPosition@{SetPosition}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{SetPosition()}{SetPosition()}}
+{\footnotesize\ttfamily void Base\+Agent.\+Set\+Position (\begin{DoxyParamCaption}\item[{Vector2}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets agents position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Position that will be set\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a45600b8d60718d576cea200b8a20dd8a}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a10731bc30e3faaaf5fe873c71ad30ed7}\label{class_base_agent_a10731bc30e3faaaf5fe873c71ad30ed7} 
+\index{BaseAgent@{BaseAgent}!SpawnPosition@{SpawnPosition}}
+\index{SpawnPosition@{SpawnPosition}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{SpawnPosition()}{SpawnPosition()}}
+{\footnotesize\ttfamily void Base\+Agent.\+Spawn\+Position (\begin{DoxyParamCaption}\item[{Vector2}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setter for spawn position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Position where to put agent\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_base_agent_ab622718b87aea07d9b9bea4908cb9eb4}\label{class_base_agent_ab622718b87aea07d9b9bea4908cb9eb4} 
+\index{BaseAgent@{BaseAgent}!destination@{destination}}
+\index{destination@{destination}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{destination}{destination}}
+{\footnotesize\ttfamily Vector2 Base\+Agent.\+destination\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+
+
+Agents desired destination. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_ade7d68fc9489747f1355b443f3284e56}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_ad004b395ec2621ff7c7771471ad38d1b}\label{class_base_agent_ad004b395ec2621ff7c7771471ad38d1b} 
+\index{BaseAgent@{BaseAgent}!id@{id}}
+\index{id@{id}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int Base\+Agent.\+id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Agents identifier. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_ae6afbf97574c2add8ecee866354ba82c}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_af706d22f5fb8568bb093147213febb3d}\label{class_base_agent_af706d22f5fb8568bb093147213febb3d} 
+\index{BaseAgent@{BaseAgent}!inDestination@{inDestination}}
+\index{inDestination@{inDestination}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{inDestination}{inDestination}}
+{\footnotesize\ttfamily bool Base\+Agent.\+in\+Destination\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Returns whether agent is in its final destination. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_ab296617d61636f226a0916726b6e5c9c}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a555121e076fc66ee338aafbafe04d237}\label{class_base_agent_a555121e076fc66ee338aafbafe04d237} 
+\index{BaseAgent@{BaseAgent}!pathPlanningAlg@{pathPlanningAlg}}
+\index{pathPlanningAlg@{pathPlanningAlg}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{pathPlanningAlg}{pathPlanningAlg}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interface_i_base_path_planner}{IBase\+Path\+Planner}} Base\+Agent.\+path\+Planning\+Alg\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [abstract]}}
+
+
+
+Path planning algorithm that agent uses. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a3201aa6d41726d6aace333c7385750aa}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_acc78e4a4d24aff7e97d84d88cfa21c20}\label{class_base_agent_acc78e4a4d24aff7e97d84d88cfa21c20} 
+\index{BaseAgent@{BaseAgent}!position@{position}}
+\index{position@{position}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{position}{position}}
+{\footnotesize\ttfamily Vector2 Base\+Agent.\+position\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+
+
+Agents position. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_adae6ac03693e37f7d9c4ba5478ab5ff1}{IBase\+Agent}}.
+
+\Hypertarget{class_base_agent_a58efc4e0c8217d9724d98121f771510c}\label{class_base_agent_a58efc4e0c8217d9724d98121f771510c} 
+\index{BaseAgent@{BaseAgent}!speed@{speed}}
+\index{speed@{speed}!BaseAgent@{BaseAgent}}
+\doxysubsubsection{\texorpdfstring{speed}{speed}}
+{\footnotesize\ttfamily float Base\+Agent.\+speed\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Speed of the agent. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_base_agent_a1843a7aaf15cc0b485355bfc71dd9cdc}{IBase\+Agent}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Agent/Base\+Agent.\+cs\end{DoxyCompactItemize}

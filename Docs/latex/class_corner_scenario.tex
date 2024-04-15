@@ -1,0 +1,130 @@
+\doxysection{Corner\+Scenario Class Reference}
+\hypertarget{class_corner_scenario}{}\label{class_corner_scenario}\index{CornerScenario@{CornerScenario}}
+
+
+Scenario where agent is required to go around the corner to be able to get to the destination.  
+
+
+Inheritance diagram for Corner\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_corner_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_corner_scenario_a9e357114f82eac09724ecf5054e79063}{Corner\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_corner_scenario_a289c814c3cb8f7078beb72a175eac1b9}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_corner_scenario_ae9e1481b3ea425b3f0da9ba7f0888d31}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_corner_scenario_afd0776f4471bdfe53f6e591af339aa56}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Scenario where agent is required to go around the corner to be able to get to the destination. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_corner_scenario_a9e357114f82eac09724ecf5054e79063}\label{class_corner_scenario_a9e357114f82eac09724ecf5054e79063} 
+\index{CornerScenario@{CornerScenario}!CornerScenario@{CornerScenario}}
+\index{CornerScenario@{CornerScenario}!CornerScenario@{CornerScenario}}
+\doxysubsubsection{\texorpdfstring{CornerScenario()}{CornerScenario()}}
+{\footnotesize\ttfamily Corner\+Scenario.\+Corner\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_corner_scenario_ae9e1481b3ea425b3f0da9ba7f0888d31}\label{class_corner_scenario_ae9e1481b3ea425b3f0da9ba7f0888d31} 
+\index{CornerScenario@{CornerScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!CornerScenario@{CornerScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Corner\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_corner_scenario_a289c814c3cb8f7078beb72a175eac1b9}\label{class_corner_scenario_a289c814c3cb8f7078beb72a175eac1b9} 
+\index{CornerScenario@{CornerScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!CornerScenario@{CornerScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Corner\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_corner_scenario_afd0776f4471bdfe53f6e591af339aa56}\label{class_corner_scenario_afd0776f4471bdfe53f6e591af339aa56} 
+\index{CornerScenario@{CornerScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!CornerScenario@{CornerScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Corner\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Corner\+Scenario.\+cs\end{DoxyCompactItemize}
