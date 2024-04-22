@@ -475,14 +475,14 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("Creating scenarios");
     scenarios = new List<IScenario>
     {
-      new StraightLineScenario(20),
-      new SmallObstacleScenario(20),
-      new CornerScenario(20),
-      new OppositeScenario(20),
-      new OppositeMultipleScenario(20),
-      new OppositeCircleScenario(20),
-      new NarrowCoridorsOppositeNoNavmeshScenario(20),
-      new NarrowCoridorOppositeScenario(20)
+      new StraightLineScenario(1),
+      new SmallObstacleScenario(1),
+      new CornerScenario(1),
+      new OppositeScenario(1),
+      new OppositeMultipleScenario(1),
+      new OppositeCircleScenario(1),
+      new NarrowCoridorsOppositeNoNavmeshScenario(1),
+      new NarrowCoridorOppositeScenario(1)
     };
   }
 
