@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Diploma thesis - docs: AgentCollisionDetectionHandler Class Reference</title>
+<title>My Project: AgentCollisionDetectionHandler Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Diploma thesis - docs
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -73,6 +73,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="class_agent_collision_detection_handler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">AgentCollisionDetectionHandler Class Reference</div></div>
 </div><!--header-->
@@ -93,10 +94,86 @@ Public Attributes</h2></td></tr>
 <a class="el" href="class_base_agent.html">BaseAgent</a>&#160;</td><td class="memItemRight" valign="bottom"><b>agent</b></td></tr>
 <tr class="memdesc:a5386b95adb04ad3911480b72b86b3d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to agent to which this component is attached. <br /></td></tr>
 <tr class="separator:a5386b95adb04ad3911480b72b86b3d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a57a77a89de1e92f05225c3b3404cc88e" id="r_a57a77a89de1e92f05225c3b3404cc88e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57a77a89de1e92f05225c3b3404cc88e">OnCollisionEnter</a> (Collision collision)</td></tr>
+<tr class="memdesc:a57a77a89de1e92f05225c3b3404cc88e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when agent enters collision.  <br /></td></tr>
+<tr class="separator:a57a77a89de1e92f05225c3b3404cc88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec67d11a7f870f7c9dccc8196f24669" id="r_aaec67d11a7f870f7c9dccc8196f24669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaec67d11a7f870f7c9dccc8196f24669">OnCollisionStay</a> (Collision collision)</td></tr>
+<tr class="memdesc:aaec67d11a7f870f7c9dccc8196f24669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called each frame agent stays in collision.  <br /></td></tr>
+<tr class="separator:aaec67d11a7f870f7c9dccc8196f24669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for collision detection inside the simulation. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a57a77a89de1e92f05225c3b3404cc88e" name="a57a77a89de1e92f05225c3b3404cc88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57a77a89de1e92f05225c3b3404cc88e">&#9670;&#160;</a></span>OnCollisionEnter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AgentCollisionDetectionHandler.OnCollisionEnter </td>
+          <td>(</td>
+          <td class="paramtype">Collision</td>          <td class="paramname"><span class="paramname"><em>collision</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when agent enters collision. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">collision</td><td>Collision object</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aaec67d11a7f870f7c9dccc8196f24669" name="aaec67d11a7f870f7c9dccc8196f24669"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaec67d11a7f870f7c9dccc8196f24669">&#9670;&#160;</a></span>OnCollisionStay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AgentCollisionDetectionHandler.OnCollisionStay </td>
+          <td>(</td>
+          <td class="paramtype">Collision</td>          <td class="paramname"><span class="paramname"><em>collision</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called each frame agent stays in collision. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">collision</td><td>Collision object</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/Users/peterlakatos/School/Diploma_Thesis/UnityNavigation/Assets/Scripts/Agent/<b>BaseAgent.cs</b></li>
 </ul>
 </div><!-- contents -->

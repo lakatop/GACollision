@@ -13,5 +13,7 @@ var searchData=
   ['iparallelpopulation_3c_20bezierindividualstruct_20_3e_10',['IParallelPopulation&lt; BezierIndividualStruct &gt;',['../interface_i_parallel_population.html',1,'']]],
   ['iparallelpopulationmodifier_11',['IParallelPopulationModifier',['../interface_i_parallel_population_modifier.html',1,'']]],
   ['iparallelpopulationmodifier_3c_20bezierindividualstruct_20_3e_12',['IParallelPopulationModifier&lt; BezierIndividualStruct &gt;',['../interface_i_parallel_population_modifier.html',1,'']]],
-  ['iscenario_13',['IScenario',['../interface_i_scenario.html',1,'']]]
+  ['iscenario_13',['IScenario',['../interface_i_scenario.html',1,'']]],
+  ['istherenextscenario_14',['IsThereNextScenario',['../class_simulation_manager.html#ada8790d3d40d9ad0463cd03bfd456616',1,'SimulationManager']]],
+  ['iswithingbounds_15',['IsWithingBounds',['../class_simulation_manager.html#ad65760ccdd5446076a0870a211639d09',1,'SimulationManager']]]
 ];

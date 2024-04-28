@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Diploma thesis - docs: OppositeMultipleScenario Class Reference</title>
+<title>My Project: OppositeMultipleScenario Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Diploma thesis - docs
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,6 +74,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_opposite_multiple_scenario-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">OppositeMultipleScenario Class Reference</div></div>
 </div><!--header-->
@@ -121,6 +123,19 @@ Properties</h2></td></tr>
 <tr class="memdesc:afb4b604bd217b975fae09de63ee4adea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counter how many times scenario should be run.  <br /></td></tr>
 <tr class="separator:afb4b604bd217b975fae09de63ee4adea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_scenario"><td colspan="2" onclick="javascript:dynsection.toggleInherit('properties_interface_i_scenario')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_scenario.html">IScenario</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a280c1483cbad5e1d0ce78b1eb51cc422" id="r_a280c1483cbad5e1d0ce78b1eb51cc422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a280c1483cbad5e1d0ce78b1eb51cc422">AdditionalAgentSetup</a> (List&lt; <a class="el" href="interface_i_base_agent.html">IBaseAgent</a> &gt; agents)</td></tr>
+<tr class="memdesc:a280c1483cbad5e1d0ce78b1eb51cc422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add additional setup for agents.  <br /></td></tr>
+<tr class="separator:a280c1483cbad5e1d0ce78b1eb51cc422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:aee5868230f16ae16978d200db362bc8c" id="r_aee5868230f16ae16978d200db362bc8c"><td class="memItemLeft" align="right" valign="top"><a id="aee5868230f16ae16978d200db362bc8c" name="aee5868230f16ae16978d200db362bc8c"></a>
+const string&#160;</td><td class="memItemRight" valign="bottom"><b>_scenarioName</b> = &quot;oppositeMultipleAgents&quot;</td></tr>
+<tr class="memdesc:aee5868230f16ae16978d200db362bc8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of scenario. <br /></td></tr>
+<tr class="separator:aee5868230f16ae16978d200db362bc8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Scenario where 10 agents go into opposite directions - 5 vs 5. </p>
@@ -130,9 +145,6 @@ Properties</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">OppositeMultipleScenario.OppositeMultipleScenario </td>
@@ -141,11 +153,6 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
@@ -159,8 +166,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1e23555a1f3c355385d429325e685b1" name="ab1e23555a1f3c355385d429325e685b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1e23555a1f3c355385d429325e685b1">&#9670;&#160;</a></span>ClearScenario()</h2>
+<a id="a280c1483cbad5e1d0ce78b1eb51cc422" name="a280c1483cbad5e1d0ce78b1eb51cc422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a280c1483cbad5e1d0ce78b1eb51cc422">&#9670;&#160;</a></span>AdditionalAgentSetup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,7 +176,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void OppositeMultipleScenario.ClearScenario </td>
+          <td class="memname">void OppositeMultipleScenario.AdditionalAgentSetup </td>
           <td>(</td>
           <td class="paramtype">List&lt; <a class="el" href="interface_i_base_agent.html">IBaseAgent</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>agents</em></span></td><td>)</td>
           <td></td>
@@ -177,9 +184,34 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+<p>Add additional setup for agents. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">agents</td><td>List of agents present in scenario</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab1e23555a1f3c355385d429325e685b1" name="ab1e23555a1f3c355385d429325e685b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1e23555a1f3c355385d429325e685b1">&#9670;&#160;</a></span>ClearScenario()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OppositeMultipleScenario.ClearScenario </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; <a class="el" href="interface_i_base_agent.html">IBaseAgent</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>agents</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 <p>Perform any remaining actions before scenario resources will be cleared.<dl class="params"><dt>Parameters</dt><dd>
@@ -199,9 +231,6 @@ Properties</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void OppositeMultipleScenario.SetupScenario </td>
@@ -210,11 +239,6 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Populates scene with agents, gives them their destination.<dl class="params"><dt>Parameters</dt><dd>

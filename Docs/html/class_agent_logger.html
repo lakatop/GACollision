@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Diploma thesis - docs: AgentLogger Class Reference</title>
+<title>My Project: AgentLogger Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Diploma thesis - docs
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -73,6 +73,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_agent_logger-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">AgentLogger Class Reference</div></div>
 </div><!--header-->
@@ -123,6 +125,55 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 <tr class="memitem:a69d8c06c54b7d74b51f5cec48c57ae9b" id="r_a69d8c06c54b7d74b51f5cec48c57ae9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69d8c06c54b7d74b51f5cec48c57ae9b">SetConfigurationId</a> (string confId)</td></tr>
 <tr class="memdesc:a69d8c06c54b7d74b51f5cec48c57ae9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for _configurationId.  <br /></td></tr>
 <tr class="separator:a69d8c06c54b7d74b51f5cec48c57ae9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a2e809f2eebfb22b6f7b9edcb81c294ec" id="r_a2e809f2eebfb22b6f7b9edcb81c294ec"><td class="memItemLeft" align="right" valign="top"><a id="a2e809f2eebfb22b6f7b9edcb81c294ec" name="a2e809f2eebfb22b6f7b9edcb81c294ec"></a>
+List&lt; Vector2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_velocities</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2e809f2eebfb22b6f7b9edcb81c294ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of velocittes that agent used that created his path. <br /></td></tr>
+<tr class="separator:a2e809f2eebfb22b6f7b9edcb81c294ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0eb845ad5f501b0cf229c82ac6622d" id="r_a2c0eb845ad5f501b0cf229c82ac6622d"><td class="memItemLeft" align="right" valign="top"><a id="a2c0eb845ad5f501b0cf229c82ac6622d" name="a2c0eb845ad5f501b0cf229c82ac6622d"></a>
+List&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_gaTimes</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2c0eb845ad5f501b0cf229c82ac6622d"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of times how long each GA run took. <br /></td></tr>
+<tr class="separator:a2c0eb845ad5f501b0cf229c82ac6622d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5d7177f86560c0cf468618824a1277f" id="r_ac5d7177f86560c0cf468618824a1277f"><td class="memItemLeft" align="right" valign="top"><a id="ac5d7177f86560c0cf468618824a1277f" name="ac5d7177f86560c0cf468618824a1277f"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>_collisionCount</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac5d7177f86560c0cf468618824a1277f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of collisions during agents path. <br /></td></tr>
+<tr class="separator:ac5d7177f86560c0cf468618824a1277f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab743f9f9ad9352f3ae6f3469ef6d7e98" id="r_ab743f9f9ad9352f3ae6f3469ef6d7e98"><td class="memItemLeft" align="right" valign="top"><a id="ab743f9f9ad9352f3ae6f3469ef6d7e98" name="ab743f9f9ad9352f3ae6f3469ef6d7e98"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>_framesInCollision</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab743f9f9ad9352f3ae6f3469ef6d7e98"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many frames agent spent in collision during his path. <br /></td></tr>
+<tr class="separator:ab743f9f9ad9352f3ae6f3469ef6d7e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a191c694e895dc54ebb1b0d37a86abd90" id="r_a191c694e895dc54ebb1b0d37a86abd90"><td class="memItemLeft" align="right" valign="top"><a id="a191c694e895dc54ebb1b0d37a86abd90" name="a191c694e895dc54ebb1b0d37a86abd90"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_pathStartTime</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a191c694e895dc54ebb1b0d37a86abd90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time when agent started moving on his path. <br /></td></tr>
+<tr class="separator:a191c694e895dc54ebb1b0d37a86abd90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32ea418dea83db8260a6ca57dcd66b4d" id="r_a32ea418dea83db8260a6ca57dcd66b4d"><td class="memItemLeft" align="right" valign="top"><a id="a32ea418dea83db8260a6ca57dcd66b4d" name="a32ea418dea83db8260a6ca57dcd66b4d"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_pathEndTime</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a32ea418dea83db8260a6ca57dcd66b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time when agent arrived at the end of his path. <br /></td></tr>
+<tr class="separator:a32ea418dea83db8260a6ca57dcd66b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa11d3617cac97c7a67ba7c9c432e540" id="r_aaa11d3617cac97c7a67ba7c9c432e540"><td class="memItemLeft" align="right" valign="top"><a id="aaa11d3617cac97c7a67ba7c9c432e540" name="aaa11d3617cac97c7a67ba7c9c432e540"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>_scenarioId</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aaa11d3617cac97c7a67ba7c9c432e540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Id of a scenario. <br /></td></tr>
+<tr class="separator:aaa11d3617cac97c7a67ba7c9c432e540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d591a45cf0831b8fc0d861efb2884d0" id="r_a9d591a45cf0831b8fc0d861efb2884d0"><td class="memItemLeft" align="right" valign="top"><a id="a9d591a45cf0831b8fc0d861efb2884d0" name="a9d591a45cf0831b8fc0d861efb2884d0"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>_agentId</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a9d591a45cf0831b8fc0d861efb2884d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Id of an agent. <br /></td></tr>
+<tr class="separator:a9d591a45cf0831b8fc0d861efb2884d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2203324aea8704cc2d4905ad66799f6" id="r_ab2203324aea8704cc2d4905ad66799f6"><td class="memItemLeft" align="right" valign="top"><a id="ab2203324aea8704cc2d4905ad66799f6" name="ab2203324aea8704cc2d4905ad66799f6"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>_configurationId</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab2203324aea8704cc2d4905ad66799f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">configuration id created from hyperparameters <br /></td></tr>
+<tr class="separator:ab2203324aea8704cc2d4905ad66799f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac06780174a75735cb3baa83ea0f1998b" id="r_ac06780174a75735cb3baa83ea0f1998b"><td class="memItemLeft" align="right" valign="top"><a id="ac06780174a75735cb3baa83ea0f1998b" name="ac06780174a75735cb3baa83ea0f1998b"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>_csvFile</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac06780174a75735cb3baa83ea0f1998b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path to output csv file. <br /></td></tr>
+<tr class="separator:ac06780174a75735cb3baa83ea0f1998b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a80560a99853aa9dca7863f592e50adc4" id="r_a80560a99853aa9dca7863f592e50adc4"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80560a99853aa9dca7863f592e50adc4">_columns</a></td></tr>
+<tr class="memdesc:a80560a99853aa9dca7863f592e50adc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns of csv file.  <br /></td></tr>
+<tr class="separator:a80560a99853aa9dca7863f592e50adc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for logging agent related metrics into a csv file. </p>
@@ -132,9 +183,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.AddGaTime </td>
@@ -143,11 +191,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add new GA run time. </p>
@@ -165,9 +208,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.AddVelocity </td>
@@ -176,11 +216,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add new velocity to array. </p>
@@ -198,9 +233,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.CreateConfigurationFile </td>
@@ -209,11 +241,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Create a configuration file holding info about the GA. </p>
@@ -231,9 +258,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.SetAgentId </td>
@@ -242,11 +266,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setter for _agentId. </p>
@@ -264,9 +283,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.SetConfigurationId </td>
@@ -275,11 +291,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setter for _configurationId. </p>
@@ -297,9 +308,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.SetEndTime </td>
@@ -308,11 +316,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setter for _pathEndTime. </p>
@@ -330,9 +333,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.SetScenarioId </td>
@@ -341,11 +341,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setter for _scenarioId. </p>
@@ -363,9 +358,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void AgentLogger.SetStartTime </td>
@@ -374,11 +366,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setter for _pathStartTime. </p>
@@ -388,6 +375,40 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFramesInCollision<
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a80560a99853aa9dca7863f592e50adc4" name="a80560a99853aa9dca7863f592e50adc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80560a99853aa9dca7863f592e50adc4">&#9670;&#160;</a></span>_columns</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;string&gt; AgentLogger._columns</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> List&lt;string&gt;</div>
+<div class="line">  {</div>
+<div class="line">    <span class="stringliteral">&quot;PathLength&quot;</span>, </div>
+<div class="line">    <span class="stringliteral">&quot;PathDuration&quot;</span>, </div>
+<div class="line">    <span class="stringliteral">&quot;CollisionCount&quot;</span>, </div>
+<div class="line">    <span class="stringliteral">&quot;FramesInCollision&quot;</span>, </div>
+<div class="line">    <span class="stringliteral">&quot;PathJerk&quot;</span>, </div>
+<div class="line">    <span class="stringliteral">&quot;GaTimes&quot;</span> </div>
+<div class="line">  }</div>
+</div><!-- fragment -->
+<p>Columns of csv file. </p>
 
 </div>
 </div>

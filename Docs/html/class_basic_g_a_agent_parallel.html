@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Diploma thesis - docs: BasicGAAgentParallel Class Reference</title>
+<title>My Project: BasicGAAgentParallel Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Diploma thesis - docs
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,6 +74,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_basic_g_a_agent_parallel-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">BasicGAAgentParallel Class Reference</div></div>
 </div><!--header-->
@@ -98,10 +100,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab0fc77f6a9d5a9cb353f30202de12f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates path using pathPlanningAlg and sets destination from that path.  <br /></td></tr>
 <tr class="separator:ab0fc77f6a9d5a9cb353f30202de12f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf6984dd9114f8661179a13840aeb51e" id="r_adf6984dd9114f8661179a13840aeb51e"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf6984dd9114f8661179a13840aeb51e">OnCollisionEnter</a> ()</td></tr>
-<tr class="memdesc:adf6984dd9114f8661179a13840aeb51e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered by AgentCollisionDetectionHandler.OnCollisionEnter.  <br /></td></tr>
+<tr class="memdesc:adf6984dd9114f8661179a13840aeb51e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered by <a class="el" href="class_agent_collision_detection_handler.html#a57a77a89de1e92f05225c3b3404cc88e" title="Called when agent enters collision.">AgentCollisionDetectionHandler.OnCollisionEnter</a>.  <br /></td></tr>
 <tr class="separator:adf6984dd9114f8661179a13840aeb51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2207960a22900dd9caa67492efc19cb5" id="r_a2207960a22900dd9caa67492efc19cb5"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2207960a22900dd9caa67492efc19cb5">OnCollisionStay</a> ()</td></tr>
-<tr class="memdesc:a2207960a22900dd9caa67492efc19cb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered by AgentCollisionDetectionHandler.OnCollisionStay.  <br /></td></tr>
+<tr class="memdesc:a2207960a22900dd9caa67492efc19cb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered by <a class="el" href="class_agent_collision_detection_handler.html#aaec67d11a7f870f7c9dccc8196f24669" title="Called each frame agent stays in collision.">AgentCollisionDetectionHandler.OnCollisionStay</a>.  <br /></td></tr>
 <tr class="separator:a2207960a22900dd9caa67492efc19cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1de461fd921e42f72037b2df6084636" id="r_ad1de461fd921e42f72037b2df6084636"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1de461fd921e42f72037b2df6084636">OnBeforeUpdate</a> ()</td></tr>
 <tr class="memdesc:ad1de461fd921e42f72037b2df6084636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scheduling GA and checking for destination arrival.  <br /></td></tr>
@@ -183,7 +185,59 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>nextVel</b><code> 
 <a class="el" href="class_agent_logger.html">AgentLogger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>logger</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:ade7136ea034833fe17822efaa60349f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logger class that logs agent's data. <br /></td></tr>
 <tr class="separator:ade7136ea034833fe17822efaa60349f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88cb04ca785d151e0db8ac30353d1a9b" id="r_a88cb04ca785d151e0db8ac30353d1a9b"><td class="memItemLeft" align="right" valign="top"><a id="a88cb04ca785d151e0db8ac30353d1a9b" name="a88cb04ca785d151e0db8ac30353d1a9b"></a>
+NavMeshAgent&#160;</td><td class="memItemRight" valign="bottom"><b>_navMeshAgent</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a88cb04ca785d151e0db8ac30353d1a9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">NavMeshAgent component. <br /></td></tr>
+<tr class="separator:a88cb04ca785d151e0db8ac30353d1a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfb2919eaea8b2d56572afe8a12c2340" id="r_acfb2919eaea8b2d56572afe8a12c2340"><td class="memItemLeft" align="right" valign="top"><a id="acfb2919eaea8b2d56572afe8a12c2340" name="acfb2919eaea8b2d56572afe8a12c2340"></a>
+NavMeshPath&#160;</td><td class="memItemRight" valign="bottom"><b>_path</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:acfb2919eaea8b2d56572afe8a12c2340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path representing result of path planning algorithm. <br /></td></tr>
+<tr class="separator:acfb2919eaea8b2d56572afe8a12c2340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa494e79ea7b2357b646698239e8f12cf" id="r_aa494e79ea7b2357b646698239e8f12cf"><td class="memItemLeft" align="right" valign="top"><a id="aa494e79ea7b2357b646698239e8f12cf" name="aa494e79ea7b2357b646698239e8f12cf"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_cornerIndex</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa494e79ea7b2357b646698239e8f12cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of which corner is currently used for destination. <br /></td></tr>
+<tr class="separator:aa494e79ea7b2357b646698239e8f12cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d08eb966fc1a78a2c9ef03899542e2d" id="r_a5d08eb966fc1a78a2c9ef03899542e2d"><td class="memItemLeft" align="right" valign="top"><a id="a5d08eb966fc1a78a2c9ef03899542e2d" name="a5d08eb966fc1a78a2c9ef03899542e2d"></a>
+Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>previousLocation</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5d08eb966fc1a78a2c9ef03899542e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps previous position of an agent. <br /></td></tr>
+<tr class="separator:a5d08eb966fc1a78a2c9ef03899542e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21177eef70682a6acf533c64a9af9fbc" id="r_a21177eef70682a6acf533c64a9af9fbc"><td class="memItemLeft" align="right" valign="top"><a id="a21177eef70682a6acf533c64a9af9fbc" name="a21177eef70682a6acf533c64a9af9fbc"></a>
+<a class="el" href="class_genetic_algorithm_director.html">GeneticAlgorithmDirector</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_gaDirector</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a21177eef70682a6acf533c64a9af9fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Director class for creating the GA. <br /></td></tr>
+<tr class="separator:a21177eef70682a6acf533c64a9af9fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4712e7d832725db8be32902f4af3e22b" id="r_a4712e7d832725db8be32902f4af3e22b"><td class="memItemLeft" align="right" valign="top"><a id="a4712e7d832725db8be32902f4af3e22b" name="a4712e7d832725db8be32902f4af3e22b"></a>
+JobHandle&#160;</td><td class="memItemRight" valign="bottom"><b>_gaJobHandle</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4712e7d832725db8be32902f4af3e22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Job handle of running GA. <br /></td></tr>
+<tr class="separator:a4712e7d832725db8be32902f4af3e22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a713af5cb95764e34ca9a301d755bbd52" id="r_a713af5cb95764e34ca9a301d755bbd52"><td class="memItemLeft" align="right" valign="top"><a id="a713af5cb95764e34ca9a301d755bbd52" name="a713af5cb95764e34ca9a301d755bbd52"></a>
+<a class="el" href="struct_bezier_genetic_algorithm_parallel.html">BezierGeneticAlgorithmParallel</a>&#160;</td><td class="memItemRight" valign="bottom"><b>gaJob</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a713af5cb95764e34ca9a301d755bbd52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Job struct that represents the GA. <br /></td></tr>
+<tr class="separator:a713af5cb95764e34ca9a301d755bbd52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0239f23415fdc6106a28d9434c105bf0" id="r_a0239f23415fdc6106a28d9434c105bf0"><td class="memItemLeft" align="right" valign="top"><a id="a0239f23415fdc6106a28d9434c105bf0" name="a0239f23415fdc6106a28d9434c105bf0"></a>
+Unity.Collections.NativeArray&lt; Vector2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_winner</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0239f23415fdc6106a28d9434c105bf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Winner velocity of the last GA run. <br /></td></tr>
+<tr class="separator:a0239f23415fdc6106a28d9434c105bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7f21015a66c4ec70a48bb170e387f00" id="r_af7f21015a66c4ec70a48bb170e387f00"><td class="memItemLeft" align="right" valign="top"><a id="af7f21015a66c4ec70a48bb170e387f00" name="af7f21015a66c4ec70a48bb170e387f00"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>jobScheduled</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:af7f21015a66c4ec70a48bb170e387f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag whether some job is scheduled. <br /></td></tr>
+<tr class="separator:af7f21015a66c4ec70a48bb170e387f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16222dbbb6d3f301797b41c592f88016" id="r_a16222dbbb6d3f301797b41c592f88016"><td class="memItemLeft" align="right" valign="top"><a id="a16222dbbb6d3f301797b41c592f88016" name="a16222dbbb6d3f301797b41c592f88016"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>_updateTimer</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a16222dbbb6d3f301797b41c592f88016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporary Time.deltaTime accumulator. <br /></td></tr>
+<tr class="separator:a16222dbbb6d3f301797b41c592f88016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b466c75573a3c2bb4bbfa169af0d25" id="r_af5b466c75573a3c2bb4bbfa169af0d25"><td class="memItemLeft" align="right" valign="top"><a id="af5b466c75573a3c2bb4bbfa169af0d25" name="af5b466c75573a3c2bb4bbfa169af0d25"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_runGa</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:af5b466c75573a3c2bb4bbfa169af0d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag whether we should run the GA or not. <br /></td></tr>
+<tr class="separator:af5b466c75573a3c2bb4bbfa169af0d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d09b9950326388b82b15ed233ad6d7e" id="r_a4d09b9950326388b82b15ed233ad6d7e"><td class="memItemLeft" align="right" valign="top"><a id="a4d09b9950326388b82b15ed233ad6d7e" name="a4d09b9950326388b82b15ed233ad6d7e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_gaStartRunTime</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4d09b9950326388b82b15ed233ad6d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeping track of how long the GA run. <br /></td></tr>
+<tr class="separator:a4d09b9950326388b82b15ed233ad6d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_base_agent"><td colspan="2" onclick="javascript:dynsection.toggleInherit('properties_class_base_agent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_base_agent.html">BaseAgent</a></td></tr>
+<tr class="memitem:aceb3837e5604097780f96c247b72f55c inherit properties_class_base_agent" id="r_aceb3837e5604097780f96c247b72f55c"><td class="memItemLeft" align="right" valign="top">
+Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>_lastPosition</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aceb3837e5604097780f96c247b72f55c inherit properties_class_base_agent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Previous agents position. <br /></td></tr>
+<tr class="separator:aceb3837e5604097780f96c247b72f55c inherit properties_class_base_agent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad004b395ec2621ff7c7771471ad38d1b inherit properties_class_base_agent" id="r_ad004b395ec2621ff7c7771471ad38d1b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_agent.html#ad004b395ec2621ff7c7771471ad38d1b">id</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ad004b395ec2621ff7c7771471ad38d1b inherit properties_class_base_agent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Agents identifier.  <br /></td></tr>
 <tr class="separator:ad004b395ec2621ff7c7771471ad38d1b inherit properties_class_base_agent"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,6 +262,23 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>scenarioName</b><co
 <tr class="separator:a717b9f184ee560f90cb08ac83e518e43 inherit properties_class_base_agent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_base_agent"><td colspan="2" onclick="javascript:dynsection.toggleInherit('properties_interface_i_base_agent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_base_agent.html">IBaseAgent</a></td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ae5b31779d4bd05a30c5825b6e1d29e6b" id="r_ae5b31779d4bd05a30c5825b6e1d29e6b"><td class="memItemLeft" align="right" valign="top"><a id="ae5b31779d4bd05a30c5825b6e1d29e6b" name="ae5b31779d4bd05a30c5825b6e1d29e6b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckToSkipDestination</b> ()</td></tr>
+<tr class="separator:ae5b31779d4bd05a30c5825b6e1d29e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a77445e51bbce2f78664cb58b3f4dfbb8" id="r_a77445e51bbce2f78664cb58b3f4dfbb8"><td class="memItemLeft" align="right" valign="top"><a id="a77445e51bbce2f78664cb58b3f4dfbb8" name="a77445e51bbce2f78664cb58b3f4dfbb8"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>pathSize</b> = 17.5f</td></tr>
+<tr class="memdesc:a77445e51bbce2f78664cb58b3f4dfbb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum path agent can have in the GA. <br /></td></tr>
+<tr class="separator:a77445e51bbce2f78664cb58b3f4dfbb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661c541823470051d61fcb852ddba7b2" id="r_a661c541823470051d61fcb852ddba7b2"><td class="memItemLeft" align="right" valign="top"><a id="a661c541823470051d61fcb852ddba7b2" name="a661c541823470051d61fcb852ddba7b2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>maxSkipDestinations</b> = 1</td></tr>
+<tr class="memdesc:a661c541823470051d61fcb852ddba7b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of destinations from path that we can skip. <br /></td></tr>
+<tr class="separator:a661c541823470051d61fcb852ddba7b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_base_agent"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_base_agent')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_base_agent.html">BaseAgent</a></td></tr>
@@ -224,9 +295,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">override void BasicGAAgentParallel.OnAfterUpdate </td>
@@ -235,11 +303,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Setting new position, forward vector and destination of an agent. </p>
@@ -253,9 +316,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">override void BasicGAAgentParallel.OnBeforeUpdate </td>
@@ -264,11 +324,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Scheduling GA and checking for destination arrival. </p>
@@ -295,12 +350,12 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Triggered by AgentCollisionDetectionHandler.OnCollisionEnter. </p>
+<p>Triggered by <a class="el" href="class_agent_collision_detection_handler.html#a57a77a89de1e92f05225c3b3404cc88e" title="Called when agent enters collision.">AgentCollisionDetectionHandler.OnCollisionEnter</a>. </p>
 
 <p>Reimplemented from <a class="el" href="class_base_agent.html#a38d6f188a689a0b331664b05140e89f5">BaseAgent</a>.</p>
 
@@ -324,12 +379,12 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Triggered by AgentCollisionDetectionHandler.OnCollisionStay. </p>
+<p>Triggered by <a class="el" href="class_agent_collision_detection_handler.html#aaec67d11a7f870f7c9dccc8196f24669" title="Called each frame agent stays in collision.">AgentCollisionDetectionHandler.OnCollisionStay</a>. </p>
 
 <p>Reimplemented from <a class="el" href="class_base_agent.html#a76781aa75c4688874db645b933120fc5">BaseAgent</a>.</p>
 
@@ -340,9 +395,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">override void BasicGAAgentParallel.SetDestination </td>
@@ -351,11 +403,6 @@ GameObject&#160;</td><td class="memItemRight" valign="bottom"><b>_object</b> = n
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Calculates path using pathPlanningAlg and sets destination from that path. </p>
