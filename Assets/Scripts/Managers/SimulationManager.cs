@@ -514,7 +514,6 @@ public class SimulationManager : MonoBehaviour
     if (nextSceneIndex >= scenarios.Count)
       return;
     SceneManager.LoadScene(nextSceneIndex);
-    scenarios[nextSceneIndex].runCounter--;
     _scenarioStarted = false;
     _skipNextFrame = true;
     _scenarioIndex++;
