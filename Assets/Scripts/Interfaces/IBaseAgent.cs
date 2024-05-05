@@ -65,4 +65,8 @@ public interface IBaseAgent
   /// Path planning algorithm that agent uses
   /// </summary>
   IBasePathPlanner pathPlanningAlg { get; set; }
+  /// <summary>
+  /// Logger class agent use for data logging purposes
+  /// </summary>
+  ILogger logger { get; set; }
 }

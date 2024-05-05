@@ -126,7 +126,7 @@ public class SimulationManager : MonoBehaviour
 
     if (!_scenarioStarted)
     {
-      scenarios[_scenarioIndex].SetupScenario(_agents);
+      scenarios[_scenarioIndex].SetupScenario<RVOAgent>(_agents);
       scenarios[_scenarioIndex].runCounter--;
       SetScenarioResources();
       CreateQuadtreeAndData();
@@ -463,7 +463,7 @@ public class SimulationManager : MonoBehaviour
     {
       finished &= agent.inDestination;
     }
-
+    Debug.Log("FINISHED: " + finished);
     return finished;
   }
 

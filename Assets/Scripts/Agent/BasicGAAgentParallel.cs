@@ -17,7 +17,7 @@ public class BasicGAAgentParallel : BaseAgent
   /// <summary>
   /// Logger class that logs agent's data
   /// </summary>
-  public AgentLogger logger { get; set; }
+  public override ILogger logger { get; set; }
   /// <summary>
   /// NavMeshAgent component
   /// </summary>
@@ -165,13 +165,13 @@ public class BasicGAAgentParallel : BaseAgent
   /// <inheritdoc cref="BaseAgent.OnCollisionEnter"/>
   public override void OnCollisionEnter()
   {
-    logger.AddCollisionCount();
+    ((AgentLogger)logger).AddCollisionCount();
   }
 
   /// <inheritdoc cref="BaseAgent.OnCollisionStay"/>
   public override void OnCollisionStay()
   {
-    logger.AddFramesInCollision();
+    ((AgentLogger)logger).AddFramesInCollision();
   }
 
   /// <summary>
@@ -185,8 +185,8 @@ public class BasicGAAgentParallel : BaseAgent
     {
       nextVel = Vector2.zero;
       inDestination = true;
-      logger.SetConfigurationId(gaJob.GetHyperparametersId());
-      logger.CreateConfigurationFile(gaJob.GetConfiguration());
+      ((AgentLogger)logger).SetConfigurationId(gaJob.GetHyperparametersId());
+      ((AgentLogger)logger).CreateConfigurationFile(gaJob.GetConfiguration());
       return;
     }
 
@@ -221,8 +221,8 @@ public class BasicGAAgentParallel : BaseAgent
       //PathDrawer.DrawPath(previousLocation, position, nextVel * SimulationManager.Instance.agentUpdateInterval);
       nextVel = _winner[0];
       previousLocation = position;
-      logger.AddVelocity(nextVel);
-      logger.AddGaTime((Time.realtimeSinceStartupAsDouble * 1000) - _gaStartRunTime);
+      ((AgentLogger)logger).AddVelocity(nextVel);
+      ((AgentLogger)logger).AddGaTime((Time.realtimeSinceStartupAsDouble * 1000) - _gaStartRunTime);
       gaJob.Dispose();
 
       jobScheduled = false;

@@ -9,7 +9,7 @@ public interface IScenario
   /// Populates scene with agents, gives them their destination
   /// </summary>
   /// <param name="agents">SimulationManager's list of agents</param>
-  public void SetupScenario(List<IBaseAgent> agents);
+  public void SetupScenario<T>(List<IBaseAgent> agents) where T: IBaseAgent, new();
   /// <summary>
   /// Perform any remaining actions before scenario resources will be cleared
   /// </summary>

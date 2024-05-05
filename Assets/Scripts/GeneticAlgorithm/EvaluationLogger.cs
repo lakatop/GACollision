@@ -162,7 +162,7 @@ public struct BezierIndividualLogger
 /// <summary>
 /// Class for logging agent related metrics into a csv file
 /// </summary>
-public class AgentLogger
+public class AgentLogger: ILogger
 {
   /// <summary>
   /// List of velocittes that agent used that created his path

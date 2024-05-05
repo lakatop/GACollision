@@ -27,9 +27,9 @@ public class SmallObstacleScenario : IScenario
   }
 
   /// <inheritdoc cref="IScenario.SetupScenario(List{IBaseAgent})"/>
-  public void SetupScenario(List<IBaseAgent> agents)
+  public void SetupScenario<T>(List<IBaseAgent> agents) where T : IBaseAgent, new()
   {
-    agents.Add(new BasicGAAgentParallel());
+    agents.Add(new T());
     var agent = agents[agents.Count - 1];
     agent.id = agents.Count;
     if (agent is BaseAgent)
@@ -53,9 +53,9 @@ public class SmallObstacleScenario : IScenario
   {
     foreach (var agent in agents)
     {
-      ((BasicGAAgentParallel)agent).logger.SetEndTime(Time.realtimeSinceStartupAsDouble);
-      ((BasicGAAgentParallel)agent).logger.CreateCsv();
-      ((BasicGAAgentParallel)agent).logger.AppendCsvLog();
+      agent.logger.SetEndTime(Time.realtimeSinceStartupAsDouble);
+      agent.logger.CreateCsv();
+      agent.logger.AppendCsvLog();
     }
   }
 
@@ -67,9 +67,9 @@ public class SmallObstacleScenario : IScenario
   {
     foreach (var agent in agents)
     {
-      ((BasicGAAgentParallel)agent).logger.SetAgentId(agent.id.ToString());
-      ((BasicGAAgentParallel)agent).logger.SetScenarioId(_scenarioName);
-      ((BasicGAAgentParallel)agent).logger.SetStartTime(Time.realtimeSinceStartupAsDouble);
+      agent.logger.SetAgentId(agent.id.ToString());
+      agent.logger.SetScenarioId(_scenarioName);
+      agent.logger.SetStartTime(Time.realtimeSinceStartupAsDouble);
     }
   }
 }

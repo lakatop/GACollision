@@ -59,6 +59,8 @@ public abstract class BaseAgent : IBaseAgent
   public bool inDestination { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
+  /// <inheritdoc cref="IBaseAgent.logger"/>
+  public abstract ILogger logger { get; set; }
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
   public void SetPosition(Vector2 pos)
   {
