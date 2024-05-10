@@ -23,7 +23,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <summary>
   /// Previous agents position
   /// </summary>
-  private Vector3 _lastPosition { get; set; }
+  protected Vector3 _lastPosition { get; set; }
 
   public BaseAgent()
   {

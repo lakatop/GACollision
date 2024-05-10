@@ -463,7 +463,6 @@ public class SimulationManager : MonoBehaviour
     {
       finished &= agent.inDestination;
     }
-    Debug.Log("FINISHED: " + finished);
     return finished;
   }
 
@@ -475,14 +474,14 @@ public class SimulationManager : MonoBehaviour
     System.Console.WriteLine("Creating scenarios");
     scenarios = new List<IScenario>
     {
-      new StraightLineScenario(1),
-      new SmallObstacleScenario(1),
-      new CornerScenario(1),
-      new OppositeScenario(1),
-      new OppositeMultipleScenario(1),
-      new OppositeCircleScenario(1),
-      new NarrowCoridorsOppositeNoNavmeshScenario(1),
-      new NarrowCoridorOppositeScenario(1)
+      //new StraightLineScenario(40),
+      //new SmallObstacleScenario(40),
+      //new CornerScenario(40),
+      //new OppositeScenario(40),
+      //new OppositeMultipleScenario(40),
+      //new OppositeCircleScenario(40),
+      //new NarrowCoridorsOppositeNoNavmeshScenario(40),
+      new NarrowCoridorOppositeScenario(40)
     };
   }
 

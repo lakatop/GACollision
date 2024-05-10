@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Jobs;
+using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Basic parralel GA agent
-/// For path planning use NavMeshAgent (A*)
+/// Basic NavMeshAgent agent
 /// </summary>
 public class RVOAgent : BaseAgent
 {
@@ -21,6 +21,7 @@ public class RVOAgent : BaseAgent
   /// NavMeshAgent component
   /// </summary>
   private NavMeshAgent _navMeshAgent { get; set; }
+  private float _updateTimer { get; set; }
 
   public RVOAgent()
   {
@@ -28,9 +29,12 @@ public class RVOAgent : BaseAgent
     _navMeshAgent = GetComponent<NavMeshAgent>();
     speed = 5.0f;
     _navMeshAgent.speed = speed;
+    _navMeshAgent.acceleration = 6.25f;
+    _navMeshAgent.angularSpeed = 60;
     nextVel = Vector2.zero;
     inDestination = false;
     logger = new AgentLogger();
+    _updateTimer = 0f;
   }
 
   /// <summary>
@@ -60,6 +64,15 @@ public class RVOAgent : BaseAgent
   /// </summary>
   public override void OnBeforeUpdate()
   {
+    _updateTimer += Time.deltaTime;
+
+    var nextPos = GetComponent<NavMeshAgent>().nextPosition;
+    var nextPos2D = new Vector2(nextPos.x, nextPos.z);
+    if ((nextPos2D - destination).magnitude < 0.1f)
+    {
+      ((AgentLogger)logger).SetConfigurationId("RVO_config");
+      inDestination = true;
+    }
   }
 
   /// <summary>
@@ -67,5 +80,16 @@ public class RVOAgent : BaseAgent
   /// </summary>
   public override void OnAfterUpdate()
   {
+    if ((SimulationManager.Instance.agentUpdateInterval < _updateTimer) && !inDestination)
+    {
+      _updateTimer = 0f;
+
+
+      var velocity = GetComponent<NavMeshAgent>().velocity;
+      var vel2D = new Vector2(velocity.x, velocity.z);
+
+      ((AgentLogger)logger).AddVelocity(vel2D);
+      ((AgentLogger)logger).AddGaTime(_updateTimer);
+    }
   }
 }

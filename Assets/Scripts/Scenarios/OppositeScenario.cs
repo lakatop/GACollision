@@ -46,7 +46,7 @@ public class OppositeScenario : IScenario
     ((BaseAgent)agent).scenarioName = _scenarioName;
 
 
-    agents.Add(new BasicGAAgentParallel());
+    agents.Add(new T());
     agent = agents[agents.Count - 1];
     agent.id = agents.Count;
     if (agent is BaseAgent)
