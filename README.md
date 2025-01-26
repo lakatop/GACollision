@@ -8,8 +8,8 @@ Collision avoidance algorithm for humanoid agents using genetic algorithms.
   - [Technologies](#technologies)
   - [Setup](#setup)
   - [Features](#features)
-  - [Design](#design)
   - [Ilustrations](#ilustrations)
+  - [Design](#design)
   - [Sources](#sources)
 
 ## Introduction
@@ -34,22 +34,22 @@ You will need to download and install Unity (version 2022.3.7f1 or higher). Add 
 * Desing of the algorithm is general enough to easily add new genetic operators and test the difference
 * Design of the application is general enough to allow simple modification to existing scenarios or creation of new ones
 
-## Design
-Following simplified class diagram shows the most important classes present in the project.
-TODO: add diagram.
-
-To perform all relevant updates, application has defined sub-loop that is run inside Unity's `Update` method. See the following sequence diagram that shows a given sub-loop.
-TODO: add diagram
-
 ## Ilustrations
 Example of 1 agent with various paths initialised for genetic algorithm: ![Basic](./ReadmeLinks/agent.png)
 
 Opposite 
-|                   RVO                    |                     GA                     |
-| :--------------------------------------: | :----------------------------------------: |
-|     ![](./ReadmeLinks/opposite.gif)      |     ![](./ReadmeLinks/oppositeGA.gif)      |
-| ![](./ReadmeLinks/oppositeNoNavMesh.gif) | ![](./ReadmeLinks/oppositeNoNavMeshGA.gif) |
+|                                     GA                                     |                                   RVO                                    |
+| :------------------------------------------------------------------------: | :----------------------------------------------------------------------: |
+|     <img src="./ReadmeLinks/oppositeGA.gif" width="700" height="300">      |     <img src="./ReadmeLinks/opposite.gif"  width="700" height="300">     |
+| <img src="./ReadmeLinks/oppositeNoNavMeshGA.gif" width="700" height="300"> | <img src="./ReadmeLinks/oppositeNoNavMesh.gif" width="700" height="300"> |
 
+
+## Design
+Following simplified class diagram shows the most important classes present in the project.
+![](./ReadmeLinks/classDiagram.png)
+
+To perform all relevant updates, application has defined sub-loop that is run inside Unity's `Update` method. See the following sequence diagram that shows a given sub-loop.
+![](./ReadmeLinks/sequenceDiagram.png)
 
 ## Sources
 Unity manuals: https://docs.unity3d.com/2022.3/Documentation/Manual/
