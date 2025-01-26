@@ -40,8 +40,8 @@ Example of 1 agent with various paths initialised for genetic algorithm: ![Basic
 Opposite 
 |                                     GA                                     |                                   RVO                                    |
 | :------------------------------------------------------------------------: | :----------------------------------------------------------------------: |
-|     <img src="./ReadmeLinks/oppositeGA.gif" width="700" height="300">      |     <img src="./ReadmeLinks/opposite.gif"  width="700" height="300">     |
-| <img src="./ReadmeLinks/oppositeNoNavMeshGA.gif" width="700" height="300"> | <img src="./ReadmeLinks/oppositeNoNavMesh.gif" width="700" height="300"> |
+|     <img src="./ReadmeLinks/oppositeGA.gif" width="350" height="200">      |     <img src="./ReadmeLinks/opposite.gif"  width="350" height="200">     |
+| <img src="./ReadmeLinks/oppositeNoNavMeshGA.gif" width="350" height="200"> | <img src="./ReadmeLinks/oppositeNoNavMesh.gif" width="350" height="200"> |
 
 
 ## Design
