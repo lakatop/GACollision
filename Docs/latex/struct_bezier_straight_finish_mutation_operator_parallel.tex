@@ -1,0 +1,118 @@
+\doxysection{Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel Struct Reference}
+\hypertarget{struct_bezier_straight_finish_mutation_operator_parallel}{}\label{struct_bezier_straight_finish_mutation_operator_parallel}\index{BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}}
+
+
+Straight\+Finish mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_straight_finish_mutation_operator_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_straight_finish_mutation_operator_parallel_a6bf9b227c68355cb818c2ae838f98fb1}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform mutation on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_straight_finish_mutation_operator_parallel_a7a446b3aadcc9414b7e8ccf5734dffa8}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_straight_finish_mutation_operator_parallel_ad54998a0c96eb77eaf61311f244fa833}{Get\+Mutation\+Probabilty}} ()
+\begin{DoxyCompactList}\small\item\em Getter for mutation probability. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_ad1900b96dd33b55d69918f2d6ece7389}\label{struct_bezier_straight_finish_mutation_operator_parallel_ad1900b96dd33b55d69918f2d6ece7389} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a00c6c1bf939c8c76cf7c7372a1e84c89}\label{struct_bezier_straight_finish_mutation_operator_parallel_a00c6c1bf939c8c76cf7c7372a1e84c89} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\begin{DoxyCompactList}\small\item\em Random object variable. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a34f8cce0e168d06ce6760b0cfd9a80a9}\label{struct_bezier_straight_finish_mutation_operator_parallel_a34f8cce0e168d06ce6760b0cfd9a80a9} 
+Vector2 {\bfseries start\+Pos}
+\begin{DoxyCompactList}\small\item\em Current position of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a072439015c543f60466bd08da93c469c}\label{struct_bezier_straight_finish_mutation_operator_parallel_a072439015c543f60466bd08da93c469c} 
+Vector2 {\bfseries destination}
+\begin{DoxyCompactList}\small\item\em Destination of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a5198d02fe15a5e0de0e426a0bafd15b6}\label{struct_bezier_straight_finish_mutation_operator_parallel_a5198d02fe15a5e0de0e426a0bafd15b6} 
+Vector2 {\bfseries forward}
+\begin{DoxyCompactList}\small\item\em Agents forward vector. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a4bfca0a055eb368b0acccab69bc5f5f6}\label{struct_bezier_straight_finish_mutation_operator_parallel_a4bfca0a055eb368b0acccab69bc5f5f6} 
+float {\bfseries agent\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximum agents speed. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a5bec9ec675218d0e75e30617f9cfceb7}\label{struct_bezier_straight_finish_mutation_operator_parallel_a5bec9ec675218d0e75e30617f9cfceb7} 
+float {\bfseries update\+Interval}
+\begin{DoxyCompactList}\small\item\em how often is agent running GA \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a60bb9f6913a71a930e6453ac0bfdebfb}\label{struct_bezier_straight_finish_mutation_operator_parallel_a60bb9f6913a71a930e6453ac0bfdebfb} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em Current velocity of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_ac625b6f6b06b2313334d291497a9b604}\label{struct_bezier_straight_finish_mutation_operator_parallel_ac625b6f6b06b2313334d291497a9b604} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em Maximum agents acceleration/deceleration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a67bf96a0d5e5552e7cbbe54dc7264d26}\label{struct_bezier_straight_finish_mutation_operator_parallel_a67bf96a0d5e5552e7cbbe54dc7264d26} 
+float {\bfseries mutation\+Prob}
+\begin{DoxyCompactList}\small\item\em Probablity of mutation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Straight\+Finish mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a7a446b3aadcc9414b7e8ccf5734dffa8}\label{struct_bezier_straight_finish_mutation_operator_parallel_a7a446b3aadcc9414b7e8ccf5734dffa8} 
+\index{BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_ad54998a0c96eb77eaf61311f244fa833}\label{struct_bezier_straight_finish_mutation_operator_parallel_ad54998a0c96eb77eaf61311f244fa833} 
+\index{BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}!GetMutationProbabilty@{GetMutationProbabilty}}
+\index{GetMutationProbabilty@{GetMutationProbabilty}!BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetMutationProbabilty()}{GetMutationProbabilty()}}
+{\footnotesize\ttfamily float Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel.\+Get\+Mutation\+Probabilty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for mutation probability. 
+
+\begin{DoxyReturn}{Returns}
+Mutation probability
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_straight_finish_mutation_operator_parallel_a6bf9b227c68355cb818c2ae838f98fb1}\label{struct_bezier_straight_finish_mutation_operator_parallel_a6bf9b227c68355cb818c2ae838f98fb1} 
+\index{BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierStraightFinishMutationOperatorParallel@{BezierStraightFinishMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Straight\+Finish\+Mutation\+Operator\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform mutation on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Mutation.\+cs\end{DoxyCompactItemize}

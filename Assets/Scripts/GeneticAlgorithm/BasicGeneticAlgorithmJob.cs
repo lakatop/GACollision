@@ -5,136 +5,9 @@ using UnityEngine.Assertions;
 using Unity.Burst;
 using Unity.Collections;
 
-
-[BurstCompile]
-public struct BasicGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BasicIndividualStruct>
-{
-  public MeanCrossOperatorParallel cross;
-  public BasicMutationOperatorParallel mutation;
-  public FitnessJerkCostParallel jerkFitness;
-  public FitnessCollisionParallel collisionFitness;
-  public FitnessEndDistanceParallel endDistanceFitness;
-  public ElitistSelectionParallel selection;
-  public KineticFriendlyInitialization popInitialization;
-  public WeightedSumRanking ranking;
-  public NativeBasicPopulation pop;
-  public FitnessEvaluationLogger logger;
-  public BezierPopulationDrawer popDrawer;
-
-
-  public int iterations { get; set; }
-  public int populationSize { get; set; }
-
-  public NativeArray<Vector2> winner;
-  public float timeDelta;
-  public float agentSpeed;
-  public Vector2 startPosition;
-  public Vector2 forward;
-
-  public float startVelocity;
-  public float maxAcc;
-  public float updateInteraval;
-
-  public Unity.Mathematics.Random rand;
-
-  public void Execute()
-  {
-    popInitialization.ModifyPopulation(ref pop._population, 0);
-
-    for (int i = 0; i < iterations; i++)
-    {
-      jerkFitness.ModifyPopulation(ref pop._population, i);
-      collisionFitness.ModifyPopulation(ref pop._population, i);
-      endDistanceFitness.ModifyPopulation(ref pop._population, i);
-
-      ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
-      ranking.ModifyPopulation(ref pop._population, i);
-
-      logger.LogPopulationState(ref pop._population, i);
-      selection.ModifyPopulation(ref pop._population, i);
-      cross.ModifyPopulation(ref pop._population, i);
-      mutation.ModifyPopulation(ref pop._population, i);
-    }
-
-    jerkFitness.ModifyPopulation(ref pop._population, iterations);
-    collisionFitness.ModifyPopulation(ref pop._population, iterations);
-    endDistanceFitness.ModifyPopulation(ref pop._population, iterations);
-
-    ranking.CalculateRanking(ref jerkFitness.fitnesses, ref collisionFitness.fitnesses, ref endDistanceFitness.fitnesses,
-        jerkFitness.weight, collisionFitness.weight, endDistanceFitness.weight);
-    ranking.ModifyPopulation(ref pop._population, iterations);
-
-    logger.LogPopulationState(ref pop._population, iterations);
-    SetWinner();
-  }
-
-  public void SetResources(List<object> resources)
-  {
-    Assert.IsTrue(resources.Count == 7);
-
-    timeDelta = (float)resources[0];
-    agentSpeed = (float)resources[1];
-    startPosition = (Vector2)resources[2];
-    forward = (Vector2)resources[3];
-    if (forward.x == 0 && forward.y == 0)
-      forward = new Vector2(1, 0);
-    startVelocity = (float)resources[4];
-    maxAcc = (float)resources[5];
-    updateInteraval = (float)resources[6];
-  }
-
-  public Vector2 GetResult()
-  {
-    return winner[0];
-  }
-
-  private void SetWinner()
-  {
-    winner[0] = new Vector2(0, 0);
-    float minFitness = float.MaxValue;
-    foreach (var individual in pop._population)
-    {
-      if (minFitness > individual.fitness)
-      {
-        var v = UtilsGA.UtilsGA.RotateVector(forward.normalized, individual.path[0].x);
-        var acc = maxAcc * individual.path[0].y;
-        var velocity = startVelocity + acc;
-        velocity = Mathf.Clamp(velocity, 0, updateInteraval * agentSpeed);
-        v *= velocity;
-        winner[0] = new Vector2(v.x, v.y);
-        minFitness = individual.fitness;
-      }
-    }
-  }
-
-  public string GetConfiguration()
-  {
-    var builder = new System.Text.StringBuilder();
-    builder.AppendLine(string.Format("CROSS,{0}", cross.GetComponentName()));
-    builder.AppendLine(string.Format("MUTATION,{0}", mutation.GetComponentName()));
-    builder.AppendLine(string.Format("FITNESSES,{0}, {1}, {2}", jerkFitness.GetComponentName(), endDistanceFitness.GetComponentName(), collisionFitness.GetComponentName()));
-    builder.AppendLine(string.Format("SELECTION,{0}", selection.GetComponentName()));
-    builder.AppendLine(string.Format("INITIALIZATION,{0}", popInitialization.GetComponentName()));
-
-    return builder.ToString();
-  }
-
-  public void Dispose()
-  {
-    cross.Dispose();
-    mutation.Dispose();
-    jerkFitness.Dispose();
-    collisionFitness.Dispose();
-    endDistanceFitness.Dispose();
-    selection.Dispose();
-    logger.Dispose();
-    ranking.Dispose();
-    winner.Dispose();
-    pop.Dispose();
-  }
-}
-
+/// <summary>
+/// Struct representing Bezier GA job
+/// </summary>
 [BurstCompile]
 public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<BezierIndividualStruct>
 {
@@ -184,6 +57,9 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
 
   public Unity.Mathematics.Random rand;
 
+  /// <summary>
+  /// Main method that executes the GA
+  /// </summary>
   public void Execute()
   {
     // Initialisation
@@ -209,12 +85,13 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       ranking.ModifyPopulation(ref pop.population, i);
 
       // Logging
-      logger.LogPopulationState(ref ranking.resultingFitnesses,
-                                ref jerkFitness.fitnesses,
-                                ref collisionFitness.fitnesses,
-                                ref endDistanceFitness.fitnesses,
-                                ref ttdFitness.fitnesses,
-                                i);
+      // Uncomment lines below to use more detailed logging of population in each iteration
+      //logger.LogPopulationState(ref ranking.resultingFitnesses,
+      //                          ref jerkFitness.fitnesses,
+      //                          ref collisionFitness.fitnesses,
+      //                          ref endDistanceFitness.fitnesses,
+      //                          ref ttdFitness.fitnesses,
+      //                          i);
 
       // Selection
       selection.ModifyPopulation(ref pop.population, i);
@@ -230,7 +107,8 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       straightFinishMutation.ModifyPopulation(ref pop.population, i);
 
       // Debug draw
-      //popDrawer.DrawPopulation(ref pop._population);
+      // Uncomment lines below to see debug draw of population
+      //popDrawer.DrawPopulation(ref pop.population);
     }
 
     jerkFitness.ModifyPopulation(ref pop.population, iterations);
@@ -249,6 +127,7 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     ranking.ModifyPopulation(ref pop.population, iterations);
 
     // Logging
+    // Uncomment lines below to use more detailed logging of population in each iteration
     //logger.LogPopulationState(ref ranking.resultingFitnesses,
     //                      ref jerkFitness.fitnesses,
     //                      ref collisionFitness.fitnesses,
@@ -257,11 +136,16 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     //                      iterations);
 
     // Debug Draw
-    //popDrawer.DrawPopulation(ref pop._population);
+    // Uncomment lines below to see debug draw of population
+    //popDrawer.DrawPopulation(ref pop.population);
 
     SetWinner();
   }
 
+  /// <summary>
+  /// Set additional resources of the struct
+  /// </summary>
+  /// <param name="resources">Resources that will be set</param>
   public void SetResources(List<object> resources)
   {
     Assert.IsTrue(resources.Count == 7);
@@ -277,11 +161,18 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     updateInteraval = (float)resources[6];
   }
 
+  /// <summary>
+  /// Getter of winning velocity
+  /// </summary>
+  /// <returns>Winning velocity</returns>
   public Vector2 GetResult()
   {
     return winner[0];
   }
 
+  /// <summary>
+  /// Set winning velocity
+  /// </summary>
   private void SetWinner()
   {
     winner[0] = new Vector2(0, 0);
@@ -338,6 +229,10 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     }
   }
 
+  /// <summary>
+  /// Creates a string capturing configuration of this GA
+  /// </summary>
+  /// <returns>Configuration of this GA</returns>
   public string GetConfiguration()
   {
     var builder = new System.Text.StringBuilder();
@@ -370,9 +265,13 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     return builder.ToString();
   }
 
+  /// <summary>
+  /// Getter for hyperparameters
+  /// </summary>
+  /// <returns>String capturing hyperparameters</returns>
   public string GetHyperparametersId()
   {
-    return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}-{8}-{9}",
+    return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}-{8}-{9}-{10}-{11}",
       controlPointsMutation.GetMutationProbabilty().ToString(),
       smoothMutation.GetMutationProbabilty().ToString(),
       shuffleMutation.GetMutationProbabilty().ToString(),
@@ -387,6 +286,9 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
       iterations.ToString());
   }
 
+  /// <summary>
+  /// Clearing resources
+  /// </summary>
   public void Dispose()
   {
     straightFinishMutation.Dispose();
@@ -409,6 +311,3 @@ public struct BezierGeneticAlgorithmParallel : IJob, IGeneticAlgorithmParallel<B
     pop.Dispose();
   }
 }
-
-
-

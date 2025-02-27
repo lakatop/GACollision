@@ -7,15 +7,26 @@ using UnityEngine;
 /// </summary>
 public class OppositeMultipleScenario : IScenario
 {
+  /// <summary>
+  /// Name of scenario
+  /// </summary>
   private const string _scenarioName = "oppositeMultipleAgents";
 
+  /// <summary>
+  /// Counter how many times scenario should be run
+  /// </summary>
   public int runCounter { get; set; }
 
+  /// <summary>
+  /// Constructor
+  /// </summary>
+  /// <param name="runCount">sets runCounter</param>
   public OppositeMultipleScenario(int runCount)
   {
     runCounter = runCount;
   }
 
+  /// <inheritdoc cref="IScenario.SetupScenario(List{IBaseAgent})"/>
   public void SetupScenario(List<IBaseAgent> agents)
   {
     for (int i = 0; i < 10; i++)
@@ -50,6 +61,7 @@ public class OppositeMultipleScenario : IScenario
     AdditionalAgentSetup(agents);
   }
 
+  /// <inheritdoc cref="IScenario.ClearScenario(List{IBaseAgent})"/>
   public void ClearScenario(List<IBaseAgent> agents)
   {
     foreach (var agent in agents)
@@ -60,6 +72,10 @@ public class OppositeMultipleScenario : IScenario
     }
   }
 
+  /// <summary>
+  /// Add additional setup for agents
+  /// </summary>
+  /// <param name="agents">List of agents present in scenario</param>
   private void AdditionalAgentSetup(List<IBaseAgent> agents)
   {
     foreach (var agent in agents)

@@ -1,4 +1,7 @@
-﻿public interface IBasePathPlanner
+﻿/// <summary>
+/// Defines interface for path planning algorithm of agent
+/// </summary>
+public interface IBasePathPlanner
 {
   /// <summary>
   /// Update function called every simulation step

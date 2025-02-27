@@ -1,0 +1,49 @@
+digraph "BasicGAAgentParallel.OnAfterUpdate"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="BasicGAAgentParallel.OnAfter\lUpdate",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Setting new position, forward vector and destination of an agent."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="AgentLogger.AddGaTime",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_agent_logger.html#a94cadf5302ab66178fa66b69c1068b16",tooltip="Add new GA run time."];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="AgentLogger.AddVelocity",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_agent_logger.html#a655cc4a3bb384239cb9e4cee796a2ef8",tooltip="Add new velocity to array."];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="BezierGeneticAlgorithmParallel.\lDispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_genetic_algorithm_parallel.html#a4295f942dbf37ceca6c4b03ad9adbb37",tooltip="Clearing resources."];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="UniformBezierCrossOperator\lParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_uniform_bezier_cross_operator_parallel.html#a59f517abf733158dd0b2e2268744c340",tooltip="Clear resources."];
+  Node4 -> Node6 [id="edge5_Node000004_Node000006",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="BezierIndividualLogger.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_individual_logger.html#a0251ff9a2f559d8f9ae44daa03897958",tooltip="Clear resources."];
+  Node4 -> Node7 [id="edge6_Node000004_Node000007",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="BezierFitnessEndDistance\lParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_fitness_end_distance_parallel.html#ae7f73e84b9126a07e1e24395cfbe2297",tooltip="Clear resources."];
+  Node4 -> Node8 [id="edge7_Node000004_Node000008",color="steelblue1",style="solid",tooltip=" "];
+  Node8 [id="Node000008",label="BezierFitnessTimeToDestination\lParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_fitness_time_to_destination_parallel.html#a2822b27302a3b1e770b45596d28fed86",tooltip="Clear resources."];
+  Node4 -> Node9 [id="edge8_Node000004_Node000009",color="steelblue1",style="solid",tooltip=" "];
+  Node9 [id="Node000009",label="BezierFitnessCollisionParallel.\lDispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_fitness_collision_parallel.html#a50281577c8da3610774849347a669bd1",tooltip="Clear resources."];
+  Node4 -> Node10 [id="edge9_Node000004_Node000010",color="steelblue1",style="solid",tooltip=" "];
+  Node10 [id="Node000010",label="BezierFitnessJerkCostParallel.\lDispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_fitness_jerk_cost_parallel.html#ac26adfc13fbaa1dd07d85ae9479537e2",tooltip="Clear resources."];
+  Node4 -> Node11 [id="edge10_Node000004_Node000011",color="steelblue1",style="solid",tooltip=" "];
+  Node11 [id="Node000011",label="BezierStraightFinishMutation\lOperatorParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_straight_finish_mutation_operator_parallel.html#ad1900b96dd33b55d69918f2d6ece7389",tooltip="Clear resources."];
+  Node4 -> Node12 [id="edge11_Node000004_Node000012",color="steelblue1",style="solid",tooltip=" "];
+  Node12 [id="Node000012",label="BezierClampVelocityMutation\lOperatorParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_clamp_velocity_mutation_operator_parallel.html#a205e0875828d4f0ced7314c662d34f01",tooltip="Clear resources."];
+  Node4 -> Node13 [id="edge12_Node000004_Node000013",color="steelblue1",style="solid",tooltip=" "];
+  Node13 [id="Node000013",label="BezierSmoothAccMutationOperator\lParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_smooth_acc_mutation_operator_parallel.html#a07be9405f3fb17c2fde54833ef6c1793",tooltip="Clear resources."];
+  Node4 -> Node14 [id="edge13_Node000004_Node000014",color="steelblue1",style="solid",tooltip=" "];
+  Node14 [id="Node000014",label="BezierShuffleAccMutation\lOperatorParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_shuffle_acc_mutation_operator_parallel.html#abd69b84a196763f5e14584ead4d33ee1",tooltip="Clear resources."];
+  Node4 -> Node15 [id="edge14_Node000004_Node000015",color="steelblue1",style="solid",tooltip=" "];
+  Node15 [id="Node000015",label="BezierShuffleControlPoints\lMutationOperatorParallel.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_shuffle_control_points_mutation_operator_parallel.html#a516a27fcb86d683f05833d298bbc6b0a",tooltip="Clear resources."];
+  Node4 -> Node16 [id="edge15_Node000004_Node000016",color="steelblue1",style="solid",tooltip=" "];
+  Node16 [id="Node000016",label="NativeBezierPopulation.Dispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_native_bezier_population.html#a232a6dd7aa60577bc9f1e3c63654002b",tooltip="Clear resources."];
+  Node4 -> Node17 [id="edge16_Node000004_Node000017",color="steelblue1",style="solid",tooltip=" "];
+  Node17 [id="Node000017",label="BezierWeightedSumRanking.\lDispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_weighted_sum_ranking.html#af93aea92de81ea99427053fa31cb335e",tooltip="Clear resources."];
+  Node4 -> Node18 [id="edge17_Node000004_Node000018",color="steelblue1",style="solid",tooltip=" "];
+  Node18 [id="Node000018",label="BezierElitistSelectionParallel.\lDispose",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_elitist_selection_parallel.html#a31a8dcc759e3036b7ba901340d2607c6",tooltip="Clear resources."];
+  Node1 -> Node19 [id="edge18_Node000001_Node000019",color="steelblue1",style="solid",tooltip=" "];
+  Node19 [id="Node000019",label="BaseAgent.GetForward",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_base_agent.html#a44f839c34375ad71dda203f34596f2bf",tooltip="Getter for agents forward vector.Agents forward vector"];
+  Node1 -> Node20 [id="edge19_Node000001_Node000020",color="steelblue1",style="solid",tooltip=" "];
+  Node20 [id="Node000020",label="BaseAgent.SetForward",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_base_agent.html#aa0bd14b4cf81e21f67ab26d3f28ee842",tooltip="Sets agents forward vector."];
+  Node1 -> Node21 [id="edge20_Node000001_Node000021",color="steelblue1",style="solid",tooltip=" "];
+  Node21 [id="Node000021",label="BaseAgent.SetPosition",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$class_base_agent.html#a7d1b3d0816362a4537b85bbc7e8b6818",tooltip="Sets agents position."];
+}

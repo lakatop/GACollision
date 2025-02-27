@@ -1,0 +1,84 @@
+\doxysection{Simulation\+Manager Class Reference}
+\hypertarget{class_simulation_manager}{}\label{class_simulation_manager}\index{SimulationManager@{SimulationManager}}
+
+
+Singleton Agent manager class Keeps track of all agents in the simulation and is responsible for updating them.  
+
+
+Inheritance diagram for Simulation\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_simulation_manager}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ \mbox{\hyperlink{class_simulation_manager_a8ed921df1605703de81179ce4ca77fcd}{Get\+Agents}} ()
+\begin{DoxyCompactList}\small\item\em Getter for agents in simulation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree.\+Native\+Quad\+Tree}}$<$ \mbox{\hyperlink{struct_tree_node}{Tree\+Node}} $>$ \mbox{\hyperlink{class_simulation_manager_ae46ea9b006e4a038a75bc640bea32f0f}{Get\+Quad\+Tree}} ()
+\begin{DoxyCompactList}\small\item\em Getter for \+\_\+quad\+Tree. \end{DoxyCompactList}\item 
+Game\+Object \mbox{\hyperlink{class_simulation_manager_a6a410a0bd80987a4dda0422b03111e24}{Get\+Platform}} ()
+\begin{DoxyCompactList}\small\item\em Getter for platform object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_simulation_manager_a9fe1e32519b2353ae6e974cc73203327}\label{class_simulation_manager_a9fe1e32519b2353ae6e974cc73203327} 
+static \mbox{\hyperlink{class_simulation_manager}{Simulation\+Manager}} {\bfseries Instance}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Static instance of this class. \end{DoxyCompactList}\item 
+\Hypertarget{class_simulation_manager_a7b9daac787cd960988da20fb01710e8d}\label{class_simulation_manager_a7b9daac787cd960988da20fb01710e8d} 
+List$<$ \mbox{\hyperlink{class_obstacle}{Obstacle}} $>$ {\bfseries obstacles}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em List of all obstacles present in the simulation. \end{DoxyCompactList}\item 
+\Hypertarget{class_simulation_manager_afa185b26b12d7591c39faafed91a4728}\label{class_simulation_manager_afa185b26b12d7591c39faafed91a4728} 
+List$<$ \mbox{\hyperlink{interface_i_scenario}{IScenario}} $>$ {\bfseries scenarios}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em List of scenarios. \end{DoxyCompactList}\item 
+\Hypertarget{class_simulation_manager_a82a372c2f3e8e4ecc59b73b77d8c9938}\label{class_simulation_manager_a82a372c2f3e8e4ecc59b73b77d8c9938} 
+float {\bfseries agent\+Update\+Interval}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Delta t -\/ determines how often agent calculates new position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Singleton Agent manager class Keeps track of all agents in the simulation and is responsible for updating them. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_simulation_manager_a8ed921df1605703de81179ce4ca77fcd}\label{class_simulation_manager_a8ed921df1605703de81179ce4ca77fcd} 
+\index{SimulationManager@{SimulationManager}!GetAgents@{GetAgents}}
+\index{GetAgents@{GetAgents}!SimulationManager@{SimulationManager}}
+\doxysubsubsection{\texorpdfstring{GetAgents()}{GetAgents()}}
+{\footnotesize\ttfamily List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ Simulation\+Manager.\+Get\+Agents (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for agents in simulation. 
+
+\begin{DoxyReturn}{Returns}
+\+\_\+agents list
+\end{DoxyReturn}
+\Hypertarget{class_simulation_manager_a6a410a0bd80987a4dda0422b03111e24}\label{class_simulation_manager_a6a410a0bd80987a4dda0422b03111e24} 
+\index{SimulationManager@{SimulationManager}!GetPlatform@{GetPlatform}}
+\index{GetPlatform@{GetPlatform}!SimulationManager@{SimulationManager}}
+\doxysubsubsection{\texorpdfstring{GetPlatform()}{GetPlatform()}}
+{\footnotesize\ttfamily Game\+Object Simulation\+Manager.\+Get\+Platform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for platform object. 
+
+\texorpdfstring{$<$}{<}returns\+Simulaiton\+Manager\textquotesingle{}s \+\_\+platform\+Object\texorpdfstring{$>$}{>}\Hypertarget{class_simulation_manager_ae46ea9b006e4a038a75bc640bea32f0f}\label{class_simulation_manager_ae46ea9b006e4a038a75bc640bea32f0f} 
+\index{SimulationManager@{SimulationManager}!GetQuadTree@{GetQuadTree}}
+\index{GetQuadTree@{GetQuadTree}!SimulationManager@{SimulationManager}}
+\doxysubsubsection{\texorpdfstring{GetQuadTree()}{GetQuadTree()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_native_quad_tree_1_1_native_quad_tree}{Native\+Quad\+Tree.\+Native\+Quad\+Tree}}$<$ \mbox{\hyperlink{struct_tree_node}{Tree\+Node}} $>$ Simulation\+Manager.\+Get\+Quad\+Tree (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for \+\_\+quad\+Tree. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s \+\_\+quad\+Tree
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Managers/Simulation\+Manager.\+cs\end{DoxyCompactItemize}

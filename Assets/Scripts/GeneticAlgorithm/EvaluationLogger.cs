@@ -6,143 +6,42 @@ using Unity.Burst;
 using System.Collections.Generic;
 using System.Linq;
 
-[BurstCompile]
-public struct StraightLineEvaluationLogger
-{
-  public NativeArray<BasicIndividualStruct> topIndividuals;
-  [ReadOnly] public Vector2 agentPosition;
-  [ReadOnly] public Vector2 agentDestination;
-  [ReadOnly] public Vector2 agentForward;
-  [ReadOnly] public float agentSpeed;
-
-
-  public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
-  {
-    var bestIndividual = pop[0];
-
-    for (int i = 0; i < pop.Length; i++)
-    {
-      if (pop[i].fitness > bestIndividual.fitness)
-      {
-        bestIndividual = pop[i];
-      }
-    }
-
-    var outdatedIndividual = topIndividuals[iteration];
-    outdatedIndividual.fitness = bestIndividual.fitness;
-    for (int j = 0; j < outdatedIndividual.path.Length; j++)
-    {
-      outdatedIndividual.path[j] = bestIndividual.path[j];
-    }
-    topIndividuals[iteration] = outdatedIndividual;
-  }
-
-  public void WriteRes(string configuration, int iteration)
-  {
-    var builder = new StringBuilder();
-    builder.AppendLine(configuration);
-
-    builder.AppendLine("Fitness,Objective");
-
-    for (int i = 0; i < topIndividuals.Length; i++)
-    {
-      var individual = topIndividuals[i];
-      var position = agentPosition;
-      var fit = individual.fitness.ToString();
-
-      var objective = (agentDestination - position).normalized;
-      objective = objective * agentSpeed * SimulationManager.Instance.agentUpdateInterval;
-      objective = objective + position;
-
-      // calculate how far are we from objective
-      var rotationVector = agentForward.normalized;
-      if (rotationVector.x == 0 && rotationVector.y == 0)
-        rotationVector = new Vector2(1, 0);
-      var rotatedVector = UtilsGA.UtilsGA.RotateVector(rotationVector, individual.path[0].x);
-      rotatedVector = rotatedVector * individual.path[0].y;
-      var rotatedAndTranslatedVector = UtilsGA.UtilsGA.MoveToOrigin(rotatedVector, position);
-
-      var distance = new Vector2(objective.x - rotatedAndTranslatedVector.x, objective.y - rotatedAndTranslatedVector.y).magnitude;
-      builder.AppendLine(string.Format("{0},{1}", fit, distance));
-    }
-
-    File.WriteAllText(string.Format("Plotting/straightLine/out{0}.csv", iteration), builder.ToString());
-  }
-
-  public void Dispose()
-  {
-    for (int i = 0; i < topIndividuals.Length; i++)
-    {
-      topIndividuals[i].Dispose();
-    }
-    topIndividuals.Dispose();
-  }
-}
-
-[BurstCompile]
-public struct FitnessEvaluationLogger
-{
-  public NativeArray<BasicIndividualStruct> topIndividuals;
-
-
-  public void LogPopulationState(ref NativeArray<BasicIndividualStruct> pop, int iteration)
-  {
-    var bestIndividual = pop[0];
-
-    for (int i = 0; i < pop.Length; i++)
-    {
-      if (pop[i].fitness > bestIndividual.fitness)
-      {
-        bestIndividual = pop[i];
-      }
-    }
-
-    var outdatedIndividual = topIndividuals[iteration];
-    outdatedIndividual.fitness = bestIndividual.fitness;
-    for (int j = 0; j < outdatedIndividual.path.Length; j++)
-    {
-      outdatedIndividual.path[j] = bestIndividual.path[j];
-    }
-    topIndividuals[iteration] = outdatedIndividual;
-  }
-
-  public void WriteRes(string configuration, int iteration, string scenarioName, string agentId)
-  {
-    var builder = new StringBuilder();
-    builder.AppendLine(configuration);
-
-    builder.AppendLine("Fitness");
-
-    for (int i = 0; i < topIndividuals.Length; i++)
-    {
-      var fit = topIndividuals[i].fitness.ToString();
-      builder.AppendLine(string.Format("{0}", fit));
-    }
-
-    File.WriteAllText(string.Format("Plotting/{0}/out-{1}-{2}.csv", scenarioName, agentId, iteration), builder.ToString());
-  }
-
-  public void Dispose()
-  {
-    for (int i = 0; i < topIndividuals.Length; i++)
-    {
-      topIndividuals[i].Dispose();
-    }
-    topIndividuals.Dispose();
-  }
-}
-
-
+/// <summary>
+/// Logger class for logging during parallel GA run
+/// </summary>
 [BurstCompile]
 public struct BezierIndividualLogger
 {
-  // Arrays to hold best fitnesses in each iteration
+  /// <summary>
+  /// Array to hold best individual fitness of each GA iteration
+  /// </summary>
   public NativeArray<float> individualFitness;
+  /// <summary>
+  /// Array to hold best Jerk fitness of each GA iteration
+  /// </summary>
   public NativeArray<float> jerkFitness;
+  /// <summary>
+  /// Array to hold best Collision fitness of each GA iteration
+  /// </summary>
   public NativeArray<float> collisionFitness;
+  /// <summary>
+  /// Array to hold best EndDistance fitness of each GA iteration
+  /// </summary>
   public NativeArray<float> endDistanceFitness;
+  /// <summary>
+  /// Array to hold best TimeToDestination fitness of each GA iteration
+  /// </summary>
   public NativeArray<float> ttdFitness;
 
+  /// <summary>
+  /// Capture current state of the population
+  /// </summary>
+  /// <param name="pop">Population's fitness array</param>
+  /// <param name="jerkF">Jerk fitnesses of the population</param>
+  /// <param name="colF">Collision fitnesses of the population</param>
+  /// <param name="endF">EndDestiantion fitnesses of the population</param>
+  /// <param name="ttdF">TimeToDestination fitnesses of the population</param>
+  /// <param name="iteration">Iteration of GA</param>
   public void LogPopulationState(ref NativeArray<float> pop,
                                  ref NativeArray<float> jerkF,
                                  ref NativeArray<float> colF,
@@ -163,6 +62,13 @@ public struct BezierIndividualLogger
     ttdFitness[iteration] = bestTtdF;
   }
 
+  /// <summary>
+  /// Writing results into a csv file
+  /// </summary>
+  /// <param name="configuration">Configuration of the GA</param>
+  /// <param name="iteration">Holds GA run counter</param>
+  /// <param name="scenarioName">Name of scenario that GA was run in</param>
+  /// <param name="agentId">Id of agent that run this GA</param>
   public void WriteRes(string configuration, int iteration, string scenarioName, string agentId)
   {
     // Log Individual fitness
@@ -239,6 +145,9 @@ public struct BezierIndividualLogger
     File.WriteAllText(string.Format("Plotting/{0}/fitness-TTD-{1}-{2}.csv", scenarioName, agentId, iteration), builder.ToString());
   }
 
+  /// <summary>
+  /// Clear resources
+  /// </summary>
   public void Dispose()
   {
     individualFitness.Dispose();
@@ -250,18 +159,54 @@ public struct BezierIndividualLogger
 }
 
 
+/// <summary>
+/// Class for logging agent related metrics into a csv file
+/// </summary>
 public class AgentLogger
 {
+  /// <summary>
+  /// List of velocittes that agent used that created his path
+  /// </summary>
   private List<Vector2> _velocities { get; set; }
+  /// <summary>
+  /// List of times how long each GA run took
+  /// </summary>
   private List<double> _gaTimes { get; set; }
+  /// <summary>
+  /// Number of collisions during agents path
+  /// </summary>
   private uint _collisionCount { get; set; }
+  /// <summary>
+  /// How many frames agent spent in collision during his path
+  /// </summary>
   private uint _framesInCollision { get; set; }
+  /// <summary>
+  /// Time when agent started moving on his path
+  /// </summary>
   private double _pathStartTime { get; set; }
+  /// <summary>
+  /// Time when agent arrived at the end of his path
+  /// </summary>
   private double _pathEndTime { get; set; }
+  /// <summary>
+  /// Id of a scenario
+  /// </summary>
   private string _scenarioId { get; set; }
+  /// <summary>
+  /// Id of an agent
+  /// </summary>
   private string _agentId { get; set; }
+  /// <summary>
+  /// configuration id created from hyperparameters
+  /// </summary>
   private string _configurationId { get; set; }
+  /// <summary>
+  /// Path to output csv file
+  /// </summary>
   private string _csvFile { get; set; }
+  /// <summary>
+  /// Columns of csv file
+  /// </summary>
   private static List<string> _columns = new List<string>
   {
     "PathLength", // Number of segments in path
@@ -282,19 +227,30 @@ public class AgentLogger
     _pathEndTime = 0f;
   }
 
+  /// <summary>
+  /// Add new velocity to array
+  /// </summary>
+  /// <param name="vel">Velocity that will be added</param>
   public void AddVelocity(Vector2 vel)
   {
     _velocities.Add(vel);
   }
 
+  /// <summary>
+  /// Add new GA run time
+  /// </summary>
+  /// <param name="time">GA run time</param>
   public void AddGaTime(double time)
   {
     _gaTimes.Add(time);
   }
 
+  /// <summary>
+  /// Create new csv if it doesnt exist already
+  /// </summary>
   public void CreateCsv()
   {
-    _csvFile = "Plotting/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
+    _csvFile = "Plotting/Runs/" + _configurationId + "/" + _scenarioId + "/" + _agentId + ".csv";
     FileInfo fileInfo = new FileInfo(_csvFile);
     fileInfo.Directory.Create();
 
@@ -309,6 +265,9 @@ public class AgentLogger
     }
   }
 
+  /// <summary>
+  /// Append new log into a csv
+  /// </summary>
   public void AppendCsvLog()
   {
     var pathLength = _velocities.Count;
@@ -324,9 +283,13 @@ public class AgentLogger
     }
   }
 
+  /// <summary>
+  /// Create a configuration file holding info about the GA
+  /// </summary>
+  /// <param name="configuration"></param>
   public void CreateConfigurationFile(string configuration)
   {
-    var confFile = _csvFile = "Plotting/" + _configurationId + "/" + "config.txt";
+    var confFile = "Plotting/Runs/" + _configurationId + "/" + "config.txt";
     FileInfo fileInfo = new FileInfo(confFile);
     fileInfo.Directory.Create();
 
@@ -341,11 +304,37 @@ public class AgentLogger
     }
   }
 
+  /// <summary>
+  /// Increase _collisionCount counter
+  /// </summary>
   public void AddCollisionCount() { _collisionCount++; }
+  /// <summary>
+  /// Increase _framesInCollision counter
+  /// </summary>
   public void AddFramesInCollision() { _framesInCollision++; }
+  /// <summary>
+  /// Setter for _pathEndTime
+  /// </summary>
+  /// <param name="endTime">End time</param>
   public void SetEndTime(double endTime) { _pathEndTime = endTime; }
+  /// <summary>
+  /// Setter for _pathStartTime
+  /// </summary>
+  /// <param name="startTime">Start time</param>
   public void SetStartTime(double startTime) { _pathStartTime = startTime; }
+  /// <summary>
+  /// Setter for _scenarioId
+  /// </summary>
+  /// <param name="name">Scenario id</param>
   public void SetScenarioId(string name) { _scenarioId = name; }
+  /// <summary>
+  /// Setter for _agentId
+  /// </summary>
+  /// <param name="name">Agent id</param>
   public void SetAgentId(string name) { _agentId = name; }
+  /// <summary>
+  /// Setter for _configurationId
+  /// </summary>
+  /// <param name="confId">Configuration id</param>
   public void SetConfigurationId(string confId) { _configurationId = confId; }
 }

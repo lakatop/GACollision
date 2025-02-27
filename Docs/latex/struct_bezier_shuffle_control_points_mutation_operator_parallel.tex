@@ -1,0 +1,106 @@
+\doxysection{Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel Struct Reference}
+\hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel}{}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel}\index{BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}}
+
+
+Shuffle\+Control\+Points mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_shuffle_control_points_mutation_operator_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_shuffle_control_points_mutation_operator_parallel_a74425b58cda2d892bf7db7ce0fd41598}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform mutation on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_shuffle_control_points_mutation_operator_parallel_a752bf1bdb4881437b11272c6df526648}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_shuffle_control_points_mutation_operator_parallel_a7924b421e7a62483be51d38374567a07}{Get\+Mutation\+Probabilty}} ()
+\begin{DoxyCompactList}\small\item\em Getter for mutation probability. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a516a27fcb86d683f05833d298bbc6b0a}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a516a27fcb86d683f05833d298bbc6b0a} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a9f0bf06663170f41cd0af7cc48ced3b2}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a9f0bf06663170f41cd0af7cc48ced3b2} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\begin{DoxyCompactList}\small\item\em Random object variable. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a1cc67d0976868cc31c38f3b45f23a2b3}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a1cc67d0976868cc31c38f3b45f23a2b3} 
+Vector2 {\bfseries start\+Position}
+\begin{DoxyCompactList}\small\item\em agents current position \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_abd8279f0195375064c08029e0eecc6a7}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_abd8279f0195375064c08029e0eecc6a7} 
+Vector2 {\bfseries end\+Position}
+\begin{DoxyCompactList}\small\item\em agents destination \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_ae7943108d0fe31ad846d7f193be7c109}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_ae7943108d0fe31ad846d7f193be7c109} 
+Vector2 {\bfseries forward}
+\begin{DoxyCompactList}\small\item\em agents forward vector \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_abff51ad3ea26d8a816cfc21c1eae066e}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_abff51ad3ea26d8a816cfc21c1eae066e} 
+float {\bfseries mutation\+Prob}
+\begin{DoxyCompactList}\small\item\em Probability of mutation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shuffle\+Control\+Points mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a752bf1bdb4881437b11272c6df526648}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a752bf1bdb4881437b11272c6df526648} 
+\index{BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a7924b421e7a62483be51d38374567a07}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a7924b421e7a62483be51d38374567a07} 
+\index{BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}!GetMutationProbabilty@{GetMutationProbabilty}}
+\index{GetMutationProbabilty@{GetMutationProbabilty}!BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetMutationProbabilty()}{GetMutationProbabilty()}}
+{\footnotesize\ttfamily float Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel.\+Get\+Mutation\+Probabilty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for mutation probability. 
+
+\begin{DoxyReturn}{Returns}
+Mutation probability
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_shuffle_control_points_mutation_operator_parallel_a74425b58cda2d892bf7db7ce0fd41598}\label{struct_bezier_shuffle_control_points_mutation_operator_parallel_a74425b58cda2d892bf7db7ce0fd41598} 
+\index{BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierShuffleControlPointsMutationOperatorParallel@{BezierShuffleControlPointsMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Shuffle\+Control\+Points\+Mutation\+Operator\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform mutation on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Mutation.\+cs\end{DoxyCompactItemize}

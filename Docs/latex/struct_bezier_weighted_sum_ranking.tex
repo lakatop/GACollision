@@ -1,0 +1,110 @@
+\doxysection{Bezier\+Weighted\+Sum\+Ranking Struct Reference}
+\hypertarget{struct_bezier_weighted_sum_ranking}{}\label{struct_bezier_weighted_sum_ranking}\index{BezierWeightedSumRanking@{BezierWeightedSumRanking}}
+
+
+Weighted sum for Bezier individual fitnesses.  
+
+
+Inheritance diagram for Bezier\+Weighted\+Sum\+Ranking\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_weighted_sum_ranking}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_weighted_sum_ranking_a9972260676c35c8f19a907564eca1afa}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Set fitness for population. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_bezier_weighted_sum_ranking_a3ef413add988f916273fb56b15263e5b}{Calculate\+Ranking}} (ref Native\+Array$<$ float $>$ fitness\+Values1, ref Native\+Array$<$ float $>$ fitness\+Values2, ref Native\+Array$<$ float $>$ fitness\+Values3, ref Native\+Array$<$ float $>$ fitness\+Values4, float weight1, float weight2, float weight3, float weight4)
+\begin{DoxyCompactList}\small\item\em Perform weighted sum calculation from population fitnesses. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_weighted_sum_ranking_a5d50b8f0098e8a4896ae24dcc34413ea}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_weighted_sum_ranking_af93aea92de81ea99427053fa31cb335e}\label{struct_bezier_weighted_sum_ranking_af93aea92de81ea99427053fa31cb335e} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_weighted_sum_ranking_a2f0ea3403e30ea75628dd21f0084c4ed}\label{struct_bezier_weighted_sum_ranking_a2f0ea3403e30ea75628dd21f0084c4ed} 
+Native\+Array$<$ float $>$ {\bfseries resulting\+Fitnesses}
+\begin{DoxyCompactList}\small\item\em Resulting fitnesses for each individual. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Weighted sum for Bezier individual fitnesses. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_weighted_sum_ranking_a3ef413add988f916273fb56b15263e5b}\label{struct_bezier_weighted_sum_ranking_a3ef413add988f916273fb56b15263e5b} 
+\index{BezierWeightedSumRanking@{BezierWeightedSumRanking}!CalculateRanking@{CalculateRanking}}
+\index{CalculateRanking@{CalculateRanking}!BezierWeightedSumRanking@{BezierWeightedSumRanking}}
+\doxysubsubsection{\texorpdfstring{CalculateRanking()}{CalculateRanking()}}
+{\footnotesize\ttfamily void Bezier\+Weighted\+Sum\+Ranking.\+Calculate\+Ranking (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ float $>$}]{fitness\+Values1,  }\item[{ref Native\+Array$<$ float $>$}]{fitness\+Values2,  }\item[{ref Native\+Array$<$ float $>$}]{fitness\+Values3,  }\item[{ref Native\+Array$<$ float $>$}]{fitness\+Values4,  }\item[{float}]{weight1,  }\item[{float}]{weight2,  }\item[{float}]{weight3,  }\item[{float}]{weight4 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform weighted sum calculation from population fitnesses. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fitness\+Values1} & Array of first fitnesses\\
+\hline
+{\em fitness\+Values2} & Array of second fitnesses\\
+\hline
+{\em fitness\+Values3} & Array of third fitnesses\\
+\hline
+{\em fitness\+Values4} & Array of fourth fitnesses\\
+\hline
+{\em weight1} & Weight of first fitnesses\\
+\hline
+{\em weight2} & Weight of second fitnesses\\
+\hline
+{\em weight3} & Weight of third fitnesses\\
+\hline
+{\em weight4} & Weight of fourth fitnesses\\
+\hline
+\end{DoxyParams}
+\Hypertarget{struct_bezier_weighted_sum_ranking_a5d50b8f0098e8a4896ae24dcc34413ea}\label{struct_bezier_weighted_sum_ranking_a5d50b8f0098e8a4896ae24dcc34413ea} 
+\index{BezierWeightedSumRanking@{BezierWeightedSumRanking}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierWeightedSumRanking@{BezierWeightedSumRanking}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Weighted\+Sum\+Ranking.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_weighted_sum_ranking_a9972260676c35c8f19a907564eca1afa}\label{struct_bezier_weighted_sum_ranking_a9972260676c35c8f19a907564eca1afa} 
+\index{BezierWeightedSumRanking@{BezierWeightedSumRanking}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierWeightedSumRanking@{BezierWeightedSumRanking}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Weighted\+Sum\+Ranking.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set fitness for population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Rankings.\+cs\end{DoxyCompactItemize}

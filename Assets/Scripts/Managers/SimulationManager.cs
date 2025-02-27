@@ -3,7 +3,8 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using Unity.Collections;
 using UnityEngine.SceneManagement;
-using System.Threading;
+
+
 /// <summary>
 /// Singleton
 /// Agent manager class
@@ -40,20 +41,6 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private bool _skipNextFrame { get; set; }
   /// <summary>
-  /// List of all collision avoidance algorithms that registered themselves to SimulationManager
-  /// </summary>
-  private List<IBaseCollisionAvoider> _collisionListeners { get; set; }
-  /// <summary>
-  /// List of all classes that require some special resource allocation/deallocation during simulation
-  /// e.g. GeneticAlgorithm for NativeArray(s)
-  /// </summary>
-  private List<IResourceManager> _resourceListeners { get; set; }
-  /// <summary>
-  /// Manager for collision avoidance algorithms
-  /// This should be the only instance in entire simulation
-  /// </summary>
-  public AlgorithmsManager _collisionManager { get; private set; }
-  /// <summary>
   /// Walking platform bound
   /// </summary>
   private NativeQuadTree.AABB2D _platfornm { get; set; }
@@ -86,11 +73,13 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   public float agentUpdateInterval { get; private set; }
   /// <summary>
-  /// 
+  /// Temporary Time.deltaTime accumulator
   /// </summary>
   private float _updateTimer { get; set; }
 
-
+  /// <summary>
+  /// Called as a first method for this component - perform initialisation
+  /// </summary>
   void Awake()
   {
     System.Console.WriteLine("SimulationManager Awake call");
@@ -104,9 +93,6 @@ public class SimulationManager : MonoBehaviour
 
     _agents = new List<IBaseAgent>();
     obstacles = new List<Obstacle>();
-    _collisionListeners = new List<IBaseCollisionAvoider>();
-    _collisionManager = new AlgorithmsManager();
-    _resourceListeners = new List<IResourceManager>();
     _quadtreeStaticElements = new List<NativeQuadTree.QuadElement<TreeNode>>();
     _quadAgentsPositions = new List<NativeQuadTree.QuadElement<TreeNode>>();
     agentUpdateInterval = 0.5f;
@@ -116,9 +102,11 @@ public class SimulationManager : MonoBehaviour
     _skipNextFrame = true;
   }
 
+  /// <summary>
+  /// Called on component start after Awake method
+  /// </summary>
   void Start()
   {
-    System.Console.WriteLine("SimulationManager StartCall");
     CreateScenarios();
     SetScenarioResources();
   }
@@ -130,7 +118,6 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   void Update()
   {
-    System.Console.WriteLine("SimulationManager Update call");
     if (_skipNextFrame)
     {
       _skipNextFrame = false;
@@ -167,9 +154,8 @@ public class SimulationManager : MonoBehaviour
       }
       else
       {
-        // Ideally end application, but it seems iOS has some troubles with that
-        //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Unload();
+        // When playing via editor, this is how we quit the simulation (but keep unity running)
+        UnityEditor.EditorApplication.isPlaying = false;
       }
     }
     else
@@ -178,17 +164,18 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Update agents and data related to their update
+  /// </summary>
   private void RunSimulation()
   {
-    System.Console.WriteLine("RUNNING RunSimulation");
     _scenarioStarted = true;
 
     if (_updateTimer > agentUpdateInterval)
     {
       foreach (var agent in _agents)
       {
-        Debug.Log("In destination: " + agent.inDestination);
-        agent.OnAfterUpdate(Vector2.zero);
+        agent.OnAfterUpdate();
       }
 
       _updateTimer = 0f;
@@ -211,10 +198,13 @@ public class SimulationManager : MonoBehaviour
 
     foreach (var agent in _agents)
     {
-      agent.OnAfterUpdate(Vector2.zero);
+      agent.OnAfterUpdate();
     }
   }
 
+  /// <summary>
+  /// Called when this component is detroyed
+  /// </summary>
   private void OnDestroy()
   {
     if (_quadTreeCreated)
@@ -222,26 +212,6 @@ public class SimulationManager : MonoBehaviour
       _quadTree.Dispose();
       _quadTreeData.Dispose();
     }
-  }
-
-  /// <summary>
-  /// Add collision avoidance algorithm instance to list of listeners.
-  /// This listener will receive updating calls
-  /// </summary>
-  /// <param name="collisionAvoider">Instance to be added</param>
-  public void RegisterCollisionListener(IBaseCollisionAvoider collisionAvoider)
-  {
-    _collisionListeners.Add(collisionAvoider);
-  }
-
-  /// <summary>
-  /// Add resource handling class to listener list.
-  /// This listener will receive updating calls
-  /// </summary>
-  /// <param name="resourceManager">Intance to be added</param>
-  public void RegisterResourceListener(IResourceManager resourceManager)
-  {
-    _resourceListeners.Add(resourceManager);
   }
 
   /// <summary>
@@ -254,17 +224,8 @@ public class SimulationManager : MonoBehaviour
   }
 
   /// <summary>
-  /// Create new agent according to current mouse position
+  /// Register obstacles present in current simulation scenario
   /// </summary>
-  private void SpawnAgent()
-  {
-    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    if (Physics.Raycast(ray, out var hitInfo))
-    {
-      CreateScenarios();
-    }
-  }
-
   private void RegisterObstacles()
   {
     obstacles.Clear();
@@ -306,6 +267,11 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Calculate corners of rectangle based on its bounds
+  /// </summary>
+  /// <param name="bounds">Bounds of rectangle</param>
+  /// <returns>List of rectangles corners</returns>
   private List<Vector2> CalculateCubeCorners(Bounds bounds)
   {
     Vector2 center = new Vector2(bounds.center.x, bounds.center.z);
@@ -323,6 +289,9 @@ public class SimulationManager : MonoBehaviour
     return corners;
   }
 
+  /// <summary>
+  /// Register walkable platform in current simulation
+  /// </summary>
   private void RegisterWalkingPlatform()
   {
     // Find all NavMeshModifier components in the scene
@@ -359,7 +328,7 @@ public class SimulationManager : MonoBehaviour
   /// </summary>
   private void TransformObstaclesToQuadElements()
   {
-    var agentRadius = 0.5f; // make it slightly smaller that actual radius so agent wont be able to slip between obstacle points
+    var agentRadius = 0.5f;
     _quadtreeStaticElements.Clear();
     foreach (var obstacle in obstacles)
     {
@@ -382,7 +351,9 @@ public class SimulationManager : MonoBehaviour
 
           },
         });
-        PathDrawer.DrawCircle(point, agentRadius);
+
+        // For debug drawing uncomment the following line
+        //PathDrawer.DrawCircle(point, agentRadius);
 
         point.x += 2 * agentRadius;
         while(point.x <= (end.x - agentRadius))
@@ -398,7 +369,9 @@ public class SimulationManager : MonoBehaviour
 
             },
           });
-          PathDrawer.DrawCircle(point, agentRadius);
+
+          // For debug drawing uncomment the following line
+          //PathDrawer.DrawCircle(point, agentRadius);
           point.x += 2 * agentRadius;
         }
 
@@ -408,6 +381,12 @@ public class SimulationManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Check whether point is within given bounds
+  /// </summary>
+  /// <param name="bounds">Bounds in which we want to check</param>
+  /// <param name="point">Point for checking</param>
+  /// <returns>True if point is within bounds, false otherwise</returns>
   private bool IsWithingBounds(NativeQuadTree.AABB2D bounds, Vector2 point)
   {
     return bounds.Contains(new Unity.Mathematics.float2(point.x, point.y));
@@ -488,6 +467,9 @@ public class SimulationManager : MonoBehaviour
     return finished;
   }
 
+  /// <summary>
+  /// Populate scenarios list
+  /// </summary>
   private void CreateScenarios()
   {
     System.Console.WriteLine("Creating scenarios");
@@ -499,22 +481,32 @@ public class SimulationManager : MonoBehaviour
       new OppositeScenario(1),
       new OppositeMultipleScenario(1),
       new OppositeCircleScenario(1),
-      new NarrowCoridorTurnAroundScenario(1),
-      new NarrowCoridorOppositeScenario(1),
-      new NarrowCoridorsOppositeNoNavmeshScenario(1)
+      new NarrowCoridorsOppositeNoNavmeshScenario(1),
+      new NarrowCoridorOppositeScenario(1)
     };
   }
 
+  /// <summary>
+  /// Check if there is next scenario
+  /// </summary>
+  /// <returns>True if we have next scenario in list, false otherwise</returns>
   private bool IsThereNextScenario()
   {
     return _scenarioIndex < (scenarios.Count - 1);
   }
 
+  /// <summary>
+  /// Check if we should repeat current scenario
+  /// </summary>
+  /// <returns>True if we should repeat current scenario, false otherwise</returns>
   private bool ShouldRepeatScenario()
   {
     return scenarios[_scenarioIndex].runCounter > 0;
   }
 
+  /// <summary>
+  /// Sets next scenario
+  /// </summary>
   private void  SetNextScenario()
   {
     var nextSceneIndex = _scenarioIndex + 1;
@@ -522,12 +514,14 @@ public class SimulationManager : MonoBehaviour
     if (nextSceneIndex >= scenarios.Count)
       return;
     SceneManager.LoadScene(nextSceneIndex);
-    scenarios[nextSceneIndex].runCounter--;
     _scenarioStarted = false;
     _skipNextFrame = true;
     _scenarioIndex++;
   }
 
+  /// <summary>
+  /// Sets resources needed for current scenario
+  /// </summary>
   private void SetScenarioResources()
   {
     RegisterObstacles();
@@ -535,6 +529,9 @@ public class SimulationManager : MonoBehaviour
     TransformObstaclesToQuadElements();
   }
 
+  /// <summary>
+  /// Create new _quadTree and populate it with data of current scenario
+  /// </summary>
   private void CreateQuadtreeAndData()
   {
     _quadTree = new NativeQuadTree.NativeQuadTree<TreeNode>(_platfornm, Allocator.Persistent);
@@ -556,6 +553,9 @@ public class SimulationManager : MonoBehaviour
     _quadTreeCreated = true;
   }
 
+  /// <summary>
+  /// Clear resources of current scenario
+  /// </summary>
   private void ClearScenarioResources()
   {
     scenarios[_scenarioIndex].ClearScenario(_agents);

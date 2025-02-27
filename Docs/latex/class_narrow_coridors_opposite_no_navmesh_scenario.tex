@@ -1,0 +1,130 @@
+\doxysection{Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario Class Reference}
+\hypertarget{class_narrow_coridors_opposite_no_navmesh_scenario}{}\label{class_narrow_coridors_opposite_no_navmesh_scenario}\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+
+
+Scenario where multiple agents are headed oposite to each other but there are obstacles along the way that create narrow corridors and are not registered in navmesh.  
+
+
+Inheritance diagram for Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_narrow_coridors_opposite_no_navmesh_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_a06137a8a176e4b5f2724b054b31cb7a9}{Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_aa64f5e4fa1057bb3ed424be0024cc18e}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_a5568e0b069ae4c3ab33fa4bd3736d2d1}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_narrow_coridors_opposite_no_navmesh_scenario_a3fe4a3cadd204fd490b409bbd80642c4}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Scenario where multiple agents are headed oposite to each other but there are obstacles along the way that create narrow corridors and are not registered in navmesh. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_narrow_coridors_opposite_no_navmesh_scenario_a06137a8a176e4b5f2724b054b31cb7a9}\label{class_narrow_coridors_opposite_no_navmesh_scenario_a06137a8a176e4b5f2724b054b31cb7a9} 
+\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}!NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}!NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+\doxysubsubsection{\texorpdfstring{NarrowCoridorsOppositeNoNavmeshScenario()}{NarrowCoridorsOppositeNoNavmeshScenario()}}
+{\footnotesize\ttfamily Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario.\+Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_narrow_coridors_opposite_no_navmesh_scenario_a5568e0b069ae4c3ab33fa4bd3736d2d1}\label{class_narrow_coridors_opposite_no_navmesh_scenario_a5568e0b069ae4c3ab33fa4bd3736d2d1} 
+\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_narrow_coridors_opposite_no_navmesh_scenario_aa64f5e4fa1057bb3ed424be0024cc18e}\label{class_narrow_coridors_opposite_no_navmesh_scenario_aa64f5e4fa1057bb3ed424be0024cc18e} 
+\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_narrow_coridors_opposite_no_navmesh_scenario_a3fe4a3cadd204fd490b409bbd80642c4}\label{class_narrow_coridors_opposite_no_navmesh_scenario_a3fe4a3cadd204fd490b409bbd80642c4} 
+\index{NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!NarrowCoridorsOppositeNoNavmeshScenario@{NarrowCoridorsOppositeNoNavmeshScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Narrow\+Coridors\+Opposite\+No\+Navmesh\+Scenario.\+cs\end{DoxyCompactItemize}

@@ -1,0 +1,109 @@
+\doxysection{Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel Struct Reference}
+\hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel}{}\label{struct_bezier_clamp_velocity_mutation_operator_parallel}\index{BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}}
+
+
+Clamp\+Velocity mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_clamp_velocity_mutation_operator_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_clamp_velocity_mutation_operator_parallel_af8d5b059603ab1cdd1b822b7a084246b}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Perform mutation on population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_clamp_velocity_mutation_operator_parallel_a6cd10da84767fbcd8ebe480ea5cd019c}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_clamp_velocity_mutation_operator_parallel_a15f114dba693dd0b0f1ac7952aecb654}{Get\+Mutation\+Probabilty}} ()
+\begin{DoxyCompactList}\small\item\em Getter for mutation probability. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_a205e0875828d4f0ced7314c662d34f01}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_a205e0875828d4f0ced7314c662d34f01} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_a86e4c8365cc524c855dd611123db1eeb}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_a86e4c8365cc524c855dd611123db1eeb} 
+Unity.\+Mathematics.\+Random {\bfseries rand}
+\begin{DoxyCompactList}\small\item\em Random object variable. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_ae7fbb75eb5fe26699d12c223fc2a10c7}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_ae7fbb75eb5fe26699d12c223fc2a10c7} 
+float {\bfseries agent\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximum agents speed. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_ab5cee22ab41299b65d19ad4f21fd6126}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_ab5cee22ab41299b65d19ad4f21fd6126} 
+float {\bfseries update\+Interval}
+\begin{DoxyCompactList}\small\item\em How often is agent running GA. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_af5a4ac050a4c962ed120f0796cdadd3c}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_af5a4ac050a4c962ed120f0796cdadd3c} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em agents current velocity \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_a206004f5cd7af60cadfd43742033a0ff}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_a206004f5cd7af60cadfd43742033a0ff} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em agents maximum acceleration/deceleration \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_afb7211c4cb6f35d9632c4be0a3131b8c}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_afb7211c4cb6f35d9632c4be0a3131b8c} 
+float {\bfseries mutation\+Prob}
+\begin{DoxyCompactList}\small\item\em Probability of mutation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Clamp\+Velocity mutation for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_a6cd10da84767fbcd8ebe480ea5cd019c}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_a6cd10da84767fbcd8ebe480ea5cd019c} 
+\index{BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_a15f114dba693dd0b0f1ac7952aecb654}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_a15f114dba693dd0b0f1ac7952aecb654} 
+\index{BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}!GetMutationProbabilty@{GetMutationProbabilty}}
+\index{GetMutationProbabilty@{GetMutationProbabilty}!BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{GetMutationProbabilty()}{GetMutationProbabilty()}}
+{\footnotesize\ttfamily float Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel.\+Get\+Mutation\+Probabilty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for mutation probability. 
+
+\begin{DoxyReturn}{Returns}
+Mutation probability
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_clamp_velocity_mutation_operator_parallel_af8d5b059603ab1cdd1b822b7a084246b}\label{struct_bezier_clamp_velocity_mutation_operator_parallel_af8d5b059603ab1cdd1b822b7a084246b} 
+\index{BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierClampVelocityMutationOperatorParallel@{BezierClampVelocityMutationOperatorParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Clamp\+Velocity\+Mutation\+Operator\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform mutation on population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Mutation.\+cs\end{DoxyCompactItemize}

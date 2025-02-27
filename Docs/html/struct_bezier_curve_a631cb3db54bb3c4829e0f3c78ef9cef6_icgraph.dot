@@ -1,0 +1,11 @@
+digraph "BezierCurve.EvaluateQuadratic"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="BezierCurve.EvaluateQuadratic",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Returns point on the quadtratic bezier curve."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="BezierCurve.EvaluateCubic",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$struct_bezier_curve.html#a62d225140c03f183ac3d2dfa044cfe97",tooltip="Returns point on the cubic bezier curve."];
+}

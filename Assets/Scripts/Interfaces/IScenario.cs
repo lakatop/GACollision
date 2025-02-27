@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// Defines interface for scenarios
+/// </summary>
 public interface IScenario
 {
   /// <summary>

@@ -1,0 +1,130 @@
+\doxysection{Opposite\+Circle\+Scenario Class Reference}
+\hypertarget{class_opposite_circle_scenario}{}\label{class_opposite_circle_scenario}\index{OppositeCircleScenario@{OppositeCircleScenario}}
+
+
+Scenario where 10 agents start in circlular shape and go into opposite directions.  
+
+
+Inheritance diagram for Opposite\+Circle\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_opposite_circle_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_opposite_circle_scenario_a846b8a31d46005097394215c27663a96}{Opposite\+Circle\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opposite_circle_scenario_af128605832aabae17121c786b8a4105b}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opposite_circle_scenario_a1d992b498fe5c0e6ac416cfedb6fd652}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_opposite_circle_scenario_adc634cc870365f83275bacf3b07fb4fc}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Scenario where 10 agents start in circlular shape and go into opposite directions. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_opposite_circle_scenario_a846b8a31d46005097394215c27663a96}\label{class_opposite_circle_scenario_a846b8a31d46005097394215c27663a96} 
+\index{OppositeCircleScenario@{OppositeCircleScenario}!OppositeCircleScenario@{OppositeCircleScenario}}
+\index{OppositeCircleScenario@{OppositeCircleScenario}!OppositeCircleScenario@{OppositeCircleScenario}}
+\doxysubsubsection{\texorpdfstring{OppositeCircleScenario()}{OppositeCircleScenario()}}
+{\footnotesize\ttfamily Opposite\+Circle\+Scenario.\+Opposite\+Circle\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_opposite_circle_scenario_a1d992b498fe5c0e6ac416cfedb6fd652}\label{class_opposite_circle_scenario_a1d992b498fe5c0e6ac416cfedb6fd652} 
+\index{OppositeCircleScenario@{OppositeCircleScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!OppositeCircleScenario@{OppositeCircleScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Opposite\+Circle\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_opposite_circle_scenario_af128605832aabae17121c786b8a4105b}\label{class_opposite_circle_scenario_af128605832aabae17121c786b8a4105b} 
+\index{OppositeCircleScenario@{OppositeCircleScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!OppositeCircleScenario@{OppositeCircleScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Opposite\+Circle\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_opposite_circle_scenario_adc634cc870365f83275bacf3b07fb4fc}\label{class_opposite_circle_scenario_adc634cc870365f83275bacf3b07fb4fc} 
+\index{OppositeCircleScenario@{OppositeCircleScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!OppositeCircleScenario@{OppositeCircleScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Opposite\+Circle\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Opposite\+Circle\+Scenario.\+cs\end{DoxyCompactItemize}

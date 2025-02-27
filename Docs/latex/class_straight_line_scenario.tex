@@ -1,0 +1,130 @@
+\doxysection{Straight\+Line\+Scenario Class Reference}
+\hypertarget{class_straight_line_scenario}{}\label{class_straight_line_scenario}\index{StraightLineScenario@{StraightLineScenario}}
+
+
+Simple scenario where agent start at position (0,0) and should go straight line to the destination (0,40)  
+
+
+Inheritance diagram for Straight\+Line\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_straight_line_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_straight_line_scenario_a9dd132e3da188178847cae110953197d}{Straight\+Line\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_straight_line_scenario_a11d4f84c71d5037b128f88e160d7ad70}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_straight_line_scenario_a91d187b2e6371f87cc4f972ea81e39af}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_straight_line_scenario_a80526fb283882c9d4b0654a8b172d798}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Simple scenario where agent start at position (0,0) and should go straight line to the destination (0,40) 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_straight_line_scenario_a9dd132e3da188178847cae110953197d}\label{class_straight_line_scenario_a9dd132e3da188178847cae110953197d} 
+\index{StraightLineScenario@{StraightLineScenario}!StraightLineScenario@{StraightLineScenario}}
+\index{StraightLineScenario@{StraightLineScenario}!StraightLineScenario@{StraightLineScenario}}
+\doxysubsubsection{\texorpdfstring{StraightLineScenario()}{StraightLineScenario()}}
+{\footnotesize\ttfamily Straight\+Line\+Scenario.\+Straight\+Line\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_straight_line_scenario_a91d187b2e6371f87cc4f972ea81e39af}\label{class_straight_line_scenario_a91d187b2e6371f87cc4f972ea81e39af} 
+\index{StraightLineScenario@{StraightLineScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!StraightLineScenario@{StraightLineScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Straight\+Line\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_straight_line_scenario_a11d4f84c71d5037b128f88e160d7ad70}\label{class_straight_line_scenario_a11d4f84c71d5037b128f88e160d7ad70} 
+\index{StraightLineScenario@{StraightLineScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!StraightLineScenario@{StraightLineScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Straight\+Line\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_straight_line_scenario_a80526fb283882c9d4b0654a8b172d798}\label{class_straight_line_scenario_a80526fb283882c9d4b0654a8b172d798} 
+\index{StraightLineScenario@{StraightLineScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!StraightLineScenario@{StraightLineScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Straight\+Line\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Straight\+Line\+Scenario.\+cs\end{DoxyCompactItemize}

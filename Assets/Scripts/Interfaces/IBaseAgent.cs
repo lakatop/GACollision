@@ -11,11 +11,10 @@ public interface IBaseAgent
   /// </summary>
   void OnBeforeUpdate();
   /// <summary>
-  /// Updatefunction for an agent
+  /// Update function for an agent
   /// Called every simulation step after other updates
   /// </summary>
-  /// <param name="newPos">New position</param>
-  void OnAfterUpdate(Vector2 newPos);
+  void OnAfterUpdate();
   /// <summary>
   /// Sets agents position
   /// </summary>
@@ -51,11 +50,6 @@ public interface IBaseAgent
   /// </summary>
   float speed { get; set; }
   /// <summary>
-  /// Interval for how often should agent call Update on itself
-  /// Defaults to 0, meaning it will be updated every simulation step
-  /// </summary>
-  float updateInterval { get { return 0f; } set { this.updateInterval = value; } }
-  /// <summary>
   /// Returns whether agent is in its final destination
   /// </summary>
   bool inDestination { get; set; }
@@ -67,10 +61,6 @@ public interface IBaseAgent
   /// Agents desired destination
   /// </summary>
   Vector2 destination { get; }
-  /// <summary>
-  /// Collision avoidance algorithm that agent uses
-  /// </summary>
-  IBaseCollisionAvoider collisionAlg { get; set; }
   /// <summary>
   /// Path planning algorithm that agent uses
   /// </summary>

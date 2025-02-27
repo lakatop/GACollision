@@ -1,0 +1,115 @@
+\doxysection{Bezier\+Fitness\+Jerk\+Cost\+Parallel Struct Reference}
+\hypertarget{struct_bezier_fitness_jerk_cost_parallel}{}\label{struct_bezier_fitness_jerk_cost_parallel}\index{BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}}
+
+
+Jerk\+Cost fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs.  
+
+
+Inheritance diagram for Bezier\+Fitness\+Jerk\+Cost\+Parallel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_bezier_fitness_jerk_cost_parallel}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_bezier_fitness_jerk_cost_parallel_a2daa661024866699c36ed8bfa824120b}{Modify\+Population}} (ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Calcualte Jerk\+Cost fitness in population. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{struct_bezier_fitness_jerk_cost_parallel_ac56a97a65a1735729dab6f8e528b049b}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Getter for component name. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{struct_bezier_fitness_jerk_cost_parallel_a952d23a7a6e6302c2d04ad23b2094eb2}{Get\+Fitness\+Weight}} ()
+\begin{DoxyCompactList}\small\item\em Getter for fitness weight. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_ac26adfc13fbaa1dd07d85ae9479537e2}\label{struct_bezier_fitness_jerk_cost_parallel_ac26adfc13fbaa1dd07d85ae9479537e2} 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Clear resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interface_i_parallel_population_modifier}{IParallel\+Population\+Modifier$<$ Bezier\+Individual\+Struct $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interface_i_parallel_population_modifier_a7f4ee653a76d4d090a1f4634e8929309}{Modify\+Population}} (ref Native\+Array$<$ T $>$ current\+Population, int iteration)
+\begin{DoxyCompactList}\small\item\em Modifies population passed as parameter and returns result. \end{DoxyCompactList}\item 
+void {\bfseries Dispose} ()
+\begin{DoxyCompactList}\small\item\em Dispose any allocated resources. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{interface_i_parallel_population_modifier_a89a7b7433cfd6ae86ac81c4923f409de}{Get\+Component\+Name}} ()
+\begin{DoxyCompactList}\small\item\em Get name of this component -\/ used for logging purposes in various experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_af9c51809db83b467ee67cb8179a87889}\label{struct_bezier_fitness_jerk_cost_parallel_af9c51809db83b467ee67cb8179a87889} 
+Vector2 {\bfseries start\+Position}
+\begin{DoxyCompactList}\small\item\em Current position of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_ad817ea5a9c89aba78587c23df24ea8c6}\label{struct_bezier_fitness_jerk_cost_parallel_ad817ea5a9c89aba78587c23df24ea8c6} 
+Vector2 {\bfseries destination}
+\begin{DoxyCompactList}\small\item\em Destination of an agent. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_ac99d912e63e9ef209e7f28558e5e0740}\label{struct_bezier_fitness_jerk_cost_parallel_ac99d912e63e9ef209e7f28558e5e0740} 
+float {\bfseries weight}
+\begin{DoxyCompactList}\small\item\em Weight of this fitness used inside weighted sum. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a4c7c1f94ba0bdf62595ba1a8e8e4f579}\label{struct_bezier_fitness_jerk_cost_parallel_a4c7c1f94ba0bdf62595ba1a8e8e4f579} 
+float {\bfseries max\+Acc}
+\begin{DoxyCompactList}\small\item\em Maximum agents acceleration/deceleration. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_ac7ab3b398ca8702a26a72a2c14bb9d15}\label{struct_bezier_fitness_jerk_cost_parallel_ac7ab3b398ca8702a26a72a2c14bb9d15} 
+float {\bfseries start\+Velocity}
+\begin{DoxyCompactList}\small\item\em agents current velocity \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a91c201c33a11e62ca22a77204ebb75cc}\label{struct_bezier_fitness_jerk_cost_parallel_a91c201c33a11e62ca22a77204ebb75cc} 
+float {\bfseries update\+Interaval}
+\begin{DoxyCompactList}\small\item\em How often is agent running GA. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a861f5d1baef8a9256c7213020f7c7048}\label{struct_bezier_fitness_jerk_cost_parallel_a861f5d1baef8a9256c7213020f7c7048} 
+float {\bfseries max\+Agent\+Speed}
+\begin{DoxyCompactList}\small\item\em Maximum agents speed. \end{DoxyCompactList}\item 
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a13201d1906b1655ef6b7ff9141f8d5da}\label{struct_bezier_fitness_jerk_cost_parallel_a13201d1906b1655ef6b7ff9141f8d5da} 
+Native\+Array$<$ float $>$ {\bfseries fitnesses}
+\begin{DoxyCompactList}\small\item\em Array holding population fitnesses. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Jerk\+Cost fitness for \doxylink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct} designed to be used inside Unity jobs. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_ac56a97a65a1735729dab6f8e528b049b}\label{struct_bezier_fitness_jerk_cost_parallel_ac56a97a65a1735729dab6f8e528b049b} 
+\index{BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}!GetComponentName@{GetComponentName}}
+\index{GetComponentName@{GetComponentName}!BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}}
+\doxysubsubsection{\texorpdfstring{GetComponentName()}{GetComponentName()}}
+{\footnotesize\ttfamily string Bezier\+Fitness\+Jerk\+Cost\+Parallel.\+Get\+Component\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for component name. 
+
+\begin{DoxyReturn}{Returns}
+Name of this struct
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a952d23a7a6e6302c2d04ad23b2094eb2}\label{struct_bezier_fitness_jerk_cost_parallel_a952d23a7a6e6302c2d04ad23b2094eb2} 
+\index{BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}!GetFitnessWeight@{GetFitnessWeight}}
+\index{GetFitnessWeight@{GetFitnessWeight}!BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}}
+\doxysubsubsection{\texorpdfstring{GetFitnessWeight()}{GetFitnessWeight()}}
+{\footnotesize\ttfamily float Bezier\+Fitness\+Jerk\+Cost\+Parallel.\+Get\+Fitness\+Weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for fitness weight. 
+
+\begin{DoxyReturn}{Returns}
+Fitness weight
+\end{DoxyReturn}
+\Hypertarget{struct_bezier_fitness_jerk_cost_parallel_a2daa661024866699c36ed8bfa824120b}\label{struct_bezier_fitness_jerk_cost_parallel_a2daa661024866699c36ed8bfa824120b} 
+\index{BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}!ModifyPopulation@{ModifyPopulation}}
+\index{ModifyPopulation@{ModifyPopulation}!BezierFitnessJerkCostParallel@{BezierFitnessJerkCostParallel}}
+\doxysubsubsection{\texorpdfstring{ModifyPopulation()}{ModifyPopulation()}}
+{\footnotesize\ttfamily void Bezier\+Fitness\+Jerk\+Cost\+Parallel.\+Modify\+Population (\begin{DoxyParamCaption}\item[{ref Native\+Array$<$ \mbox{\hyperlink{struct_bezier_individual_struct}{Bezier\+Individual\+Struct}} $>$}]{current\+Population,  }\item[{int}]{iteration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Calcualte Jerk\+Cost fitness in population. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Population} & Population\\
+\hline
+{\em iteration} & Iteration of GA\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Genetic\+Algorithm/Fitness.\+cs\end{DoxyCompactItemize}

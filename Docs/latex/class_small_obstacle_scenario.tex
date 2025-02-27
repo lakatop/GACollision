@@ -1,0 +1,130 @@
+\doxysection{Small\+Obstacle\+Scenario Class Reference}
+\hypertarget{class_small_obstacle_scenario}{}\label{class_small_obstacle_scenario}\index{SmallObstacleScenario@{SmallObstacleScenario}}
+
+
+Scenario where agent starts at position (0,0) and has destination set to (0,40) Along the straight line, there is static obstacle placed which is not registered in the navmesh.  
+
+
+Inheritance diagram for Small\+Obstacle\+Scenario\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_small_obstacle_scenario}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_small_obstacle_scenario_aebd769c6f8a9dd752b7366504337199e}{Small\+Obstacle\+Scenario}} (int run\+Count)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_small_obstacle_scenario_aec5cc4d7817bd6e3486a2f49f3fe3f9f}{Setup\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_small_obstacle_scenario_acde959cbf90c19766c4daa6eadc447c8}{Clear\+Scenario}} (List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$ agents)
+\begin{DoxyCompactList}\small\item\em Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_small_obstacle_scenario_a5d16a482450701d5d263a5cf10b5ed53}{run\+Counter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Counter how many times scenario should be run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \mbox{\hyperlink{interface_i_scenario}{IScenario}}}
+
+
+\doxysubsection{Detailed Description}
+Scenario where agent starts at position (0,0) and has destination set to (0,40) Along the straight line, there is static obstacle placed which is not registered in the navmesh. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_small_obstacle_scenario_aebd769c6f8a9dd752b7366504337199e}\label{class_small_obstacle_scenario_aebd769c6f8a9dd752b7366504337199e} 
+\index{SmallObstacleScenario@{SmallObstacleScenario}!SmallObstacleScenario@{SmallObstacleScenario}}
+\index{SmallObstacleScenario@{SmallObstacleScenario}!SmallObstacleScenario@{SmallObstacleScenario}}
+\doxysubsubsection{\texorpdfstring{SmallObstacleScenario()}{SmallObstacleScenario()}}
+{\footnotesize\ttfamily Small\+Obstacle\+Scenario.\+Small\+Obstacle\+Scenario (\begin{DoxyParamCaption}\item[{int}]{run\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+Count} & sets run\+Counter\\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_small_obstacle_scenario_acde959cbf90c19766c4daa6eadc447c8}\label{class_small_obstacle_scenario_acde959cbf90c19766c4daa6eadc447c8} 
+\index{SmallObstacleScenario@{SmallObstacleScenario}!ClearScenario@{ClearScenario}}
+\index{ClearScenario@{ClearScenario}!SmallObstacleScenario@{SmallObstacleScenario}}
+\doxysubsubsection{\texorpdfstring{ClearScenario()}{ClearScenario()}}
+{\footnotesize\ttfamily void Small\+Obstacle\+Scenario.\+Clear\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Perform any remaining actions before scenario resources will be cleared.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents that were present in scenario\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a0dc0b77e8e101d1ed5b31107de989f49}{IScenario}}.
+
+\Hypertarget{class_small_obstacle_scenario_aec5cc4d7817bd6e3486a2f49f3fe3f9f}\label{class_small_obstacle_scenario_aec5cc4d7817bd6e3486a2f49f3fe3f9f} 
+\index{SmallObstacleScenario@{SmallObstacleScenario}!SetupScenario@{SetupScenario}}
+\index{SetupScenario@{SetupScenario}!SmallObstacleScenario@{SmallObstacleScenario}}
+\doxysubsubsection{\texorpdfstring{SetupScenario()}{SetupScenario()}}
+{\footnotesize\ttfamily void Small\+Obstacle\+Scenario.\+Setup\+Scenario (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{interface_i_base_agent}{IBase\+Agent}} $>$}]{agents }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates scene with agents, gives them their destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em agents} & \doxylink{class_simulation_manager}{Simulation\+Manager}\textquotesingle{}s list of agents\\
+\hline
+\end{DoxyParams}
+ 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_a1858d19d2a082f652739c9a45a07274d}{IScenario}}.
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_small_obstacle_scenario_a5d16a482450701d5d263a5cf10b5ed53}\label{class_small_obstacle_scenario_a5d16a482450701d5d263a5cf10b5ed53} 
+\index{SmallObstacleScenario@{SmallObstacleScenario}!runCounter@{runCounter}}
+\index{runCounter@{runCounter}!SmallObstacleScenario@{SmallObstacleScenario}}
+\doxysubsubsection{\texorpdfstring{runCounter}{runCounter}}
+{\footnotesize\ttfamily int Small\+Obstacle\+Scenario.\+run\+Counter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Counter how many times scenario should be run. 
+
+
+
+Implements \mbox{\hyperlink{interface_i_scenario_ac1c3f656ad4d9d5d827e7568a7afe374}{IScenario}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/peterlakatos/\+School/\+Diploma\+\_\+\+Thesis/\+Unity\+Navigation/\+Assets/\+Scripts/\+Scenarios/Small\+Obstacle\+Scenario.\+cs\end{DoxyCompactItemize}

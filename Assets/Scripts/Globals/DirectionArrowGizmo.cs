@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Debug class for drawing agents forward vector
+/// </summary>
 public class DirectionArrowGizmo : MonoBehaviour
 {
   public float length = 2.0f;
 
+  /// <summary>
+  /// Called by unity, triggers drawing
+  /// </summary>
   void OnDrawGizmos()
   {
     DrawArrow(transform.position, gameObject.transform.forward, length, Color.red);
   }
 
-  // Draw an arrow using Gizmos
+  /// <summary>
+  /// Draw an arrow using Gizmos
+  /// </summary>
+  /// <param name="start">staring position</param>
+  /// <param name="dir">direction</param>
+  /// <param name="length">length of arrow</param>
+  /// <param name="color">color of arrow</param>
   void DrawArrow(Vector3 start, Vector3 dir, float length, Color color)
   {
     Gizmos.color = color;

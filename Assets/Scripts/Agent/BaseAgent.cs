@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -38,8 +37,6 @@ public abstract class BaseAgent : IBaseAgent
     _object.AddComponent<LineRenderer>();
     _object.AddComponent<AgentCollisionDetectionHandler>();
     _object.GetComponent<AgentCollisionDetectionHandler>().agent = this;
-
-    //Create3DArrowIndicator(_object.transform);
   }
 
   // IBaseAgent interface ---------------------------------------------------------
@@ -47,7 +44,7 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.OnBeforeUpdate"/>
   public abstract void OnBeforeUpdate();
   /// <inheritdoc cref="IBaseAgent.OnAfterUpdate"/>
-  public abstract void OnAfterUpdate(Vector2 newPos);
+  public abstract void OnAfterUpdate();
   /// <inheritdoc cref="IBaseAgent.SetDestination(Vector3)"/>
   public abstract void SetDestination(Vector2 des);
   /// <inheritdoc cref="IBaseAgent.id"/>
@@ -58,12 +55,8 @@ public abstract class BaseAgent : IBaseAgent
   public Vector2 position { get; protected set; }
   /// <inheritdoc cref="IBaseAgent._destination"/>
   public Vector2 destination { get; protected set; }
-  /// <inheritdoc cref="IBaseAgent.updateInterval"/>
-  public float updateInterval { get; set; }
   /// <inheritdoc cref="IBaseAgent.inDestination"/>
   public bool inDestination { get; set; }
-  /// <inheritdoc cref="IBaseAgent.collisionAlg"/>
-  public abstract IBaseCollisionAvoider collisionAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.pathPlanningAlg"/>
   public abstract IBasePathPlanner pathPlanningAlg { get; set; }
   /// <inheritdoc cref="IBaseAgent.SetPosition(Vector2)"/>
@@ -77,18 +70,11 @@ public abstract class BaseAgent : IBaseAgent
 
     // Set current position
     position = pos;
-    //var step = speed * Time.deltaTime;
 
     // Also transform gameobject
     if (_object != null)
     {
-      //_object.transform.position = Vector3.MoveTowards(new Vector3(position.x, 1.58f, position.y), new Vector3(pos.x, 1.58f, pos.y), step);
       _object.transform.position = new Vector3(position.x, 1.58f, position.y);
-      // We cannot use Warp for MyNavMeshAgent because it would override its calculations and we wouldnt move after that
-      if (!(this is MyNavMeshAgent))
-      {
-        GetComponent<NavMeshAgent>().Warp(_object.transform.position);
-      }
     }
   }
   /// <inheritdoc cref="IBaseAgent.SetForward(Vector2)"/>
@@ -110,18 +96,14 @@ public abstract class BaseAgent : IBaseAgent
   /// <inheritdoc cref="IBaseAgent.GetVelocity"/>
   public Vector2 GetVelocity()
   {
-    if (this is MyNavMeshAgent)
-    {
-      return GetComponent<NavMeshAgent>().velocity;
-    }
-    else
-    {
-      return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
-    }
+    return new Vector2(position.x - _lastPosition.x, position.y - _lastPosition.z);
   }
   
   // Other methods ----------------------------------------------------------------
 
+  /// <summary>
+  /// Represents scenario name in which agent is present
+  /// </summary>
   public string scenarioName { get; set; }
 
   /// <summary>
@@ -192,23 +174,39 @@ public abstract class BaseAgent : IBaseAgent
     return _object.AddComponent<T>();
   }
 
+  /// <summary>
+  /// Getter for agents position
+  /// </summary>
+  /// <returns>Position of agent</returns>
   public Vector3 GetPos()
   {
     return _object.transform.position;
   }
 
+  /// <summary>
+  /// Getter for gameobject of agent
+  /// </summary>
+  /// <returns>Agent's gameobject</returns>
   public GameObject GetGameObject()
   {
     return _object;
   }
 }
 
-
+/// <summary>
+/// Class for collision detection inside the simulation
+/// </summary>
 public class AgentCollisionDetectionHandler : MonoBehaviour
 {
+  /// <summary>
+  /// Reference to agent to which this component is attached
+  /// </summary>
   public BaseAgent agent;
 
-
+  /// <summary>
+  /// Called when agent enters collision
+  /// </summary>
+  /// <param name="collision">Collision object</param>
   private void OnCollisionEnter(Collision collision)
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())
@@ -217,6 +215,10 @@ public class AgentCollisionDetectionHandler : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// Called each frame agent stays in collision
+  /// </summary>
+  /// <param name="collision">Collision object</param>
   private void OnCollisionStay(Collision collision)
   {
     if (collision.gameObject != SimulationManager.Instance.GetPlatform())
